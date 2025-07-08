@@ -30,7 +30,7 @@ export default function Page() {
               <hr className="flex-1 border-gray-300" />
             </div>
             <Button className="border border-[#E0E0E0] bg-white text-black gap-2">
-              <Image src="/images/google.svg" alt="Google" width={20} height={20} />/s
+              <Image src="/images/google.svg" alt="Google" width={20} height={20} />
               구글 계정으로 로그인
             </Button>
           </div>
