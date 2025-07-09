@@ -3,7 +3,7 @@ import check from '/public/check.svg';
 import checkGray from '/public/checkGray.svg';
 import CheckBox from '@/app/components/common/CheckBox';
 import NextBtn from '@/app/components/common/NextBtn';
-import ProgressBar from '@/app/components/common/PrgressBar';
+
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -36,7 +36,6 @@ export default function Step3() {
     <>
       {/* 전체 박스 */}
       <div className="px-5 mt-[50px] max-w-screen-sm mx-auto w-full select-none">
-        <ProgressBar currentStep={3} totalSteps={6} />
         {/* 모두 동의 */}
         {/* 전체 박스 */}
         <div className="flex flex-col gap-4">

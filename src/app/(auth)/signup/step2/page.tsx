@@ -1,6 +1,5 @@
 'use client';
 
-import ProgressBar from '@/app/components/common/PrgressBar';
 import { useSignUpStore } from '@/store/SignupStore';
 import clock from '/public/clock.svg';
 import Image from 'next/image';
@@ -12,7 +11,6 @@ export default function Step2() {
     <>
       {/* 전체 박스 */}
       <div className="px-5 mt-[50px] max-w-screen-sm mx-auto w-full">
-        <ProgressBar currentStep={2} totalSteps={6} />
         <div>
           <p>이메일 (아이디)</p>
           <div className="flex mt-[10px] mb-[14px] w-full h-[48px] p-[15px] rounded-[8px] text-[#9E9E9E] items-center border border-[#e0e0e0]">

@@ -19,7 +19,7 @@ export default function Page() {
     <>
       {/* 전체 박스 */}
       <div className="px-5 mt-[50px] max-w-screen-sm mx-auto w-full select-none">
-        <ProgressBar currentStep={5} totalSteps={6} />
+        <ProgressBar currentStep={2} totalSteps={3} />
         <h1 className="font-semibold text-[20px] mb-7">
           자취 경력이 어떻게 되시나요?
         </h1>
