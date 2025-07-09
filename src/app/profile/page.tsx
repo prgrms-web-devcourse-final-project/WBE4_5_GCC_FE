@@ -1,17 +1,22 @@
 'use client'
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Button from "../components/common/Button";
 import SettingsItem from "../components/common/SettingsItem";
-import { useState } from "react";
 
 export default function page () {
+  const router = useRouter();
   const [darkMode, setDarkMode] = useState(false);
   const [templateUse, setTemplateUse] = useState(false);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-5">
       <div className="w-full max-w-md">
-        <Button className="h-[48px] bg-[#222222] text-sm font-medium text-white">
+        <Button
+          className="h-[48px] bg-[#222222] text-sm font-medium text-white"
+          onClick={() => router.push('/profile/edit-character')}
+        >
           캐릭터 편집하기
         </Button>
 
@@ -19,17 +24,17 @@ export default function page () {
           <SettingsItem 
             label="비밀번호 변경"
             type="link"
-            onClick={() => console.log('비밀번호 변경 페이지로 이동')}
+            onClick={() => router.push('/profile/change-password')}
           />
           <SettingsItem
             label="주소 변경"
             type="link"
-            onClick={() => console.log('주소 변경 페이지로 이동')}
+            onClick={() => router.push('/profile/change-address')}
           />
           <SettingsItem
             label="알림 설정"
             type="link"
-            onClick={() => console.log('알림 설정 페이지로 이동')}
+            onClick={() => router.push('/profile/notification')}
           />
           <SettingsItem
             label="다크모드 설정"
@@ -46,7 +51,7 @@ export default function page () {
           <SettingsItem
             label="탈퇴하기"
             type="link"
-            onClick={() => console.log('탈퇴 페이지로 이동')}
+            onClick={() => router.push('/profile/delete-account')}
           />
           <SettingsItem
             label="로그아웃"
