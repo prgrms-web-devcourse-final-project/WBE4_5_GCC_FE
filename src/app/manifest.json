@@ -1,0 +1,21 @@
+{
+  "name": "혼라이프",
+  "short_name": "혼라인프",
+  "description": "혼라이프와 함께 루틴 실천해요",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "./images/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./images/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
