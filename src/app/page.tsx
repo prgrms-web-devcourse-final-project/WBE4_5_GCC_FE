@@ -5,8 +5,6 @@ export default function page() {
     <>
       <h1>page Component</h1>
       <button>다운로드</button>
-
-      <CategoryBottomSheetContainer />
     </>
   );
 }
