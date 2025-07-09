@@ -15,7 +15,7 @@ export default function Step4() {
       {/* 전체 박스 */}
       <div className="px-5 mt-[50px] max-w-screen-sm mx-auto w-full select-none">
         {/* 진행률 바 */}
-        <ProgressBar currentStep={4} totalSteps={6} />
+        <ProgressBar currentStep={1} totalSteps={3} />
 
         <div className="flex flex-col gap-6 mt-11">
           <span>닉네임을 입력해 주세요</span>
