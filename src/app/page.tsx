@@ -1,5 +1,3 @@
-import CategoryBottomSheetContainer from "./components/common/CategoryBottomSheetContainer";
-
 export default function page() {
   return (
     <>
