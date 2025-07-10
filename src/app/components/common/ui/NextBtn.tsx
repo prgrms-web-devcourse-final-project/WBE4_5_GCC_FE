@@ -12,7 +12,7 @@ export default function NextBtn({
   return (
     <>
       <button
-        className={`flex justify-center pt-[18px] w-full h-[88px] mt-auto text-[#FDFDFD] ${
+        className={`mt-auto flex h-[88px] w-full justify-center pt-[18px] text-[#FDFDFD] ${
           className ?? ''
         }`}
         onClick={!disabled ? onClick : undefined}

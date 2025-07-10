@@ -1,4 +1,4 @@
-"use client"
+'use client';
 import Agreement from '@/app/components/signup/Agreement';
 import Category from '@/app/components/signup/Category';
 import EmailConfirm from '@/app/components/signup/EmailConfirm';

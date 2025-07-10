@@ -4,8 +4,8 @@ import { useSignUpStore } from '@/store/SignupStore';
 import clock from '/public/clock.svg';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import Button from '../common/Button';
-import Input from '../common/Input';
+import Button from '../common/ui/Button';
+import Input from '../common/ui/Input';
 
 export default function EmailConfirm() {
   const email = useSignUpStore((state) => state.email);

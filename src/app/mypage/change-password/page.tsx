@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Eye, EyeClosed, Check } from 'lucide-react';
-import Input from "@/app/components/common/Input";
-import Button from "@/app/components/common/Button";
+import Input from "@/app/components/common/ui/Input";
+import Button from "@/app/components/common/ui/Button";
 
 export default function Page() {
   const [password, setPassword] = useState("");
