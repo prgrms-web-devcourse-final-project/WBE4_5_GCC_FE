@@ -49,14 +49,14 @@ export default function page () {
             onToggle={setTemplateUse}
           />
           <SettingsItem
+            label="로그아웃"
+            type="link"
+            onClick={() => console.log('로그아웃')}
+          />
+          <SettingsItem
             label="탈퇴하기"
             type="link"
             onClick={() => router.push('/profile/delete-account')}
-          />
-          <SettingsItem
-            label="로그아웃"
-            type="action"
-            onClick={() => console.log('로그아웃')}
           />
         </div>
       </div>

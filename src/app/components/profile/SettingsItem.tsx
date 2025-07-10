@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 interface SettingsItemProps {
   label: string;
-  type: 'link' | 'toggle' | 'action';
+  type: 'link' | 'toggle';
   checked?: boolean;
   onToggle?: (checked: boolean) => void;
   onClick?: () => void;
@@ -16,7 +16,6 @@ export default function SettingsItem ({
   onToggle,
   onClick,
 } : SettingsItemProps) {
-  const isDanger = label === '탈퇴하기';
   return (
     <div
       className={clsx(
@@ -26,21 +25,13 @@ export default function SettingsItem ({
       onClick={type !== 'toggle' ? onClick : undefined}
     >
       <span
-        className={clsx(
-          'text-sm font-semibold',
-          isDanger ? 'text-[#D32F2F]' : 'text-black'
-        )}
+        className="text-sm font-semibold text-black"
       >
         {label}
       </span>
 
       {type === 'link' && (
-        <ChevronRight
-          className={clsx(
-            'w-auto h-4',
-            isDanger ? 'text-[#D32F2F]' : 'text-[#222222]'
-          )}
-        />
+        <ChevronRight className="w-auto h-4 text-[#222222]"/>
       )}
 
 
@@ -54,13 +45,6 @@ export default function SettingsItem ({
           />
           <div className="relative w-[38px] h-6 bg-[#E0E0E0] peer-focus:outline-none rounded-full peer-checked:after:translate-x-[14px] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FFB84C] after:shadow-[0px_3px_8px_rgba(0,0,0,0.15)]"></div>
         </label>
-      )}
-
-
-      {type === 'action' && (
-        <button 
-          onClick={onClick}>
-        </button>
       )}
     </div>
   );
