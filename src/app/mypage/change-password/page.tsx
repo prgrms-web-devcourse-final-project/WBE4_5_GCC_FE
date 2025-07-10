@@ -99,8 +99,8 @@ export default function Page() {
           <div className="grid grid-cols-2 gap-y-[10px] gap-x-6 mt-[10px]">
             {conditionList.map(({ key, label }) => (
               <div key={key} className="flex gap-[6px] items-center">
-                <Check className={`w-4 h-auto ${passwordChecks[key as keyof typeof passwordChecks] ? "text-green-500" : "text-[#C4C4C4]"}`} />
-                <p className={`text-[12px] ${passwordChecks[key as keyof typeof passwordChecks] ? "text-green-500" : "text-[#9E9E9E]"}`}>
+                <Check className={`w-4 h-auto ${passwordChecks[key as keyof typeof passwordChecks] ? "text-[#388E3C]" : "text-[#C4C4C4]"}`} />
+                <p className={`text-[12px] ${passwordChecks[key as keyof typeof passwordChecks] ? "text-[#388E3C]" : "text-[#9E9E9E]"}`}>
                   {label}
                 </p>
               </div>
