@@ -75,7 +75,7 @@ export default function page () {
               <div
                 key={item.id}
                 className={clsx(
-                  'bg-red-100 min-w-[92px] h-[123px] px-auto py-[7px] border rounded-[5px] text-center',
+                  'min-w-[92px] h-[123px] px-auto py-[7px] border rounded-[5px] text-center',
                   isSelected ? 'border-[#FFB84C]' : 'border-[#D9D9D9]'
                 )}
                 style={{
