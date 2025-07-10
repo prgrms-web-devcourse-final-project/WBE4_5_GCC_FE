@@ -12,9 +12,7 @@ export default function SelectButton({
     <>
       <button
         onClick={onClick}
-        className={`flex items-center justify-center 
-        h-[43px] px-[15px] py-[13px] rounded-[50px] border 
-        text-[17px] transition-colors ${className ?? ''}`}
+        className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-[14px] transition-colors ${className ?? ''}`}
       >
         {text}
       </button>

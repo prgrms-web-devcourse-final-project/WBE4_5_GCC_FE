@@ -11,14 +11,14 @@ export default function NextBtn({
 }) {
   return (
     <>
-      <div
+      <button
         className={`flex justify-center pt-[18px] w-full h-[88px] mt-auto text-[#FDFDFD] ${
           className ?? ''
         }`}
         onClick={!disabled ? onClick : undefined}
       >
         {label}
-      </div>
+      </button>
     </>
   );
 }
