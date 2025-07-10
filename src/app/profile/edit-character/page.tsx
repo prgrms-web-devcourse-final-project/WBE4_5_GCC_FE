@@ -67,7 +67,7 @@ export default function page () {
         </div>
 
         {/* 아이템 카드 리스트 */}
-        <div className="bg-white relative min-w-[350px] min-h-[340px] px-[15px] pt-[23px] pb-[13px] border border-[#D9D9D9] rounded-tr-lg rounded-b-lg grid grid-cols-3 gap-x-[21px] gap-y-[15px]">
+        <div className="bg-white relative min-w-[350px] min-h-[340px] px-[15px] pt-[23px] pb-[54px] border border-[#D9D9D9] rounded-tr-lg rounded-b-lg grid grid-cols-3 gap-x-[21px] gap-y-[15px]">
           {filteredItem.map((item) => {
             const isSelected = selectedItem[item.category] === item.id;
 
@@ -75,7 +75,7 @@ export default function page () {
               <div
                 key={item.id}
                 className={clsx(
-                  'min-w-[92px] h-[123px] px-auto py-[7px] border rounded-[5px] text-center',
+                  'bg-red-100 min-w-[92px] h-[123px] px-auto py-[7px] border rounded-[5px] text-center',
                   isSelected ? 'border-[#FFB84C]' : 'border-[#D9D9D9]'
                 )}
                 style={{
@@ -99,7 +99,7 @@ export default function page () {
                     'min-w-18 min-h-4 rounded-[3px] text-[8px] border border-[#E0E0E0]',
                     isSelected 
                     ? 'bg-[#FFB84C] text-white border-[#FFB84C] font-semibold'
-                    : 'bg-white border-[#E0E0E0] text-black'
+                    : 'bg-white border-[#E0E0E0] text-[#616161]'
                   )}
                 >
                   {isSelected ? '착용 중' : '착용하기'}
@@ -109,7 +109,7 @@ export default function page () {
           })}
 
           {/* 페이지네이션 */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2">
+          <div className="absolute bottom-[13px] left-1/2 -translate-x-1/2">
             <div className="flex justify-center items-center space-x-[11px]">
               <button className="text-[#222222]">
                 <ChevronLeft className="w-auto h-3"/>

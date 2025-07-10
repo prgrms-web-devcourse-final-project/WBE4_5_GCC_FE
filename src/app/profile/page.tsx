@@ -19,7 +19,7 @@ export default function page () {
           className="h-[48px] bg-[#222222] text-sm font-medium text-white"
           onClick={() => router.push('/profile/edit-character')}
         >
-          캐릭터 편집하기
+          캐릭터 꾸미기
         </Button>
 
         <div className="bg-white mt-11">
