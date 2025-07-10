@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "../components/common/Button";
+import LogoutModal from "../components/common/LogoutModal";
 import SettingsItem from "../components/profile/SettingsItem";
 
 export default function page () {
   const router = useRouter();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [templateUse, setTemplateUse] = useState(false);
 
@@ -51,7 +53,7 @@ export default function page () {
           <SettingsItem
             label="로그아웃"
             type="link"
-            onClick={() => console.log('로그아웃')}
+            onClick={() => setShowLogoutModal(true)}
           />
           <SettingsItem
             label="회원탈퇴"
@@ -60,6 +62,16 @@ export default function page () {
           />
         </div>
       </div>
+
+      {showLogoutModal && (
+        <LogoutModal 
+          onClose={() => setShowLogoutModal(false)}
+          onConfirm={() => {
+            console.log("로그아웃");
+            setShowLogoutModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }
