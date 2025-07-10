@@ -1,8 +1,9 @@
-export default function page() {
+import Profile from './components/main/Profile';
+
+export default function Main() {
   return (
     <>
-      <h1>page Component</h1>
-      <button>다운로드</button>
+      <Profile />
     </>
   );
 }

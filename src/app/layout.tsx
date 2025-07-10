@@ -1,5 +1,5 @@
-
-import "./globals.css";
+import Header from './components/common/ui/Header';
+import './globals.css';
 
 import type { Metadata } from 'next';
 
@@ -8,7 +8,6 @@ export const metadata: Metadata = {
   description: '혼라이프와 함께 루틴 실천해요',
   manifest: '/manifest.json',
 };
-
 export default function RootLayout({
   children,
 }: {
@@ -16,7 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="mt-[30px] px-5">
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

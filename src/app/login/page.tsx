@@ -1,10 +1,9 @@
-"use client";
+'use client';
 
-import Button from "@/app/components/common/Button";
-import Input from "@/app/components/common/Input";
-import Image from "next/image";
-import { ChevronRight } from "lucide-react";
-
+import Button from '@/app/components/common/ui/Button';
+import Input from '@/app/components/common/ui/Input';
+import Image from 'next/image';
+import { ChevronRight } from 'lucide-react';
 
 export default function Page() {
   return (
@@ -29,20 +28,25 @@ export default function Page() {
               <span>또는</span>
               <hr className="flex-1 border-gray-300" />
             </div>
-            <Button className="border border-[#E0E0E0] bg-white text-black gap-2">
-              <Image src="/images/google.svg" alt="Google" width={20} height={20} />
+            <Button className="gap-2 border border-[#E0E0E0] bg-white text-black">
+              <Image
+                src="/images/google.svg"
+                alt="Google"
+                width={20}
+                height={20}
+              />
               구글 계정으로 로그인
             </Button>
           </div>
         </form>
         <div className="flex justify-center gap-6 text-sm text-[#909090]">
-          <a href="#" className="flex items-center cursor-pointer">
+          <a href="#" className="flex cursor-pointer items-center">
             회원가입
-            <ChevronRight className="w-3.5 h-3.5 ml-1"/>
+            <ChevronRight className="ml-1 h-3.5 w-3.5" />
           </a>
-          <a href="#" className="flex items-center cursor-pointer">
+          <a href="#" className="flex cursor-pointer items-center">
             비밀번호를 잊으셨나요?
-            <ChevronRight className="w-3.5 h-3.5 ml-1"/>
+            <ChevronRight className="ml-1 h-3.5 w-3.5" />
           </a>
         </div>
       </div>
