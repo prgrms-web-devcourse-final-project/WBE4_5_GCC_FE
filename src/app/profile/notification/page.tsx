@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import SettingsItem from "@/app/components/common/SettingsItem";
+import SettingsItem from "@/app/components/profile/SettingsItem";
 
 export default function page () {
   const [routineNotification, setRoutineNotification] = useState(false);

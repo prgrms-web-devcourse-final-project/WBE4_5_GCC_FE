@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "../components/common/Button";
-import SettingsItem from "../components/common/SettingsItem";
+import SettingsItem from "../components/profile/SettingsItem";
 
 export default function page () {
   const router = useRouter();
