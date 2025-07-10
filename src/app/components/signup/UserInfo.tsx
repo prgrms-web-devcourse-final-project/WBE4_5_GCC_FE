@@ -1,7 +1,8 @@
 'use client';
 import Image from 'next/image';
-import check from '/public/check.svg';
+//import check from '/public/check.svg';
 import checkGray from '/public/checkGray.svg';
+import checkGreen from '/public/checkGreen.svg';
 import eye from '/public/eye.svg';
 import eyeClosed from '/public/eyeClosed.svg';
 import { useEffect, useState } from 'react';
@@ -32,10 +33,10 @@ export default function UserInfo() {
 
   // 조건이 맞는지 확인
   const checkConditionImage = (condition: boolean) => {
-    return condition ? check : checkGray;
+    return condition ? checkGreen : checkGray;
   };
   const checkConditionText = (condition: boolean) => {
-    return condition ? 'text-[#222222] ' : 'text-[#9E9E9E] ';
+    return condition ? 'text-[#388E3C] ' : 'text-[#9E9E9E] ';
   };
 
   // 비밀번호 텍스트로 변경
