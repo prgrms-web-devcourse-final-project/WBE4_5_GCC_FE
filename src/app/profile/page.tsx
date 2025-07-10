@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Button from '../components/common/Button';
+
 import LogoutModal from '../components/common/LogoutModal';
 import SettingsItem from '../components/profile/SettingsItem';
+import Button from '../components/common/ui/Button';
+import Profile from '../components/main/Profile';
 
-export default function page() {
+export default function Page() {
   const router = useRouter();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -15,8 +17,9 @@ export default function page() {
   return (
     <div className="flex min-h-screen flex-col items-center p-5">
       <div className="w-full max-w-md">
+        <Profile />
         <Button
-          className="h-[48px] bg-[#222222] text-sm font-medium text-white"
+          className="mt-5 h-[48px] bg-[#222222] text-sm font-medium text-white"
           onClick={() => router.push('/profile/edit-character')}
         >
           캐릭터 꾸미기

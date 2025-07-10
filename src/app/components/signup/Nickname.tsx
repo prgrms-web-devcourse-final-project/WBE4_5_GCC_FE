@@ -3,8 +3,8 @@
 import ProgressBar from '@/app/components/common/PrgressBar';
 import { useSignUpStore } from '@/store/SignupStore';
 import { useEffect, useState } from 'react';
-import Input from '../common/Input';
-import Button from '../common/Button';
+import Input from '../common/ui/Input';
+import Button from '../common/ui/Button';
 
 export default function Nickname() {
   const [nickname, setNickname] = useState('');

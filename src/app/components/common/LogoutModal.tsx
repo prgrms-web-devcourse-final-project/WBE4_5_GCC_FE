@@ -1,7 +1,7 @@
 'use client';
 
-import Button from './Button';
 import { CircleAlert } from 'lucide-react';
+import Button from './ui/Button';
 
 interface LogoutModalProps {
   onClose: () => void;

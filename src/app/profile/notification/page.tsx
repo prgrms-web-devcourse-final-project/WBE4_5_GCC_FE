@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import SettingsItem from '@/app/components/profile/SettingsItem';
 
-export default function page() {
+export default function Page() {
   const [routineNotification, setRoutineNotification] = useState(false);
   const [challenge, setChallenge] = useState(false);
   const [sendEmail, setSendEmail] = useState(false);

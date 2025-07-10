@@ -1,18 +1,25 @@
 'use client';
 
-import BackBtn from '@/app/components/common/BackHeader';
-import NextBtn from '@/app/components/common/NextBtn';
+import BackBtn from '@/app/components/common/ui/BackHeader';
+import NextBtn from '@/app/components/common/ui/NextBtn';
 import { useSignUpStore } from '@/store/SignupStore';
+import { useRouter } from 'next/navigation';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const step = useSignUpStore((state) => state.step);
   const setStep = useSignUpStore((state) => state.setStep);
-
+  const router = useRouter();
   const isNextEnabled = useSignUpStore((state) => state.isNextEnabled);
 
   const goNext = () => {
+    // if (step === 1) {
+    //   router.push('/login');
+    // }
     if (step < 6) {
       setStep(step + 1);
+    }
+    if (step === 6) {
+      router.push('/login');
     }
   };
 

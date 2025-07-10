@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import item1 from '@/app/assets/images/item1.png';
-import Button from '@/app/components/common/Button';
+
 import character from '../../../../public/images/character.png';
+import Button from '@/app/components/common/ui/Button';
 
 const tabs = ['전체', '상의', '하의', '액세서리'];
 
@@ -56,7 +57,7 @@ const items = [
   },
 ];
 
-export default function page() {
+export default function Page() {
   const [selectedTab, setSelectedTab] = useState('전체');
   const [selectedItem, setSelectedItem] = useState<
     Record<string, number | null>

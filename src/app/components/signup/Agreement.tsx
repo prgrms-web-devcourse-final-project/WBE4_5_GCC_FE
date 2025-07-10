@@ -1,7 +1,7 @@
 'use client';
 import check from '/public/check.svg';
 import checkGray from '/public/checkGray.svg';
-import CheckBox from '@/app/components/common/CheckBox';
+import CheckBox from '@/app/components/common/ui/CheckBox';
 import { useSignUpStore } from '@/store/SignupStore';
 
 import Image from 'next/image';
