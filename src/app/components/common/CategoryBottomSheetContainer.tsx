@@ -1,12 +1,15 @@
-'use client'
+'use client';
 
-import { useState } from "react";
-import CategoryGrid from "./CategoryGrid";
-import SubCategorySheet from "./SubCategorySheet";
+import { useState } from 'react';
+import CategoryGrid from './CategoryGrid';
+import SubCategorySheet from './SubCategorySheet';
 
-export default function CategoryBottomSheetContainer () {
-  const [selectedCategory, setSelectedCategory] = useState< {icon: React.ReactNode | string; label:string } | null>(null);
-  const categories=[
+export default function CategoryBottomSheetContainer() {
+  const [selectedCategory, setSelectedCategory] = useState<{
+    icon: React.ReactNode | string;
+    label: string;
+  } | null>(null);
+  const categories = [
     { icon: <span>🧹</span>, label: '청소 / 정리' },
     { icon: <span>🧺</span>, label: '세탁 / 의류' },
     { icon: <span>♻️</span>, label: '쓰레기 / 환경' },
@@ -21,7 +24,7 @@ export default function CategoryBottomSheetContainer () {
   return (
     <>
       {!selectedCategory ? (
-        <CategoryGrid 
+        <CategoryGrid
           categories={categories}
           editable={true}
           onEditClick={() => console.log('편집 클릭')}
@@ -31,7 +34,7 @@ export default function CategoryBottomSheetContainer () {
           }}
         />
       ) : (
-        <SubCategorySheet 
+        <SubCategorySheet
           categoryLabel={selectedCategory.label}
           categoryIcon={selectedCategory.icon}
           onBack={() => setSelectedCategory(null)}

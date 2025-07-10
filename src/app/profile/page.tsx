@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Button from "../components/common/Button";
-import LogoutModal from "../components/common/LogoutModal";
-import SettingsItem from "../components/profile/SettingsItem";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Button from '../components/common/Button';
+import LogoutModal from '../components/common/LogoutModal';
+import SettingsItem from '../components/profile/SettingsItem';
 
-export default function page () {
+export default function page() {
   const router = useRouter();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
@@ -22,8 +22,8 @@ export default function page () {
           캐릭터 꾸미기
         </Button>
 
-        <div className="bg-white mt-11">
-          <SettingsItem 
+        <div className="mt-11 bg-white">
+          <SettingsItem
             label="비밀번호 변경"
             type="link"
             onClick={() => router.push('/profile/change-password')}
@@ -64,10 +64,10 @@ export default function page () {
       </div>
 
       {showLogoutModal && (
-        <LogoutModal 
+        <LogoutModal
           onClose={() => setShowLogoutModal(false)}
           onConfirm={() => {
-            console.log("로그아웃");
+            console.log('로그아웃');
             setShowLogoutModal(false);
           }}
         />
