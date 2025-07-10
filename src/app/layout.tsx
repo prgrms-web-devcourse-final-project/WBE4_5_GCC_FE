@@ -1,5 +1,6 @@
-import Header from './components/common/ui/Header';
 import './globals.css';
+import './styles/calendar.css';
+import Header from './components/common/ui/Header';
 
 import type { Metadata } from 'next';
 

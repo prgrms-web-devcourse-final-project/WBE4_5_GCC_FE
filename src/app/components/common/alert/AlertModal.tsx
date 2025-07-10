@@ -14,12 +14,12 @@ interface AlertModalProps {
 }
 
 const typeIcon = {
-  login: <CircleAlert className='text-[#E24413] size-7 mb-6' />,
-  delete: <CircleAlert className='text-[#E24413] size-7 mb-6' />,
-  success: <CircleCheckBig className='text-[#FFB84C] size-7 mb-[16px]' />,
+  login: <CircleAlert className="mb-6 size-7 text-[#E24413]" />,
+  delete: <CircleAlert className="mb-6 size-7 text-[#E24413]" />,
+  success: <CircleCheckBig className="mb-[16px] size-7 text-[#FFB84C]" />,
 };
 
-export default function AlertModal ({
+export default function AlertModal({
   type = 'login',
   title,
   description,
@@ -28,27 +28,33 @@ export default function AlertModal ({
   onConfirm,
   onCancel,
   isOpen,
-} : AlertModalProps) {
+}: AlertModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#222222]/50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-[20px] border border-[#909090]/47 px-8 py-[19px] w-[335px] h-fit text-center">
-        <div className="bg-white flex flex-col items-center">{typeIcon[type]}</div>
-        <h2 className="text-[#222222] text-[18px] font-semibold mb-6">{title}</h2>
-        {description && <p className="text-[14px] text-gray-500 mb-6">{description}</p>}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222]/50">
+      <div className="h-fit w-[335px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[19px] text-center">
+        <div className="flex flex-col items-center bg-white">
+          {typeIcon[type]}
+        </div>
+        <h2 className="mb-6 text-[18px] font-semibold text-[#222222]">
+          {title}
+        </h2>
+        {description && (
+          <p className="mb-6 text-[14px] text-gray-500">{description}</p>
+        )}
         <div className="flex justify-center gap-[27px]">
           {cancelText && (
             <button
               onClick={onCancel}
-              className="w-[57px] text-[#909090] text-sm cursor-pointer"
+              className="w-[57px] cursor-pointer text-sm text-[#909090]"
             >
               {cancelText}
             </button>
           )}
           <button
             onClick={onConfirm}
-            className="w-25 h-[33px] bg-[#FFB84C] text-white rounded-[8px] font-semibold text-sm cursor-pointer"
+            className="h-[33px] w-25 cursor-pointer rounded-[8px] bg-[#FFB84C] text-sm font-semibold text-white"
           >
             {confirmText}
           </button>
@@ -59,7 +65,8 @@ export default function AlertModal ({
 }
 
 // 사용
-{/*
+{
+  /*
   <AlertModal
     isOpen={true}
     type="login"
@@ -89,4 +96,5 @@ export default function AlertModal ({
     confirmText="확인"
     onConfirm={() => console.log('확인')}
   />
-*/}
+*/
+}
