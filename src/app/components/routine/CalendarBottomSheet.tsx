@@ -47,7 +47,7 @@ export default function CalendarBottomSheet({
       onClick={() => setIsOpen(false)}
     >
       <div
-        className="relative h-[480px] w-full max-w-md rounded-t-2xl bg-white px-4 py-6"
+        className="relative h-[500px] w-full max-w-md rounded-t-2xl bg-white px-4 py-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mt-6 mb-9 flex w-full items-center justify-between px-6">
