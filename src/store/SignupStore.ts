@@ -10,6 +10,14 @@ type SignUpState = {
   setEmail: (email: string) => void;
   setPassword: (password: string) => void;
   setCheckPassword: (checkPassword: string) => void;
+  
+  // 페이지 렌더링 스텝
+  step: number;
+  setStep: (step:number) => void
+
+  // 버튼 활성화 조건
+  isNextEnabled : boolean;
+  setIsNextEnabled : (enabled : boolean) => void
 };
 
 export const useSignUpStore = create<SignUpState>()(
@@ -25,6 +33,12 @@ export const useSignUpStore = create<SignUpState>()(
       setCheckPassword: (checkPassword) => set({ checkPassword }),
       reset: () =>
         set({ name: '', email: '', password: '', checkPassword: '' }),
+
+      step: 1,
+      setStep: (step) => set( {step} ),
+      
+      isNextEnabled: false,
+      setIsNextEnabled: (enabled) => set ( {isNextEnabled: enabled} )
     }),
     {
       name: 'signup-storage',

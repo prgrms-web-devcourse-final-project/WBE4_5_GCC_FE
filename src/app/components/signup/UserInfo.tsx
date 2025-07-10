@@ -3,28 +3,23 @@ import Image from 'next/image';
 import check from '/public/check.svg';
 import checkGray from '/public/checkGray.svg';
 import showBtn from '/public/showBtn.svg';
-import NextBtn from '@/app/components/common/NextBtn';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useSignUpStore } from '@/store/SignupStore';
+import Input from '../common/Input';
+import Button from '../common/Button';
 
-export default function SignUp() {
-  const router = useRouter();
-
-  const signUpStore = useSignUpStore();
-  const {
-    name,
-    email,
-    password,
-    checkPassword,
-    setName,
-    setEmail,
-    setPassword,
-    setCheckPassword,
-  } = signUpStore;
+export default function UserInfo() {
+  const name = useSignUpStore((state) => state.name);
+  const email = useSignUpStore((state) => state.email);
+  const password = useSignUpStore((state) => state.password);
+  const checkPassword = useSignUpStore((state) => state.checkPassword);
+  const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
+  const setName = useSignUpStore((state) => state.setName);
+  const setEmail = useSignUpStore((state) => state.setEmail);
+  const setPassword = useSignUpStore((state) => state.setPassword);
+  const setCheckPassword = useSignUpStore((state) => state.setCheckPassword);
 
   // 비밀번호 유효성 검사
-  // const [password, setPassword] = useState('');
   // 영문 대소문자
   const hasLowerUpper = /[a-z]/.test(password) && /[A-Z]/.test(password);
   // 숫자 포함
@@ -42,9 +37,6 @@ export default function SignUp() {
     return condition ? 'text-[#222222] ' : 'text-[#9E9E9E] ';
   };
 
-  // 비밀번호 확인
-  // const [checkPassword, setCheckPassword] = useState('');
-
   // 비밀번호 텍스트로 변경
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPassword, setShowCheckPassword] = useState(false);
@@ -56,8 +48,6 @@ export default function SignUp() {
   const checkPasswordPressEnd = () => setShowCheckPassword(false);
 
   // 다음 버튼 활성화 조건
-  // const [name, setName] = useState('');
-  // const [email, setEmail] = useState('');
   const isPasswordOkay =
     hasLowerUpper && hasNumber && hasSpecial && hasMinLength;
   const goNext =
@@ -65,45 +55,43 @@ export default function SignUp() {
     email.trim() !== '' &&
     isPasswordOkay &&
     password === checkPassword;
+
+  useEffect(() => {
+    setIsNextEnabled(goNext);
+  }, [goNext, setIsNextEnabled]);
+
   return (
     <>
       {/* 전체 박스 */}
-      <div className="px-5 mt-[50px] max-w-screen-sm mx-auto w-full">
+      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5">
         {/* 이름 */}
         <div className="mb-[34px]">
-          <p className="mb-[10px] font-semibold text-[16px]">이름</p>
-          <input
-            type="text"
+          <p className="mb-[10px] text-[16px] font-semibold">이름</p>
+          <Input
+            placeholder="이름을 입력해 주세요"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className=" w-full h-[50px] p-[15px] rounded-[8px] border border-[#E0E0E0]"
-            placeholder="이름을 입력해 주세요"
           />
         </div>
         {/* 이메일 */}
         <div className="mb-[34px]">
-          <p className="mb-[10px] font-semibold text-[16px]">이메일(아이디)</p>
-          <div className="flex">
-            <input
-              type="text"
+          <p className="mb-[10px] text-[16px] font-semibold">이메일(아이디)</p>
+          <div className="flex gap-[10px]">
+            <Input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 mr-[15px] h-[50px] p-[15px] rounded-[8px] border border-[#E0E0E0]"
               placeholder="이메일을 입력해주세요"
             />
-            <button className="w-[75px] h-[50px] rounded-[8px] bg-black text-white text-[14px]">
-              중복 확인
-            </button>
+            <Button className="w-[75px]">중복 확인</Button>
           </div>
         </div>
         {/* 비밀번호 */}
         <div className="mb-[34px]">
-          <p className="mb-[10px] font-semibold text-[16px]">비밀번호</p>
+          <p className="mb-[10px] text-[16px] font-semibold">비밀번호</p>
 
-          <div className="flex items-center relative w-full h-[50px]">
-            <input
+          <div className="relative flex h-[50px] w-full items-center">
+            <Input
               type={showPassword ? 'text' : 'password'}
-              className=" w-full h-full p-[15px] pr-[50px] rounded-[8px] border border-[#E0E0E0]"
               placeholder="비밀번호를 입력해주세요"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -125,25 +113,25 @@ export default function SignUp() {
           {/* 비밀번호 확인 체크 */}
           <div className="mt-[10px] text-[12px]">
             <div className="flex gap-9">
-              <div className="flex w-[160px] gap-[6px] items-center">
+              <div className="flex w-[160px] items-center gap-[6px]">
                 <Image src={checkConditionImage(hasLowerUpper)} alt="check" />
                 <span className={checkConditionText(hasLowerUpper)}>
                   영문 대소문자 최소 1개 포함
                 </span>
               </div>
-              <div className="flex w-[160px] gap-[6px] items-center">
+              <div className="flex w-[160px] items-center gap-[6px]">
                 <Image src={checkConditionImage(hasNumber)} alt="check" />
                 <span className={checkConditionText(hasNumber)}>숫자 포함</span>
               </div>
             </div>
             <div className="flex gap-9">
-              <div className="flex w-[160px] gap-[6px] items-center">
+              <div className="flex w-[160px] items-center gap-[6px]">
                 <Image src={checkConditionImage(hasMinLength)} alt="check" />
                 <span className={checkConditionText(hasMinLength)}>
                   8자리 이상
                 </span>
               </div>
-              <div className="flex w-[160px] gap-[6px] items-center">
+              <div className="flex w-[160px] items-center gap-[6px]">
                 <Image src={checkConditionImage(hasSpecial)} alt="check" />
                 <span className={checkConditionText(hasSpecial)}>
                   특수 문자 (#,@) 포함
@@ -154,13 +142,12 @@ export default function SignUp() {
         </div>
         {/* 비밀번호 확인 */}
         <div className="mb-[34px]">
-          <p className="mb-[10px] font-semibold text-[16px]">비밀번호 확인</p>
+          <p className="mb-[10px] text-[16px] font-semibold">비밀번호 확인</p>
 
-          <div className="flex items-center relative w-full h-[50px]">
-            <input
+          <div className="relative flex h-[50px] w-full items-center">
+            <Input
               type={showCheckPassword ? 'text' : 'password'}
               value={checkPassword}
-              className=" w-full h-full p-[15px] pr-[50px] rounded-[8px] border border-[#E0E0E0]"
               placeholder="비밀번호를 한번 더 입력해주세요"
               onChange={(e) => setCheckPassword(e.target.value)}
             />
@@ -180,12 +167,6 @@ export default function SignUp() {
           </div>
         </div>
       </div>
-      <NextBtn
-        label="다음"
-        disabled={!goNext}
-        className={`${goNext ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}
-        onClick={() => router.push('/signup/step2')}
-      />
     </>
   );
 }

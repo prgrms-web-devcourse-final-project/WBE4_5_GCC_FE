@@ -1,8 +1,9 @@
 'use client';
-import NextBtn from '@/app/components/common/NextBtn';
+
 import ProgressBar from '@/app/components/common/PrgressBar';
 import SelectButton from '@/app/components/common/SelectButton';
-import { useRouter } from 'next/navigation';
+import { useSignUpStore } from '@/store/SignupStore';
+
 import { useEffect, useState } from 'react';
 
 const options = [
@@ -17,13 +18,13 @@ const options = [
   '📄 행정',
 ];
 
-export default function Page() {
-  const router = useRouter();
+export default function Category() {
+  const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
   const [selectedIndex, setSelectedIndex] = useState<number[]>([]);
 
   const toggleIndex = (idx: number) => {
     setSelectedIndex((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
@@ -34,14 +35,17 @@ export default function Page() {
   // 하나 이상 선택되었을 때만 다음 버튼 활성화
   const goNext = selectedIndex.length > 0;
 
+  useEffect(() => {
+    setIsNextEnabled(goNext);
+  }, [setIsNextEnabled, goNext]);
   return (
     <>
-      <div className="px-5 mt-[50px] max-w-screen-sm mx-auto w-full select-none">
+      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 select-none">
         <ProgressBar currentStep={3} totalSteps={3} />
-        <h1 className="font-semibold text-[20px] mb-7">
+        <h1 className="mb-7 text-[20px] font-semibold">
           관심있는 카테고리를 골라주세요
         </h1>
-        <div className="flex flex-wrap gap-[10px] mb-4">
+        <div className="mb-4 flex flex-wrap gap-[10px]">
           {options.map((option, idx) => (
             <SelectButton
               key={idx}
@@ -49,19 +53,13 @@ export default function Page() {
               onClick={() => toggleIndex(idx)}
               className={
                 selectedIndex.includes(idx)
-                  ? 'text-[#FFB84C] border-[#FFB84C]'
+                  ? 'border-[#FFB84C] text-[#FFB84C]'
                   : 'border-[#E0E0E0]'
               }
             />
           ))}
         </div>
       </div>
-      <NextBtn
-        label="다음"
-        className={`${goNext ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}
-        disabled={!goNext}
-        onClick={() => router.push('/signup/step6')}
-      />
     </>
   );
 }
