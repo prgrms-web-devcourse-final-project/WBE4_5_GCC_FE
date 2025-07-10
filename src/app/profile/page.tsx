@@ -54,7 +54,7 @@ export default function page () {
             onClick={() => console.log('로그아웃')}
           />
           <SettingsItem
-            label="탈퇴하기"
+            label="회원탈퇴"
             type="link"
             onClick={() => router.push('/profile/delete-account')}
           />
