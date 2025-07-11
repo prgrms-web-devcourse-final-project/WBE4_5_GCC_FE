@@ -1,7 +1,7 @@
 export default function page() {
   return (
     <>
-      <h1>주소 변경 페이지</h1>
+      <h1>회원정보 변경 페이지</h1>
     </>
   );
 }
