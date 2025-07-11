@@ -35,7 +35,7 @@ export default function page() {
 }, [customReason]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between px-5 py-7 ">
+    <div className="h-1vh flex flex-col px-5 py-7 ">
       {/* 버튼 제외 컨텐츠 */}
       <div className="flex flex-col">
         <div className="flex flex-col font-semibold text-base text-[#222222] mb-[30px]">
@@ -85,7 +85,7 @@ export default function page() {
         </div>
       </div>
 
-      <div>
+      <div className="fixed bottom-[30px] left-5 right-5">
         <Button 
           type='submit' 
           disabled={!isSubmitEnabled}
