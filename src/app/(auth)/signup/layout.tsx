@@ -1,6 +1,6 @@
 'use client';
 
-import BackBtn from '@/app/components/common/ui/BackHeader';
+import BackHeader from '@/app/components/common/ui/BackHeader';
 import NextBtn from '@/app/components/common/ui/NextBtn';
 import { useSignUp } from '@/hooks/useSignUp';
 import { useSignUpStore } from '@/store/SignupStore';

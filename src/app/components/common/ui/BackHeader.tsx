@@ -4,7 +4,7 @@ import backBtn from '/public/BackPageBtn.svg';
 import { useSignUpStore } from '@/store/SignupStore';
 import { useRouter } from 'next/navigation';
 
-export default function BackBtn({ title }: { title: string }) {
+export default function BackHeader({ title }: { title: string }) {
   const router = useRouter();
   const step = useSignUpStore((state) => state.step);
   const setStep = useSignUpStore((state) => state.setStep);
@@ -25,7 +25,7 @@ export default function BackBtn({ title }: { title: string }) {
           className="absolute left-6 h-[24px] w-[24px] cursor-pointer"
           onClick={goBack}
         />
-        <p className="font-semibold">{title}</p>
+        <p className="text-lg font-semibold">{title}</p>
       </div>
     </>
   );
