@@ -18,9 +18,23 @@ const options = [
   '📄 행정',
 ];
 
+const serverOptions = [
+  'clean', // 청소 / 정리
+  'self_development', // 자기개발
+  'outing', // 외출
+  'laundry', // 세탁 / 의류
+  'cooking', // 요리
+  'spending', // 소비
+  'waste', // 쓰레기 / 환경
+  'health', // 건강
+  'administration', // 행정
+];
+
 export default function Category() {
   const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
   const [selectedIndex, setSelectedIndex] = useState<number[]>([]);
+
+  const setCategories = useSignUpStore((state) => state.setCategories);
 
   const toggleIndex = (idx: number) => {
     setSelectedIndex((prev) =>
@@ -29,8 +43,9 @@ export default function Category() {
   };
 
   useEffect(() => {
-    console.log('선택됨:', selectedIndex);
-  }, [selectedIndex]);
+    const selectedOptions = selectedIndex.map((i) => serverOptions[i]);
+    setCategories(selectedOptions);
+  }, [selectedIndex, setCategories]);
 
   // 하나 이상 선택되었을 때만 다음 버튼 활성화
   const goNext = selectedIndex.length > 0;
