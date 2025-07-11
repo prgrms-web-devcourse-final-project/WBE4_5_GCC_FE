@@ -18,8 +18,9 @@ export default function Header() {
             src={logo}
             alt="logo"
             width={116}
-            height={28}
+            //height={28}
             onClick={() => router.push('/')}
+            className="h-auto" // Image Warning
           />
           <Image src={bell} alt="bell" width={20} height={20} />
         </div>
