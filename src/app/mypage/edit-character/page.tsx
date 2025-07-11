@@ -80,7 +80,7 @@ export default function Page() {
       : items.filter((item) => item.category === selectedTab);
 
   return (
-    <div className="flex min-h-screen flex-col p-5">
+    <div className="flex h-1vh flex-col p-5">
       <div className="mb-[29px] flex h-[178px] min-w-[350px] items-center justify-center rounded-lg border border-[#D9D9D9]">
         <Image
           src={character}
