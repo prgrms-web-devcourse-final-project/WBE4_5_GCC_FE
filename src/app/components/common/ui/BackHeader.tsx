@@ -18,7 +18,7 @@ export default function BackHeader({ title }: { title: string }) {
   };
   return (
     <>
-      <div className="relative flex h-[56px] w-[100%] items-center justify-center px-5">
+      <div className="relative flex h-[56px] w-[100%] items-center justify-center px-5 select-none">
         <Image
           src={backBtn}
           alt="뒤로가기"
