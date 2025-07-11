@@ -93,7 +93,10 @@ export default function Page() {
             회원가입
             <ChevronRight className="ml-1 h-3.5 w-3.5" />
           </a>
-          <a href="#" className="flex cursor-pointer items-center">
+          <a
+            onClick={() => router.push('/find-password')}
+            className="flex cursor-pointer items-center"
+          >
             비밀번호를 잊으셨나요?
             <ChevronRight className="ml-1 h-3.5 w-3.5" />
           </a>
