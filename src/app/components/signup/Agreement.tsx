@@ -14,7 +14,10 @@ export default function Agreement() {
   const [privacy, setPrivacy] = useState(false);
   const [marketing, setMarketing] = useState(false);
   const [toggleAll, setToggleAll] = useState(false);
+
   const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
+  const setWantEmail = useSignUpStore((state) => state.setWantEmail);
+
   const handleToggleAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     setToggleAll(isChecked);
@@ -34,6 +37,10 @@ export default function Agreement() {
   useEffect(() => {
     setIsNextEnabled(goNext);
   }, [setIsNextEnabled, goNext]);
+
+  useEffect(() => {
+    setWantEmail(marketing);
+  }, [setWantEmail, marketing]);
   return (
     <>
       {/* 전체 박스 */}

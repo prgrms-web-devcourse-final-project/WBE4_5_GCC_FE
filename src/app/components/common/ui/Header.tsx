@@ -13,16 +13,22 @@ export default function Header() {
   return (
     <>
       {showHeader && (
-        <div className="flex w-full items-center justify-between px-5 py-[18px]">
+        <div className="flex w-full items-center justify-between px-5 py-[18px] select-none">
           <Image
             src={logo}
             alt="logo"
             width={116}
             //height={28}
             onClick={() => router.push('/')}
-            className="h-auto" // Image Warning
+            className="h-auto cursor-pointer"
           />
-          <Image src={bell} alt="bell" width={20} height={20} />
+          <Image
+            src={bell}
+            alt="bell"
+            width={20}
+            height={20}
+            className="cursor-pointer"
+          />
         </div>
       )}
     </>

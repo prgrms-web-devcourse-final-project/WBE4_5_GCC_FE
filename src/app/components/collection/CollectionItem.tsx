@@ -31,14 +31,14 @@ export default function CollectionItemCard({
     <div
       key={item.id}
       className={clsx(
-        'px-auto relative h-[123px] min-w-[85px] rounded-[5px] border text-center',
+        'px-auto relative min-h-[123px] min-w-[92px] rounded-[5px] border text-center select-none',
         isSelected ? 'border-[#FFB84C]' : 'border-[#D9D9D9]',
       )}
       style={{
         boxShadow: '1px 2px 3px 0 rgba(0, 0, 0, 0.15)',
       }}
     >
-      <div className="flex h-[67px]">
+      <div className="flex h-[70px]">
         <Image
           src={item.image.src}
           alt={item.name}
@@ -64,7 +64,7 @@ export default function CollectionItemCard({
         >
           <div className="text-[8px] font-medium">{item.name}</div>
           <div
-            className={`text-[5px] ${item.isLocked ? 'text-[#515151]' : 'text-[#616161]'}`}
+            className={`text-[6px] ${item.isLocked ? 'text-[#515151]' : 'text-[#616161]'}`}
           >
             {item.description}
           </div>
@@ -73,7 +73,7 @@ export default function CollectionItemCard({
           <button
             onClick={() => onSelect(item)}
             className={clsx(
-              'min-h-4 min-w-18 rounded-[3px] border border-[#E0E0E0] text-[8px]',
+              'mb-2 min-h-4 min-w-18 rounded-[3px] border border-[#E0E0E0] text-[8px]',
               isSelected
                 ? 'border-[#FFB84C] bg-[#FFB84C] font-semibold text-white'
                 : 'border-[#E0E0E0] bg-white text-[#616161]',

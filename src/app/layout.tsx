@@ -1,5 +1,6 @@
 import './globals.css';
 import './styles/calendar.css';
+import TanstackProvider from '@/providers/TanstackProvider';
 import Header from './components/common/ui/Header';
 
 import type { Metadata } from 'next';
@@ -17,8 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="mt-[30px]">
-        <Header />
-        {children}
+        <TanstackProvider>
+          <Header />
+          {children}
+        </TanstackProvider>
       </body>
     </html>
   );
