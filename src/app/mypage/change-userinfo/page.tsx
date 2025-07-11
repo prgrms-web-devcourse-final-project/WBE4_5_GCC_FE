@@ -21,7 +21,7 @@ export default function page() {
 
   const handleSubmit = () => {
     if (password === correctPassword) {
-      router.push('/userinfo');
+      router.push('/mypage/change-userinfo/userinfo');
     } else {
       setErrors({ password: "비밀번호가 일치하지 않습니다."});
     }
