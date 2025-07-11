@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight, ListFilter } from 'lucide-react';
 
 import BackHeader from '../components/common/ui/BackHeader';
-import CollectionItemCard from '../components/common/CollectionItem';
-import CollectionBottomSheet from '../components/common/CollectionBottomSheet';
+import CollectionItemCard from '../components/collection/CollectionItem';
+import CollectionBottomSheet from '../components/collection/CollectionBottomSheet';
 
 const tabs = ['전체', '🏆', '🥇', '🥈', '🥉'];
 

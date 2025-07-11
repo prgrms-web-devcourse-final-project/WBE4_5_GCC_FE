@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import SelectButton from './SelectButton';
-import Button from './ui/Button';
+import SelectButton from '../common/SelectButton';
+import Button from '../common/ui/Button';
 
 const options = [
   '🧹 청소 / 정리',
