@@ -1,8 +1,10 @@
 'use client';
 import Image from 'next/image';
-import check from '/public/check.svg';
+//import check from '/public/check.svg';
 import checkGray from '/public/checkGray.svg';
-import showBtn from '/public/showBtn.svg';
+import checkGreen from '/public/checkGreen.svg';
+import eye from '/public/eye.svg';
+import eyeClosed from '/public/eyeClosed.svg';
 import { useEffect, useState } from 'react';
 import { useSignUpStore } from '@/store/SignupStore';
 import Input from '../common/ui/Input';
@@ -25,16 +27,16 @@ export default function UserInfo() {
   // 숫자 포함
   const hasNumber = /[0-9]/.test(password);
   // 특수문자 포함
-  const hasSpecial = /[#@]/.test(password);
+  const hasSpecial = /[/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-='|]/.test(password);
   // 8자리 이상
   const hasMinLength = password.length >= 8;
 
   // 조건이 맞는지 확인
   const checkConditionImage = (condition: boolean) => {
-    return condition ? check : checkGray;
+    return condition ? checkGreen : checkGray;
   };
   const checkConditionText = (condition: boolean) => {
-    return condition ? 'text-[#222222] ' : 'text-[#9E9E9E] ';
+    return condition ? 'text-[#388E3C] ' : 'text-[#9E9E9E] ';
   };
 
   // 비밀번호 텍스트로 변경
@@ -98,16 +100,17 @@ export default function UserInfo() {
             />
 
             <Image
-              src={showBtn}
+              src={showPassword ? eye : eyeClosed}
               alt="비밀번호 보기 버튼"
               width={20}
               height={20}
               className="absolute right-5"
-              onMouseDown={PasswordPressStart} // PC
-              onMouseUp={PasswordPressEnd} // PC
-              onMouseLeave={PasswordPressEnd} // PC
-              onTouchStart={PasswordPressStart} // 모바일
-              onTouchEnd={PasswordPressEnd} // 모바일
+              onClick={() => setShowPassword((prev) => !prev)}
+              //onMouseDown={PasswordPressStart} // PC
+              //onMouseUp={PasswordPressEnd} // PC
+              //onMouseLeave={PasswordPressEnd} // PC
+              //onTouchStart={PasswordPressStart} // 모바일
+              //onTouchEnd={PasswordPressEnd} // 모바일
             />
           </div>
           {/* 비밀번호 확인 체크 */}
@@ -134,7 +137,7 @@ export default function UserInfo() {
               <div className="flex w-[160px] items-center gap-[6px]">
                 <Image src={checkConditionImage(hasSpecial)} alt="check" />
                 <span className={checkConditionText(hasSpecial)}>
-                  특수 문자 (#,@) 포함
+                  특수 문자 포함(\ " 제외)
                 </span>
               </div>
             </div>
@@ -153,16 +156,17 @@ export default function UserInfo() {
             />
 
             <Image
-              src={showBtn}
+              src={showCheckPassword ? eye : eyeClosed}
               alt="비밀번호 보기 버튼"
               width={20}
               height={20}
               className="absolute right-5"
-              onMouseDown={checkPasswordPressStart} // PC
-              onMouseUp={checkPasswordPressEnd} // PC
-              onMouseLeave={checkPasswordPressEnd} // PC
-              onTouchStart={checkPasswordPressStart} // 모바일
-              onTouchEnd={checkPasswordPressEnd} // 모바일
+              onClick={() => setShowCheckPassword((prev) => !prev)}
+              //onMouseDown={checkPasswordPressStart} // PC
+              //onMouseUp={checkPasswordPressEnd} // PC
+              //onMouseLeave={checkPasswordPressEnd} // PC
+              //onTouchStart={checkPasswordPressStart} // 모바일
+              //onTouchEnd={checkPasswordPressEnd} // 모바일
             />
           </div>
         </div>

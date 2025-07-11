@@ -1,6 +1,7 @@
+import './globals.css';
+import './styles/calendar.css';
 import TanstackProvider from '@/providers/TanstackProvider';
 import Header from './components/common/ui/Header';
-import './globals.css';
 
 import type { Metadata } from 'next';
 

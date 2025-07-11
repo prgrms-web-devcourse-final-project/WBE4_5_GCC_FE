@@ -1,5 +1,5 @@
-import { ChevronRight, CircleCheck, Star } from "lucide-react";
-import YellowCheckIcon from "./YellowCheckIcon";
+import { ChevronRight, CircleCheck, Star } from 'lucide-react';
+import YellowCheckIcon from './YellowCheckIcon';
 
 export default function Routine({
   title,
@@ -20,16 +20,12 @@ export default function Routine({
 }) {
   return (
     <div
-      className={`
-        flex w-full items-center justify-between px-3 py-4 
-        border cursor-pointer
-        ${isCompleted ? "border-[#FFB84C]" : "border-[#9E9E9E]"} 
-        rounded-[8px] bg-white`}
+      className={`flex w-full cursor-pointer items-center justify-between border px-3 py-4 ${isCompleted ? 'border-[#FFB84C]' : 'border-[#9E9E9E]'} rounded-[8px] bg-white`}
     >
       {isCompleted ? (
         <YellowCheckIcon />
       ) : (
-        <CircleCheck className="mr-4 w-[30px] h-[30px] text-[#C4C4C4]" />
+        <CircleCheck className="mr-4 h-[30px] w-[30px] text-[#C4C4C4]" />
       )}
 
       <div className="flex w-full flex-col space-y-1">

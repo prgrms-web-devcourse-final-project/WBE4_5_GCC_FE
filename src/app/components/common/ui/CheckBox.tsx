@@ -9,10 +9,10 @@ export default function CheckBox({
 }) {
   return (
     <>
-      <label className="flex gap-2 items-center">
+      <label className="flex items-center gap-2">
         <input
           type="checkbox"
-          className="accent-[#222222] w-[16px] h-[16px]"
+          className="h-[16px] w-[16px] accent-[#222222]"
           onChange={onChange}
           checked={checked}
         />
