@@ -28,7 +28,7 @@ export default function Dropdown({ options, selected, onSelect }: DropdownProps)
 
       {/* 옵션 목록 */}
       {isOpen && (
-        <ul className="absolute z-10 mt-1 w-full border border-[#E0E0E0] rounded bg-white shadow-sm text-sm">
+        <ul className="absolute z-10 mt-1 w-full border border-[#E0E0E0] rounded-lg bg-white shadow-sm text-sm">
           {options.map((option) => (
             <li
               key={option}

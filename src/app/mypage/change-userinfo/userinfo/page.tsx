@@ -63,7 +63,7 @@ export default function page () {
       </div>
 
       {/* 자취경력 */}
-      <div className="flex w-full flex flex-col gap-2.5">
+      <div className="w-full flex flex-col gap-2.5">
         <p className="text-sm font-semibold">자취경력</p>
         <Dropdown 
           options={yearOptions}
