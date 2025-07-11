@@ -16,7 +16,7 @@ export default function Dropdown({ options, selected, onSelect }: DropdownProps)
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full h-12 border border-[#E0E0E0] rounded-lg px-4 py-2 text-left flex justify-between items-center text-sm text-[#222222]"
+        className="w-full h-12 border border-[#E0E0E0] rounded-lg px-4 py-2 text-left flex justify-between items-center text-sm text-[#222222] cursor-pointer"
       >
         {selected || '선택하세요'}
         {isOpen ? (
