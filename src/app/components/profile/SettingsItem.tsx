@@ -1,0 +1,46 @@
+import { ChevronRight } from 'lucide-react';
+import clsx from 'clsx';
+
+interface SettingsItemProps {
+  label: string;
+  type: 'link' | 'toggle';
+  checked?: boolean;
+  onToggle?: (checked: boolean) => void;
+  onClick?: () => void;
+}
+
+export default function SettingsItem({
+  label,
+  type,
+  checked,
+  onToggle,
+  onClick,
+}: SettingsItemProps) {
+  return (
+    <div
+      className={clsx(
+        'mb-[26px] flex h-6 items-center justify-between bg-white',
+        type !== 'toggle' && 'cursor-pointer',
+      )}
+      onClick={type !== 'toggle' ? onClick : undefined}
+    >
+      <span className="text-sm font-semibold text-black">{label}</span>
+
+      {type === 'link' && (
+        <ChevronRight className="h-4 w-auto text-[#222222]" />
+      )}
+
+      {type === 'toggle' && (
+        <label className="inline-flex cursor-pointer items-center">
+          <input
+            type="checkbox"
+            className="peer sr-only"
+            checked={checked}
+            onChange={(e) => onToggle?.(e.target.checked)}
+          />
+          <div className="relative h-6 w-[38px] rounded-full bg-[#E0E0E0] peer-checked:bg-[#FFB84C] peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow-[0px_3px_8px_rgba(0,0,0,0.15)] after:transition-all peer-checked:after:translate-x-[14px]"></div>
+        </label>
+      )}
+    </div>
+  );
+}
