@@ -3,7 +3,7 @@ import backBtn from '/public/BackPageBtn.svg';
 
 import { useSignUpStore } from '@/store/SignupStore';
 
-export default function BackBtn({ title }: { title: string }) {
+export default function BackHeader({ title }: { title: string }) {
   const step = useSignUpStore((state) => state.step);
   const setStep = useSignUpStore((state) => state.setStep);
   const goBack = () => {
@@ -20,7 +20,7 @@ export default function BackBtn({ title }: { title: string }) {
           className="absolute left-3 h-[24px] w-[24px] cursor-pointer"
           onClick={goBack}
         />
-        <p className="font-semibold">{title}</p>
+        <p className="text-lg font-semibold">{title}</p>
       </div>
     </>
   );
