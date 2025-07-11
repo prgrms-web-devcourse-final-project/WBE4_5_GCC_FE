@@ -28,15 +28,19 @@ export default function Dropdown({ options, selected, onSelect }: DropdownProps)
 
       {/* 옵션 목록 */}
       {isOpen && (
-        <ul className="absolute z-10 mt-1 w-full border border-[#E0E0E0] rounded-lg bg-white shadow-sm text-sm">
-          {options.map((option) => (
+        <ul className="absolute z-10 mt-2 w-full border border-[#E0E0E0] rounded-lg bg-white shadow-[0px_4px_12px_0px_rgba(0,0,0,0.1)] text-sm overflow-hidden">
+          {options.map((option, idx) => (
             <li
               key={option}
               onClick={() => {
                 onSelect(option);
                 setIsOpen(false);
               }}
-              className="px-4 py-2 hover:bg-[#f5f5f5] cursor-pointer text-[#222222]"
+              className={`
+                flex flex-col justify-center h-12 px-4 py-2 cursor-pointer text-[#222222]
+                active:bg-[#222222]/20 transition-colors duration-150
+                ${idx !== options.length-1 ? 'border-b border-[#E0E0E0]' : ''}
+              `}
             >
               {option}
             </li>

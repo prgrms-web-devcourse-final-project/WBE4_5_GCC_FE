@@ -13,8 +13,8 @@ export default function page () {
 
   const [bio, setBio] = useState('');
   const [address, setAddress] = useState(myAddress);
-  const [nickname, setNickname] = useState(myNickname);
   const [history, setHistory] = useState(myNickname);
+  const [nickname, setNickname] = useState(myNickname);
 
   const [selected, setSelected] = useState('');
   const yearOptions = ['1년 미만', '1~3년', '3~5년', '5~10년', '10년 이상'];
@@ -68,7 +68,10 @@ export default function page () {
         <Dropdown 
           options={yearOptions}
           selected={selected}
-          onSelect={(value) => setSelected(value)}
+          onSelect={(value) => {
+            setSelected(value);
+            setHistory(value);
+          }}
         />
       </div>
 
@@ -78,7 +81,7 @@ export default function page () {
           //disabled={!isSubmitEnabled}
           //onClick={handleSubmit}
         >
-          확인
+          저장하기
         </Button>
       </div>
 
