@@ -7,13 +7,15 @@ import Input from '../common/ui/Input';
 import Button from '../common/ui/Button';
 
 export default function Nickname() {
-  const [nickname, setNickname] = useState('');
+  const nickname = useSignUpStore((state) => state.nickname);
+  const setNickName = useSignUpStore((state) => state.setNickName);
   const [checkNickName, setCheckNickName] = useState(false);
   const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
 
   const [error, setError] = useState(false);
   const [okay, setOkay] = useState(false);
 
+  // 닉네임 중복 확인 로직 (미구현)
   const checkHandler = () => {
     setCheckNickName(true);
     setOkay(true);
@@ -37,7 +39,7 @@ export default function Nickname() {
             <Input
               value={nickname}
               placeholder="2~15자 이내로 입력해주세요"
-              onChange={(e) => setNickname(e.target.value)}
+              onChange={(e) => setNickName(e.target.value)}
             />
             <Button
               disabled={nickname === ''}
