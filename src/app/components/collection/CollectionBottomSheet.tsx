@@ -50,7 +50,13 @@ export default function CollectionBottomSheet({
           </h2>
         </div>
         <div className="flex flex-col">
-          <div className="mb-4 flex flex-wrap gap-[10px] px-[7px]">
+          <div
+            className="mb-4 flex flex-wrap gap-2.5"
+            style={{
+              paddingLeft: 'clamp(8px, 5vw, 30px)',
+              paddingRight: 'clamp(8px, 4vw, 10px)',
+            }}
+          >
             {options.map((option, idx) => (
               <SelectButton
                 key={idx}

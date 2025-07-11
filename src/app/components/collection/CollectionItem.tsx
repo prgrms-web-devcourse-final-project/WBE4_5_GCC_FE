@@ -31,7 +31,7 @@ export default function CollectionItemCard({
     <div
       key={item.id}
       className={clsx(
-        'px-auto relative h-[123px] min-w-[92px] rounded-[5px] border text-center',
+        'px-auto relative h-[123px] min-w-[85px] rounded-[5px] border text-center',
         isSelected ? 'border-[#FFB84C]' : 'border-[#D9D9D9]',
       )}
       style={{

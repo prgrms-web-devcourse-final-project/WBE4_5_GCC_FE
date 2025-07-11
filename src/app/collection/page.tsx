@@ -187,7 +187,7 @@ export default function Page() {
       <div className="flex min-h-screen justify-center">
         <div className="flex w-full max-w-md flex-col items-center">
           <BackHeader title="도감" />
-          <div className="mt-7 mb-[22px] min-h-[340px] min-w-[350px] px-5">
+          <div className="mt-7 mb-[22px] min-h-[340px] w-full min-w-[350px] px-5">
             {/* 탭 버튼 */}
             <div className="flex">
               {tabs.map((tab) => (
@@ -216,7 +216,10 @@ export default function Page() {
             </div>
 
             {/* 아이템 카드 리스트 */}
-            <div className="relative grid min-h-[340px] min-w-[350px] grid-cols-3 gap-x-[21px] gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[#D9D9D9] bg-white px-[15px] pt-[23px] pb-[54px]">
+            <div
+              className="relative grid min-h-[340px] w-full grid-cols-3 gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[#D9D9D9] bg-white px-[15px] pt-[23px] pb-[54px]"
+              style={{ columnGap: 'clamp(8px, 4vw, 21px)' }}
+            >
               {filteredItem.map((item) => (
                 <CollectionItemCard
                   key={item.id}
