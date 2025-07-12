@@ -2,9 +2,10 @@ import Image from 'next/image';
 import backGround from '/public/profileBackGround.svg';
 import character from '/public/images/character.png';
 import coin from '/public/coin.svg';
+// import SignUp from '@/app/(auth)/signup/page';
 export default function Profile() {
   return (
-    <div className="relative h-[167px] w-[350px] overflow-hidden rounded-md">
+    <div className="relative h-[167px] w-full min-w-[350px] overflow-hidden rounded-md">
       {/* 배경 이미지 */}
       <Image src={backGround} alt="bg" fill className="object-cover" priority />
 
