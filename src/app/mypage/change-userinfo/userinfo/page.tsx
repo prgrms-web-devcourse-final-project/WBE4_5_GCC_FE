@@ -1,23 +1,37 @@
 'use client';
 
-import { useState } from 'react';
 import { Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import Dropdown from '@/app/components/common/ui/Dropdown';
 
 export default function page () {
   //const nickname = useProfileStore((state) => state.name); 나중에 store에서 받아오는 형식
-  const myNickname = '한상아';
-  const myAddress = '서울시 마포구 연남동';
 
+  const searchParams = useSearchParams();
+  const searchedAddress = searchParams.get('address');
+
+  const router = useRouter();
   const [bio, setBio] = useState('');
-  const [address, setAddress] = useState(myAddress);
-  const [history, setHistory] = useState(myNickname);
-  const [nickname, setNickname] = useState(myNickname);
+  const [nickname, setNickname] = useState('한상아');
+  const [history, setHistory] = useState('');
+  const [address, setAddress] = useState('서울시 마포구 연남동');
 
   const [selected, setSelected] = useState('');
   const yearOptions = ['1년 미만', '1~3년', '3~5년', '5~10년', '10년 이상'];
+
+  const handleSearch = () => {
+    router.push('/mypage/change-userinfo/userinfo/address');
+  }
+
+  useEffect(() => {
+    if (searchedAddress) {
+      setAddress(searchedAddress);
+    }
+  }, [searchedAddress]);
 
   return (
     <div className="h-1vh flex flex-col gap-6 px-5 py-7">
@@ -55,7 +69,10 @@ export default function page () {
             onChange={(e) => setAddress (e.target.value)}
             placeholder=""
           />
-          <Button className="max-w-[93px] min-h-12 flex gap-[6px] bg-[#222222] rounded-lg">
+          <Button 
+            className="max-w-[93px] min-h-12 flex gap-[6px] bg-[#222222] rounded-lg"
+            onClick={handleSearch}
+          >
             <Search className="w-4 h-auto" strokeWidth={2}/>
             <h1 className="font-medium text-sm text-white">주소 검색</h1>
           </Button>
@@ -84,7 +101,6 @@ export default function page () {
           저장하기
         </Button>
       </div>
-
     </div>
   );
 }
