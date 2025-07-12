@@ -23,13 +23,15 @@ export default function Header() {
             //height={28}
             onClick={() => router.push('/')}
             className="h-auto cursor-pointer"
+            style={{ height: 'auto' }}
           />
           <Image
             src={bell}
             alt="bell"
             width={20}
-            height={20}
+            //height={20}
             className="cursor-pointer"
+            style={{ height: 'auto' }}
           />
         </div>
       )}
