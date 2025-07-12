@@ -1,5 +1,4 @@
 'use client';
-import ProgressBar from './components/common/PrgressBar';
 import Profile from './components/main/Profile';
 import { Plus } from 'lucide-react';
 import Routine from './components/routine/Routine';
@@ -7,8 +6,21 @@ import { useEffect, useState } from 'react';
 import { me } from '@/api/api';
 import { UserRoutine } from '@/api/routine';
 
+import quest from '/public/quest.svg';
+import acheivement from '/public/acheivement.svg';
+import FloatingButton from './components/common/FloatingButton';
+import Donut from './components/common/ui/Donut';
+import { useRouter } from 'next/navigation';
+
 export default function Main() {
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const goToQuest = () => {
+    router.push('/');
+  };
+  const goToCollection = () => {
+    router.push('/collection');
+  };
 
   useEffect(() => {
     try {
@@ -30,18 +42,42 @@ export default function Main() {
     <>
       {loading && <div></div>}
       {!loading && (
-        <div className="flex min-h-screen flex-col items-center bg-white px-5">
+        <div className="relative flex min-h-screen flex-col items-center bg-white px-5">
+          <div className="absolute top-4 right-10 z-30">
+            <FloatingButton
+              src={quest}
+              alt="quest"
+              text="퀘스트"
+              textSize="12px"
+              className="mb-3"
+              // imgWidth={26}
+              // imgHeight={21}
+              onClick={() => goToQuest()}
+            />
+            <FloatingButton
+              src={acheivement}
+              alt="acheivement"
+              text="도감"
+              textSize="12px"
+              onClick={() => goToCollection()}
+            />
+          </div>
           <Profile />
           <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-b-1 border-t-[#FBFBFB] border-b-[#CCCCCC] px-5 py-11">
             <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
               <span className="text-xl font-semibold">2025년 7월 9일</span>
-              <ProgressBar
-                currentStep={1}
-                totalSteps={5}
-                per="20%"
-                wrapperClassName="h-6 bg-[#FFB84C]/25 mb-0"
-                barClassName="h-6 bg-[#FFB84C] rounded-full text-white text-xs flex items-center justify-center"
-              />
+              <div className="flex items-center gap-1 text-[22px] font-bold">
+                <div>
+                  <span>오늘의 루틴</span>{' '}
+                  <span className="text-[#FFB84C]">4</span>
+                </div>
+                <Donut
+                  width={46}
+                  height={46}
+                  percent={30}
+                  className="ml-auto flex"
+                />
+              </div>
             </div>
             <div className="flex w-full flex-col space-y-3">
               <Routine

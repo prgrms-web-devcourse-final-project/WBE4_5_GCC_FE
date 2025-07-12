@@ -5,9 +5,17 @@ import coin from '/public/coin.svg';
 // import SignUp from '@/app/(auth)/signup/page';
 export default function Profile() {
   return (
-    <div className="relative h-[167px] w-full min-w-[350px] overflow-hidden rounded-md">
+    <div className="relative z-0 h-[167px] w-full min-w-[350px] overflow-hidden rounded-md">
+      <div className="absolute inset-0 z-5 bg-[#e5e5e5]/30"></div>
+
       {/* 배경 이미지 */}
-      <Image src={backGround} alt="bg" fill className="object-cover" priority />
+      <Image
+        src={backGround}
+        alt="bg"
+        fill
+        className="object-cover brightness-90"
+        priority
+      />
 
       {/* 캐릭터 이미지 */}
       <div className="absolute z-10 flex gap-[22px] p-[22px]">
