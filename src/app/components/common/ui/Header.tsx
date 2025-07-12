@@ -8,7 +8,9 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const showHeader = !(
-    pathname.startsWith('/signup') || pathname.startsWith('/login')
+    pathname.startsWith('/signup') ||
+    pathname.startsWith('/login') ||
+    pathname.startsWith('/shop')
   );
   return (
     <>
