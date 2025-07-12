@@ -1,0 +1,208 @@
+'use client';
+
+import clsx from 'clsx';
+import Image from 'next/image';
+import coin from '/public/coin.svg';
+import { useState } from 'react';
+
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import item1 from '@/app/assets/images/item1.png';
+
+export default function Shop() {
+  const tabs = ['전체', '상의', '하의', '액세서리'];
+  const [selectedTab, setSelectedTab] = useState('전체');
+  const [selectedItem, setSelectedItem] = useState<
+    Record<string, number | null>
+  >({
+    상의: null,
+    하의: null,
+    액세서리: null,
+  });
+
+  const items = [
+    {
+      id: 1,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '상의',
+    },
+    {
+      id: 2,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '상의',
+    },
+    {
+      id: 3,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '상의',
+    },
+    {
+      id: 4,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '하의',
+    },
+    {
+      id: 5,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 6,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 7,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 8,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 9,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 10,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 11,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 12,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+  ];
+
+  const handleSelect = (item: (typeof items)[number]) => {
+    setSelectedItem((prev) => ({
+      ...prev,
+      [item.category]: prev[item.category] === item.id ? null : item.id,
+    }));
+  };
+
+  const filteredItem =
+    selectedTab === '전체'
+      ? items
+      : items.filter((item) => item.category === selectedTab);
+  return (
+    <>
+      <div className="mx-auto mt-[50px] mb-[22px] min-h-[628px] w-full max-w-screen-sm min-w-[350px] px-5 select-none">
+        {/* 탭 버튼 */}
+        <div className="flex">
+          {tabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setSelectedTab(tab)}
+              className={clsx(
+                'h-[30px] min-w-[70px] cursor-pointer rounded-t-md px-4 py-2 text-xs font-semibold',
+                selectedTab === tab
+                  ? 'border-1 border-[#FFB84C] bg-[#FFB84C] text-white'
+                  : 'border border-b-0 border-[#D9D9D9] bg-white text-[#AAAAAA]',
+              )}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* 아이템 카드 리스트 */}
+        <div className="relative grid min-h-[340px] min-w-[350px] grid-cols-3 gap-x-[21px] gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[#D9D9D9] bg-white px-[15px] pt-[23px] pb-[54px]">
+          {filteredItem.map((item) => {
+            const isSelected = selectedItem[item.category] === item.id;
+
+            return (
+              <div
+                key={item.id}
+                className={clsx(
+                  'px-auto h-[123px] min-w-[92px] rounded-[5px] border py-[7px] text-center',
+                  isSelected ? 'border-[#FFB84C]' : 'border-[#D9D9D9]',
+                )}
+                style={{
+                  boxShadow: '1px 2px 3px 0 rgba(0, 0, 0, 0.15)',
+                }}
+              >
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={50}
+                  priority
+                  className="mx-auto mt-[3px] mb-2 h-auto"
+                />
+                <div className="border-t-[0.5px] border-[#E0E0E0] px-[9px] pt-[6px] text-left">
+                  <div className="text-[8px] font-medium">{item.name}</div>
+                  <div className="text-[7px] font-medium text-[#616161]">
+                    {item.description}
+                  </div>
+
+                  {/* 포인트 박스 */}
+                  <div className="mt-[5px] flex h-5 w-full items-center justify-between rounded-[6px] border-1 border-[#cfcfcf] p-1">
+                    <Image
+                      src={coin}
+                      alt="coin"
+                      className="h-[15px] w-[15px]"
+                    />
+                    <span className="text-3 text-[#FFB84C]">1200</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* 페이지네이션 */}
+          <div className="absolute bottom-[13px] left-1/2 -translate-x-1/2">
+            <div className="flex items-center justify-center space-x-[11px]">
+              <button className="text-[#222222]">
+                <ChevronLeft className="h-3 w-auto" />
+              </button>
+              <button className="text-[10px] font-medium text-gray-700">
+                1
+              </button>
+              <button className="text-[10px] font-medium text-gray-700">
+                2
+              </button>
+              <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[#222222] text-center text-[10px] font-semibold text-white">
+                3
+              </button>
+              <button className="text-[#D9D9D9]">
+                <ChevronRight className="h-3 w-auto" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
