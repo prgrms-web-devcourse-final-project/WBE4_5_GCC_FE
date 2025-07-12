@@ -2,13 +2,12 @@
 
 import Image from 'next/image';
 import { ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import { useRouter } from 'next/navigation';
-
-const VALID_EMAIL = '123@naver.com';
-const VALID_PASSWORD = '#qwer1234';
+import { useSignUpStore } from '@/store/SignupStore';
+import { handleSignIn } from '@/api/api';
 
 export default function Page() {
   const [email, setEmail] = useState('');
@@ -16,6 +15,18 @@ export default function Page() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {},
   );
+
+  const logInHandler = async () => {
+    try {
+      await handleSignIn(email, password);
+      router.push('/');
+    } catch (err) {
+      setErrors({
+        password: '이메일 또는 비밀번호를 다시 확인하세요.',
+      });
+      console.error(err);
+    }
+  };
 
   const router = useRouter();
   // 이메일과 비밀번호 유효성 검사
@@ -30,20 +41,20 @@ export default function Page() {
 
     if (!password) {
       newErrors.password = '비밀번호를 입력해 주세요.';
-    } else if (
-      email &&
-      password &&
-      (password !== VALID_PASSWORD || email !== VALID_EMAIL)
-    ) {
-      newErrors.password = '이메일 또는 비밀번호를 다시 확인하세요.';
     }
 
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      console.log('로그인 시도');
+      logInHandler();
       return;
     }
   };
+
+  const reset = useSignUpStore((state) => state.reset);
+  useEffect(() => {
+    reset();
+  }, [reset]);
+
   return (
     <div className="mt-[150px] flex min-h-screen flex-col items-center bg-white px-5">
       <div className="w-full max-w-md">
@@ -93,7 +104,10 @@ export default function Page() {
             회원가입
             <ChevronRight className="ml-1 h-3.5 w-3.5" />
           </a>
-          <a href="#" className="flex cursor-pointer items-center">
+          <a
+            onClick={() => router.push('/find-password')}
+            className="flex cursor-pointer items-center"
+          >
             비밀번호를 잊으셨나요?
             <ChevronRight className="ml-1 h-3.5 w-3.5" />
           </a>

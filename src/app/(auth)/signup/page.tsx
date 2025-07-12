@@ -2,7 +2,7 @@
 import Agreement from '@/app/components/signup/Agreement';
 import Category from '@/app/components/signup/Category';
 import EmailConfirm from '@/app/components/signup/EmailConfirm';
-import History from '@/app/components/signup/History';
+import Experience from '@/app/components/signup/Experience';
 import Nickname from '@/app/components/signup/Nickname';
 import UserInfo from '@/app/components/signup/UserInfo';
 import { useSignUpStore } from '@/store/SignupStore';
@@ -26,7 +26,7 @@ export default function SignUp() {
       StepComponent = <Nickname />;
       break;
     case 5:
-      StepComponent = <History />;
+      StepComponent = <Experience />;
       break;
     case 6:
       StepComponent = <Category />;

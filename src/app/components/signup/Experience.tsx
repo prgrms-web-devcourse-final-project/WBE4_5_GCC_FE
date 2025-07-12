@@ -6,14 +6,29 @@ import { useSignUpStore } from '@/store/SignupStore';
 import { useEffect, useState } from 'react';
 
 const options = ['1년 미만', '1~3년', '3~5년', '5~10년', '10년 이상'];
+const serverOptions = [
+  'UNDER_1Y',
+  'Y1_TO_3',
+  'Y3_TO_5',
+  'Y5_TO_10',
+  'OVER_10Y',
+];
 
-export default function History() {
+export default function Experience() {
   const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
+  const setResidenceExperience = useSignUpStore(
+    (state) => state.setResidenceExperience,
+  );
+
   useEffect(() => {
     console.log('선택됨:', selectedIndex);
-  }, [selectedIndex]);
+    if (selectedIndex !== null) {
+      setResidenceExperience(serverOptions[selectedIndex]);
+    }
+  }, [selectedIndex, setResidenceExperience]);
+
   const goNext = selectedIndex !== null;
 
   useEffect(() => {
@@ -35,7 +50,7 @@ export default function History() {
               onClick={() => setSelectedIndex(idx)}
               className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
                 selectedIndex === idx
-                  ? 'border-[#FFB84C] text-[#FFB84C]'
+                  ? 'bg-[#FFB84C] text-[#ffffff]'
                   : 'border-[#E0E0E0]'
               } `}
             >
@@ -51,7 +66,7 @@ export default function History() {
               onClick={() => setSelectedIndex(idx + 3)}
               className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
                 selectedIndex === idx + 3
-                  ? 'border-[#FFB84C] text-[#FFB84C]'
+                  ? 'bg-[#FFB84C] text-[#ffffff]'
                   : 'border-[#E0E0E0]'
               } `}
             >
