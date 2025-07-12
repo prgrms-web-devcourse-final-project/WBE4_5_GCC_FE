@@ -18,10 +18,11 @@ export default function Header() {
             src={logo}
             alt="logo"
             width={116}
-            height={28}
+            //height={28}
             onClick={() => router.push('/')}
+            style={{ height: 'auto' }}
           />
-          <Image src={bell} alt="bell" width={20} height={20} />
+          <Image src={bell} alt="bell" width={20} style={{ height: 'auto' }}/>
         </div>
       )}
     </>
