@@ -2,13 +2,19 @@
 
 import { useState } from 'react';
 import CategoryGrid from './CategoryGrid';
-import SubCategorySheet from './SubCategorySheet';
+import SubCategoryGrid from './SubCategoryGrid';
 
-export default function CategoryBottomSheetContainer() {
+interface Props {
+  onClose: () => void;
+  onSelectCategory: (value: string) => void;
+}
+
+export default function CategoryBottomSheetContainer({onClose, onSelectCategory} : Props) {
   const [selectedCategory, setSelectedCategory] = useState<{
     icon: React.ReactNode | string;
     label: string;
   } | null>(null);
+
   const categories = [
     { icon: <span>🧹</span>, label: '청소 / 정리' },
     { icon: <span>🧺</span>, label: '세탁 / 의류' },
@@ -30,14 +36,24 @@ export default function CategoryBottomSheetContainer() {
           onEditClick={() => console.log('편집 클릭')}
           onSelectCategory={(label) => {
             const category = categories.find((cat) => cat.label === label);
-            if (category) setSelectedCategory(category);
+            if (category) {
+              setSelectedCategory(category);
+            }
+            onSelectCategory(label);
+            //onClose(); // 모달 닫기
           }}
+          onCloseOutside={onClose}
         />
       ) : (
-        <SubCategorySheet
+        <SubCategoryGrid
           categoryLabel={selectedCategory.label}
           categoryIcon={selectedCategory.icon}
           onBack={() => setSelectedCategory(null)}
+          onCloseOutside={onClose}
+          onSelectSubCategory={(subLabel) => {
+            onSelectCategory(subLabel); // 최종 선택 전달
+            onClose(); // 모달 닫기
+          }}
         />
       )}
     </>

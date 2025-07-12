@@ -12,6 +12,7 @@ interface CategoryGridProps {
   editable?: boolean; // 편집 아이콘 보여줄지 여부
   onEditClick?: () => void;
   onSelectCategory: (label: string) => void;
+  onCloseOutside?: () => void;
 }
 
 export default function CategoryGrid({
@@ -19,10 +20,11 @@ export default function CategoryGrid({
   editable,
   onEditClick,
   onSelectCategory,
+  onCloseOutside,
 }: CategoryGridProps) {
   const [selected, setSelected] = useState<string | null>(null);
 
-  const handleClick = (label: string) => {
+  const handleSelect = (label: string) => {
     setSelected(label);
 
     setTimeout(() => {
@@ -31,10 +33,19 @@ export default function CategoryGrid({
   };
 
   return (
-    <div className="fixed inset-0 bottom-0 z-50 flex items-center justify-center bg-[#222222]/50">
-      <div className="min-h-[452px] w-full rounded-t-[24px] bg-white px-10 py-[34px]">
+    <div 
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50"
+      onClick={onCloseOutside}
+    >
+      <div 
+        className="min-h-[443px] w-full rounded-t-[24px] bg-white px-10 py-[34px]"
+        onClick={(e) => e.stopPropagation()} // 모달 내부 클릭시 닫히지 않도록 
+      >
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-[20px] font-semibold text-[#222222]">카테고리</h2>
+          <div className="flex gap-2">
+            <span className="w-auto h-[18px]">🏷️</span>
+            <h2 className="text-base font-semibold text-black">카테고리</h2>
+          </div>
           {editable && (
             <button
               onClick={onEditClick}
@@ -53,7 +64,7 @@ export default function CategoryGrid({
             {categories.map((cat, idx) => (
               <button
                 key={idx}
-                onClick={() => handleClick(cat.label)}
+                onClick={() => handleSelect(cat.label)}
                 className="relative flex cursor-pointer flex-col items-center gap-1 py-2.5 text-sm text-[#222222]"
               >
                 {selected === cat.label && (
