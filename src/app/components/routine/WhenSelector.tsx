@@ -36,8 +36,9 @@ export default function WhenSelector() {
           onChange={(e) => setValue(e.target.value)}
         />
         <div className="mb-11 flex flex-wrap gap-2.5">
-          {options.map((option) => (
+          {options.map((option, idx) => (
             <button
+              key={idx}
               onClick={() => handleClick(option)}
               className={`flex h-[30px] cursor-pointer items-center justify-center rounded-[50px] border border-[#E0E0E0] px-3.5 py-2 text-xs transition-colors duration-200 ${selectedIdx === option ? 'text-[#C4C4C4]' : ''}`}
             >
