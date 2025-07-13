@@ -1,6 +1,5 @@
 'use client';
 import Profile from './components/main/Profile';
-import { Plus } from 'lucide-react';
 import Routine from './components/routine/Routine';
 import { useEffect, useState } from 'react';
 import { me } from '@/api/api';
@@ -64,7 +63,7 @@ export default function Main() {
           </div>
           {openQuest && <Quest className="" setOpenQuest={setOpenQuest} />}
           <Profile />
-          <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-b-1 border-t-[#FBFBFB] border-b-[#CCCCCC] px-5 py-11">
+          <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 py-11">
             <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
               <span className="text-xl font-semibold">2025년 7월 9일</span>
               <div className="flex items-center gap-1 text-[22px] font-bold">
@@ -118,9 +117,6 @@ export default function Main() {
                 time="13:00"
               />
             </div>
-            <button className="fixed right-0 bottom-15 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333]">
-              <Plus className="h-[30px] w-[30px] text-white" />
-            </button>
           </div>
         </div>
       )}

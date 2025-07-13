@@ -24,7 +24,7 @@ export default function Page() {
     <>
       <div className="flex min-h-screen flex-col items-center bg-white py-4">
         <CalendarBar setIsOpen={setIsOpen} />
-        <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-b-1 border-t-[#FBFBFB] border-b-[#CCCCCC] px-5 py-11">
+        <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 py-11">
           <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
             <span className="text-xl font-semibold">
               {selectedDate instanceof Date
@@ -77,8 +77,8 @@ export default function Page() {
               time="13:00"
             />
           </div>
-          <button 
-            className="fixed right-0 bottom-15 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333]"
+          <button
+            className="fixed right-0 bottom-25 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333]"
             onClick={handleAdd}
           >
             <Plus className="h-[30px] w-[30px] text-white" />
