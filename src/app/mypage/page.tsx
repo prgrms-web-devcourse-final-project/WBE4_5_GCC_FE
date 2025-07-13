@@ -20,26 +20,26 @@ export default function Page() {
         <Profile />
         <Button
           className="mt-5 h-[48px] bg-[#222222] text-sm font-medium text-white"
-          onClick={() => router.push('/mypage/edit-character')}
+          onClick={() => router.push('/profile/edit-character')}
         >
           캐릭터 꾸미기
         </Button>
 
         <div className="mt-11 bg-white">
           <SettingsItem
-            label="회원정보 변경"
-            type="link"
-            onClick={() => router.push('/mypage/change-userinfo')}
-          />
-          <SettingsItem
             label="비밀번호 변경"
             type="link"
-            onClick={() => router.push('/mypage/change-password')}
+            onClick={() => router.push('/profile/change-password')}
+          />
+          <SettingsItem
+            label="주소 변경"
+            type="link"
+            onClick={() => router.push('/profile/change-address')}
           />
           <SettingsItem
             label="알림 설정"
             type="link"
-            onClick={() => router.push('/mypage/notification')}
+            onClick={() => router.push('/profile/notification')}
           />
           <SettingsItem
             label="다크모드 설정"
@@ -61,7 +61,7 @@ export default function Page() {
           <SettingsItem
             label="회원탈퇴"
             type="link"
-            onClick={() => router.push('/mypage/delete-account')}
+            onClick={() => router.push('/profile/delete-account')}
           />
         </div>
       </div>

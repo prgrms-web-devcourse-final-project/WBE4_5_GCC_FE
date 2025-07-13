@@ -27,7 +27,7 @@ export default function SettingsItem({
       <span className="text-sm font-semibold text-black">{label}</span>
 
       {type === 'link' && (
-        <ChevronRight className="w-auto text-[#222222]" strokeWidth={2}/>
+        <ChevronRight className="h-4 w-auto text-[#222222]" />
       )}
 
       {type === 'toggle' && (

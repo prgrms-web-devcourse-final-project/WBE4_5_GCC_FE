@@ -27,9 +27,7 @@ export default function UserInfo() {
   // 숫자 포함
   const hasNumber = /[0-9]/.test(password);
   // 특수문자 포함
-  const hasSpecial = /[/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-='|]/.test(
-    password,
-  );
+  const hasSpecial = /[/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-='|]/.test(password);
   // 8자리 이상
   const hasMinLength = password.length >= 8;
 

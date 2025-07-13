@@ -1,7 +1,6 @@
-import { twMerge } from 'tailwind-merge';
 import { CircleCheck, CircleAlert } from 'lucide-react';
 
-interface AlertMessageProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface AlertMessageProps {
   type: 'success' | 'error' | 'info';
   message: string;
 }
@@ -18,13 +17,10 @@ const iconMap = {
   error: <CircleAlert className="size-5 text-[#D32F2F]" />,
 };
 
-export default function AlertMessage({ type, message, className = ''}: AlertMessageProps) {
+export default function AlertMessage({ type, message }: AlertMessageProps) {
   return (
     <div
-      className={twMerge(
-            `flex h-[50px] w-fit items-center justify-center gap-[10px] rounded-[8px] px-[18px] py-[15px] text-[14px] font-medium ${typeStyles[type]}`,
-            className,
-          )}
+      className={`m-4 flex h-[50px] w-fit items-center gap-[10px] rounded-[8px] px-[18px] py-[15px] text-[14px] font-medium ${typeStyles[type]} `}
     >
       <span>{iconMap[type]}</span>
       <span>{message}</span>

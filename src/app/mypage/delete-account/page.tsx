@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import Button from '@/app/components/common/ui/Button';
+import Button from "@/app/components/common/ui/Button"
 import RadioGroup from '@/app/components/profile/RadioGroup';
 import CustomCheckBox from '@/app/components/common/ui/CustomCheckBox';
 
@@ -21,30 +21,30 @@ export default function page() {
   ];
 
   // 탈퇴하기 버튼 활성화 조건
-  const isSubmitEnabled =
-    isAgreed &&
-    ((selectedReason !== '' && selectedReason !== 'custom') ||
-      (selectedReason === 'custom' && customReason.trim() !== ''));
+  const isSubmitEnabled = isAgreed && (
+    (selectedReason !== '' && selectedReason !== 'custom') ||
+    (selectedReason === 'custom' && customReason.trim() !== '')
+  );
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'; // 초기화
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 컨텐츠에 맞게 높이 조절
-    }
-  }, [customReason]);
+  if (textareaRef.current) {
+    textareaRef.current.style.height = 'auto'; // 초기화
+    textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 컨텐츠에 맞게 높이 조절
+  }
+}, [customReason]);
 
   return (
-    <div className="flex min-h-screen flex-col justify-between px-5 py-7">
+    <div className="min-h-screen flex flex-col justify-between px-5 py-7 ">
       {/* 버튼 제외 컨텐츠 */}
       <div className="flex flex-col">
-        <div className="mb-[30px] flex flex-col text-base font-semibold text-[#222222]">
+        <div className="flex flex-col font-semibold text-base text-[#222222] mb-[30px]">
           <h1>정말 떠나시겠어요?</h1>
           <h1>계정을 삭제하면 지금까지의 기록이 모두 사라지고</h1>
           <h1>7일 동안은 다시 돌아올 수 없어요 🥲</h1>
         </div>
 
-        <div className="mb-10 rounded-[3px] text-xs font-medium text-[#222222]">
+        <div className="rounded-[3px] font-medium text-xs text-[#222222] mb-10">
           <CustomCheckBox
             label="탈퇴 시 모든 정보가 삭제되는 것에 동의합니다."
             checked={isAgreed}
@@ -52,17 +52,13 @@ export default function page() {
           />
         </div>
 
-        <div className="mb-6 flex flex-col">
-          <h1 className="text-lg font-semibold text-[#222222]">
-            회원 탈퇴 이유를 알려주세요.
-          </h1>
-          <h2 className="text-sm font-normal text-[#616161]">
-            더 좋은 서비스를 제공하기 위해 노력하겠습니다.
-          </h2>
+        <div className="flex flex-col mb-6">
+          <h1 className="font-semibold text-lg text-[#222222]">회원 탈퇴 이유를 알려주세요.</h1>
+          <h2 className="font-normal text-sm text-[#616161]">더 좋은 서비스를 제공하기 위해 노력하겠습니다.</h2>
         </div>
 
         <div>
-          <RadioGroup
+          <RadioGroup 
             name="reason"
             options={reasons}
             selected={selectedReason}
@@ -74,15 +70,15 @@ export default function page() {
               value={customReason}
               onChange={(e) => setCustomReason(e.target.value)}
               ref={textareaRef}
-              className="mt-4 min-h-20 w-full resize-none overflow-hidden rounded-[5px] border border-[#E0E0E0] p-2 pb-6 text-xs text-[#222222]"
+              className="mt-4 w-full min-h-20 border border-[#E0E0E0] rounded-[5px] p-2 pb-6 text-xs text-[#222222] resize-none overflow-hidden"
               maxLength={200}
               rows={4}
-              placeholder="더 나은 서비스를 제공해드릴 수 있도록 소중한 의견을 들려주세요."
+              placeholder='더 나은 서비스를 제공해드릴 수 있도록 소중한 의견을 들려주세요.'
             />
             {/* 실선 */}
-            <div className="absolute right-[14px] bottom-[30px] left-2 h-px bg-[#E0E0E0]" />
+            <div className="absolute left-2 right-[14px] bottom-[30px] h-px bg-[#E0E0E0]"/>
             {/* 글자수 */}
-            <div className="absolute right-[14px] bottom-[10px] text-[10px] text-[#9E9E9E]">
+            <div className="absolute right-[14px] bottom-[10px] text-[#9E9E9E] text-[10px]">
               {customReason.length}/200
             </div>
           </div>
@@ -90,8 +86,8 @@ export default function page() {
       </div>
 
       <div>
-        <Button
-          type="submit"
+        <Button 
+          type='submit' 
           disabled={!isSubmitEnabled}
           onClick={() => console.log('탈퇴하기')}
         >

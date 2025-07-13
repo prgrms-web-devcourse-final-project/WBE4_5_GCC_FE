@@ -50,7 +50,7 @@ export default function Experience() {
               onClick={() => setSelectedIndex(idx)}
               className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
                 selectedIndex === idx
-                  ? 'bg-[#FFB84C] text-[#ffffff]'
+                  ? 'border-[#FFB84C] text-[#FFB84C]'
                   : 'border-[#E0E0E0]'
               } `}
             >
@@ -66,7 +66,7 @@ export default function Experience() {
               onClick={() => setSelectedIndex(idx + 3)}
               className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
                 selectedIndex === idx + 3
-                  ? 'bg-[#FFB84C] text-[#ffffff]'
+                  ? 'border-[#FFB84C] text-[#FFB84C]'
                   : 'border-[#E0E0E0]'
               } `}
             >
