@@ -51,6 +51,7 @@ export default function page () {
             router.push("/routine/edit-subcategory");
           }
         }}
+        isCustom={true}
       />
     </div>
   );
