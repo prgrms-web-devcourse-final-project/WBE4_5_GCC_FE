@@ -11,13 +11,13 @@ import acheivement from '/public/acheivement.svg';
 import FloatingButton from './components/common/FloatingButton';
 import Donut from './components/common/ui/Donut';
 import { useRouter } from 'next/navigation';
+import Quest from './components/main/Quest';
 
 export default function Main() {
   const [loading, setLoading] = useState(true);
+  const [openQuest, setOpenQuest] = useState(false);
+
   const router = useRouter();
-  const goToQuest = () => {
-    router.push('/');
-  };
   const goToCollection = () => {
     router.push('/collection');
   };
@@ -52,7 +52,7 @@ export default function Main() {
               className="mb-3"
               // imgWidth={26}
               // imgHeight={21}
-              onClick={() => goToQuest()}
+              onClick={() => setOpenQuest(true)}
             />
             <FloatingButton
               src={acheivement}
@@ -62,6 +62,7 @@ export default function Main() {
               onClick={() => goToCollection()}
             />
           </div>
+          {openQuest && <Quest className="" setOpenQuest={setOpenQuest} />}
           <Profile />
           <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-b-1 border-t-[#FBFBFB] border-b-[#CCCCCC] px-5 py-11">
             <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
