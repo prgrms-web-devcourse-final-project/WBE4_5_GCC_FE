@@ -8,7 +8,7 @@ import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import Dropdown from '@/app/components/common/ui/Dropdown';
 
-export default function page () {
+export default function Page() {
   //const nickname = useProfileStore((state) => state.name); 나중에 store에서 받아오는 형식
 
   const searchParams = useSearchParams();
@@ -25,7 +25,7 @@ export default function page () {
 
   const handleSearch = () => {
     router.push('/mypage/change-userinfo/userinfo/address');
-  }
+  };
 
   useEffect(() => {
     if (searchedAddress) {
@@ -41,11 +41,11 @@ export default function page () {
         <div className="flex gap-2.5">
           <Input
             value={nickname}
-            onChange={(e) => setNickname (e.target.value)}
+            onChange={(e) => setNickname(e.target.value)}
             placeholder="2~15자 이내로 입력해 주세요"
           />
-          <Button className="max-w-[93px] min-h-12 p-0 bg-[#C4C4C4] rounded-lg">
-            <h1 className="font-medium text-sm text-[#FDFDFD]">중복 확인</h1>
+          <Button className="min-h-12 max-w-[93px] rounded-lg bg-[#C4C4C4] p-0">
+            <h1 className="text-sm font-medium text-[#FDFDFD]">중복 확인</h1>
           </Button>
         </div>
       </div>
@@ -66,23 +66,23 @@ export default function page () {
         <div className="flex gap-2.5">
           <Input
             value={address}
-            onChange={(e) => setAddress (e.target.value)}
+            onChange={(e) => setAddress(e.target.value)}
             placeholder=""
           />
-          <Button 
-            className="max-w-[93px] min-h-12 flex gap-[6px] bg-[#222222] rounded-lg"
+          <Button
+            className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222]"
             onClick={handleSearch}
           >
-            <Search className="w-4 h-auto" strokeWidth={2}/>
-            <h1 className="font-medium text-sm text-white">주소 검색</h1>
+            <Search className="h-auto w-4" strokeWidth={2} />
+            <h1 className="text-sm font-medium text-white">주소 검색</h1>
           </Button>
         </div>
       </div>
 
       {/* 자취경력 */}
-      <div className="w-full flex flex-col gap-2.5">
+      <div className="flex w-full flex-col gap-2.5">
         <p className="text-sm font-semibold">자취경력</p>
-        <Dropdown 
+        <Dropdown
           options={yearOptions}
           selected={selected}
           onSelect={(value) => {
@@ -92,9 +92,9 @@ export default function page () {
         />
       </div>
 
-      <div className="fixed bottom-[70px] left-5 right-5">
-        <Button 
-          type='submit' 
+      <div className="fixed right-5 bottom-[70px] left-5">
+        <Button
+          type="submit"
           //disabled={!isSubmitEnabled}
           //onClick={handleSubmit}
         >

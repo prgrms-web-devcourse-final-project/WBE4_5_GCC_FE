@@ -17,7 +17,7 @@ export default function ItemCard({ item, onClick }: ItemCardProps) {
   return (
     <>
       <div
-        className="aspect-[92/123] w-[92px] rounded-[5px] border-1 border-[#d9d9d9] shadow-[1px_2px_4px_rgba(0,0,0,0.1)]"
+        className="aspect-[92/128] w-[92px] rounded-[5px] border-1 border-[#d9d9d9] shadow-[1px_2px_4px_rgba(0,0,0,0.1)]"
         onClick={onClick}
       >
         <div className="px-5 py-3">
