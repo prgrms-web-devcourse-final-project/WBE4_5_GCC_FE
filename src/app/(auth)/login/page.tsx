@@ -6,9 +6,8 @@ import { useEffect, useState } from 'react';
 import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import { useRouter } from 'next/navigation';
-
-import { useLogIn } from '@/hooks/useLogIn';
 import { useSignUpStore } from '@/store/SignupStore';
+import { handleSignIn } from '@/api/api';
 
 export default function Page() {
   const [email, setEmail] = useState('');
@@ -16,13 +15,17 @@ export default function Page() {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {},
   );
-  const { mutate, isError } = useLogIn();
 
-  const logInHandler = () => {
-    mutate({
-      email,
-      password,
-    });
+  const logInHandler = async () => {
+    try {
+      await handleSignIn(email, password);
+      router.push('/');
+    } catch (err) {
+      setErrors({
+        password: '이메일 또는 비밀번호를 다시 확인하세요.',
+      });
+      console.error(err);
+    }
   };
 
   const router = useRouter();
@@ -38,8 +41,6 @@ export default function Page() {
 
     if (!password) {
       newErrors.password = '비밀번호를 입력해 주세요.';
-    } else if (email && password && isError) {
-      newErrors.password = '이메일 또는 비밀번호를 다시 확인하세요.';
     }
 
     setErrors(newErrors);
@@ -103,7 +104,10 @@ export default function Page() {
             회원가입
             <ChevronRight className="ml-1 h-3.5 w-3.5" />
           </a>
-          <a href="#" className="flex cursor-pointer items-center">
+          <a
+            onClick={() => router.push('/find-password')}
+            className="flex cursor-pointer items-center"
+          >
             비밀번호를 잊으셨나요?
             <ChevronRight className="ml-1 h-3.5 w-3.5" />
           </a>
