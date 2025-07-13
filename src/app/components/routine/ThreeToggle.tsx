@@ -2,9 +2,9 @@ import { Lock } from 'lucide-react';
 import clsx from 'clsx';
 
 const toggleList = [
-  { id: 1, label: '일간', locked: true },
+  { id: 1, label: '일간', locked: false },
   { id: 2, label: '주간', locked: false },
-  { id: 3, label: '월간', locked: true },
+  { id: 3, label: '월간', locked: false },
 ];
 
 // 일간, 주간, 월간 토글버튼
@@ -23,7 +23,7 @@ export default function ThreeToggle({
           <button
             key={id}
             className={clsx(
-              'flex flex-1 items-center justify-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-all',
+              'flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-all',
               isSelected
                 ? 'border border-[#FFB84C] bg-white text-[#FFB84C]'
                 : 'text-[#BDBDBD]',
