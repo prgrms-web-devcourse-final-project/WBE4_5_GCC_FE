@@ -10,7 +10,8 @@ export default function Header() {
   const showHeader = !(
     pathname.startsWith('/signup') ||
     pathname.startsWith('/login') ||
-    pathname.startsWith('/shop')
+    pathname.startsWith('/shop') ||
+    pathname.startsWith('/admin')
   );
   return (
     <>

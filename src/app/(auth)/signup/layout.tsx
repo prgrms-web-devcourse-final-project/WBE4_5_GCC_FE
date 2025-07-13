@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex min-h-screen flex-col">
-        <BackHeader title="회원가입" />
+        <BackHeader title="회원가입" useStep defaultBackPath="/login" />
         <div>{children}</div>
         <NextBtn
           label="다음"
