@@ -10,7 +10,7 @@ export default function page () {
 
   return (
     <>
-      <div className="flex flex-col gap-8 px-5 py-7">
+      <div className="flex flex-col gap-7 px-5 py-7">
 
         <div className="flex items-center gap-3">
           {/* 좌측 아이콘 영역 */}
@@ -29,7 +29,10 @@ export default function page () {
           </div>
         </div>
 
-        <button className="flex gap-2">
+        <button 
+          onClick={() => setIsBottomSheetOpen(true)}
+          className="flex gap-2"
+        >
           <CirclePlus className="w-5 h-auto fill-[#388E3C] text-white "/>
           <p className="text-medium text-base text-[#388E3C]">세부 카테고리</p>
         </button>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import CategoryGrid from '@/app/components/common/CategoryGrid';
 
 const categories = [
@@ -16,16 +17,13 @@ const categories = [
 ];
 
 export default function page () {
+  const router = useRouter();
   const [selected, setSelected] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<{
     icon: React.ReactNode | string;
     label: string;
   } | null>(null);
   
-    const handleSelect = (label: string) => {
-      setSelected(label);
-    };
-
   return (
     <div className="px-4 py-10">
       <CategoryGrid
@@ -35,6 +33,7 @@ export default function page () {
           const category = categories.find((cat) => cat.label === label);
           if (category) {
             setSelectedCategory(category);
+            router.push("/routine/edit-subcategory");
           }
         }}
       />

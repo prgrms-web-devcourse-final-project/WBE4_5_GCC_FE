@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ChevronLeft } from 'lucide-react';
 
-export default function AddRoutineLayout ({ 
+export default function AddCategoryLayout ({ 
   children
 } : {
   children: React.ReactNode
