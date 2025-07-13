@@ -1,15 +1,15 @@
 'use client';
 import Image from 'next/image';
 import backBtn from '/public/BackPageBtn.svg';
-
 import { useRouter } from 'next/navigation';
-import PointBox from './PointBox';
+import coin from '/public/coin.svg';
+
 export default function ShopHeader() {
   const router = useRouter();
 
   return (
     <>
-      <div className="relative flex h-[56px] w-[100%] items-center justify-center px-5 select-none">
+      <div className="relative flex h-[56px] w-[100%] items-center justify-center border-b-1 border-[#CCCCCC] px-5 select-none">
         <Image
           src={backBtn}
           alt="뒤로가기"
@@ -18,14 +18,12 @@ export default function ShopHeader() {
             router.push('/');
           }}
         />
-        <p className="text-lg font-semibold">상점</p>
-        <PointBox
-          width={64}
-          height={21}
-          coinWidth={13}
-          coinHeight={13}
-          className="absolute right-6"
-        />
+        <p className="text-[18px] font-semibold">상점</p>
+        {/* 포인트 박스 */}
+        <div className="absolute right-7 mt-[5px] flex h-[21px] w-[64px] items-center justify-between rounded-[6px] border-1 border-[#cfcfcf] p-1">
+          <Image src={coin} alt="coin" className="h-[15px] w-[15px]" />
+          <span className="text-[12px] text-[#FFB84C]">1200</span>
+        </div>
       </div>
     </>
   );

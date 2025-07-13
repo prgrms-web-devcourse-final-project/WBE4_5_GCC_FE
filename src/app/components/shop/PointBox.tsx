@@ -7,17 +7,19 @@ export default function PointBox({
   className,
   coinWidth,
   coinHeight,
+  point,
 }: {
   width: number;
   height: number;
   className?: string;
   coinWidth: number;
   coinHeight: number;
+  point: number | null;
 }) {
   return (
     <>
       <div
-        className={`flex items-center justify-between rounded-[6px] border-1 border-[#cfcfcf] px-2 py-1 ${className}`}
+        className={`flex items-center justify-between rounded-[6px] border-1 border-[#cfcfcf] py-1 pr-[10px] pl-1 ${className}`}
         style={{
           width: `${width}px`,
           height: `${height}px`,
@@ -32,7 +34,7 @@ export default function PointBox({
             height: `${coinHeight}px`,
           }}
         />
-        <span className="text-3 text-[#FFB84C]">100</span>
+        <span className="text-[12px] text-[#FFB84C]">{point}</span>
       </div>
     </>
   );
