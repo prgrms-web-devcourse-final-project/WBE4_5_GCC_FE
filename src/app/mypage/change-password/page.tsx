@@ -145,8 +145,13 @@ export default function Page() {
         </div>
       </div>
 
-      <div>
-        <Button>변경하기</Button>
+      <div className="fixed bottom-[70px] left-5 right-5">
+        <Button
+          type="submit"
+          onClick={() => console.log("변경하기")}
+        >
+          변경하기
+        </Button>
       </div>
     </div>
   );

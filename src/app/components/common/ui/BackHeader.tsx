@@ -3,7 +3,7 @@ import { ChevronLeft } from 'lucide-react';
 import { useSignUpStore } from '@/store/SignupStore';
 import { useRouter } from 'next/navigation';
 
-export default function BackBtn({ title }: { title: string }) {
+export default function BackHeader({ title }: { title: string }) {
   const router = useRouter();
   const step = useSignUpStore((state) => state.step);
   const setStep = useSignUpStore((state) => state.setStep);
@@ -22,7 +22,7 @@ export default function BackBtn({ title }: { title: string }) {
           className="absolute left-3 h-6 w-6 cursor-pointer"
           onClick={goBack}
         />
-        <p className="font-semibold">{title}</p>
+        <p className="text-lg font-semibold">{title}</p>
       </div>
     </>
   );

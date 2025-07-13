@@ -2,62 +2,14 @@
 
 import clsx from 'clsx';
 import Image from 'next/image';
+import coin from '/public/coin.svg';
 import { useState } from 'react';
+
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import item1 from '@/app/assets/images/item1.png';
 
-import character from '../../../../public/images/character.png';
-import Button from '@/app/components/common/ui/Button';
-
-const tabs = ['전체', '상의', '하의', '액세서리'];
-
-// dummy items
-const items = [
-  {
-    id: 1,
-    image: item1,
-    name: '인형탈',
-    description: '누군가 닮았어요.',
-    category: '상의',
-  },
-  {
-    id: 2,
-    image: item1,
-    name: '인형탈',
-    description: '누군가 닮았어요.',
-    category: '상의',
-  },
-  {
-    id: 3,
-    image: item1,
-    name: '인형탈',
-    description: '누군가 닮았어요.',
-    category: '상의',
-  },
-  {
-    id: 4,
-    image: item1,
-    name: '인형탈',
-    description: '누군가 닮았어요.',
-    category: '하의',
-  },
-  {
-    id: 5,
-    image: item1,
-    name: '인형탈',
-    description: '누군가 닮았어요.',
-    category: '액세서리',
-  },
-  {
-    id: 6,
-    image: item1,
-    name: '인형탈',
-    description: '누군가 닮았어요.',
-    category: '액세서리',
-  },
-];
-
-export default function Page() {
+export default function Shop() {
+  const tabs = ['전체', '상의', '하의', '액세서리'];
   const [selectedTab, setSelectedTab] = useState('전체');
   const [selectedItem, setSelectedItem] = useState<
     Record<string, number | null>
@@ -66,6 +18,93 @@ export default function Page() {
     하의: null,
     액세서리: null,
   });
+
+  const items = [
+    {
+      id: 1,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '상의',
+    },
+    {
+      id: 2,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '상의',
+    },
+    {
+      id: 3,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '상의',
+    },
+    {
+      id: 4,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '하의',
+    },
+    {
+      id: 5,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 6,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 7,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 8,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 9,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 10,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 11,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+    {
+      id: 12,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '액세서리',
+    },
+  ];
 
   const handleSelect = (item: (typeof items)[number]) => {
     setSelectedItem((prev) => ({
@@ -78,20 +117,9 @@ export default function Page() {
     selectedTab === '전체'
       ? items
       : items.filter((item) => item.category === selectedTab);
-
   return (
-    <div className="flex h-1vh flex-col p-5">
-      <div className="mb-[29px] flex h-[178px] min-w-[350px] items-center justify-center rounded-lg border border-[#D9D9D9]">
-        <Image
-          src={character}
-          alt="기본 캐릭터"
-          height={100}
-          priority
-          className="m-2 my-auto w-auto"
-        />
-      </div>
-
-      <div className="mb-[22px] min-h-[340px] min-w-[350px]">
+    <>
+      <div className="mx-auto mt-[50px] mb-[22px] min-h-[628px] w-full max-w-screen-sm min-w-[350px] px-5 select-none">
         {/* 탭 버튼 */}
         <div className="flex">
           {tabs.map((tab) => (
@@ -138,18 +166,17 @@ export default function Page() {
                   <div className="text-[7px] font-medium text-[#616161]">
                     {item.description}
                   </div>
+
+                  {/* 포인트 박스 */}
+                  <div className="mt-[5px] flex h-5 w-full items-center justify-between rounded-[6px] border-1 border-[#cfcfcf] p-1">
+                    <Image
+                      src={coin}
+                      alt="coin"
+                      className="h-[15px] w-[15px]"
+                    />
+                    <span className="text-3 text-[#FFB84C]">1200</span>
+                  </div>
                 </div>
-                <button
-                  onClick={() => handleSelect(item)}
-                  className={clsx(
-                    'min-h-4 min-w-18 rounded-[3px] border border-[#E0E0E0] text-[8px]',
-                    isSelected
-                      ? 'border-[#FFB84C] bg-[#FFB84C] font-semibold text-white'
-                      : 'border-[#E0E0E0] bg-white text-[#616161]',
-                  )}
-                >
-                  {isSelected ? '착용 중' : '착용하기'}
-                </button>
               </div>
             );
           })}
@@ -176,13 +203,6 @@ export default function Page() {
           </div>
         </div>
       </div>
-
-      <Button
-        className="h-[48px] bg-[#222222] text-sm font-medium text-white"
-        onClick={() => console.log('저장')}
-      >
-        저장
-      </Button>
-    </div>
+    </>
   );
 }

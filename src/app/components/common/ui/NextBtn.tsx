@@ -23,7 +23,7 @@ export default function NextBtn({
   return (
     <>
       <button
-        className={`mt-auto flex h-[88px] w-full justify-center pt-[18px] text-[#FDFDFD] ${
+        className={`fixed bottom-0 flex h-[88px] w-full justify-center pt-[18px] text-[#FDFDFD] ${
           className ?? ''
         }`}
         onClick={!disabled ? onClick : undefined}
