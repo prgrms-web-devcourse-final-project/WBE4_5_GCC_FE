@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 import { Eye, EyeClosed, Check } from 'lucide-react';
-import Input from "@/app/components/common/ui/Input";
-import Button from "@/app/components/common/ui/Button";
+import Input from '@/app/components/common/ui/Input';
+import Button from '@/app/components/common/ui/Button';
 
 export default function Page() {
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<{ password?: string }>({});
 
   const [showOld, setShowOld] = useState(false);
@@ -37,7 +37,7 @@ export default function Page() {
   const handleNewPasswordChange = (value: string) => {
     setNewPassword(value);
     setPasswordChecks(getPasswordChecks(value));
-  }
+  };
 
   const conditionList = [
     { key: 'upperAndLower', label: '영문 대소문자 최소 1개 포함' },
@@ -47,14 +47,16 @@ export default function Page() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col justify-between px-5 py-[70px]">
+    <div className="flex min-h-screen flex-col justify-between px-5 py-[70px]">
       {/* 상단 컨텐츠 */}
       <div className="flex flex-col gap-y-6">
         <div className="flex flex-col gap-y-2.5">
-          <h1 className="text-[16px] text-[#222222] font-semibold">기존 비밀번호</h1>
+          <h1 className="text-[16px] font-semibold text-[#222222]">
+            기존 비밀번호
+          </h1>
           <div className="relative">
             <Input
-              type={showOld ? "text" : "password"}
+              type={showOld ? 'text' : 'password'}
               placeholder="기존 비밀번호를 입력해 주세요"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -62,22 +64,25 @@ export default function Page() {
             />
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2"
+              className="absolute top-1/2 right-3 -translate-y-1/2"
               onClick={() => setShowOld(!showOld)}
             >
-              {showOld 
-                ? <Eye className="w-[18px] h-auto text-[#9E9E9E]" /> 
-                : <EyeClosed className="w-[18px] h-auto text-[#9E9E9E]" /> 
-              }
+              {showOld ? (
+                <Eye className="h-auto w-[18px] text-[#9E9E9E]" />
+              ) : (
+                <EyeClosed className="h-auto w-[18px] text-[#9E9E9E]" />
+              )}
             </button>
           </div>
         </div>
 
         <div className="flex flex-col gap-y-2.5">
-          <h1 className="text-[16px] text-[#222222] font-semibold">새 비밀번호</h1>
+          <h1 className="text-[16px] font-semibold text-[#222222]">
+            새 비밀번호
+          </h1>
           <div className="relative">
             <Input
-              type={showNew ? "text" : "password"}
+              type={showNew ? 'text' : 'password'}
               placeholder="새 비밀번호를 입력해 주세요"
               value={newPassword}
               onChange={(e) => handleNewPasswordChange(e.target.value)}
@@ -85,22 +90,27 @@ export default function Page() {
             />
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2"
+              className="absolute top-1/2 right-3 -translate-y-1/2"
               onClick={() => setShowNew(!showNew)}
             >
-              {showNew 
-                ? <Eye className="w-[18px] h-auto text-[#9E9E9E]" /> 
-                : <EyeClosed className="w-[18px] h-auto text-[#9E9E9E]" /> 
-              }
+              {showNew ? (
+                <Eye className="h-auto w-[18px] text-[#9E9E9E]" />
+              ) : (
+                <EyeClosed className="h-auto w-[18px] text-[#9E9E9E]" />
+              )}
             </button>
           </div>
 
           {/* 비밀번호 조건 */}
-          <div className="grid grid-cols-2 gap-y-[10px] gap-x-6 mt-[10px]">
+          <div className="mt-[10px] grid grid-cols-2 gap-x-6 gap-y-[10px]">
             {conditionList.map(({ key, label }) => (
-              <div key={key} className="flex gap-[6px] items-center">
-                <Check className={`w-4 h-auto ${passwordChecks[key as keyof typeof passwordChecks] ? "text-[#388E3C]" : "text-[#C4C4C4]"}`} />
-                <p className={`text-[12px] ${passwordChecks[key as keyof typeof passwordChecks] ? "text-[#388E3C]" : "text-[#9E9E9E]"}`}>
+              <div key={key} className="flex items-center gap-[6px]">
+                <Check
+                  className={`h-auto w-4 ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C]' : 'text-[#C4C4C4]'}`}
+                />
+                <p
+                  className={`text-[12px] ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C]' : 'text-[#9E9E9E]'}`}
+                >
                   {label}
                 </p>
               </div>
@@ -109,10 +119,12 @@ export default function Page() {
         </div>
 
         <div className="flex flex-col gap-y-2.5">
-          <h1 className="text-[16px] text-[#222222] font-semibold">새 비밀번호 확인</h1>
+          <h1 className="text-[16px] font-semibold text-[#222222]">
+            새 비밀번호 확인
+          </h1>
           <div className="relative">
             <Input
-              type={showConfirm ? "text" : "password"}
+              type={showConfirm ? 'text' : 'password'}
               placeholder="새 비밀번호를 한 번 더 입력해 주세요"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -120,13 +132,14 @@ export default function Page() {
             />
             <button
               type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2"
+              className="absolute top-1/2 right-3 -translate-y-1/2"
               onClick={() => setShowConfirm(!showConfirm)}
             >
-              {showConfirm 
-                ? <Eye className="w-[18px] h-auto text-[#9E9E9E]" /> 
-                : <EyeClosed className="w-[18px] h-auto text-[#9E9E9E]" /> 
-              }
+              {showConfirm ? (
+                <Eye className="h-auto w-[18px] text-[#9E9E9E]" />
+              ) : (
+                <EyeClosed className="h-auto w-[18px] text-[#9E9E9E]" />
+              )}
             </button>
           </div>
         </div>

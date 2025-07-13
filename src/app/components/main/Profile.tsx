@@ -2,6 +2,7 @@ import Image from 'next/image';
 import backGround from '/public/profileBackGround.svg';
 import character from '/public/images/character.png';
 import coin from '/public/coin.svg';
+
 export default function Profile() {
   return (
     <div className="relative h-[167px] w-[350px] overflow-hidden rounded-md">

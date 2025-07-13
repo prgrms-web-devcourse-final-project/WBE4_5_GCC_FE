@@ -1,5 +1,4 @@
-import Image from 'next/image';
-import backBtn from '/public/BackPageBtn.svg';
+import { ChevronLeft } from 'lucide-react';
 
 import { useSignUpStore } from '@/store/SignupStore';
 import { useRouter } from 'next/navigation';
@@ -19,10 +18,8 @@ export default function BackBtn({ title }: { title: string }) {
   return (
     <>
       <div className="relative flex h-[56px] w-[100%] items-center justify-center px-5">
-        <Image
-          src={backBtn}
-          alt="뒤로가기"
-          className="absolute left-6 h-[24px] w-[24px] cursor-pointer"
+        <ChevronLeft
+          className="absolute left-3 h-6 w-6 cursor-pointer"
           onClick={goBack}
         />
         <p className="font-semibold">{title}</p>

@@ -12,24 +12,23 @@ interface RadioGroupProps {
   onChange: (value: string) => void;
 }
 
-export default function RadioGroup ({
+export default function RadioGroup({
   name,
   options,
   selected,
-  onChange
-} : RadioGroupProps) {
-
+  onChange,
+}: RadioGroupProps) {
   return (
     <div className="flex flex-col gap-5">
       {options.map((option) => {
         const isChecked = selected === option.value;
-        
+
         return (
           <label
             key={option.value}
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex cursor-pointer items-center gap-2"
           >
-            <input 
+            <input
               type="radio"
               name={name}
               value={option.value}
@@ -39,16 +38,19 @@ export default function RadioGroup ({
             />
 
             {/* 라디오 버튼 */}
-            <div className={`w-5 h-5 rounded-full border flex items-center justify-center
-              ${isChecked ? 'bg-[#222222] border-[#222222]' : 'border-[#C4C4C4]'}`}
+            <div
+              className={`flex h-5 w-5 items-center justify-center rounded-full border ${isChecked ? 'border-[#222222] bg-[#222222]' : 'border-[#C4C4C4]'}`}
             >
               {isChecked && (
-                <Check className="w-[14px] h-[14px] text-[#FDFDFD]" strokeWidth={4}/>
+                <Check
+                  className="h-[14px] w-[14px] text-[#FDFDFD]"
+                  strokeWidth={4}
+                />
               )}
             </div>
             <span className="text-sm text-[#222222]">{option.label}</span>
           </label>
-        )
+        );
       })}
     </div>
   );
