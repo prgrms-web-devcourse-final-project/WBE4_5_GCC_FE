@@ -3,6 +3,7 @@ import Image from 'next/image';
 import logo from '/public/Logo.svg';
 import bell from '/public/bell.svg';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Header() {
   const pathname = usePathname();
@@ -13,6 +14,7 @@ export default function Header() {
     pathname.startsWith('/shop') ||
     pathname.startsWith('/admin')
   );
+  const [openNoti, setOpenNoti] = useState(false);
   return (
     <>
       {showHeader && (
@@ -33,6 +35,7 @@ export default function Header() {
             //height={20}
             className="cursor-pointer"
             style={{ height: 'auto' }}
+            onClick={() => setOpenNoti(true)}
           />
         </div>
       )}

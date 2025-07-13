@@ -1,119 +1,40 @@
 'use client';
-
-import ItemCard from '../components/shop/ItemCard';
-import Tabs from '../components/shop/Tabs';
 import { useState } from 'react';
-import item1 from '@/app/assets/images/item1.png';
+import Notification from '../components/common/Notification';
 
-export default function Practice() {
-  const tabList = ['전체', '상의', '하의', '액세서리'];
-  const [selectedTab, setSelectedTab] = useState(`${tabList[0]}`);
+export default function page() {
+  const [openNoti, setOpenNoti] = useState(false);
 
-  const items = [
+  const [noti, setNoti] = useState([
     {
-      id: 1,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
+      title: '[운동하기] 루틴 시작할 시간이 되었어요! 지금 시작해볼까요?',
+      date: '2025.05.23',
+      new: true,
     },
     {
-      id: 2,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
+      title: '[요리] 루틴 시작할 시간이 되었어요! 지금 시작해볼까요?',
+      date: '2025.05.23',
+      new: true,
     },
     {
-      id: 3,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
+      title: '[쓰레기 버리기] 루틴 시작할 시간이 되었어요! 지금 시작해볼까요?',
+      date: '2025.05.22',
+      new: false,
     },
     {
-      id: 4,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '하의',
+      title: '[나갈 준비하기] 루틴 시작할 시간이 되었어요! 지금 시작해볼까요?',
+      date: '2025.05.21',
+      new: false,
     },
     {
-      id: 5,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
+      title: '[운동하기] 루틴 시작할 시간이 되었어요! 지금 시작해볼까요?',
+      date: '2025.05.17',
+      new: false,
     },
-    {
-      id: 6,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-    },
-    {
-      id: 7,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-    },
-    {
-      id: 8,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-    },
-    {
-      id: 9,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-    },
-    {
-      id: 10,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-    },
-    {
-      id: 11,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-    },
-    {
-      id: 12,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-    },
-  ];
-
-  const filteredItem =
-    selectedTab === '전체'
-      ? items
-      : items.filter((item) => item.category === selectedTab);
+  ]);
   return (
     <>
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5">
-        <Tabs
-          tabs={tabList}
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
-        />
-        <div className="rounded-2 mx-auto flex w-full flex-wrap gap-5 border-1 border-[#d9d9d9] px-4 py-6">
-          {filteredItem.map((item) => (
-            <ItemCard key={item.id} item={item} />
-          ))}
-        </div>
-      </div>
+      <Notification setOpenNoti={setOpenNoti} noti={noti} />
     </>
   );
 }
