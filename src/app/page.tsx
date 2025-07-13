@@ -50,8 +50,6 @@ export default function Main() {
               text="퀘스트"
               textSize="12px"
               className="mb-3"
-              // imgWidth={26}
-              // imgHeight={21}
               onClick={() => setOpenQuest(true)}
             />
             <FloatingButton
