@@ -1,8 +1,8 @@
 'use client';
 
-import BackHeader from '@/app/components/common/ui/BackHeader';
+import BackBtn from '@/app/components/common/ui/BackHeader';
 import NextBtn from '@/app/components/common/ui/NextBtn';
-
+import { useSignUp } from '@/hooks/useSignUp';
 import { useSignUpStore } from '@/store/SignupStore';
 
 // import { useRouter } from 'next/navigation';
@@ -23,7 +23,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const isNextEnabled = useSignUpStore((state) => state.isNextEnabled);
 
-  const signUpHandler = () => {};
+  const { mutate } = useSignUp();
+
+  const signUpHandler = () => {
+    mutate({
+      name,
+      email,
+      password,
+      wantEmail,
+      residenceExperience,
+      interest_category: categories,
+      nickname,
+    });
+  };
 
   const goNext = () => {
     if (step < 6) {
@@ -40,7 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex min-h-screen flex-col">
-        <BackHeader title="회원가입" useStep defaultBackPath="/login" />
+        <BackBtn title="회원가입" />
         <div>{children}</div>
         <NextBtn
           label="다음"

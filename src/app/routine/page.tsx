@@ -1,25 +1,17 @@
 'use client';
-
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import Routine from '../components/routine/Routine';
-import ProgressBar from '../components/common/PrgressBar';
 import CalendarBar from '../components/routine/CalendarBar';
+import Routine from '../components/routine/Routine';
+import { Plus } from 'lucide-react';
+import ProgressBar from '../components/common/PrgressBar';
 import CalendarBottomSheet from '../components/routine/CalendarBottomSheet';
+import { useState } from 'react';
 
 type DatePiece = Date | null;
 type SelectedDate = DatePiece | [DatePiece, DatePiece];
 
 export default function Page() {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
-
-  const handleAdd = () => {
-    router.push("/routine/add-routine");
-  }
-
   return (
     <>
       <div className="flex min-h-screen flex-col items-center bg-white py-4">
@@ -77,10 +69,7 @@ export default function Page() {
               time="13:00"
             />
           </div>
-          <button 
-            className="fixed right-0 bottom-15 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333]"
-            onClick={handleAdd}
-          >
+          <button className="fixed right-0 bottom-15 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333]">
             <Plus className="h-[30px] w-[30px] text-white" />
           </button>
         </div>

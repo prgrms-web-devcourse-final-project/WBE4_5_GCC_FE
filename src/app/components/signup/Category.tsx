@@ -68,7 +68,7 @@ export default function Category() {
               onClick={() => toggleIndex(idx)}
               className={
                 selectedIndex.includes(idx)
-                  ? 'bg-[#FFB84C] text-[#ffffff]'
+                  ? 'border-[#FFB84C] text-[#FFB84C]'
                   : 'border-[#E0E0E0]'
               }
             />

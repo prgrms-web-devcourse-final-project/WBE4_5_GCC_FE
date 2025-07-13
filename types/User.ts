@@ -13,8 +13,8 @@ export interface User {
     | 'Y3_TO_5'
     | 'Y5_TO_10'
     | 'OVER_10Y';
-  region1Dept: string;
-  region2Dept: string;
-  region3Dept: string;
+  // region1Dept: string;
+  // region2Dept: string;
+  // region3Dept: string;
   isActive: boolean;
 }

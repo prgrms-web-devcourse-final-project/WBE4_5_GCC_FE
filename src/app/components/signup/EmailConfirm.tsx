@@ -67,23 +67,20 @@ export default function EmailConfirm() {
                 3:00
               </span>
             </div>
-            <div className="flex flex-col gap-6">
-              {!confirm && (
-                <Button
-                  disabled={!isValidCode}
-                  onClick={codeConfirm}
-                  className="mt-5"
-                >
-                  인증번호 확인
-                </Button>
-              )}
+            {!confirm && (
+              <Button
+                disabled={!isValidCode}
+                onClick={codeConfirm}
+                className="mt-5"
+              >
+                인증번호 확인
+              </Button>
+            )}
 
             {!confirm && (
-              <div className="flex justify-end">
-                <span className="mt-6 cursor-pointer border-b border-[#9e9e9e] text-sm text-[#9e9e9e]">
-                  인증번호 재요청
-                </span>
-              </div>
+              <span className="cursor-pointer border-b-1 border-[#9e9e9e] py-1 text-[#9e9e9e]">
+                인증번호 재요청
+              </span>
             )}
           </div>
         )}
