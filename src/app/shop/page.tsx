@@ -129,6 +129,38 @@ export default function Practice() {
       category: '액세서리',
       price: 1200,
     },
+    {
+      id: 13,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '상의',
+      price: 1200,
+    },
+    {
+      id: 14,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '하의',
+      price: 6200,
+    },
+    {
+      id: 15,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '하의',
+      price: 200,
+    },
+    {
+      id: 16,
+      image: item1,
+      name: '인형탈',
+      description: '누군가 닮았어요.',
+      category: '하의',
+      price: 1200,
+    },
   ];
 
   const filteredItem =
@@ -138,25 +170,27 @@ export default function Practice() {
 
   return (
     <>
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5">
+      <div className="mx-auto mt-[50px] flex w-full max-w-screen-sm flex-col px-5">
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
         />
 
-        <div className="rounded-2 flex flex-wrap justify-center gap-5 border-1 border-[#d9d9d9] px-4 py-6">
-          {filteredItem.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              onClick={() => {
-                setSelectedItem(item);
-                setSelectedPrice(item.price);
-                setShowPModal(true);
-              }}
-            />
-          ))}
+        <div className="rounded-2 border-1 border-[#d9d9d9] px-4 py-6">
+          <div className="grid grid-cols-3 gap-5">
+            {filteredItem.map((item) => (
+              <ItemCard
+                key={item.id}
+                item={item}
+                onClick={() => {
+                  setSelectedItem(item);
+                  setSelectedPrice(item.price);
+                  setShowPModal(true);
+                }}
+              />
+            ))}
+          </div>
 
           {/* 페이지네이션 */}
           <div className="mt-[41px] flex items-center justify-center space-x-[11px]">
