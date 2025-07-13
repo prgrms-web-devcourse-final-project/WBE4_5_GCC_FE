@@ -1,6 +1,5 @@
 'use client';
 import Profile from './components/main/Profile';
-import { Plus } from 'lucide-react';
 import Routine from './components/routine/Routine';
 import { useEffect, useState } from 'react';
 import { me } from '@/api/api';
@@ -118,9 +117,6 @@ export default function Main() {
                 time="13:00"
               />
             </div>
-            <button className="fixed right-0 bottom-25 mr-5 flex h-[54px] w-[54px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333]">
-              <Plus className="h-[30px] w-[30px] text-white" />
-            </button>
           </div>
         </div>
       )}
