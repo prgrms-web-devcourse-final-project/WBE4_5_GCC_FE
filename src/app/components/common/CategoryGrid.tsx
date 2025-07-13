@@ -1,73 +1,79 @@
 import { useState } from 'react';
-import { PencilLine } from 'lucide-react';
-
-interface Category {
-  icon: React.ReactNode | string; // 아이콘 컴포넌트 or 이미지 URL
-  label: string;
-  onClick?: () => void;
-}
+import { CircleX } from 'lucide-react';
+import { Category } from '../../../../types/types';
+import { useEditMode } from '../routine/EditModeContext';
+import AlertModal from '@/app/components/common/alert/AlertModal';
 
 interface CategoryGridProps {
   categories: Category[];
-  editable?: boolean; // 편집 아이콘 보여줄지 여부
-  onEditClick?: () => void;
+  selected: string | null;
   onSelectCategory: (label: string) => void;
+  isCustom?: boolean;
+  isManage?: boolean;
 }
 
 export default function CategoryGrid({
   categories,
-  editable,
-  onEditClick,
+  selected,
   onSelectCategory,
+  isCustom = false,
+  isManage = false,
 }: CategoryGridProps) {
-  const [selected, setSelected] = useState<string | null>(null);
-
-  const handleClick = (label: string) => {
-    setSelected(label);
-
-    setTimeout(() => {
-      onSelectCategory(label);
-    }, 200);
-  };
+  const { isEditMode } = useEditMode();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="fixed inset-0 bottom-0 z-50 flex items-center justify-center bg-[#222222]/50">
-      <div className="min-h-[452px] w-full rounded-t-[24px] bg-white px-10 py-[34px]">
-        <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-[20px] font-semibold text-[#222222]">카테고리</h2>
-          {editable && (
+    <div className="grid w-full grid-cols-3 gap-x-8 gap-y-3">
+      {categories.map((cat, idx) => (
+        <div key={idx} className="relative w-full flex justify-center">
+          <button
+            key={idx}
+            onClick={() => onSelectCategory?.(cat.label)}
+            className="relative flex flex-col items-center gap-1 py-2.5 text-sm text-[#222222]"
+          >
+            {selected === cat.label && (
+              <div className="absolute inset-0 z-10 rounded-[5px] bg-[#222222]/20 pointer-events-none" />
+            )}
+            <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[#F9F8FE]">
+              {cat.icon}
+            </div>
+            <span>{cat.label}</span>
+          </button>
+
+          {/* 커스텀 카테고리 삭제 */}
+          {isEditMode && isCustom && (
             <button
-              onClick={onEditClick}
-              className="text-[12px] text-[#9E9E9E]"
+              className="absolute top-1.5 right-4 p-1 z-20"
+              onClick={() => setIsModalOpen(true)}
             >
-              <span className="flex items-center gap-[7px]">
-                <PencilLine className="size-3" />
-                편집
-              </span>
+              <CircleX className="w-[15px] h-auto fill-[#E0E0E0] text-[#616161]" />
+            </button>
+          )}
+          
+          {/* 관리자 카테고리 삭제 */}
+          {isEditMode && isManage && (
+            <button
+              className="absolute top-1.5 right-4 p-1 z-20"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <CircleX className="w-[15px] h-auto fill-[#E0E0E0] text-[#616161]" />
             </button>
           )}
         </div>
+      ))}
 
-        <div className="flex justify-center">
-          <div className="mb-7 grid w-full grid-cols-3 gap-x-8 gap-y-3">
-            {categories.map((cat, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleClick(cat.label)}
-                className="relative flex cursor-pointer flex-col items-center gap-1 py-2.5 text-sm text-[#222222]"
-              >
-                {selected === cat.label && (
-                  <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[#222222]/20" />
-                )}
-                <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[#F9F8FE]">
-                  {cat.icon}
-                </div>
-                <span>{cat.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+      {isModalOpen && (
+        <AlertModal
+          isOpen={true}
+          type="delete"
+          title="정말 삭제하시겠습니까?"
+          description="삭제 후 복구가 불가능합니다."
+          confirmText="삭제"
+          cancelText="취소"
+          onConfirm={() => setIsModalOpen(false)}
+          onCancel={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

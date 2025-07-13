@@ -6,11 +6,13 @@ import ListSelector from "@/app/components/routine/ListSelector";
 import ToggleSwitch from "@/app/components/common/ui/ToggleSwitch";
 import CategorySelector from "@/app/components/routine/CategorySelector";
 import InputRoutineName from "@/app/components/routine/InputRoutineName";
+import CategoryBottomSheetContainer from "@/app/components/common/CategoryBottomSheetContainer";
 
 export default function page () {
   const [cycle, setCycle] = useState('');
   const [doWhen, setDoWhen] = useState('');
   const [startDate, setStartDate] = useState('');
+  const [showCatModal, setShowCatModal] = useState(false);
   const [routineName, setRoutineName] = useState('');
   const [importance, setImportance] = useState(false);
   const [notification, setNotification] = useState(false);
@@ -29,7 +31,7 @@ export default function page () {
             label="카테고리"
             value={selectedCategory}
             placeholder="카테고리를 선택하세요"
-            onClick={() => console.log("카테고리 선택 바텀시트 등장")}
+            onClick={() => setShowCatModal(true)}
           />
           <InputRoutineName 
             icon="🌱"
@@ -93,6 +95,16 @@ export default function page () {
           확인
         </Button>
       </div>
+
+      {showCatModal && (
+        <CategoryBottomSheetContainer
+          onClose={() => setShowCatModal(false)}
+          onSelectCategory={(value) => {
+            setSelectedCategory(value);
+            //setShowCatModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }
