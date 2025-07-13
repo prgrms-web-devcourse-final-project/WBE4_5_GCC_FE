@@ -78,12 +78,13 @@ export default function EmailConfirm() {
                 </Button>
               )}
 
-              {!confirm && (
-                <span className="ml-auto cursor-pointer border-b-1 border-[#9e9e9e] py-1 text-[#9e9e9e]">
+            {!confirm && (
+              <div className="flex justify-end">
+                <span className="mt-6 cursor-pointer border-b border-[#9e9e9e] text-sm text-[#9e9e9e]">
                   인증번호 재요청
                 </span>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )}
       </div>
