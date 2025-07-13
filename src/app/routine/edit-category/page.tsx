@@ -40,6 +40,7 @@ export default function page () {
             router.push("/routine/edit-subcategory");
           }
         }}
+        //isManage={true} // 관리자 페이지일 때 사용
       />
       <CategoryGrid
         categories={customCategories}

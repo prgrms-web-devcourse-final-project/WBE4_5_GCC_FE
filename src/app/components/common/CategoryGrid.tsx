@@ -9,6 +9,7 @@ interface CategoryGridProps {
   selected: string | null;
   onSelectCategory: (label: string) => void;
   isCustom?: boolean;
+  isManage?: boolean;
 }
 
 export default function CategoryGrid({
@@ -16,6 +17,7 @@ export default function CategoryGrid({
   selected,
   onSelectCategory,
   isCustom = false,
+  isManage = false,
 }: CategoryGridProps) {
   const { isEditMode } = useEditMode();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,9 +49,19 @@ export default function CategoryGrid({
               <CircleX className="w-[15px] h-auto fill-[#E0E0E0] text-[#616161]" />
             </button>
           )}
+          
+          {/* 관리자 카테고리 삭제 */}
+          {isEditMode && isManage && (
+            <button
+              className="absolute top-1.5 right-4 p-1 z-20"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <CircleX className="w-[15px] h-auto fill-[#E0E0E0] text-[#616161]" />
+            </button>
+          )}
         </div>
       ))}
-      
+
       {isModalOpen && (
         <AlertModal
           isOpen={true}
