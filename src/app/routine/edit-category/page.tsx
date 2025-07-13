@@ -16,21 +16,36 @@ const categories = [
   { icon: <span>👜</span>, label: '외출' },
 ];
 
+const customCategories = [
+  { icon: <span>🐾</span>, label: '반려동물' },
+];
+
 export default function page () {
   const router = useRouter();
-  const [selected, setSelected] = useState<string | null>(null);
+  //const [selected, setSelected] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<{
     icon: React.ReactNode | string;
     label: string;
   } | null>(null);
   
   return (
-    <div className="px-4 py-10">
+    <div className="flex flex-col gap-2 px-4 py-10">
       <CategoryGrid
         categories={categories}
         selected={selectedCategory?.label || null}
         onSelectCategory={(label) => {
           const category = categories.find((cat) => cat.label === label);
+          if (category) {
+            setSelectedCategory(category);
+            router.push("/routine/edit-subcategory");
+          }
+        }}
+      />
+      <CategoryGrid
+        categories={customCategories}
+        selected={selectedCategory?.label || null}
+        onSelectCategory={(label) => {
+          const category = customCategories.find((cat) => cat.label === label);
           if (category) {
             setSelectedCategory(category);
             router.push("/routine/edit-subcategory");
