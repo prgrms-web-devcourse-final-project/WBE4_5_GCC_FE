@@ -21,21 +21,25 @@ export default function DatePicker({
   const ref = useRef(null);
   const [pickerType, setPickerType] = useState<PickerType>('');
   const [viewDate, setViewDate] = useState(new Date());
+  const [hasUserSelected, setHasUserSelected] = useState(false);
 
   const toggleDatePicker = () => {
-    if (pickerType !== '') {
-      setPickerType('');
-    } else {
-      setPickerType('date');
-    }
+    setPickerType((prev) => (prev === 'date' ? '' : 'date'));
   };
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    setHasUserSelected(true); // 직접 선택한 날짜
+    setPickerType('');
+  };
+
   const renderPickerByType = (type: PickerType) => {
     switch (type) {
       case 'date':
         return (
           <CalendarDate
             selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
+            setSelectedDate={handleDateSelect}
             viewDate={viewDate}
             setViewDate={setViewDate}
             onChangePickerType={() => setPickerType('month')}
@@ -46,7 +50,7 @@ export default function DatePicker({
           <Month
             setPickerType={() => setPickerType('date')}
             selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
+            setSelectedDate={handleDateSelect}
             viewDate={viewDate}
             setViewDate={setViewDate}
           />
@@ -62,15 +66,15 @@ export default function DatePicker({
     : '날짜 선택 필요';
 
   return (
-    <div className="relative w-[62px] bg-red-100" ref={ref}>
+    <div className="relative w-[80px] text-xs" ref={ref}>
       <input
         type="text"
         value={displayDate}
-        className="focus-primary body1 w-full cursor-pointer rounded-[10px] p-4 text-center"
+        className={`focus-primary body1 w-full cursor-pointer rounded-[10px] text-center ${hasUserSelected ? 'text-[#222222]' : 'text-[#9E9E9E]'}`}
         readOnly
         onClick={toggleDatePicker}
       />
-      {pickerType !== '' && (
+      {pickerType && (
         <DatePickerWrapper>{renderPickerByType(pickerType)}</DatePickerWrapper>
       )}
     </div>

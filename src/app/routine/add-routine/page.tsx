@@ -64,7 +64,7 @@ export default function page() {
               label="시작일"
               value={startDate}
               className="rounded-t-lg"
-              onClick={() => console.log('제발')}
+              onClick={() => console.log('시작일')}
             />
             <ListSelector
               icon="♾️"
