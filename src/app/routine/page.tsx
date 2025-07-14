@@ -17,8 +17,8 @@ export default function Page() {
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
 
   const handleAdd = () => {
-    router.push("/routine/add-routine");
-  }
+    router.push('/routine/add-routine');
+  };
 
   return (
     <>
