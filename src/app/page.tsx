@@ -22,22 +22,22 @@ export default function Main() {
     router.push('/collection');
   };
 
-  // useEffect(() => {
-  //   try {
-  //     const fetchData = async () => {
-  //       // 유저 정보 불러오기 API
-  //       const userInfo = await me();
-  //       console.log('유저 정보:', userInfo);
-  //       // 오늘의 루틴 불러오기 API
-  //       UserRoutine();
-  //     };
-  //     fetchData();
-  //   } catch (error) {
-  //     console.error('유저 정보를 불러오지 못했습니다', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, []);
+  useEffect(() => {
+    try {
+      const fetchData = async () => {
+        // 유저 정보 불러오기 API
+        const userInfo = await me();
+        console.log('유저 정보:', userInfo);
+        // 오늘의 루틴 불러오기 API
+        UserRoutine();
+      };
+      fetchData();
+    } catch (error) {
+      console.error('유저 정보를 불러오지 못했습니다', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
   return (
     <>
       {loading && <div></div>}
