@@ -12,6 +12,7 @@ import {
   YAxis,
 } from 'recharts';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation'; // ✅ App Router용
 
 const dummyData = [
   { name: '월', uv: 180, pv: 50, xyz: 150, abc: 100 },
@@ -25,6 +26,7 @@ const dummyData = [
 
 export default function Page() {
   const [selectedIdx, setSelectedIdx] = useState(1);
+  const router = useRouter();
   return (
     <>
       <div className="mb-5 flex min-h-screen flex-col items-center bg-white px-8 pt-4">
@@ -111,7 +113,10 @@ export default function Page() {
             </div>
           </div>
           <div className="space-y-[13px]">
-            <div className="flex cursor-pointer rounded-[10px] border border-[#E0E0E0] px-1.5 py-6">
+            <div
+              className="flex cursor-pointer rounded-[10px] border border-[#E0E0E0] px-1.5 py-6"
+              onClick={() => router.push('/admin/category')}
+            >
               <div className="ml-2.5 flex flex-col justify-center gap-1.5">
                 <span className="text-base text-[#222]">카테고리 관리</span>
                 <span className="text-xs text-[#9e9e9e]">
@@ -126,7 +131,10 @@ export default function Page() {
                 className="ml-auto"
               />
             </div>
-            <div className="flex cursor-pointer rounded-[10px] border border-[#E0E0E0] px-1.5 py-6">
+            <div
+              className="flex cursor-pointer rounded-[10px] border border-[#E0E0E0] px-1.5 py-6"
+              onClick={() => router.push('/admin/shop')}
+            >
               <Image
                 src="/images/reportIcon.png"
                 alt="카테고리아이콘"
