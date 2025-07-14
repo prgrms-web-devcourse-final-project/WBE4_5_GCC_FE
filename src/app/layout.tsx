@@ -1,7 +1,7 @@
 import './globals.css';
 import './styles/calendar.css';
 import Header from './components/common/ui/Header';
-import BottomNav from './components/common/ui/BottomNav';
+import BottomNavWrapper from './components/common/ui/BottomNavWrapper';
 
 import type { Metadata } from 'next';
 
@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className="mt-[30px] pb-[110px]">
         <Header />
         {children}
-        <BottomNav />
+        <BottomNavWrapper />
       </body>
     </html>
   );
