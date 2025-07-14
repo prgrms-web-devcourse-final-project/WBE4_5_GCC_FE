@@ -23,7 +23,8 @@ export default function Profile() {
           src={character}
           alt="character"
           width={80} // 정확한 가로값 지정
-          height={125} // div에 맞춤
+          //height={125} // div에 맞춤
+          className="h-auto"
         />
         <div>
           <div className="z-20 mb-[7px] text-[10px] font-medium text-[#616161]">

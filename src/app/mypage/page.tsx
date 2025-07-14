@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import LogoutModal from '../components/common/LogoutModal';
-import SettingsItem from '../components/profile/SettingsItem';
+import SettingsItem from '../components/mypage/SettingsItem';
 import Button from '../components/common/ui/Button';
 import Profile from '../components/main/Profile';
 
@@ -15,7 +15,7 @@ export default function Page() {
   const [templateUse, setTemplateUse] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col items-center p-5">
+    <div className="h-1vh flex flex-col items-center p-5">
       <div className="w-full max-w-md">
         <Profile />
         <Button
