@@ -62,7 +62,7 @@ export default function DatePicker({
     : '날짜 선택 필요';
 
   return (
-    <div className="relative w-full bg-white" ref={ref}>
+    <div className="relative w-[62px] bg-red-100" ref={ref}>
       <input
         type="text"
         value={displayDate}

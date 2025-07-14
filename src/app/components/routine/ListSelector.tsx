@@ -1,6 +1,8 @@
 'use client';
 
-import { ChevronRight } from "lucide-react";
+import { useState } from 'react';
+import { ChevronRight } from 'lucide-react';
+import DatePicker from '@/app/components/routine/Calendar/DatePicker';
 
 interface CategorySelectorProps {
   icon: React.ReactNode;
@@ -12,7 +14,7 @@ interface CategorySelectorProps {
   className?: string;
 }
 
-export default function ListSelector ({
+export default function ListSelector({
   icon,
   label,
   value,
@@ -20,11 +22,13 @@ export default function ListSelector ({
   options = [],
   onClick,
   className,
-} : CategorySelectorProps) {
+}: CategorySelectorProps) {
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
-    <div className={`w-full h-12 border border-[#E0E0E0] px-4 py-4 flex justify-between items-center ${className ?? ''}`}>
-
+    <div
+      className={`flex h-12 w-full items-center justify-between border border-[#E0E0E0] px-4 py-4 ${className ?? ''}`}
+    >
       {/* 좌측 영역 */}
       <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
         <span>{icon}</span>
@@ -40,7 +44,13 @@ export default function ListSelector ({
         <span className={value ? 'text-[#222222]' : 'text-[#9E9E9E]'}>
           {value || placeholder}
         </span>
-        <ChevronRight className="w-auto h-3"/>
+        {label === '시작일' && (
+          <DatePicker
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+          />
+        )}
+        <ChevronRight className="h-3 w-auto" />
       </button>
     </div>
   );
