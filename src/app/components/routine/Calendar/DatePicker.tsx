@@ -70,7 +70,7 @@ export default function DatePicker({
       <input
         type="text"
         value={displayDate}
-        className={`focus-primary body1 w-full cursor-pointer rounded-[10px] text-center ${hasUserSelected ? 'text-[#222222]' : 'text-[#9E9E9E]'}`}
+        className={`focus-primary body1 w-full cursor-pointer rounded-[10px] text-center focus:border-transparent focus:ring-0 focus:outline-none ${hasUserSelected ? 'text-[#222222]' : 'text-[#9E9E9E]'}`}
         readOnly
         onClick={toggleDatePicker}
       />
