@@ -1,13 +1,33 @@
 'use client';
 
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, ListFilter } from 'lucide-react';
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import CollectionItemCard from '@/app/components/collection/CollectionItem';
 import CollectionBottomSheet from '@/app/components/collection/CollectionBottomSheet';
+import { Badges } from '@/api/badges';
+
+interface Badge {
+  badgeId: number;
+  badgeKey: string;
+  badgeName: string;
+  categoryName: string;
+  how: string;
+  info: string;
+  isReceived: boolean;
+  receivedDate: string;
+  requirement: number;
+  tier: 'BRONZE' | 'SILVER' | 'GOLD' | 'TROPHY';
+}
 
 const tabs = ['전체', '🏆', '🥇', '🥈', '🥉'];
+const tierEmojiMap: Record<Badge['tier'], string> = {
+  BRONZE: '🥉',
+  SILVER: '🥈',
+  GOLD: '🥇',
+  TROPHY: '🏆',
+};
 
 // dummy items
 const items = [
@@ -168,18 +188,34 @@ export default function Page() {
     '🥉': null,
     '🏆': null,
   });
+  const [badges, setBadges] = useState<Badge[]>([]);
+  const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
 
-  const handleSelect = (item: (typeof items)[number]) => {
+  const handleSelect = (badge: { category: string; id: number }) => {
     setSelectedItem((prev) => ({
       ...prev,
-      [item.category]: prev[item.category] === item.id ? null : item.id,
+      [badge.category]: prev[badge.category] === badge.id ? null : badge.id,
     }));
   };
 
-  const filteredItem =
+  const filteredBadges =
     selectedTab === '전체'
-      ? items
-      : items.filter((item) => item.category === selectedTab);
+      ? badges
+      : badges.filter((badge) => tierEmojiMap[badge.tier] === selectedTab);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await Badges();
+        setBadges(res.data);
+      } catch (error) {
+        console.error('업적 정보를 불러오지 못했습니다', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -219,14 +255,36 @@ export default function Page() {
               className="relative grid min-h-[340px] w-full grid-cols-3 gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[#D9D9D9] bg-white px-[15px] pt-[23px] pb-[54px]"
               style={{ columnGap: 'clamp(8px, 4vw, 21px)' }}
             >
-              {filteredItem.map((item) => (
-                <CollectionItemCard
-                  key={item.id}
-                  item={item}
-                  isSelected={selectedItem[item.category] === item.id}
-                  onSelect={handleSelect}
-                />
-              ))}
+              {filteredBadges.map((badge) => {
+                const tierEmojiMap: Record<Badge['tier'], string> = {
+                  BRONZE: '🥉',
+                  SILVER: '🥈',
+                  GOLD: '🥇',
+                  TROPHY: '🏆',
+                };
+
+                const item = {
+                  id: badge.badgeId,
+                  name: badge.badgeName,
+                  description: badge.how,
+                  image: {
+                    src: '/images/bedge/clean1.svg', // 이미지....흠
+                    width: 29,
+                    height: 43,
+                  },
+                  category: tierEmojiMap[badge.tier],
+                  isLocked: !badge.isReceived,
+                };
+
+                return (
+                  <CollectionItemCard
+                    key={item.id}
+                    item={item}
+                    isSelected={selectedItem[item.category] === item.id}
+                    onSelect={handleSelect}
+                  />
+                );
+              })}
 
               {/* 페이지네이션 */}
               <div className="absolute bottom-[13px] left-1/2 -translate-x-1/2">

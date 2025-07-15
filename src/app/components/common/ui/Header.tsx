@@ -27,6 +27,7 @@ export default function Header() {
             onClick={() => router.push('/')}
             className="h-auto cursor-pointer"
             style={{ height: 'auto' }}
+            priority
           />
           <Image
             src={bell}

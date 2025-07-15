@@ -55,6 +55,7 @@ export default function CollectionItemCard({
             alt="잠금아이콘"
             width={54}
             height={54}
+            priority
           />
         </div>
       )}
