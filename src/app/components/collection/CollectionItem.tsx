@@ -31,7 +31,7 @@ export default function CollectionItemCard({
     <div
       key={item.id}
       className={clsx(
-        'px-auto relative min-h-[123px] min-w-[92px] rounded-[5px] border text-center select-none',
+        'px-auto relative h-[123px] min-w-[92px] rounded-[5px] border text-center select-none',
         isSelected ? 'border-[#FFB84C]' : 'border-[#D9D9D9]',
       )}
       style={{
@@ -58,9 +58,9 @@ export default function CollectionItemCard({
           />
         </div>
       )}
-      <div className="h-14">
+      <div>
         <div
-          className={`${item.isLocked ? 'border-black/20' : 'border-[#E0E0E0]'} border-t-[0.5px] border-[#E0E0E0] px-[9px] pt-[6px] text-left`}
+          className={`${item.isLocked ? 'border-black/20' : 'border-[#E0E0E0]'} border-t-[0.5px] border-[#E0E0E0] px-[9px] text-left`}
         >
           <div className="text-[8px] font-medium">{item.name}</div>
           <div
@@ -73,7 +73,7 @@ export default function CollectionItemCard({
           <button
             onClick={() => onSelect(item)}
             className={clsx(
-              'mb-2 min-h-4 min-w-18 rounded-[3px] border border-[#E0E0E0] text-[8px]',
+              'h-4 min-w-18 rounded-[3px] border border-[#E0E0E0] text-[8px]',
               isSelected
                 ? 'border-[#FFB84C] bg-[#FFB84C] font-semibold text-white'
                 : 'border-[#E0E0E0] bg-white text-[#616161]',

@@ -183,7 +183,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen justify-center overflow-hidden">
+      <div className="h-1vh flex justify-center overflow-hidden">
         <div className="flex w-full max-w-md flex-col items-center">
           <BackHeader title="도감" />
           <div className="mt-7 mb-[22px] min-h-[340px] w-full min-w-[350px] px-5">
