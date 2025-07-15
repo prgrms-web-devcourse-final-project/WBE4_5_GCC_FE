@@ -19,14 +19,16 @@ export default function Donut({
       }}
     >
       <div
-        className="absolute rounded-full bg-white"
+        className="absolute flex items-center justify-center rounded-full bg-white text-[10px] font-semibold"
         style={{
-          top: '25%',
-          left: '25%',
-          width: '50%',
-          height: '50%',
+          top: '15%',
+          left: '15%',
+          width: '70%',
+          height: '70%',
         }}
-      ></div>
+      >
+        {percent}%
+      </div>
     </div>
   );
 }

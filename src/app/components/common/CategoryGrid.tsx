@@ -22,17 +22,25 @@ export default function CategoryGrid({
   const { isEditMode } = useEditMode();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [flash, setFlash] = useState(false);
+
+  const handleClick = (label: string) => {
+    onSelectCategory?.(label);
+    setFlash(true);
+    setTimeout(() => setFlash(false), 150);
+  };
+
   return (
     <div className="grid w-full grid-cols-3 gap-x-8 gap-y-3">
       {categories.map((cat, idx) => (
-        <div key={idx} className="relative w-full flex justify-center">
+        <div key={idx} className="relative flex w-full justify-center">
           <button
             key={idx}
-            onClick={() => onSelectCategory?.(cat.label)}
-            className="relative flex flex-col items-center gap-1 py-2.5 text-sm text-[#222222]"
+            onClick={() => handleClick(cat.label)}
+            className="relative flex cursor-pointer flex-col items-center gap-1 py-2.5 text-sm text-[#222222]"
           >
-            {selected === cat.label && (
-              <div className="absolute inset-0 z-10 rounded-[5px] bg-[#222222]/20 pointer-events-none" />
+            {selected === cat.label && flash && (
+              <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[#222222]/20" />
             )}
             <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[#F9F8FE]">
               {cat.icon}
@@ -43,20 +51,20 @@ export default function CategoryGrid({
           {/* 커스텀 카테고리 삭제 */}
           {isEditMode && isCustom && (
             <button
-              className="absolute top-1.5 right-4 p-1 z-20"
+              className="absolute top-1.5 right-4 z-20 p-1"
               onClick={() => setIsModalOpen(true)}
             >
-              <CircleX className="w-[15px] h-auto fill-[#E0E0E0] text-[#616161]" />
+              <CircleX className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]" />
             </button>
           )}
-          
+
           {/* 관리자 카테고리 삭제 */}
           {isEditMode && isManage && (
             <button
-              className="absolute top-1.5 right-4 p-1 z-20"
+              className="absolute top-1.5 right-4 z-20 p-1"
               onClick={() => setIsModalOpen(true)}
             >
-              <CircleX className="w-[15px] h-auto fill-[#E0E0E0] text-[#616161]" />
+              <CircleX className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]" />
             </button>
           )}
         </div>
