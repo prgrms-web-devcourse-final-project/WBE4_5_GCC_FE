@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import item1 from '@/app/assets/images/item1.png';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Items } from '@/api/items';
+import { ItemPurchaseByKey, Items } from '@/api/items';
 
 // 기능 구현때 삭제
 import { StaticImageData } from 'next/image';
@@ -264,14 +264,31 @@ export default function Practice() {
             name: selectedItem.itemName,
             price: selectedItem.itemPoint,
           }}
-          onConfirm={() => {
+          onConfirm={async () => {
             const canBuy = points >= selectedItem.itemPoint;
             const remainingPoints = points - selectedItem.itemPoint;
 
-            setAlertType(canBuy ? 'success' : 'failed');
-            setShowPAlert(true);
-            setShowPModal(false);
-            setPoints(remainingPoints);
+            if (!canBuy) {
+              setAlertType('failed');
+              setShowPAlert(true);
+              setShowPModal(false);
+              return;
+            }
+
+            try {
+              // 서버에 구매 요청 (포인트 차감)
+              await ItemPurchaseByKey(selectedItem.itemKey);
+              console.log('아이템 구매 성공');
+              // 클라이언트 포인트 갱신
+              setPoints(remainingPoints);
+              setAlertType('success');
+            } catch (error) {
+              console.error('아이템 구매 실패', error);
+              setAlertType('failed');
+            } finally {
+              setShowPAlert(true);
+              setShowPModal(false);
+            }
           }}
           onCancel={() => setShowPModal(false)}
         />
