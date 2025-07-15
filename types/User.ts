@@ -18,3 +18,12 @@ export interface User {
   region3Dept: string;
   isActive: boolean;
 }
+
+export interface Quest {
+  questKey: string;
+  questName: string;
+  questReward: number;
+  questInfo: string;
+  isDone: boolean;
+  questProgress: number;
+}
