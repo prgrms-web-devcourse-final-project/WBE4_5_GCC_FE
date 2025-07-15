@@ -42,8 +42,8 @@ export default function Main() {
     <>
       {loading && <div></div>}
       {!loading && (
-        <div className="relative flex min-h-screen flex-col items-center bg-white px-5">
-          <div className="absolute top-4 right-10 z-30">
+        <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col items-center bg-white">
+          <div className="absolute top-4 right-10 z-30 my-8">
             <FloatingButton
               src={quest}
               alt="quest"
@@ -63,19 +63,22 @@ export default function Main() {
             />
           </div>
           {openQuest && <Quest className="" setOpenQuest={setOpenQuest} />}
-          <Profile />
-          <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 py-11">
-            <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
-              <span className="text-xl font-semibold">2025년 7월 9일</span>
+          <div className="my-8 flex w-full px-5">
+            <Profile />
+          </div>
+          <div className="flex w-full flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 py-5">
+            <div className="mb-6 flex w-full flex-col justify-start">
+              <span className="text-xs font-semibold">2025년 7월 9일</span>
               <div className="flex items-center gap-1 text-[22px] font-bold">
                 <div>
-                  <span>오늘의 루틴</span>{' '}
-                  <span className="text-[#FFB84C]">4</span>
+                  <span>
+                    오늘의 루틴 <span className="text-[#FFB84C]">4</span>
+                  </span>
                 </div>
                 <Donut
                   width={46}
                   height={46}
-                  percent={30}
+                  percent={20}
                   className="ml-auto flex"
                 />
               </div>

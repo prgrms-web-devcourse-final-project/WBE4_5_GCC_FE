@@ -4,10 +4,11 @@ import BackHeader from '@/app/components/common/ui/BackHeader';
 import NextBtn from '@/app/components/common/ui/NextBtn';
 
 import { useSignUpStore } from '@/store/SignupStore';
-
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+
   const step = useSignUpStore((state) => state.step);
   const setStep = useSignUpStore((state) => state.setStep);
 
@@ -23,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const isNextEnabled = useSignUpStore((state) => state.isNextEnabled);
 
-  const signUpHandler = () => {};
+  const signUpHandler = () => { };
 
   const goNext = () => {
     if (step < 7) {
@@ -34,6 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         `전송된 정보: name: ${name}, email: ${email}, password: ${password}, wantEmail: ${wantEmail}, experience: ${residenceExperience}, categories: ${categories}, nickname: ${nickname}`,
       );
       signUpHandler();
+      router.push('/signup/complete');
     }
   };
 
@@ -43,7 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <BackHeader title="회원가입" useStep defaultBackPath="/login" />
         <div>{children}</div>
         <NextBtn
-          label="다음"
+          label={step === 6 ? '가입하기' : '다음'}
           onClick={goNext}
           disabled={!isNextEnabled}
           className={`${isNextEnabled ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}

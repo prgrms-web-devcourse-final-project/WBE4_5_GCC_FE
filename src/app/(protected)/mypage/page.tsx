@@ -16,7 +16,7 @@ export default function Page() {
   const [templateUse, setTemplateUse] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col items-center p-5">
+    <div className="h-1vh flex flex-col items-center p-5">
       <div className="w-full max-w-md">
         <Profile />
         <Button

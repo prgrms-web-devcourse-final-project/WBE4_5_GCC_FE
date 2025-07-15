@@ -42,7 +42,11 @@ export default function Page() {
               isCustom={true}
             />
           </div>
-          <CategoryEdit isOpen={isOpen} setIsOpen={setIsOpen} />
+          <CategoryEdit
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            label={selectedCategory?.label}
+          />
         </div>
       </div>
     </div>

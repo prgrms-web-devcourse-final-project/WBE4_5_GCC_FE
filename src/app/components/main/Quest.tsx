@@ -119,7 +119,7 @@ export default function Quest({
             className="h-[37px] min-w-[140px] text-[14px]"
           />
           <div
-            className={`mx-auto flex h-[569px] w-full min-w-[350px] flex-col items-center gap-4 overflow-scroll rounded-[8px] border-3 border-[#A47148] bg-white px-4 py-[18px] ${className}`}
+            className={`mx-auto flex h-[569px] w-full min-w-[350px] flex-col items-center gap-4 overflow-y-scroll rounded-[8px] rounded-tl-none border-3 border-[#A47148] bg-white px-4 py-[18px] ${className}`}
           >
             {filteredQuest.map((quest) => (
               <QuestList key={quest.id} quest={quest} />

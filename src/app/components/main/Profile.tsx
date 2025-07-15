@@ -5,7 +5,7 @@ import coin from '/public/coin.svg';
 
 export default function Profile() {
   return (
-    <div className="relative z-0 h-[167px] w-full min-w-[350px] overflow-hidden rounded-md">
+    <div className="relative z-0 flex h-[167px] w-full overflow-hidden rounded-md">
       <div className="absolute inset-0 z-5 bg-[#e5e5e5]/30"></div>
 
       {/* 배경 이미지 */}
@@ -23,7 +23,8 @@ export default function Profile() {
           src={character}
           alt="character"
           width={80} // 정확한 가로값 지정
-          height={125} // div에 맞춤
+          //height={125} // div에 맞춤
+          className="h-auto"
         />
         <div>
           <div className="z-20 mb-[7px] text-[10px] font-medium text-[#616161]">
