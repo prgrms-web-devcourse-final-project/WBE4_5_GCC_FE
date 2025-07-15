@@ -1,6 +1,8 @@
 'use client';
 import Image from 'next/image';
-import backBtn from '/public/BackPageBtn.svg';
+//import backBtn from '/public/BackPageBtn.svg';
+import { ChevronLeft } from 'lucide-react';
+
 import { useRouter } from 'next/navigation';
 import coin from '/public/coin.svg';
 
@@ -10,10 +12,8 @@ export default function ShopHeader() {
   return (
     <>
       <div className="relative flex h-[56px] w-[100%] items-center justify-center border-b-1 border-[#CCCCCC] px-5 select-none">
-        <Image
-          src={backBtn}
-          alt="뒤로가기"
-          className="absolute left-6 h-[24px] w-[24px] cursor-pointer"
+        <ChevronLeft
+          className="absolute left-6 h-[24px] w-[24px] cursor-pointer text-[#222222]"
           onClick={() => {
             router.push('/');
           }}
