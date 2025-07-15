@@ -5,7 +5,7 @@ import Button from '@/app/components/common/ui/Button';
 import RadioGroup from '@/app/components/profile/RadioGroup';
 import CustomCheckBox from '@/app/components/common/ui/CustomCheckBox';
 
-export default function page() {
+export default function Page() {
   const [selectedReason, setSelectedReason] = useState('');
   const [isAgreed, setIsAgreed] = useState(false);
   const [customReason, setCustomReason] = useState('');

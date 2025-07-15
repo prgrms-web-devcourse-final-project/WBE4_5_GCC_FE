@@ -1,4 +1,4 @@
-import ShopHeader from '../components/shop/ShopHeader';
+import ShopHeader from '@/app/components/shop/ShopHeader';
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (

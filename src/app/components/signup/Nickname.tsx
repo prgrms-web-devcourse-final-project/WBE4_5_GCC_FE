@@ -5,23 +5,30 @@ import { useSignUpStore } from '@/store/SignupStore';
 import { useEffect, useState } from 'react';
 import Input from '../common/ui/Input';
 import Button from '../common/ui/Button';
+import { nicknameCheck } from '@/api/api';
 
 export default function Nickname() {
   const nickname = useSignUpStore((state) => state.nickname);
   const setNickName = useSignUpStore((state) => state.setNickName);
-  const [checkNickName, setCheckNickName] = useState(false);
+  const [checkNickName, setCheckNickName] = useState<true | false | null>(null);
   const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
 
-  const [error, setError] = useState(false);
   const [okay, setOkay] = useState(false);
 
-  // 닉네임 중복 확인 로직 (미구현)
-  const checkHandler = () => {
-    setCheckNickName(true);
-    setOkay(true);
+  // 닉네임 중복 확인 로직
+  const checkHandler = async () => {
+    try {
+      await nicknameCheck(nickname);
+      setCheckNickName(true);
+      setOkay(true);
+    } catch (error) {
+      setCheckNickName(false);
+      console.log('닉네임 중복:', error);
+    }
   };
+
   // 중복 확인 후 넘어가기로 변경해야함
-  const goNext = checkNickName;
+  const goNext = checkNickName === true && okay;
 
   useEffect(() => {
     setIsNextEnabled(goNext);
@@ -39,7 +46,10 @@ export default function Nickname() {
             <Input
               value={nickname}
               placeholder="2~15자 이내로 입력해주세요"
-              onChange={(e) => setNickName(e.target.value)}
+              onChange={(e) => {
+                setNickName(e.target.value);
+                setOkay(false);
+              }}
             />
             <Button
               disabled={nickname === ''}
@@ -50,10 +60,10 @@ export default function Nickname() {
             </Button>
           </div>
         </div>
-        {error && (
+        {checkNickName === false && (
           <p className="text-[14px] text-red-500">중복된 닉네임 입니다.</p>
         )}
-        {okay && (
+        {checkNickName === true && (
           <p className="text-[14px] text-green-600">
             사용 가능한 닉네임 입니다.
           </p>

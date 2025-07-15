@@ -9,7 +9,7 @@ type SignUpState = {
   wantEmail: boolean;
   nickname: string;
   residenceExperience: string;
-  categories: string[];
+  categories: number[];
   setName: (name: string) => void;
   setEmail: (email: string) => void;
   setNickName: (nickname: string) => void;
@@ -17,7 +17,7 @@ type SignUpState = {
   setCheckPassword: (checkPassword: string) => void;
   setWantEmail: (wantEmail: boolean) => void;
   setResidenceExperience: (option: string) => void;
-  setCategories: (categories: string[]) => void;
+  setCategories: (categories: number[]) => void;
 
   // 페이지 렌더링 스텝
   step: number;

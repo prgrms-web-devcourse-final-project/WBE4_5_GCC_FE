@@ -1,6 +1,6 @@
 'use client';
+import Notification from '@/app/components/common/Notification';
 import { useState } from 'react';
-import Notification from '../components/common/Notification';
 
 export default function page() {
   const [openNoti, setOpenNoti] = useState(false);

@@ -26,10 +26,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const signUpHandler = () => {};
 
   const goNext = () => {
-    if (step < 6) {
+    if (step < 7) {
       setStep(step + 1);
     }
-    if (step === 6) {
+    if (step === 7) {
       console.log(
         `전송된 정보: name: ${name}, email: ${email}, password: ${password}, wantEmail: ${wantEmail}, experience: ${residenceExperience}, categories: ${categories}, nickname: ${nickname}`,
       );

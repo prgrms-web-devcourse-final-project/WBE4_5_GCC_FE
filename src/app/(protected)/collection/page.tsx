@@ -3,10 +3,9 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, ListFilter } from 'lucide-react';
-
-import BackHeader from '../components/common/ui/BackHeader';
-import CollectionItemCard from '../components/collection/CollectionItem';
-import CollectionBottomSheet from '../components/collection/CollectionBottomSheet';
+import BackHeader from '@/app/components/common/ui/BackHeader';
+import CollectionItemCard from '@/app/components/collection/CollectionItem';
+import CollectionBottomSheet from '@/app/components/collection/CollectionBottomSheet';
 
 const tabs = ['전체', '🏆', '🥇', '🥈', '🥉'];
 

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -11,23 +11,21 @@ const categories = [
   { icon: <span>🍳</span>, label: '요리' },
   { icon: <span>💸</span>, label: '소비' },
   { icon: <span>📄</span>, label: '행정' },
-  { icon: <span>🏃🏻</span>, label: '건강' }, 
+  { icon: <span>🏃🏻</span>, label: '건강' },
   { icon: <span>💡</span>, label: '자기개발' },
   { icon: <span>👜</span>, label: '외출' },
 ];
 
-const customCategories = [
-  { icon: <span>🐾</span>, label: '반려동물' },
-];
+const customCategories = [{ icon: <span>🐾</span>, label: '반려동물' }];
 
-export default function page () {
+export default function Page() {
   const router = useRouter();
   //const [selected, setSelected] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<{
     icon: React.ReactNode | string;
     label: string;
   } | null>(null);
-  
+
   return (
     <div className="flex flex-col gap-2 px-4 py-10">
       <CategoryGrid
@@ -37,7 +35,7 @@ export default function page () {
           const category = categories.find((cat) => cat.label === label);
           if (category) {
             setSelectedCategory(category);
-            router.push("/routine/edit-subcategory");
+            router.push('/routine/edit-subcategory');
           }
         }}
         //isManage={true} // 관리자 페이지일 때 사용
@@ -49,7 +47,7 @@ export default function page () {
           const category = customCategories.find((cat) => cat.label === label);
           if (category) {
             setSelectedCategory(category);
-            router.push("/routine/edit-subcategory");
+            router.push('/routine/edit-subcategory');
           }
         }}
         isCustom={true}
