@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import LogoutModal from '../components/common/LogoutModal';
-import SettingsItem from '../components/mypage/SettingsItem';
-import Button from '../components/common/ui/Button';
-import Profile from '../components/main/Profile';
+import LogoutModal from '../../components/common/LogoutModal';
+import SettingsItem from '../../components/profile/SettingsItem';
+import Button from '../../components/common/ui/Button';
+import Profile from '../../components/main/Profile';
+import { logout } from '@/api/api';
 
 export default function Page() {
   const router = useRouter();
@@ -71,6 +72,7 @@ export default function Page() {
           onClose={() => setShowLogoutModal(false)}
           onConfirm={() => {
             console.log('로그아웃');
+            logout(router);
             setShowLogoutModal(false);
           }}
         />

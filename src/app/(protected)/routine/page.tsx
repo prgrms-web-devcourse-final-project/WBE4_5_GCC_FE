@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import Routine from '../components/routine/Routine';
-import ProgressBar from '../components/common/PrgressBar';
-import CalendarBar from '../components/routine/CalendarBar';
-import CalendarBottomSheet from '../components/routine/CalendarBottomSheet';
+import CalendarBar from '@/app/components/routine/CalendarBar';
+import ProgressBar from '@/app/components/common/PrgressBar';
+import Routine from '@/app/components/routine/Routine';
+import CalendarBottomSheet from '@/app/components/routine/CalendarBottomSheet';
 
 type DatePiece = Date | null;
 type SelectedDate = DatePiece | [DatePiece, DatePiece];

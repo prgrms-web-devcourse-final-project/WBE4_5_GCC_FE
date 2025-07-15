@@ -1,15 +1,15 @@
 'use client';
 
-import ItemCard from '../components/shop/ItemCard';
-import Tabs from '../components/shop/Tabs';
 import { useState } from 'react';
 import item1 from '@/app/assets/images/item1.png';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import PurchaseModal from '../components/shop/PurchaseModal';
-import PurchaseAlert from '../components/shop/PurchaseAlert';
 
 // 기능 구현때 삭제
 import { StaticImageData } from 'next/image';
+import Tabs from '@/app/components/shop/Tabs';
+import ItemCard from '@/app/components/shop/ItemCard';
+import PurchaseModal from '@/app/components/shop/PurchaseModal';
+import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
 
 export default function Practice() {
   const tabList = ['전체', '상의', '하의', '액세서리'];

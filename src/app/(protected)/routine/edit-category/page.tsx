@@ -18,7 +18,7 @@ const categories = [
 
 const customCategories = [{ icon: <span>🐾</span>, label: '반려동물' }];
 
-export default function page() {
+export default function Page() {
   const router = useRouter();
   //const [selected, setSelected] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<{

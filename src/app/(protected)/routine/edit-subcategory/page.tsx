@@ -6,30 +6,32 @@ import { CircleMinus } from 'lucide-react';
 import { BadgeQuestionMark } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 
-export default function page () {
+export default function Page() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
       <div className="flex flex-col gap-7 px-5 py-7">
-
         <div className="flex items-center gap-3">
           {/* 좌측 아이콘 영역 */}
-          <div className="flex justify-center items-center w-[45px] h-[45px] rounded-lg border border-[#E0E0E0]">
-            <BadgeQuestionMark className="w-6 h-auto text-[#9E9E9E]" strokeWidth={2}/>
+          <div className="flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0]">
+            <BadgeQuestionMark
+              className="h-auto w-6 text-[#9E9E9E]"
+              strokeWidth={2}
+            />
           </div>
 
           {/* 우측 인풋 영역 */}
-          <div className="min-w-70 py-2 border border-transparent border-b-[#E0E0E0] text-xl text-[#9E9E9E]">
-            <input 
-              type="text" 
+          <div className="min-w-70 border border-transparent border-b-[#E0E0E0] py-2 text-xl text-[#9E9E9E]">
+            <input
+              type="text"
               placeholder="카테고리 이름 입력"
-              className="focus:outline-none focus:ring-0 focus:border-transparent"
+              className="focus:border-transparent focus:ring-0 focus:outline-none"
             />
           </div>
         </div>
 
         <button className="flex gap-2">
-          <CirclePlus className="w-5 h-auto fill-[#388E3C] text-white "/>
+          <CirclePlus className="h-auto w-5 fill-[#388E3C] text-white" />
           <p className="text-medium text-base text-[#388E3C]">세부 카테고리</p>
         </button>
 
@@ -37,18 +39,18 @@ export default function page () {
         <div className="flex flex-col gap-5">
           <div className="flex gap-2.5">
             <button onClick={() => setIsModalOpen(true)}>
-              <CircleMinus className="w-5 h-auto fill-[#D32F2F] text-white "/>
+              <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white" />
             </button>
-            <p className="min-w-[307px] text-sm text-black border border-transparent border-b-[#E0E0E0]">
+            <p className="min-w-[307px] border border-transparent border-b-[#E0E0E0] text-sm text-black">
               잠옷
             </p>
           </div>
 
           <div className="flex gap-2.5">
             <button onClick={() => setIsModalOpen(true)}>
-              <CircleMinus className="w-5 h-auto fill-[#D32F2F] text-white "/>
+              <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white" />
             </button>
-            <p className="min-w-[307px] text-sm text-black border border-transparent border-b-[#E0E0E0]">
+            <p className="min-w-[307px] border border-transparent border-b-[#E0E0E0] text-sm text-black">
               작업복
             </p>
           </div>

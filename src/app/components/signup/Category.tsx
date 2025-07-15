@@ -43,8 +43,8 @@ export default function Category() {
   };
 
   useEffect(() => {
-    const selectedOptions = selectedIndex.map((i) => serverOptions[i]);
-    setCategories(selectedOptions);
+    const sorted = [...selectedIndex].sort((a, b) => a - b);
+    setCategories(sorted);
   }, [selectedIndex, setCategories]);
 
   // 하나 이상 선택되었을 때만 다음 버튼 활성화
@@ -53,6 +53,7 @@ export default function Category() {
   useEffect(() => {
     setIsNextEnabled(goNext);
   }, [setIsNextEnabled, goNext]);
+
   return (
     <>
       <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 select-none">

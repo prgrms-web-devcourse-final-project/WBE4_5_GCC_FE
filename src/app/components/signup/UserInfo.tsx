@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { useSignUpStore } from '@/store/SignupStore';
 import Input from '../common/ui/Input';
 import Button from '../common/ui/Button';
+import { emailCheck } from '@/api/api';
 
 export default function UserInfo() {
   const name = useSignUpStore((state) => state.name);
@@ -20,6 +21,9 @@ export default function UserInfo() {
   const setEmail = useSignUpStore((state) => state.setEmail);
   const setPassword = useSignUpStore((state) => state.setPassword);
   const setCheckPassword = useSignUpStore((state) => state.setCheckPassword);
+
+  const [canUseEmail, setCanUseEmail] = useState<true | false | null>(null);
+  const [okay, setOkay] = useState(false);
 
   // 비밀번호 유효성 검사
   // 영문 대소문자
@@ -44,12 +48,18 @@ export default function UserInfo() {
   // 비밀번호 텍스트로 변경
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPassword, setShowCheckPassword] = useState(false);
-  // 눌렀을 때
-  const PasswordPressStart = () => setShowPassword(true);
-  const checkPasswordPressStart = () => setShowCheckPassword(true);
-  // 뗐을 때
-  const PasswordPressEnd = () => setShowPassword(false);
-  const checkPasswordPressEnd = () => setShowCheckPassword(false);
+
+  // 이메일 중복 확인 로직
+  const checkHandler = async () => {
+    try {
+      await emailCheck(email);
+      setCanUseEmail(true);
+      setOkay(true);
+    } catch (error) {
+      setCanUseEmail(false);
+      console.log('닉네임 중복:', error);
+    }
+  };
 
   // 다음 버튼 활성화 조건
   const isPasswordOkay =
@@ -57,6 +67,8 @@ export default function UserInfo() {
   const goNext =
     name.trim() !== '' &&
     email.trim() !== '' &&
+    canUseEmail === true &&
+    okay &&
     isPasswordOkay &&
     password === checkPassword;
 
@@ -83,10 +95,25 @@ export default function UserInfo() {
           <div className="flex gap-[10px]">
             <Input
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setOkay(false);
+              }}
               placeholder="이메일을 입력해주세요"
             />
-            <Button className="w-[75px]">중복 확인</Button>
+            <Button className="w-[75px]" onClick={checkHandler}>
+              중복 확인
+            </Button>
+          </div>
+          <div className="mt-2">
+            {canUseEmail === false && (
+              <p className="text-[14px] text-red-500">중복된 이메일 입니다.</p>
+            )}
+            {canUseEmail === true && (
+              <p className="text-[14px] text-green-600">
+                사용 가능한 이메일 입니다.
+              </p>
+            )}
           </div>
         </div>
         {/* 비밀번호 */}
@@ -108,11 +135,6 @@ export default function UserInfo() {
               height={20}
               className="absolute right-5"
               onClick={() => setShowPassword((prev) => !prev)}
-              //onMouseDown={PasswordPressStart} // PC
-              //onMouseUp={PasswordPressEnd} // PC
-              //onMouseLeave={PasswordPressEnd} // PC
-              //onTouchStart={PasswordPressStart} // 모바일
-              //onTouchEnd={PasswordPressEnd} // 모바일
             />
           </div>
           {/* 비밀번호 확인 체크 */}
@@ -139,7 +161,7 @@ export default function UserInfo() {
               <div className="flex w-[160px] items-center gap-[6px]">
                 <Image src={checkConditionImage(hasSpecial)} alt="check" />
                 <span className={checkConditionText(hasSpecial)}>
-                  특수 문자 포함(\ " 제외)
+                  특수 문자 포함( \ " 제외)
                 </span>
               </div>
             </div>
@@ -164,11 +186,6 @@ export default function UserInfo() {
               height={20}
               className="absolute right-5"
               onClick={() => setShowCheckPassword((prev) => !prev)}
-              //onMouseDown={checkPasswordPressStart} // PC
-              //onMouseUp={checkPasswordPressEnd} // PC
-              //onMouseLeave={checkPasswordPressEnd} // PC
-              //onTouchStart={checkPasswordPressStart} // 모바일
-              //onTouchEnd={checkPasswordPressEnd} // 모바일
             />
           </div>
         </div>
