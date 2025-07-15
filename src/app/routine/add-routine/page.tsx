@@ -21,12 +21,10 @@ export default function page() {
   const [importance, setImportance] = useState(false);
   const [showCatModal, setShowCatModal] = useState(false);
   const [notification, setNotification] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<React.ReactNode>('');
 
   const [isCycleOpen, setIsCycleOpen] = useState(false);
   const [isWhenDoOpen, setIsWhenDoOpen] = useState(false);
-  //const [selectedDate, setSelectedDate] = useState(new Date());
-  //const [isDatePickerModalOpen, setIsDatePickerModalOpen] = useState(false);
 
   const isSubmitEnabled =
     selectedCategory !== '' &&
@@ -116,7 +114,7 @@ export default function page() {
             onClose={() => setShowCatModal(false)}
             onSelectCategory={(value) => {
               setSelectedCategory(value);
-              //setShowCatModal(false);
+              setShowCatModal(false);
             }}
           />
         )}

@@ -32,43 +32,56 @@ export default function CategoryGrid({
 
   return (
     <div className="grid w-full grid-cols-3 gap-x-8 gap-y-3">
-      {categories.map((cat, idx) => (
-        <div key={idx} className="relative flex w-full justify-center">
-          <button
-            key={idx}
-            onClick={() => handleClick(cat.label)}
-            className="relative flex cursor-pointer flex-col items-center gap-1 py-2.5 text-sm text-[#222222]"
-          >
-            {selected === cat.label && flash && (
-              <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[#222222]/20" />
+      {categories.map((cat, idx) => {
+        const isSelected = selected === cat.label;
+
+        console.log(
+          'selected:',
+          selected,
+          'cat.label:',
+          cat.label,
+          'match:',
+          selected === cat.label,
+        );
+        return (
+          <div key={idx} className="relative flex w-full justify-center">
+            <button
+              onClick={() => onSelectCategory?.(cat.label)}
+              className={`relative flex w-full flex-col items-center gap-1 py-2.5 text-sm text-[#222222] ${
+                isSelected ? 'bg-gray-200' : 'bg-transparent'
+              } rounded-[5px] transition`}
+            >
+              {isSelected && (
+                <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[#222222]/20" />
+              )}
+              <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[#F9F8FE]">
+                {cat.icon}
+              </div>
+              <span>{cat.label}</span>
+            </button>
+
+            {/* 커스텀 카테고리 삭제 */}
+            {isEditMode && isCustom && (
+              <button
+                className="absolute top-1.5 right-4 z-20 p-1"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <CircleX className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]" />
+              </button>
             )}
-            <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[#F9F8FE]">
-              {cat.icon}
-            </div>
-            <span>{cat.label}</span>
-          </button>
 
-          {/* 커스텀 카테고리 삭제 */}
-          {isEditMode && isCustom && (
-            <button
-              className="absolute top-1.5 right-4 z-20 p-1"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <CircleX className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]" />
-            </button>
-          )}
-
-          {/* 관리자 카테고리 삭제 */}
-          {isEditMode && isManage && (
-            <button
-              className="absolute top-1.5 right-4 z-20 p-1"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <CircleX className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]" />
-            </button>
-          )}
-        </div>
-      ))}
+            {/* 관리자 카테고리 삭제 */}
+            {isEditMode && isManage && (
+              <button
+                className="absolute top-1.5 right-4 z-20 p-1"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <CircleX className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]" />
+              </button>
+            )}
+          </div>
+        );
+      })}
 
       {isModalOpen && (
         <AlertModal

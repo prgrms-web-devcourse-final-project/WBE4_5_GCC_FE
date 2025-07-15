@@ -1,6 +1,4 @@
-import { ReactNode } from 'react';
-
 export interface Category {
-  icon: ReactNode | string;
+  icon: React.ReactNode | string;
   label: string;
 }
