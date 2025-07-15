@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import item1 from '@/app/assets/images/item1.png';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Items } from '@/api/items';
 
 // 기능 구현때 삭제
 import { StaticImageData } from 'next/image';
@@ -10,8 +11,20 @@ import Tabs from '@/app/components/shop/Tabs';
 import ItemCard from '@/app/components/shop/ItemCard';
 import PurchaseModal from '@/app/components/shop/PurchaseModal';
 import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
+import ShopLayout from './layout';
+import ShopHeader from '@/app/components/shop/ShopHeader';
+
+interface Item {
+  itemId: number;
+  itemKey: string;
+  itemName: string;
+  itemPoint: number;
+  itemType: 'TOP' | 'BOTTOM' | 'ACCESSORY';
+}
 
 export default function Practice() {
+  // 나중엔 true로 바꿔야함
+  const [loading, setLoading] = useState(false);
   const tabList = ['전체', '상의', '하의', '액세서리'];
   const [selectedTab, setSelectedTab] = useState(tabList[0]);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
@@ -20,156 +33,180 @@ export default function Practice() {
   const [showPModal, setShowPModal] = useState(false);
   const [showPAlert, setShowPAlert] = useState(false);
 
-  // 테스트
-  const userPoint = 1200;
+  const [items, setItems] = useState<Item[]>([]);
 
-  type Item = {
-    id: number;
-    image: StaticImageData;
-    name: string;
-    description: string;
-    category: string;
-    price: number;
+  // 테스트
+  //const userPoint = 1200;
+  const [points, setPoints] = useState(1200);
+
+  const tabMap: Record<string, Item['itemType']> = {
+    상의: 'TOP',
+    하의: 'BOTTOM',
+    액세서리: 'ACCESSORY',
   };
 
-  const items = [
-    {
-      id: 1,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
-      price: 200,
-    },
-    {
-      id: 2,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
-      price: 1000,
-    },
-    {
-      id: 3,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
-      price: 700,
-    },
-    {
-      id: 4,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '하의',
-      price: 800,
-    },
-    {
-      id: 5,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 2200,
-    },
-    {
-      id: 6,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 5200,
-    },
-    {
-      id: 7,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 200,
-    },
-    {
-      id: 8,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 100,
-    },
-    {
-      id: 9,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 900,
-    },
-    {
-      id: 10,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 10,
-    },
-    {
-      id: 11,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 300,
-    },
-    {
-      id: 12,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 1200,
-    },
-    {
-      id: 13,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
-      price: 1200,
-    },
-    {
-      id: 14,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '하의',
-      price: 6200,
-    },
-    {
-      id: 15,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '하의',
-      price: 200,
-    },
-    {
-      id: 16,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '하의',
-      price: 1200,
-    },
-  ];
+  //type Item = {
+  //  id: number;
+  //  image: StaticImageData;
+  //  name: string;
+  //  description: string;
+  //  category: string;
+  //  price: number;
+  //};
+
+  //const dummyItems = [
+  //  {
+  //    id: 1,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '상의',
+  //    price: 200,
+  //  },
+  //  {
+  //    id: 2,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '상의',
+  //    price: 1000,
+  //  },
+  //  {
+  //    id: 3,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '상의',
+  //    price: 700,
+  //  },
+  //  {
+  //    id: 4,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '하의',
+  //    price: 800,
+  //  },
+  //  {
+  //    id: 5,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '액세서리',
+  //    price: 2200,
+  //  },
+  //  {
+  //    id: 6,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '액세서리',
+  //    price: 5200,
+  //  },
+  //  {
+  //    id: 7,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '액세서리',
+  //    price: 200,
+  //  },
+  //  {
+  //    id: 8,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '액세서리',
+  //    price: 100,
+  //  },
+  //  {
+  //    id: 9,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '액세서리',
+  //    price: 900,
+  //  },
+  //  {
+  //    id: 10,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '액세서리',
+  //    price: 10,
+  //  },
+  //  {
+  //    id: 11,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '액세서리',
+  //    price: 300,
+  //  },
+  //  {
+  //    id: 12,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '액세서리',
+  //    price: 1200,
+  //  },
+  //  {
+  //    id: 13,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '상의',
+  //    price: 1200,
+  //  },
+  //  {
+  //    id: 14,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '하의',
+  //    price: 6200,
+  //  },
+  //  {
+  //    id: 15,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '하의',
+  //    price: 200,
+  //  },
+  //  {
+  //    id: 16,
+  //    image: item1,
+  //    name: '인형탈',
+  //    description: '누군가 닮았어요.',
+  //    category: '하의',
+  //    price: 1200,
+  //  },
+  //];
 
   const filteredItem =
     selectedTab === '전체'
       ? items
-      : items.filter((item) => item.category === selectedTab);
+      : items.filter((item) => item.itemType === tabMap[selectedTab]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const res = await Items();
+        setItems(res.data);
+      } catch (error) {
+        console.error('불러오기 실패', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchItems();
+  }, []);
 
   return (
     <>
+      <ShopHeader points={points} />
       <div className="mx-auto mt-[50px] flex w-full max-w-screen-sm flex-col px-5">
         <Tabs
           tabs={tabList}
@@ -181,11 +218,17 @@ export default function Practice() {
           <div className="grid grid-cols-3 gap-5">
             {filteredItem.map((item) => (
               <ItemCard
-                key={item.id}
-                item={item}
+                key={item.itemId}
+                item={{
+                  id: item.itemId,
+                  image: item1,
+                  name: item.itemName,
+                  description: '',
+                  price: item.itemPoint,
+                }}
                 onClick={() => {
                   setSelectedItem(item);
-                  setSelectedPrice(item.price);
+                  setSelectedPrice(item.itemPoint);
                   setShowPModal(true);
                 }}
               />
@@ -216,13 +259,19 @@ export default function Practice() {
           title="해당 아이템을 구매할까요?"
           confirmText="구매"
           cancelText="취소"
-          item={selectedItem}
+          item={{
+            image: item1,
+            name: selectedItem.itemName,
+            price: selectedItem.itemPoint,
+          }}
           onConfirm={() => {
-            setAlertType(
-              userPoint >= selectedItem.price ? 'success' : 'failed',
-            );
+            const canBuy = points >= selectedItem.itemPoint;
+            const remainingPoints = points - selectedItem.itemPoint;
+
+            setAlertType(canBuy ? 'success' : 'failed');
             setShowPAlert(true);
             setShowPModal(false);
+            setPoints(remainingPoints);
           }}
           onCancel={() => setShowPModal(false)}
         />
@@ -234,7 +283,7 @@ export default function Practice() {
           isOpen={true}
           type={alertType}
           onConfirm={() => setShowPAlert(false)}
-          userPoint={userPoint}
+          userPoint={points}
           itemPrice={selectedPrice ?? undefined}
         />
       )}
