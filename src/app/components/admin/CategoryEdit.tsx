@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BottomSheet from '../common/ui/BottomSheet';
 import Input from '../common/ui/Input';
 import { X } from 'lucide-react';
@@ -8,14 +8,21 @@ import { X } from 'lucide-react';
 export default function CategoryEdit({
   isOpen,
   setIsOpen,
+  label,
 }: {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  label?: string;
 }) {
   const [value, setValue] = useState('');
+
   const handleClick = () => {
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (label) setValue(label);
+  }, [label]);
   return (
     <>
       <BottomSheet

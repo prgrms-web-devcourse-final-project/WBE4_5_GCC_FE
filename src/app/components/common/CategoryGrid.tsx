@@ -22,6 +22,14 @@ export default function CategoryGrid({
   const { isEditMode } = useEditMode();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [flash, setFlash] = useState(false);
+
+  const handleClick = (label: string) => {
+    onSelectCategory?.(label);
+    setFlash(true);
+    setTimeout(() => setFlash(false), 150);
+  };
+
   return (
     <div className="grid w-full grid-cols-3 gap-x-8 gap-y-3">
       {categories.map((cat, idx) => {

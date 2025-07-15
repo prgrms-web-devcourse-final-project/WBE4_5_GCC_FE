@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Button from '@/app/components/common/ui/Button';
-import RadioGroup from '@/app/components/profile/RadioGroup';
+import RadioGroup from '@/app/components/mypage/RadioGroup';
 import CustomCheckBox from '@/app/components/common/ui/CustomCheckBox';
 
 export default function page() {

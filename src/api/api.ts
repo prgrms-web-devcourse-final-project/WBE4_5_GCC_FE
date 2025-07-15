@@ -41,8 +41,7 @@ export const handleSignUp = async (
 };
 
 export const me = async () => {
-  const { data }: { data: User } =
-    await axiosInstance.get('/api/v1/members/me');
+  const { data }: { data: User } = await axiosInstance.get('/api/v1/members');
   return data;
 };
 
