@@ -12,7 +12,7 @@ import CategoryBottomSheetContainer from '@/app/components/common/CategoryBottom
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
 
-export default function page() {
+export default function Page() {
   const [cycle, setCycle] = useState('');
   const [doWhen, setDoWhen] = useState('');
   const [startDate, setStartDate] = useState('');

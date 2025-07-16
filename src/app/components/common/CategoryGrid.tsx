@@ -35,14 +35,14 @@ export default function CategoryGrid({
       {categories.map((cat, idx) => {
         const isSelected = selected === cat.label;
 
-        console.log(
-          'selected:',
-          selected,
-          'cat.label:',
-          cat.label,
-          'match:',
-          selected === cat.label,
-        );
+        // console.log(
+        //   'selected:',
+        //   selected,
+        //   'cat.label:',
+        //   cat.label,
+        //   'match:',
+        //   selected === cat.label,
+        // );
         return (
           <div key={idx} className="relative flex w-full justify-center">
             <button

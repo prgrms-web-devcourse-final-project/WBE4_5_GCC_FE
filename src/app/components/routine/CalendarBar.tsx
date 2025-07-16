@@ -30,7 +30,7 @@ export default function CalendarBar({ setIsOpen }: CalendarBarProps) {
     };
   });
 
-  console.log(setDate);
+  // console.log(setDate);
   return (
     <div className="mb-[30px] w-full max-w-md px-5">
       <div className="mb-[27px] flex items-center justify-start gap-1.5">

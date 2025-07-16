@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { PencilLine } from 'lucide-react';
 import CategoryGrid from './CategoryGrid';
@@ -24,13 +22,13 @@ const categories: Category[] = [
 ];
 
 const subCategoryMap: Record<string, string[]> = {
-  '청소 / 정리': ['욕실', '주방', '거실', '창고'],
-  '세탁 / 의류': ['빨래', '옷장 정리', '스타일링'],
-  '쓰레기 / 환경': ['분리수거', '음식물', '재활용'],
-  요리: ['아침 준비', '도시락', '저녁 요리'],
-  소비: ['지출 점검', '영수증 정리', '예산 설정'],
-  행정: ['서류 작성', '정부서비스 신청', '주소 변경'],
-  운동: ['스트레칭', '러닝', '홈트레이닝'],
+  '청소 / 정리': ['선택안함', '욕실', '주방', '거실', '창고'],
+  '세탁 / 의류': ['선택안함', '빨래', '옷장 정리', '스타일링'],
+  '쓰레기 / 환경': ['선택안함', '분리수거', '음식물', '재활용'],
+  요리: ['선택안함', '아침 준비', '도시락', '저녁 요리'],
+  소비: ['선택안함', '지출 점검', '영수증 정리', '예산 설정'],
+  행정: ['선택안함', '서류 작성', '정부서비스 신청', '주소 변경'],
+  운동: ['선택안함', '스트레칭', '러닝', '홈트레이닝'],
 };
 
 export default function CategoryBottomSheetContainer({
@@ -120,7 +118,7 @@ export default function CategoryBottomSheetContainer({
         {/* SubCategory 오버레이 화면 */}
         {showSubCategory && (
           <div
-            className="animate-slide-in fixed inset-0 z-50 flex items-end justify-center bg-transparent"
+            className="animate-slide-in ihttps://roadmap.sh/frontendtems-end fixed inset-0 z-50 flex justify-center bg-transparent"
             onClick={handleOutsideClick}
           >
             <div

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import BottomSheet from '../common/ui/BottomSheet';
-import { ChevronDown } from 'lucide-react';
+// import { ChevronDown } from 'lucide-react';
 import WeekPicker from './WeekPicker';
 import ThreeToggle from './ThreeToggle';
 
@@ -39,6 +39,7 @@ export default function RepeatSelector() {
             setSelectedIdx={setSelectedIdx}
           />
           <div className="mx-[5px] flex flex-col">
+            {/* 요일 선택 */}
             <div className="my-[27px] flex flex-col">
               <span className="text-sm font-semibold">요일 선택</span>
               <div className="mt-[18px] mr-2 mb-[22px] ml-[18px] flex justify-between">
@@ -73,9 +74,10 @@ export default function RepeatSelector() {
                         : '요일 미선택'}{' '}
                     / {selectedWeek === '1' ? '매주' : `${selectedWeek}주마다`}
                   </span>
-                  <ChevronDown className="h-3.5 w-3.5 cursor-pointer text-[#616161]" />
+                  {/* <ChevronDown className="h-3.5 w-3.5 cursor-pointer text-[#616161]" /> */}
                 </div>
               </div>
+              {/* 주 반복 설정 */}
               <div className="inline-flex w-fit items-center gap-2 self-center">
                 <div className="w-[150px]">
                   <WeekPicker onChange={setSelectedWeek} />
