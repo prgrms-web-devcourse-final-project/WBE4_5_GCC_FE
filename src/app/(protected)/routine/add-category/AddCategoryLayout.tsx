@@ -3,12 +3,12 @@
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 
-export default function EditSubcategoryLayout({
+export default function AddCategoryLayout({
   children,
   onComplete,
 }: {
   children: React.ReactNode;
-  onComplete?: () => void;
+  onComplete: () => void;
 }) {
   return (
     <div>
@@ -24,7 +24,7 @@ export default function EditSubcategoryLayout({
           </div>
 
           <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222]">
-            세탁/의류
+            카테고리 추가
           </div>
 
           <div className="text-medium flex gap-[7px] text-sm text-[#616161]">

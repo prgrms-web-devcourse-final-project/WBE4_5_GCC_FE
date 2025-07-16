@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { format } from 'date-fns';
+
 import Button from '@/app/components/common/ui/Button';
 import ListSelector from '@/app/components/routine/ListSelector';
 import ToggleSwitch from '@/app/components/common/ui/ToggleSwitch';
@@ -11,6 +11,7 @@ import CategoryBottomSheetContainer from '@/app/components/common/CategoryBottom
 
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
+import { CategoryItem } from '../../../../../types/types';
 
 export default function page() {
   const [cycle, setCycle] = useState('');
@@ -21,13 +22,15 @@ export default function page() {
   const [importance, setImportance] = useState(false);
   const [showCatModal, setShowCatModal] = useState(false);
   const [notification, setNotification] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<React.ReactNode>('');
+  const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(
+    null,
+  );
 
   const [isCycleOpen, setIsCycleOpen] = useState(false);
   const [isWhenDoOpen, setIsWhenDoOpen] = useState(false);
 
   const isSubmitEnabled =
-    selectedCategory !== '' &&
+    selectedCategory !== null &&
     routineName !== '' &&
     startDate !== '' &&
     cycle !== '' &&
@@ -113,6 +116,7 @@ export default function page() {
           <CategoryBottomSheetContainer
             onClose={() => setShowCatModal(false)}
             onSelectCategory={(value) => {
+              console.log('선택된 카테고리:', value);
               setSelectedCategory(value);
               setShowCatModal(false);
             }}
