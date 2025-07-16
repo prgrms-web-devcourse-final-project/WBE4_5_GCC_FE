@@ -21,7 +21,7 @@ export default function ItemCard({ item, onClick }: ItemCardProps) {
         onClick={onClick}
       >
         <div className="px-5 py-3">
-          <Image src={item1} alt="item" className="h-[44px] w-[50px]" />
+          <Image src={item1} alt="item" width={50} height={44} />
         </div>
         <div className="border-t-[0.5px] border-[#E0E0E0] px-[9px] py-[6px] text-left">
           <div className="text-[8px] font-medium">{item.name}</div>
