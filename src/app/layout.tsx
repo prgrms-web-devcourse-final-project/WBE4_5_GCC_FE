@@ -1,7 +1,6 @@
 import './globals.css';
 import './styles/calendar.css';
-import Header from './components/common/ui/Header';
-import BottomNavWrapper from './components/common/ui/BottomNavWrapper';
+import LayoutWrapper from './components/common/LayoutWrapper';
 
 import type { Metadata } from 'next';
 
@@ -17,10 +16,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="mt-[30px] pb-[110px]">
-        <Header />
-        {children}
-        <BottomNavWrapper />
+      <head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+      </head>
+      <body className="mt-[44px] pb-[110px]">
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );
