@@ -6,7 +6,7 @@ import { CircleMinus } from 'lucide-react';
 import { BadgeQuestionMark } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 import { useSearchParams } from 'next/navigation';
-import { Categories } from '@/api/categories';
+import { Categories, CreateCategory } from '@/api/categories';
 import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
 
 interface CategoryItem {
@@ -28,6 +28,27 @@ export default function Page() {
   const [categoryType, setCategoryType] = useState<
     'MAJOR' | 'SUB' | 'CUSTOM' | null
   >(null);
+
+  const handleAddSubCategory = async (newSubCatName: string) => {
+    try {
+      const res = await CreateCategory({
+        categoryName: newSubCatName,
+        categoryType: 'SUB',
+        parentName: label, // 부모 카테고리
+      });
+      console.log('서브 카테고리 추가 성공', res);
+      // 다시 fetch
+      const updated = await Categories();
+      setSubCategories(
+        updated.data.filter(
+          (cat: CategoryItem) =>
+            cat.categoryType === 'SUB' && cat.parentName === label,
+        ),
+      );
+    } catch (error) {
+      console.log('추가 실패', error);
+    }
+  };
 
   useEffect(() => {
     if (labelFromParams) setLabel(labelFromParams);
@@ -122,6 +143,7 @@ export default function Page() {
       {isBottomSheetOpen && (
         <CategoryNameInputBottomSheet
           onClose={() => setIsBottomSheetOpen(false)}
+          onSubmit={handleAddSubCategory}
         />
       )}
     </>
