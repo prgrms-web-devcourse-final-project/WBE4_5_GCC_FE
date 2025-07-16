@@ -1,37 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PencilLine } from 'lucide-react';
 import CategoryGrid from './CategoryGrid';
 import { useRouter } from 'next/navigation';
 import { ChevronRight } from 'lucide-react';
 import SubCategoryGrid from './SubCategoryGrid';
 import { Category } from '../../../../types/types';
+import { Categories } from '@/api/categories';
 
 interface Props {
   onClose: () => void;
   onSelectCategory: (value: React.ReactNode) => void;
 }
 
-const categories: Category[] = [
-  { icon: <span>🧹</span>, label: '청소 / 정리' },
-  { icon: <span>🧺</span>, label: '세탁 / 의류' },
-  { icon: <span>♻️</span>, label: '쓰레기 / 환경' },
-  { icon: <span>🍳</span>, label: '요리' },
-  { icon: <span>💸</span>, label: '소비' },
-  { icon: <span>📄</span>, label: '행정' },
-  { icon: <span>🏃🏻</span>, label: '운동' },
-];
+interface CategoryItem {
+  categoryId: number;
+  categoryName: string;
+  categoryType: 'MAJOR' | 'SUB';
+  parentName: string | null;
+}
 
-const subCategoryMap: Record<string, string[]> = {
-  '청소 / 정리': ['욕실', '주방', '거실', '창고'],
-  '세탁 / 의류': ['빨래', '옷장 정리', '스타일링'],
-  '쓰레기 / 환경': ['분리수거', '음식물', '재활용'],
-  요리: ['아침 준비', '도시락', '저녁 요리'],
-  소비: ['지출 점검', '영수증 정리', '예산 설정'],
-  행정: ['서류 작성', '정부서비스 신청', '주소 변경'],
-  운동: ['스트레칭', '러닝', '홈트레이닝'],
+const categoryIconMap: Record<string, React.ReactNode> = {
+  청소: <span>🧹</span>,
+  세탁: <span>🧺</span>,
+  쓰레기: <span>♻️</span>,
+  요리: <span>🍳</span>,
+  소비: <span>💸</span>,
+  행정: <span>📄</span>,
+  건강: <span>🏃🏻</span>,
+  자기개발: <span>💡</span>,
+  외출: <span>👜</span>,
 };
+
+//const subCategoryMap: Record<string, string[]> = {
+//  '청소 / 정리': ['욕실', '주방', '거실', '창고'],
+//  '세탁 / 의류': ['빨래', '옷장 정리', '스타일링'],
+//  '쓰레기 / 환경': ['분리수거', '음식물', '재활용'],
+//  요리: ['아침 준비', '도시락', '저녁 요리'],
+//  소비: ['지출 점검', '영수증 정리', '예산 설정'],
+//  행정: ['서류 작성', '정부서비스 신청', '주소 변경'],
+//  운동: ['스트레칭', '러닝', '홈트레이닝'],
+//};
 
 export default function CategoryBottomSheetContainer({
   onClose,
@@ -43,22 +53,24 @@ export default function CategoryBottomSheetContainer({
     string | null
   >(null);
 
+  const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [subCategoryMap, setSubCategoryMap] = useState<
+    Record<string, string[]>
+  >({});
+
   const handleEditClick = () => {
     rotuer.push('/routine/edit-category');
   };
 
   const handleSubCategorySelect = (sub: string) => {
     if (selectedMainCategory) {
-      const selectedCategoryObj = categories.find(
-        (cat) => cat.label === selectedMainCategory,
-      );
-      const categoryIcon = selectedCategoryObj?.icon;
-      // onSelectCategory로 전달
-      if (categoryIcon) {
+      const icon = categoryIconMap[selectedMainCategory];
+      if (icon) {
         onSelectCategory(
           // ReactNode 반환
           <span className="inline-flex items-center gap-[6px] text-xs font-medium text-[#222222]">
-            <span className="text-xs">{categoryIcon}</span>
+            <span className="text-xs">{icon}</span>
             <span>{selectedMainCategory}</span>
             <ChevronRight className="h-auto w-[11px]" />
             <span>{sub}</span>
@@ -72,6 +84,35 @@ export default function CategoryBottomSheetContainer({
   const handleOutsideClick = () => {
     onClose();
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const res = await Categories();
+        const data = res.data;
+
+        const majors = data.filter(
+          (cat: CategoryItem) => cat.categoryType === 'MAJOR',
+        );
+        setCategories(majors);
+
+        const subMap: Record<string, string[]> = {};
+        data.forEach((cat: CategoryItem) => {
+          if (cat.categoryType === 'SUB' && cat.parentName) {
+            if (!subMap[cat.parentName]) subMap[cat.parentName] = [];
+          }
+        });
+        console.log('메인 카테고리:', majors);
+        setSubCategoryMap(subMap);
+      } catch (error) {
+        console.error('카테고리 정보 불러오기 실패', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div
@@ -87,14 +128,13 @@ export default function CategoryBottomSheetContainer({
           <div className="flex items-center gap-2">
             <span className="w-[18px]pt-[2px]">
               {selectedMainCategory ? (
-                categories.find((cat) => cat.label === selectedMainCategory)
-                  ?.icon
+                categoryIconMap[selectedMainCategory]
               ) : (
                 <span>🏷️</span>
               )}
             </span>
             <h2 className="text-base font-semibold text-black">
-              {selectedMainCategory ? selectedMainCategory : '카테고리 선택'}
+              {selectedMainCategory || '카테고리 선택'}
             </h2>
           </div>
 
@@ -107,9 +147,12 @@ export default function CategoryBottomSheetContainer({
           </button>
         </div>
 
-        {/* CategoryGrid 기본 화면 */}
+        {/* Main 카테고리 */}
         <CategoryGrid
-          categories={categories}
+          categories={categories.map((cat) => ({
+            icon: categoryIconMap[cat.categoryName] || <span>❓︎</span>,
+            label: cat.categoryName,
+          }))}
           selected={selectedMainCategory}
           onSelectCategory={(label) => {
             setSelectedMainCategory(label);
@@ -117,7 +160,7 @@ export default function CategoryBottomSheetContainer({
           }}
         />
 
-        {/* SubCategory 오버레이 화면 */}
+        {/* Sub 카테고리 (오버레이 화면) */}
         {showSubCategory && (
           <div
             className="animate-slide-in fixed inset-0 z-50 flex items-end justify-center bg-transparent"
@@ -130,11 +173,7 @@ export default function CategoryBottomSheetContainer({
               <div className="mb-[18px] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-[18px]">
-                    {
-                      categories.find(
-                        (cat) => cat.label === selectedMainCategory,
-                      )?.icon
-                    }
+                    {categoryIconMap[selectedMainCategory!]}
                   </span>
                   <h2 className="text-base font-semibold text-black">
                     {selectedMainCategory}
