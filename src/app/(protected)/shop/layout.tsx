@@ -1,9 +1,13 @@
 import ShopHeader from '@/app/components/shop/ShopHeader';
 
-export default function layout({ children }: { children: React.ReactNode }) {
+export default function ShopLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <>
-      <ShopHeader />
+      {/*<ShopHeader points={points} />*/}
       {children}
     </>
   );
