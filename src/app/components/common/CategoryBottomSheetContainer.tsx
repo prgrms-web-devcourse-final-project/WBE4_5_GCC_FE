@@ -101,6 +101,7 @@ export default function CategoryBottomSheetContainer({
         data.forEach((cat: CategoryItem) => {
           if (cat.categoryType === 'SUB' && cat.parentName) {
             if (!subMap[cat.parentName]) subMap[cat.parentName] = [];
+            subMap[cat.parentName].push(cat.categoryName);
           }
         });
         console.log('메인 카테고리:', majors);
