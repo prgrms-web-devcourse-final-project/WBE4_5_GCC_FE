@@ -13,7 +13,6 @@ export default function Profile() {
       try {
         const data = await fetchUserPoint();
         await fetchProfile();
-        console.log('받은 유저 데이터:', data);
         setPoint(data.data.currentPoint);
       } catch (err) {
         console.error('유저 정보 불러오기 실패', err);

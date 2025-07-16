@@ -7,21 +7,47 @@ import { useSearchParams } from 'next/navigation';
 import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import Dropdown from '@/app/components/common/ui/Dropdown';
+import { useUserStore } from '@/store/UserStore';
+import { nicknameCheck } from '@/api/api';
+import { handleChangeProfile } from '@/api/member';
+import AlertMessage from '@/app/components/common/alert/AlertMessage';
 
 export default function Page() {
-  //const nickname = useProfileStore((state) => state.name); 나중에 store에서 받아오는 형식
+  const router = useRouter();
+  const yearOptions = ['1년 미만', '1~3년', '3~5년', '5~10년', '10년 이상'];
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [checkNickName, setCheckNickName] = useState<true | false | null>(null);
+  const [errors, setErrors] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+
+  // zustand에서 프로필정보 불러오기
+  const userNickname = useUserStore((state) => state.nickname);
+  const name = useUserStore((state) => state.name);
+  const residenceExperience = useUserStore(
+    (state) => state.residenceExperience,
+  );
+  const region = useUserStore(
+    (state) => `${state.regionDept1} ${state.regionDept2} ${state.regionDept3}`,
+  );
+
+  const experience =
+    residenceExperience === 'UNDER_1Y'
+      ? '1년 미만'
+      : residenceExperience === 'Y1_TO_3'
+        ? '1~3년'
+        : residenceExperience === 'Y3_TO_5'
+          ? '3~5년'
+          : residenceExperience === 'Y5_TO_10'
+            ? '5~10년'
+            : '10년 이상';
+
+  const [nickname, setNickname] = useState(userNickname);
+  const [address, setAddress] = useState(region);
+  const [selected, setSelected] = useState(experience);
 
   const searchParams = useSearchParams();
   const searchedAddress = searchParams.get('address');
-
-  const router = useRouter();
-  const [bio, setBio] = useState('');
-  const [nickname, setNickname] = useState('한상아');
-  const [history, setHistory] = useState('');
-  const [address, setAddress] = useState('서울시 마포구 연남동');
-
-  const [selected, setSelected] = useState('');
-  const yearOptions = ['1년 미만', '1~3년', '3~5년', '5~10년', '10년 이상'];
 
   const handleSearch = () => {
     router.push('/mypage/change-userinfo/userinfo/address');
@@ -33,6 +59,77 @@ export default function Page() {
     }
   }, [searchedAddress]);
 
+  const [regionDept1 = '', regionDept2 = '', regionDept3 = ''] =
+    address.split(' ');
+
+  // 닉네임 중복확인 조건
+  const trimNickname = nickname.trim();
+
+  const isSameAsOriginal = trimNickname === userNickname;
+  const isNicknameChanged = !isSameAsOriginal;
+
+  const confirmNickname = isSameAsOriginal || trimNickname.length === 0;
+
+  const canSave =
+    (isSameAsOriginal && trimNickname.length > 0) || // 닉네임 안 바뀌었으면 저장 가능
+    (isNicknameChanged && checkNickName === true); // 바뀌었으면 중복확인 통과해야 저장 가능
+
+  // 닉네임 중복확인
+  const checkHandler = async () => {
+    if (trimNickname.length < 2 || trimNickname.length > 15) {
+      setError('2글자 이상 입력해주세요');
+      setCheckNickName(false);
+      return;
+    }
+    try {
+      await nicknameCheck(nickname);
+      setError('');
+      setSuccess('사용 가능한 닉네임입니다.');
+      setCheckNickName(true);
+    } catch (error) {
+      setCheckNickName(false);
+      setError('중복된 닉네임입니다.');
+      setSuccess('');
+      console.log('닉네임 중복:', error);
+    }
+  };
+
+  // 알림창 시간
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
+
+  // 저장버튼 누를 때
+  const handleSubmit = () => {
+    if (trimNickname.length === 0) {
+      setErrors('닉네임을 입력해주세요.');
+      setShowAlert(true);
+      return;
+    }
+    if (isNicknameChanged && checkNickName === null) {
+      setErrors('닉네임 중복확인 버튼을 눌러주세요.');
+      setShowAlert(true);
+      return;
+    }
+    if (canSave) {
+      handleChangeProfile(
+        name,
+        trimNickname,
+        residenceExperience,
+        regionDept1,
+        regionDept2,
+        regionDept3,
+      );
+      router.push('/mypage');
+    }
+  };
+
   return (
     <div className="h-1vh flex flex-col gap-6 px-5 py-7">
       {/* 닉네임 */}
@@ -43,21 +140,18 @@ export default function Page() {
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             placeholder="2~15자 이내로 입력해 주세요"
+            maxLength={15}
+            error={error}
+            success={success}
           />
-          <Button className="min-h-12 max-w-[93px] rounded-lg bg-[#C4C4C4] p-0">
+          <Button
+            className="min-h-12 max-w-[93px] cursor-pointer rounded-lg p-0"
+            disabled={confirmNickname}
+            onClick={checkHandler}
+          >
             <h1 className="text-sm font-medium text-[#FDFDFD]">중복 확인</h1>
           </Button>
         </div>
-      </div>
-
-      {/* 한줄소개 */}
-      <div className="flex flex-col gap-2.5">
-        <p className="text-sm font-semibold">한 줄 소개</p>
-        <Input
-          placeholder="나만의 자취 철학을 한 줄로 표현해보세요."
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-        />
       </div>
 
       {/* 주소 */}
@@ -68,6 +162,7 @@ export default function Page() {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder=""
+            disabled
           />
           <Button
             className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222]"
@@ -87,17 +182,17 @@ export default function Page() {
           selected={selected}
           onSelect={(value) => {
             setSelected(value);
-            setHistory(value);
           }}
         />
       </div>
 
       <div className="fixed right-5 bottom-[70px] left-5">
-        <Button
-          type="submit"
-          //disabled={!isSubmitEnabled}
-          //onClick={handleSubmit}
-        >
+        <div className="flex justify-center">
+          {errors && showAlert && (
+            <AlertMessage type="error" message={errors} className="mb-10" />
+          )}
+        </div>
+        <Button type="submit" onClick={handleSubmit}>
           저장하기
         </Button>
       </div>

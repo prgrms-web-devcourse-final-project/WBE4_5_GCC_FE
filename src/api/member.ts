@@ -5,7 +5,7 @@ import { axiosInstance } from './axiosInstance';
 export const fetchProfile = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members');
-    console.log('회원정보 불러오기 성공', response.data);
+    console.log('회원정보 불러오기 성공');
     const { setUser } = useUserStore.getState();
     setUser({
       ...response.data.data,
@@ -22,7 +22,7 @@ export const fetchProfile = async () => {
 export const fetchUserPoint = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members/point');
-    console.log('보유포인트 불러오기 성공', response.data);
+    console.log('보유포인트 불러오기 성공');
     return response.data;
   } catch (error) {
     console.error('보유포인트 불러오기 실패', error);
@@ -34,7 +34,7 @@ export const fetchUserPoint = async () => {
 export const fetchUserQuest = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members/quests');
-    console.log('보유퀘스트 불러오기 성공', response.data);
+    console.log('보유퀘스트 불러오기 성공');
     return response.data;
   } catch (error) {
     console.error('보유퀘스트 불러오기 실패', error);
@@ -46,7 +46,7 @@ export const fetchUserQuest = async () => {
 export const fetchUserItem = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members/items');
-    console.log('보유아이템 불러오기 성공', response.data);
+    console.log('보유아이템 불러오기 성공');
     return response.data;
   } catch (error) {
     console.error('보유아이템 불러오기 실패', error);
@@ -57,17 +57,12 @@ export const fetchUserItem = async () => {
 // 기존 비밀번호 확인
 export const handleConfirmPassword = async (password: string) => {
   try {
-    const response = await axiosInstance.post(
-      '/api/v1/members/password',
-      null,
-      {
-        params: { password },
-      },
-    );
-    console.log('비밀번호 확인 성공', response.data);
+    await axiosInstance.post('/api/v1/members/password', null, {
+      params: { password },
+    });
+    console.log('비밀번호 확인 성공');
     return true;
   } catch (error) {
-    console.error('비밀번호 확인 실패', error);
     throw error;
   }
 };
@@ -78,13 +73,38 @@ export const handleChangePassword = async (
   newPassword: string,
 ) => {
   try {
-    const response = await axiosInstance.put('/api/v1/members/password', {
+    await axiosInstance.put('/api/v1/members/password', {
       oldPassword,
       newPassword,
     });
-    console.log('비밀번호 변경 성공', response.data);
+    console.log('비밀번호 변경 성공');
   } catch (error) {
     console.error('비밀번호 변경 실패', error);
+    throw error;
+  }
+};
+
+// 유저정보 변경하기
+export const handleChangeProfile = async (
+  name: string,
+  nickname: string,
+  residenceExperience?: string,
+  regionDept1?: string,
+  regionDept2?: string,
+  regionDept3?: string,
+) => {
+  try {
+    const response = await axiosInstance.put('/api/v1/members', {
+      name,
+      nickname,
+      residenceExperience,
+      regionDept1,
+      regionDept2,
+      regionDept3,
+    });
+    console.log('회원정보 변경 성공', response.data);
+  } catch (error) {
+    console.error('회원정보 변경 실패', error);
     throw error;
   }
 };
