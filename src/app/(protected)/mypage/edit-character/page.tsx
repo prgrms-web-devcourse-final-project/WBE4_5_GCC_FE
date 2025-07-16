@@ -3,11 +3,10 @@
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import item1 from '@/app/assets/images/item1.png';
-
-import character from '../../../../public/images/character.png';
+import character from '/public/images/character.png';
 import Button from '@/app/components/common/ui/Button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const tabs = ['전체', '상의', '하의', '액세서리'];
 
@@ -80,7 +79,7 @@ export default function Page() {
       : items.filter((item) => item.category === selectedTab);
 
   return (
-    <div className="flex h-1vh flex-col p-5">
+    <div className="h-1vh flex flex-col p-5">
       <div className="mb-[29px] flex h-[178px] min-w-[350px] items-center justify-center rounded-lg border border-[#D9D9D9]">
         <Image
           src={character}
