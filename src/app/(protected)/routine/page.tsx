@@ -11,9 +11,6 @@ import { routineHandler, UserRoutine } from '@/api/routine/routine';
 import type { RoutineItem } from '../../../../types/routine';
 import { useRoutineStore } from '@/store/RoutineStore';
 
-type DatePiece = Date | null;
-type SelectedDate = DatePiece | [DatePiece, DatePiece];
-
 export default function Page() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);

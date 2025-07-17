@@ -5,14 +5,11 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useUIStore } from '@/store/uiStore';
 
-type DatePiece = Date | null;
-type SelectedDate = DatePiece | [DatePiece, DatePiece];
-
 interface CalendarBottomSheetProps {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  selectedDate: SelectedDate;
-  setSelectedDate: (date: SelectedDate) => void;
+  selectedDate: Date | null;
+  setSelectedDate: (date: Date) => void;
 }
 
 export default function CalendarBottomSheet({
@@ -80,7 +77,11 @@ export default function CalendarBottomSheet({
         </div>
 
         <Calendar
-          onChange={setSelectedDate}
+          onChange={(value) => {
+            if (value instanceof Date) {
+              setSelectedDate(value);
+            }
+          }}
           value={selectedDate}
           activeStartDate={activeStartDate}
           className="w-full bg-white px-2 text-sm"
