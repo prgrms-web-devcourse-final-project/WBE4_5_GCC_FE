@@ -1,29 +1,46 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Input from '@/app/components/common/ui/Input';
 import { Eye, EyeClosed } from 'lucide-react';
 import Button from '@/app/components/common/ui/Button';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
+import { handleConfirmPassword } from '@/api/member';
 import BackHeader from '@/app/components/common/ui/BackHeader';
+
 
 export default function UserInfo() {
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ password?: string }>({});
+  const [showAlert, setShowAlert] = useState(false);
 
-  // 임시 비밀번호
-  const correctPassword = 'Qwer1234!';
   // 확인 버튼 활성화 조건
   const isSubmitEnabled = password.length > 0;
 
-  const handleSubmit = () => {
-    if (password === correctPassword) {
-      router.push('/mypage/change-userinfo/userinfo');
-    } else {
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
+
+  const handleSubmit = async () => {
+    try {
+      const result = await handleConfirmPassword(password);
+
+      if (result) {
+        router.push('/mypage/change-userinfo/userinfo');
+      }
+    } catch (error) {
+      console.error('비밀번호 확인 실패:', error);
       setErrors({ password: '비밀번호가 일치하지 않습니다.' });
+      setShowAlert(true);
     }
   };
 
@@ -68,7 +85,7 @@ export default function UserInfo() {
 
       <div className="fixed right-5 bottom-[70px] left-5">
         <div className="flex justify-center">
-          {errors.password && (
+          {errors.password && showAlert && (
             <AlertMessage
               type="error"
               message={errors.password}

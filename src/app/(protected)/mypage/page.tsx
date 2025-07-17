@@ -2,12 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-import LogoutModal from '../../components/common/LogoutModal';
-import SettingsItem from '@/app/components/mypage/SettingsItem';
-import Button from '../../components/common/ui/Button';
-import Profile from '../../components/main/Profile';
 import { logout } from '@/api/api';
+import SettingsItem from '@/app/components/mypage/SettingsItem';
+import Profile from '@/app/components/main/Profile';
+import Button from '@/app/components/common/ui/Button';
+import LogoutModal from '@/app/components/common/LogoutModal';
 
 export default function Page() {
   const router = useRouter();
