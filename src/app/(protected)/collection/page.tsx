@@ -2,11 +2,12 @@
 
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, ListFilter } from 'lucide-react';
+import { BadgeRewardByKey, Badges } from '@/api/badges';
 import BackHeader from '@/app/components/common/ui/BackHeader';
+import AlertModal from '@/app/components/common/alert/AlertModal';
+import { ChevronLeft, ChevronRight, ListFilter } from 'lucide-react';
 import CollectionItemCard from '@/app/components/collection/CollectionItem';
 import CollectionBottomSheet from '@/app/components/collection/CollectionBottomSheet';
-import { BadgeRewardByKey, Badges } from '@/api/badges';
 
 interface Badge {
   badgeId: number;
@@ -29,154 +30,6 @@ const tierEmojiMap: Record<Badge['tier'], string> = {
   TROPHY: '🏆',
 };
 
-// dummy items
-//const items = [
-//  {
-//    id: 1,
-//    image: {
-//      src: '/images/bedge/clean1.svg',
-//      width: 28,
-//      height: 42,
-//    },
-//    name: '먼지털이 초보',
-//    description: '청소/정리 루틴 첫 수행',
-//    category: '🥉',
-//    isLocked: false,
-//  },
-//  {
-//    id: 2,
-//    image: {
-//      src: '/images/bedge/clean2.svg',
-//      width: 29,
-//      height: 45,
-//    },
-//    name: '청소요정',
-//    description: '청소/정리 루틴 누적 30일 수행',
-//    category: '🥈',
-//    isLocked: false,
-//  },
-//  {
-//    id: 3,
-//    image: {
-//      src: '/images/bedge/clean3.svg',
-//      width: 29,
-//      height: 43,
-//    },
-//    name: '청소의 정령 소환사',
-//    description: '청소/정리 루틴 누적 50일 수행',
-//    category: '🥇',
-//    isLocked: false,
-//  },
-//  {
-//    id: 4,
-//    image: {
-//      src: '/images/bedge/clean4.svg',
-//      width: 29,
-//      height: 47,
-//    },
-//    name: '청소의 대마법사',
-//    description: '청소/정리 루틴 누적 100일 수행',
-//    category: '🏆',
-//    isLocked: true,
-//  },
-//  {
-//    id: 5,
-//    image: {
-//      src: '/images/bedge/laundry1.svg',
-//      width: 29,
-//      height: 43,
-//    },
-//    name: '빨래 초보',
-//    description: '세탁/의류 루틴 첫 수행',
-//    category: '🥉',
-//    isLocked: false,
-//  },
-//  {
-//    id: 6,
-//    image: {
-//      src: '/images/bedge/laundry2.svg',
-//      width: 29,
-//      height: 42,
-//    },
-//    name: '양말 요정',
-//    description: '세탁/의류 루틴 누적 30일 수행',
-//    category: '🥈',
-//    isLocked: true,
-//  },
-//  {
-//    id: 7,
-//    image: {
-//      src: '/images/bedge/laundry3.svg',
-//      width: 29,
-//      height: 43,
-//    },
-//    name: '의류 정령 소환사',
-//    description: '세탁/의류 루틴 누적 50일 수행',
-//    category: '🥇',
-//    isLocked: true,
-//  },
-//  {
-//    id: 8,
-//    image: {
-//      src: '/images/bedge/laundry4.svg',
-//      width: 26,
-//      height: 47,
-//    },
-//    name: '패브릭 마스터',
-//    description: '세탁/의류 루틴 누적 100일 수행',
-//    category: '🏆',
-//    isLocked: true,
-//  },
-//  {
-//    id: 9,
-//    image: {
-//      src: '/images/bedge/env1.svg',
-//      width: 29,
-//      height: 38,
-//    },
-//    name: '분리수거 초보',
-//    description: '쓰레기/환경 루틴 첫 수행',
-//    category: '🥉',
-//    isLocked: false,
-//  },
-//  {
-//    id: 10,
-//    image: {
-//      src: '/images/bedge/env2.svg',
-//      width: 29,
-//      height: 39,
-//    },
-//    name: '빨대요정',
-//    description: '쓰레기/환경 루틴 30일 수행',
-//    category: '🥈',
-//    isLocked: false,
-//  },
-//  {
-//    id: 11,
-//    image: {
-//      src: '/images/bedge/env3.svg',
-//      width: 29,
-//      height: 38,
-//    },
-//    name: '지구 힐러',
-//    description: '쓰레기/환경 루틴 50일 수행',
-//    category: '🥇',
-//    isLocked: true,
-//  },
-//  {
-//    id: 12,
-//    image: {
-//      src: '/images/bedge/env4.svg',
-//      width: 29,
-//      height: 43,
-//    },
-//    name: '제로웨이스트 마법사',
-//    description: '쓰레기/환경 루틴 100일 수행',
-//    category: '🏆',
-//    isLocked: true,
-//  },
-//];
-
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState('전체');
@@ -190,6 +43,10 @@ export default function Page() {
   });
   const [badges, setBadges] = useState<Badge[]>([]);
   const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
+  const [rewardInfo, setRewardInfo] = useState<{
+    badgeName: string;
+    pointAdded: number;
+  } | null>(null);
 
   const handleSelect = (badge: { category: string; id: number }) => {
     setSelectedItem((prev) => ({
@@ -268,7 +125,7 @@ export default function Page() {
                   name: badge.badgeName,
                   description: badge.how,
                   image: {
-                    src: '/images/bedge/clean1.svg', // 이미지....흠
+                    src: `/images/badges/${badge.badgeKey}.svg`,
                     width: 29,
                     height: 43,
                   },
@@ -307,10 +164,10 @@ export default function Page() {
                                     : b,
                                 ),
                               );
-
-                              alert(
-                                `${badge.badgeName} 보상으로 ${pointAdded} 포인트 획득!`,
-                              );
+                              setRewardInfo({
+                                badgeName: badge.badgeName,
+                                pointAdded,
+                              });
                             } catch (error) {
                               alert('보상 수령 실패');
                             }
@@ -349,8 +206,19 @@ export default function Page() {
           </div>
         </div>
       </div>
+
       {isOpen && (
         <CollectionBottomSheet isOpen={isOpen} setIsOpen={setIsOpen} />
+      )}
+
+      {rewardInfo && (
+        <AlertModal
+          isOpen={true}
+          type="success"
+          title={`${rewardInfo.badgeName} 보상으로 ${rewardInfo.pointAdded} 포인트 획득!`}
+          confirmText="확인"
+          onConfirm={() => setRewardInfo(null)} // 모달 닫기
+        />
       )}
     </>
   );
