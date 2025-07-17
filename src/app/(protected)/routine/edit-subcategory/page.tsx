@@ -102,7 +102,7 @@ export default function Page() {
 
   return (
     <>
-      <EditSubcategoryLayout onComplete={handleComplete}>
+      <EditSubcategoryLayout onComplete={handleComplete} label={label}>
         <div className="flex flex-col gap-7 px-5 py-7">
           <div className="flex items-center gap-3">
             {/* 좌측 아이콘 영역 */}
