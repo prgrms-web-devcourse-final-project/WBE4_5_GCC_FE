@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, ListFilter } from 'lucide-react';
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import CollectionItemCard from '@/app/components/collection/CollectionItem';
 import CollectionBottomSheet from '@/app/components/collection/CollectionBottomSheet';
-import { Badges } from '@/api/badges';
+import { BadgeRewardByKey, Badges } from '@/api/badges';
 
 interface Badge {
   badgeId: number;
@@ -30,152 +30,152 @@ const tierEmojiMap: Record<Badge['tier'], string> = {
 };
 
 // dummy items
-const items = [
-  {
-    id: 1,
-    image: {
-      src: '/images/bedge/clean1.svg',
-      width: 28,
-      height: 42,
-    },
-    name: '먼지털이 초보',
-    description: '청소/정리 루틴 첫 수행',
-    category: '🥉',
-    isLocked: false,
-  },
-  {
-    id: 2,
-    image: {
-      src: '/images/bedge/clean2.svg',
-      width: 29,
-      height: 45,
-    },
-    name: '청소요정',
-    description: '청소/정리 루틴 누적 30일 수행',
-    category: '🥈',
-    isLocked: false,
-  },
-  {
-    id: 3,
-    image: {
-      src: '/images/bedge/clean3.svg',
-      width: 29,
-      height: 43,
-    },
-    name: '청소의 정령 소환사',
-    description: '청소/정리 루틴 누적 50일 수행',
-    category: '🥇',
-    isLocked: false,
-  },
-  {
-    id: 4,
-    image: {
-      src: '/images/bedge/clean4.svg',
-      width: 29,
-      height: 47,
-    },
-    name: '청소의 대마법사',
-    description: '청소/정리 루틴 누적 100일 수행',
-    category: '🏆',
-    isLocked: true,
-  },
-  {
-    id: 5,
-    image: {
-      src: '/images/bedge/laundry1.svg',
-      width: 29,
-      height: 43,
-    },
-    name: '빨래 초보',
-    description: '세탁/의류 루틴 첫 수행',
-    category: '🥉',
-    isLocked: false,
-  },
-  {
-    id: 6,
-    image: {
-      src: '/images/bedge/laundry2.svg',
-      width: 29,
-      height: 42,
-    },
-    name: '양말 요정',
-    description: '세탁/의류 루틴 누적 30일 수행',
-    category: '🥈',
-    isLocked: true,
-  },
-  {
-    id: 7,
-    image: {
-      src: '/images/bedge/laundry3.svg',
-      width: 29,
-      height: 43,
-    },
-    name: '의류 정령 소환사',
-    description: '세탁/의류 루틴 누적 50일 수행',
-    category: '🥇',
-    isLocked: true,
-  },
-  {
-    id: 8,
-    image: {
-      src: '/images/bedge/laundry4.svg',
-      width: 26,
-      height: 47,
-    },
-    name: '패브릭 마스터',
-    description: '세탁/의류 루틴 누적 100일 수행',
-    category: '🏆',
-    isLocked: true,
-  },
-  {
-    id: 9,
-    image: {
-      src: '/images/bedge/env1.svg',
-      width: 29,
-      height: 38,
-    },
-    name: '분리수거 초보',
-    description: '쓰레기/환경 루틴 첫 수행',
-    category: '🥉',
-    isLocked: false,
-  },
-  {
-    id: 10,
-    image: {
-      src: '/images/bedge/env2.svg',
-      width: 29,
-      height: 39,
-    },
-    name: '빨대요정',
-    description: '쓰레기/환경 루틴 30일 수행',
-    category: '🥈',
-    isLocked: false,
-  },
-  {
-    id: 11,
-    image: {
-      src: '/images/bedge/env3.svg',
-      width: 29,
-      height: 38,
-    },
-    name: '지구 힐러',
-    description: '쓰레기/환경 루틴 50일 수행',
-    category: '🥇',
-    isLocked: true,
-  },
-  {
-    id: 12,
-    image: {
-      src: '/images/bedge/env4.svg',
-      width: 29,
-      height: 43,
-    },
-    name: '제로웨이스트 마법사',
-    description: '쓰레기/환경 루틴 100일 수행',
-    category: '🏆',
-    isLocked: true,
-  },
-];
+//const items = [
+//  {
+//    id: 1,
+//    image: {
+//      src: '/images/bedge/clean1.svg',
+//      width: 28,
+//      height: 42,
+//    },
+//    name: '먼지털이 초보',
+//    description: '청소/정리 루틴 첫 수행',
+//    category: '🥉',
+//    isLocked: false,
+//  },
+//  {
+//    id: 2,
+//    image: {
+//      src: '/images/bedge/clean2.svg',
+//      width: 29,
+//      height: 45,
+//    },
+//    name: '청소요정',
+//    description: '청소/정리 루틴 누적 30일 수행',
+//    category: '🥈',
+//    isLocked: false,
+//  },
+//  {
+//    id: 3,
+//    image: {
+//      src: '/images/bedge/clean3.svg',
+//      width: 29,
+//      height: 43,
+//    },
+//    name: '청소의 정령 소환사',
+//    description: '청소/정리 루틴 누적 50일 수행',
+//    category: '🥇',
+//    isLocked: false,
+//  },
+//  {
+//    id: 4,
+//    image: {
+//      src: '/images/bedge/clean4.svg',
+//      width: 29,
+//      height: 47,
+//    },
+//    name: '청소의 대마법사',
+//    description: '청소/정리 루틴 누적 100일 수행',
+//    category: '🏆',
+//    isLocked: true,
+//  },
+//  {
+//    id: 5,
+//    image: {
+//      src: '/images/bedge/laundry1.svg',
+//      width: 29,
+//      height: 43,
+//    },
+//    name: '빨래 초보',
+//    description: '세탁/의류 루틴 첫 수행',
+//    category: '🥉',
+//    isLocked: false,
+//  },
+//  {
+//    id: 6,
+//    image: {
+//      src: '/images/bedge/laundry2.svg',
+//      width: 29,
+//      height: 42,
+//    },
+//    name: '양말 요정',
+//    description: '세탁/의류 루틴 누적 30일 수행',
+//    category: '🥈',
+//    isLocked: true,
+//  },
+//  {
+//    id: 7,
+//    image: {
+//      src: '/images/bedge/laundry3.svg',
+//      width: 29,
+//      height: 43,
+//    },
+//    name: '의류 정령 소환사',
+//    description: '세탁/의류 루틴 누적 50일 수행',
+//    category: '🥇',
+//    isLocked: true,
+//  },
+//  {
+//    id: 8,
+//    image: {
+//      src: '/images/bedge/laundry4.svg',
+//      width: 26,
+//      height: 47,
+//    },
+//    name: '패브릭 마스터',
+//    description: '세탁/의류 루틴 누적 100일 수행',
+//    category: '🏆',
+//    isLocked: true,
+//  },
+//  {
+//    id: 9,
+//    image: {
+//      src: '/images/bedge/env1.svg',
+//      width: 29,
+//      height: 38,
+//    },
+//    name: '분리수거 초보',
+//    description: '쓰레기/환경 루틴 첫 수행',
+//    category: '🥉',
+//    isLocked: false,
+//  },
+//  {
+//    id: 10,
+//    image: {
+//      src: '/images/bedge/env2.svg',
+//      width: 29,
+//      height: 39,
+//    },
+//    name: '빨대요정',
+//    description: '쓰레기/환경 루틴 30일 수행',
+//    category: '🥈',
+//    isLocked: false,
+//  },
+//  {
+//    id: 11,
+//    image: {
+//      src: '/images/bedge/env3.svg',
+//      width: 29,
+//      height: 38,
+//    },
+//    name: '지구 힐러',
+//    description: '쓰레기/환경 루틴 50일 수행',
+//    category: '🥇',
+//    isLocked: true,
+//  },
+//  {
+//    id: 12,
+//    image: {
+//      src: '/images/bedge/env4.svg',
+//      width: 29,
+//      height: 43,
+//    },
+//    name: '제로웨이스트 마법사',
+//    description: '쓰레기/환경 루틴 100일 수행',
+//    category: '🏆',
+//    isLocked: true,
+//  },
+//];
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -282,6 +282,45 @@ export default function Page() {
                     item={item}
                     isSelected={selectedItem[item.category] === item.id}
                     onSelect={handleSelect}
+                    action={
+                      !badge.isReceived && (
+                        <button
+                          onClick={async (e) => {
+                            e.stopPropagation();
+
+                            try {
+                              const res = await BadgeRewardByKey(
+                                badge.badgeKey,
+                              );
+                              const { pointAdded, totalPoint, receivedAt } =
+                                res.data;
+
+                              // 상태 업데이트
+                              setBadges((prev) =>
+                                prev.map((b) =>
+                                  b.badgeId === badge.badgeId
+                                    ? {
+                                        ...b,
+                                        isReceived: true,
+                                        receivedDate: receivedAt,
+                                      }
+                                    : b,
+                                ),
+                              );
+
+                              alert(
+                                `${badge.badgeName} 보상으로 ${pointAdded} 포인트 획득!`,
+                              );
+                            } catch (error) {
+                              alert('보상 수령 실패');
+                            }
+                          }}
+                          className="h-4 min-w-18 rounded-[3px] border border-[#FFB84C] bg-[#FFB84C] text-[8px] font-semibold text-white"
+                        >
+                          보상 받기
+                        </button>
+                      )
+                    }
                   />
                 );
               })}

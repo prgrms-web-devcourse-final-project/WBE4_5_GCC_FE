@@ -27,7 +27,9 @@ export const BadgeByKey = async (key: string) => {
 // 업적 보상 수령
 export const BadgeRewardByKey = async (key: string) => {
   try {
-    const response = await axiosInstance.post(`/api/v1/badges/${key}`);
+    const response = await axiosInstance.post('/api/v1/badges', null, {
+      params: { badgeKey: key },
+    });
     console.log('업적 보상 수령 불러오기 성공', response.data);
     return response.data;
   } catch (error) {
