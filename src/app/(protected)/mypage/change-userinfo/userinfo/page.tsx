@@ -11,6 +11,7 @@ import { useUserStore } from '@/store/UserStore';
 import { nicknameCheck } from '@/api/api';
 import { handleChangeProfile } from '@/api/member';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
+import BackHeader from '@/app/components/common/ui/BackHeader';
 
 export default function Page() {
   const router = useRouter();
@@ -131,26 +132,29 @@ export default function Page() {
   };
 
   return (
-    <div className="h-1vh flex flex-col gap-6 px-5 py-7">
-      {/* 닉네임 */}
-      <div className="flex flex-col gap-2.5">
-        <p className="text-sm font-semibold">닉네임</p>
-        <div className="flex gap-2.5">
-          <Input
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            placeholder="2~15자 이내로 입력해 주세요"
-            maxLength={15}
-            error={error}
-            success={success}
-          />
-          <Button
-            className="min-h-12 max-w-[93px] cursor-pointer rounded-lg p-0"
-            disabled={confirmNickname}
-            onClick={checkHandler}
-          >
-            <h1 className="text-sm font-medium text-[#FDFDFD]">중복 확인</h1>
-          </Button>
+    <div className="h-1vh flex flex-col gap-7">
+      <BackHeader title="회원정보 변경" />
+      <div className="flex flex-col gap-6 px-5">
+        {/* 닉네임 */}
+        <div className="flex flex-col gap-2.5">
+          <p className="text-sm font-semibold">닉네임</p>
+          <div className="flex gap-2.5">
+            <Input
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              placeholder="2~15자 이내로 입력해 주세요"
+              maxLength={15}
+              error={error}
+              success={success}
+            />
+            <Button
+              className="min-h-12 max-w-[93px] cursor-pointer rounded-lg p-0"
+              disabled={confirmNickname}
+              onClick={checkHandler}
+            >
+              <h1 className="text-sm font-medium text-[#FDFDFD]">중복 확인</h1>
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -185,7 +189,7 @@ export default function Page() {
           }}
         />
       </div>
-
+        
       <div className="fixed right-5 bottom-[70px] left-5">
         <div className="flex justify-center">
           {errors && showAlert && (

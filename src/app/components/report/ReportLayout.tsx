@@ -19,8 +19,8 @@ export default function ReportLayout({
   onChange,
 }: ReportLayoutProps) {
   return (
-    <section className="w-full max-w-5xl mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+    <section className="w-full max-w-5xl mx-auto px-5">
+      <div className="flex items-center justify-between mb-7">
         <button
           onClick={() => onChange(selectedIndex - 1)}
           disabled={selectedIndex === 0}
@@ -33,8 +33,8 @@ export default function ReportLayout({
           <ChevronLeft size={20} />
         </button>
 
-        <h3 className="text-[22px] font-bold text-[#222222]">
-          📊 {title}
+        <h3 className="text-lg font-bold text-[#222222]">
+          {title}
         </h3>
 
         <button

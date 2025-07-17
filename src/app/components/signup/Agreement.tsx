@@ -1,12 +1,8 @@
 'use client';
-import check from '/public/check.svg';
-import checkGray from '/public/checkGray.svg';
+import { Check } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import CheckBox from '@/app/components/common/ui/CheckBox';
 import { useSignUpStore } from '@/store/SignupStore';
-
-import Image from 'next/image';
-
-import { useEffect, useState } from 'react';
 
 export default function Agreement() {
   const [age, setAge] = useState(false);
@@ -41,10 +37,13 @@ export default function Agreement() {
   useEffect(() => {
     setWantEmail(marketing);
   }, [setWantEmail, marketing]);
+
+  const getCheckColor = (checked: boolean) => (checked ? '#222222' : '#9E9E9E');
+
   return (
     <>
       {/* 전체 박스 */}
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 select-none">
+      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 cursor-pointer select-none">
         {/* 모두 동의 */}
         {/* 전체 박스 */}
         <div className="flex flex-col gap-4">
@@ -58,42 +57,32 @@ export default function Agreement() {
 
           {/* 하위 선택지 4개 */}
           <div className="flex flex-col gap-4">
-            <div className="flex gap-1" onClick={() => setAge(() => !age)}>
-              <Image
-                src={age ? check : checkGray}
-                alt="age"
-                className="h-[20px] w-[20px]"
-              />
+            <div
+              className="flex gap-1"
+              onClick={() => setAge(() => !age)}
+            >
+              <Check size={20} color={getCheckColor(age)} />
               <span>[필수] 만 14세 이상</span>
             </div>
-            <div className="flex gap-1" onClick={() => setTerms(() => !terms)}>
-              <Image
-                src={terms ? check : checkGray}
-                alt="terms"
-                className="h-[20px] w-[20px]"
-              />
+            <div
+              className="flex items-center gap-2 "
+              onClick={() => setTerms((prev) => !prev)}
+            >
+              <Check size={20} color={getCheckColor(terms)} />
               <span>[필수] 이용약관 동의</span>
             </div>
             <div
-              className="flex gap-1"
-              onClick={() => setPrivacy(() => !privacy)}
+              className="flex items-center gap-2 "
+              onClick={() => setPrivacy((prev) => !prev)}
             >
-              <Image
-                src={privacy ? check : checkGray}
-                alt="privacy"
-                className="h-[20px] w-[20px]"
-              />
+              <Check size={20} color={getCheckColor(privacy)} />
               <span>[필수] 개인정보 처리방침 동의</span>
             </div>
             <div
-              className="flex gap-1"
-              onClick={() => setMarketing(() => !marketing)}
+              className="flex items-center gap-2"
+              onClick={() => setMarketing((prev) => !prev)}
             >
-              <Image
-                src={marketing ? check : checkGray}
-                alt="marketing"
-                className="h-[20px] w-[20px]"
-              />
+              <Check size={20} color={getCheckColor(marketing)} />
               <span>[선택] 광고성 정보 수신 및 마케팅 활용 동의</span>
             </div>
           </div>

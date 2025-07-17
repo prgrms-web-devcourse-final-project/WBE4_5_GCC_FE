@@ -3,10 +3,16 @@
 import DaumPostcodeEmbed from 'react-daum-postcode';
 import { useRouter } from 'next/navigation';
 
+type AddressData = {
+  sido: string;
+  sigungu: string;
+  bname: string;
+}
+
 export default function UserAdress() {
   const router = useRouter();
 
-  const handleComplete = (data: any) => {
+  const handleComplete = (data: AddressData) => {
     const { sido, sigungu, bname } = data;
 
     if (!sido || !sigungu || !bname) {
@@ -21,6 +27,7 @@ export default function UserAdress() {
     router.push(
       `/mypage/change-userinfo/userinfo?address=${encodeURIComponent(combinedAddress)}`,
     );
+    // router.push(`/signup/userinfo?address=${encodeURIComponent(combinedAddress)}`);
   };
 
   return (

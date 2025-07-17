@@ -7,6 +7,8 @@ import { Eye, EyeClosed } from 'lucide-react';
 import Button from '@/app/components/common/ui/Button';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
 import { handleConfirmPassword } from '@/api/member';
+import BackHeader from '@/app/components/common/ui/BackHeader';
+
 
 export default function UserInfo() {
   const router = useRouter();
@@ -43,10 +45,11 @@ export default function UserInfo() {
   };
 
   return (
-    <div className="h-1vh flex flex-col px-5 py-7">
+    <div className="h-1vh flex flex-col">
+      <BackHeader title="회원정보 변경" />
       {/* 버튼 제외 콘텐츠 */}
-      <div>
-        <div className="mb-[27px] flex flex-col text-base font-semibold text-[#222222]">
+      <div className="px-5">
+        <div className="mt-[27px] mb-[27px] flex flex-col text-base font-semibold text-[#222222]">
           <h1>정보를 안전하게 보호하기 위해</h1>
           <h1>비밀번호를 다시 한 번 입력해 주세요</h1>
         </div>
