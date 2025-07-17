@@ -6,7 +6,7 @@ export interface Category {
 export interface CategoryItem {
   categoryId: number;
   categoryName: string;
-  categoryType: 'MAJOR' | 'SUB' | 'CUSTOM';
+  categoryType: 'MAJOR' | 'SUB';
   parentName: string | null;
   subCategoryName?: string;
 }

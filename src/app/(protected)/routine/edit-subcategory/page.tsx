@@ -5,26 +5,25 @@ import { CirclePlus } from 'lucide-react';
 import { CircleMinus } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Categories, CreateCategory } from '@/api/categories';
+import { Categories, EditCategoryById } from '@/api/categories';
 import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
-import EditSubcategoryLayout from './layout';
+import EditSubcategoryLayout from './EditSubcategoryLayout';
 import { CategoryItem } from '../../../../../types/types';
 
 export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const labelFromParams = searchParams.get('label');
   const icon = searchParams.get('icon');
+  const labelFromParams = searchParams.get('label');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   const [label, setLabel] = useState('');
   const [subCategories, setSubCategories] = useState<CategoryItem[]>([]);
-  //const [mode, setMode] = useState<'MAJOR' | 'SUB' | null>(null); // 바텀 시트를 열은 버튼의 출처 (대분류 카테고리 인풋창 or 세부 카테고리 추가 버튼)
-  const [categoryType, setCategoryType] = useState<
-    'MAJOR' | 'SUB' | 'CUSTOM' | null
-  >(null);
+  const [categoryType, setCategoryType] = useState<'MAJOR' | 'SUB' | null>(
+    null,
+  );
 
   useEffect(() => {
     if (labelFromParams) setLabel(labelFromParams);
@@ -58,7 +57,7 @@ export default function Page() {
     fetchSubs();
   }, [label]);
 
-  // 완료 버튼에서 실제 생성 API 호출
+  // 완료 버튼에서 카테고리 수정 API 호출
   const handleComplete = async () => {
     if (!label || categoryType === 'SUB') {
       alert('카테고리 정보를 확인해주세요.');
@@ -68,19 +67,32 @@ export default function Page() {
     try {
       await Promise.all(
         subCategories.map((sub) =>
-          CreateCategory({
+          EditCategoryById(sub.categoryId, {
             categoryName: sub.categoryName,
             categoryType: 'SUB',
             parentName: label,
           }),
         ),
       );
-      alert('카테고리 생성 완료!');
+      alert('카테고리 수정 완료!');
       router.push('/routine/edit-category');
     } catch (err) {
-      console.error('카테고리 생성 실패', err);
-      alert('생성에 실패했습니다.');
+      console.error('카테고리 수정 실패', err);
+      alert('수정에 실패했습니다.');
     }
+  };
+
+  // 헤더 완료 버튼 클릭 시 서브 카테고리 저장
+  const handleAddSubCategory = (newSubName: string) => {
+    setSubCategories((prev) => [
+      ...prev,
+      {
+        categoryId: 1, // 여기 Id 값 어떻게 전달해줘야 할 지.. 현재 스웨거에서는 id가 1,2,3 인 데이터에 대해서만 수정 요청을 할 수 있도록 되어 있음.
+        categoryName: newSubName,
+        categoryType: 'SUB',
+        parentName: label,
+      },
+    ]);
   };
 
   return (
@@ -150,9 +162,8 @@ export default function Page() {
         {isBottomSheetOpen && (
           <CategoryNameInputBottomSheet
             onClose={() => setIsBottomSheetOpen(false)}
-            // 바텀 시트가 열린 버튼 출처에 따라 onSubmit 버튼 분기처리
-            onSubmit={() => {
-              setSubCategories(subCategories);
+            onSubmit={(newSubName) => {
+              handleAddSubCategory(newSubName);
               setIsBottomSheetOpen(false);
             }}
           />

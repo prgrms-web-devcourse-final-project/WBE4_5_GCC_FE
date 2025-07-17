@@ -24,7 +24,7 @@ export const CategoryById = async (id: number) => {
   }
 };
 
-// 카테고리 생성
+// 카테고리 생성 - 사용 ㅇ
 interface CreateCategoryPayload {
   categoryName: string;
   categoryType: 'MAJOR' | 'SUB';
@@ -41,17 +41,11 @@ export const CreateCategory = async (payload: CreateCategoryPayload) => {
     throw error;
   }
 };
-// 사용
-//await CreateCategory({
-//  categoryName: '주방 청소',
-//  categoryType: 'SUB',
-//  parentName: '청소',
-//});
 
-// 특정 카테고리 수정
+// 특정 카테고리 수정 - 사용 ㅇ
 interface EditCategoryPayload {
   categoryName: string;
-  categoryType: 'MAJOR' | 'SUB' | 'CUSTOM';
+  categoryType: 'MAJOR' | 'SUB';
   parentName: string | null;
 }
 
