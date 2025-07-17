@@ -45,7 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <BackHeader title="회원가입" useStep defaultBackPath="/login" />
         <div>{children}</div>
         <NextBtn
-          label={step === 6 ? '가입하기' : '다음'}
+          label={step === 7 ? '가입하기' : '다음'}
           onClick={goNext}
           disabled={!isNextEnabled}
           className={`${isNextEnabled ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}

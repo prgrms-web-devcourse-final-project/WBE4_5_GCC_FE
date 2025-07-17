@@ -32,7 +32,7 @@ export default function BackHeader({
   };
 
   return (
-    <div className="relative flex h-[56px] w-full items-center justify-center px-5">
+    <div className="relative flex h-[56px] w-full items-center justify-center">
       <ChevronLeft
         className="absolute left-3 h-6 w-6 cursor-pointer"
         onClick={goBack}

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Eye, EyeClosed, Check } from 'lucide-react';
 import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
+import BackHeader from '@/app/components/common/ui/BackHeader';
 
 export default function Page() {
   const [password, setPassword] = useState('');
@@ -47,9 +48,10 @@ export default function Page() {
   ];
 
   return (
-    <div className="flex min-h-screen flex-col justify-between px-5 py-[70px]">
+    <div className="flex min-h-screen flex-col gap-7">
       {/* 상단 컨텐츠 */}
-      <div className="flex flex-col gap-y-6">
+      <BackHeader title="비밀번호 변경" />
+      <div className="flex flex-col gap-y-6 px-5">
         <div className="flex flex-col gap-y-2.5">
           <h1 className="text-[16px] font-semibold text-[#222222]">
             기존 비밀번호

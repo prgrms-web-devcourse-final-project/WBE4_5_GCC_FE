@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Button from '@/app/components/common/ui/Button';
 import RadioGroup from '@/app/components/mypage/RadioGroup';
 import CustomCheckBox from '@/app/components/common/ui/CustomCheckBox';
+import BackHeader from '@/app/components/common/ui/BackHeader';
 
 export default function Page() {
   const [selectedReason, setSelectedReason] = useState('');
@@ -35,9 +36,10 @@ export default function Page() {
   }, [customReason]);
 
   return (
-    <div className="flex min-h-screen flex-col justify-between px-5 py-7">
+    <div className="flex min-h-screen flex-col gap-7">
       {/* 버튼 제외 컨텐츠 */}
-      <div className="flex flex-col">
+      <BackHeader title="회원탈퇴" />
+      <div className="flex flex-col px-5">
         <div className="mb-[30px] flex flex-col text-base font-semibold text-[#222222]">
           <h1>정말 떠나시겠어요?</h1>
           <h1>계정을 삭제하면 지금까지의 기록이 모두 사라지고</h1>
@@ -89,7 +91,7 @@ export default function Page() {
         </div>
       </div>
 
-      <div>
+      <div className="fixed bottom-[70px] left-5 right-5">
         <Button
           type="submit"
           disabled={!isSubmitEnabled}

@@ -11,8 +11,7 @@ import Tabs from '@/app/components/shop/Tabs';
 import ItemCard from '@/app/components/shop/ItemCard';
 import PurchaseModal from '@/app/components/shop/PurchaseModal';
 import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
-import ShopLayout from './layout';
-import ShopHeader from '@/app/components/shop/ShopHeader';
+import BackHeader from '@/app/components/common/ui/BackHeader';
 
 interface Item {
   itemId: number;
@@ -67,8 +66,7 @@ export default function Practice() {
 
   return (
     <>
-      <ShopHeader points={points} />
-      <div className="mx-auto mt-[50px] flex w-full max-w-screen-sm flex-col px-5">
+      <div className="mx-auto flex w-full max-w-screen-sm flex-col px-5 min-h-screen overflow-y-auto">
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}

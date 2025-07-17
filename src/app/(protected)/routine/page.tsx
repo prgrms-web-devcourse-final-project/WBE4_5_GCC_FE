@@ -22,9 +22,9 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col items-center bg-white py-4">
+      <div className="flex min-h-screen flex-col items-center bg-white px-5">
         <CalendarBar setIsOpen={setIsOpen} />
-        <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 py-11">
+        <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] py-11">
           <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
             <span className="text-xl font-semibold">
               {selectedDate instanceof Date
