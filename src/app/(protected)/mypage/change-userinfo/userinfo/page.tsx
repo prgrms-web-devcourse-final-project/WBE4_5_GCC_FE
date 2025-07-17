@@ -156,49 +156,49 @@ export default function Page() {
             </Button>
           </div>
         </div>
-      </div>
 
-      {/* 주소 */}
-      <div className="flex flex-col gap-2.5">
-        <p className="text-sm font-semibold">주소</p>
-        <div className="flex gap-2.5">
-          <Input
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder=""
-            disabled
+        {/* 주소 */}
+        <div className="flex flex-col gap-2.5">
+          <p className="text-sm font-semibold">주소</p>
+          <div className="flex gap-2.5">
+            <Input
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder=""
+              disabled
+            />
+            <Button
+              className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222]"
+              onClick={handleSearch}
+            >
+              <Search className="h-auto w-4" strokeWidth={2} />
+              <h1 className="text-sm font-medium text-white">주소 검색</h1>
+            </Button>
+          </div>
+        </div>
+
+        {/* 자취경력 */}
+        <div className="flex w-full flex-col gap-2.5">
+          <p className="text-sm font-semibold">자취경력</p>
+          <Dropdown
+            options={yearOptions}
+            selected={selected}
+            onSelect={(value) => {
+              setSelected(value);
+            }}
           />
-          <Button
-            className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222]"
-            onClick={handleSearch}
-          >
-            <Search className="h-auto w-4" strokeWidth={2} />
-            <h1 className="text-sm font-medium text-white">주소 검색</h1>
+        </div>
+
+        <div className="fixed right-5 bottom-[70px] left-5">
+          <div className="flex justify-center">
+            {errors && showAlert && (
+              <AlertMessage type="error" message={errors} className="mb-10" />
+            )}
+          </div>
+          <Button type="submit" onClick={handleSubmit}>
+            저장하기
           </Button>
         </div>
-      </div>
-
-      {/* 자취경력 */}
-      <div className="flex w-full flex-col gap-2.5">
-        <p className="text-sm font-semibold">자취경력</p>
-        <Dropdown
-          options={yearOptions}
-          selected={selected}
-          onSelect={(value) => {
-            setSelected(value);
-          }}
-        />
-      </div>
-        
-      <div className="fixed right-5 bottom-[70px] left-5">
-        <div className="flex justify-center">
-          {errors && showAlert && (
-            <AlertMessage type="error" message={errors} className="mb-10" />
-          )}
-        </div>
-        <Button type="submit" onClick={handleSubmit}>
-          저장하기
-        </Button>
       </div>
     </div>
   );
