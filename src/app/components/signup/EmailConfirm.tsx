@@ -1,8 +1,7 @@
 'use client';
 
+import { Clock4 } from 'lucide-react';
 import { useSignUpStore } from '@/store/SignupStore';
-import clock from '/public/clock.svg';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Button from '../common/ui/Button';
 import Input from '../common/ui/Input';
@@ -62,8 +61,8 @@ export default function EmailConfirm() {
                 onChange={(e) => setCode(e.target.value)}
               />
 
-              <span className="absolute right-5 flex items-center gap-[6px]">
-                <Image src={clock} alt="clock" className="h-4 w-4" />
+              <span className="absolute right-5 flex items-center gap-1.5 text-xs font-semibold text-[#D32F2F]">
+                <Clock4 size={16} color="#9e9e9e" />
                 3:00
               </span>
             </div>
@@ -80,7 +79,7 @@ export default function EmailConfirm() {
 
               {!confirm && (
                 <div className="flex justify-end">
-                  <span className="mt-6 cursor-pointer border-b border-[#9e9e9e] text-sm text-[#9e9e9e]">
+                  <span className="mt-6 cursor-pointer border-b border-[#9e9e9e] text-[#9e9e9e]">
                     인증번호 재요청
                   </span>
                 </div>

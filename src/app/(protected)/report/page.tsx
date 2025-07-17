@@ -13,7 +13,7 @@ export default function ReportPage() {
   const [selectedIndex, setSelectedIndex] = useState(months.length - 1);
 
   const yearMonth = months[selectedIndex];
-  const title = `${yearMonth.slice(0, 4)}년 ${yearMonth.slice(5)}월 루틴 리포트`;
+  const title = `${yearMonth.slice(0, 4)}년 ${yearMonth.slice(5)}월`;
 
   return (
     <ReportLayout

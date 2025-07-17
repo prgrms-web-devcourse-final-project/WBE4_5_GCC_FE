@@ -4,7 +4,8 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../styles/calendar.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useUIStore } from '@/store/uiStore';
 
 type DatePiece = Date | null;
 type SelectedDate = DatePiece | [DatePiece, DatePiece];
@@ -24,6 +25,12 @@ export default function CalendarBottomSheet({
 }: CalendarBottomSheetProps) {
   //화면에 보여지는 달
   const [activeStartDate, setActiveStartDate] = useState(new Date());
+  const setIsCalendarBottomSheetOpen = useUIStore((state) => state.setIsCalendarBottomSheetOpen);
+
+  useEffect(() => {
+    setIsCalendarBottomSheetOpen(!!isOpen);
+    return () => setIsCalendarBottomSheetOpen(false);
+  }, [isOpen, setIsCalendarBottomSheetOpen]);
 
   if (!isOpen) return null;
 
