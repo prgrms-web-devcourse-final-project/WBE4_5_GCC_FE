@@ -82,10 +82,10 @@ export const handleConfirmPassword = async (password: string) => {
 // 비밀번호 변경
 export const handleChangePassword = async (newPassword: string) => {
   try {
-    await axiosInstance.patch('/api/v1/members/password', {
+    const response = await axiosInstance.patch('/api/v1/members/password', {
       newPassword,
     });
-    console.log('비밀번호 변경 성공');
+    console.log('비밀번호 변경 성공', response.data);
   } catch (error) {
     console.error('비밀번호 변경 실패', error);
     throw error;
@@ -120,11 +120,10 @@ export const handleChangeProfile = async (
 // 회원 탈퇴
 export const deleteMember = async (withdrawType: string, etcReason: string) => {
   try {
-    await axiosInstance.delete('/api/v1/members', {
+    const response = await axiosInstance.delete('/api/v1/members', {
       data: { withdrawType, etcReason },
     });
-    console.log('비밀번호 확인 성공');
-    return true;
+    console.log('회원탈퇴 성공', response.data);
   } catch (error) {
     throw error;
   }
