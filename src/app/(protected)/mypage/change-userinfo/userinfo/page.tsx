@@ -127,6 +127,9 @@ export default function Page() {
         regionDept2,
         regionDept3,
       );
+
+      const { setUser } = useUserStore.getState();
+      setUser({ nickname: trimNickname });
       router.push('/mypage');
     }
   };
