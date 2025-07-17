@@ -1,6 +1,5 @@
-'use client';
-
-import { useState } from 'react';
+import { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { format, parseISO } from 'date-fns';
 import { ChevronRight } from 'lucide-react';
 import DatePicker from '@/app/components/routine/Calendar/DatePicker';
 
@@ -10,8 +9,9 @@ interface CategorySelectorProps {
   value: string;
   placeholder?: string;
   options?: string[];
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
+  setSelectedDate?: (value: string) => void; // 부모에게는 string을 넘김
 }
 
 export default function ListSelector({
@@ -21,29 +21,58 @@ export default function ListSelector({
   placeholder,
   onClick,
   className,
+  setSelectedDate,
 }: CategorySelectorProps) {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  // 내부 상태는 Date 타입 유지
+  const [selectedDate, setSelectedDateLocal] = useState<Date>(
+    value ? parseISO(value) : new Date(),
+  );
+
+  // 부모에서 value가 바뀌면 내부 상태도 동기화
+  useEffect(() => {
+    if (value) {
+      setSelectedDateLocal(parseISO(value));
+    }
+  }, [value]);
+
+  // selectedDate가 변경되면 부모에게 알림
+  useEffect(() => {
+    if (setSelectedDate) {
+      const formatted = format(selectedDate, 'yyyy-MM-dd');
+      setSelectedDate(formatted);
+    }
+  }, [selectedDate, setSelectedDate]);
+
+  // DatePicker에 넘길 타입에 맞춘 래퍼 함수
+  const handleDateChange: Dispatch<SetStateAction<Date>> = (dateOrFn) => {
+    // dateOrFn는 Date 또는 (prev: Date) => Date 형태
+    setSelectedDateLocal((prevDate) => {
+      const newDate =
+        typeof dateOrFn === 'function' ? dateOrFn(prevDate) : dateOrFn;
+      const formatted = format(newDate, 'yyyy-MM-dd');
+      if (setSelectedDate) setSelectedDate(formatted);
+      return newDate;
+    });
+  };
 
   return (
-    <div className={`relative w-full ${className ?? ''}`}>
-      <div className="flex h-12 w-full items-center justify-between border border-[#E0E0E0] px-4 py-4">
-        {/* 좌측 영역 */}
+    <div
+      className={`relative w-full border border-[#E0E0E0] ${className ?? ''}`}
+    >
+      <div className="flex h-12 w-full items-center justify-between px-4 py-4">
         <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
           <span>{icon}</span>
           <span>{label}</span>
         </div>
 
-        {/* 우측 영역 - 조건부 렌더링 */}
         {label === '시작일' ? (
-          // '시작일'인 경우 DatePicker 표시
           <div className="absolute top-2 right-4 z-50 mt-2">
             <DatePicker
               selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
+              setSelectedDate={handleDateChange}
             />
           </div>
         ) : (
-          // 그 외에는 버튼 표시
           <button
             type="button"
             onClick={onClick}

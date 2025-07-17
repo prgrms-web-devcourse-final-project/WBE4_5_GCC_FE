@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { format } from 'date-fns';
+import { useEffect, useState } from 'react';
 import Button from '@/app/components/common/ui/Button';
 import ListSelector from '@/app/components/routine/ListSelector';
 import ToggleSwitch from '@/app/components/common/ui/ToggleSwitch';
@@ -13,16 +12,15 @@ import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
 
 export default function Page() {
+  const [selectedCategory, setSelectedCategory] = useState<React.ReactNode>('');
+  const [routineName, setRoutineName] = useState('');
+  const [startDate, setStartDate] = useState('');
   const [cycle, setCycle] = useState('');
   const [doWhen, setDoWhen] = useState('');
-  const [startDate, setStartDate] = useState('');
-
-  const [routineName, setRoutineName] = useState('');
-  const [importance, setImportance] = useState(false);
-  const [showCatModal, setShowCatModal] = useState(false);
   const [notification, setNotification] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<React.ReactNode>('');
+  const [importance, setImportance] = useState(false);
 
+  const [showCatModal, setShowCatModal] = useState(false);
   const [isCycleOpen, setIsCycleOpen] = useState(false);
   const [isWhenDoOpen, setIsWhenDoOpen] = useState(false);
 
@@ -32,6 +30,17 @@ export default function Page() {
     startDate !== '' &&
     cycle !== '' &&
     doWhen !== '';
+
+  useEffect(() => {
+    console.log('폼 상태 변경됨:', {
+      selectedCategory,
+      routineName,
+      startDate,
+      cycle,
+      doWhen,
+      importance,
+    });
+  }, [selectedCategory, routineName, startDate, cycle, doWhen, importance]);
 
   return (
     <>
@@ -62,7 +71,7 @@ export default function Page() {
               label="시작일"
               value={startDate}
               className="rounded-t-lg"
-              onClick={() => console.log('시작일')}
+              setSelectedDate={setStartDate}
             />
             <ListSelector
               icon="♾️"
@@ -120,8 +129,24 @@ export default function Page() {
         )}
       </div>
 
-      {isCycleOpen && <RepeatSelector />}
-      {isWhenDoOpen && <WhenSelector />}
+      {isCycleOpen && (
+        <RepeatSelector
+          isOpen={isCycleOpen}
+          onClose={() => setIsCycleOpen(false)}
+          onSubmit={(cycleText) => {
+            setCycle(cycleText);
+          }}
+        />
+      )}
+      {isWhenDoOpen && (
+        <WhenSelector
+          isOpen={isWhenDoOpen}
+          onClose={() => setIsWhenDoOpen(false)}
+          onSubmit={(value) => {
+            setDoWhen(value);
+          }}
+        />
+      )}
     </>
   );
 }

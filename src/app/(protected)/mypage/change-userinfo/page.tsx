@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Input from '@/app/components/common/ui/Input';
-import { Eye, EyeClosed, Check } from 'lucide-react';
+import { Eye, EyeClosed } from 'lucide-react';
 import Button from '@/app/components/common/ui/Button';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
 

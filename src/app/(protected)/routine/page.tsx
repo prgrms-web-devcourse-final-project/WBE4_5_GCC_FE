@@ -21,7 +21,7 @@ export default function Page() {
   const [routineData, setRoutineData] = useState<RoutineItem[] | null>(null);
 
   const setRoutines = useRoutineStore((state) => state.setRoutines);
-  const routines = useRoutineStore((state) => state.routineDateSet);
+  // const routines = useRoutineStore((state) => state.routineDateSet);
 
   useEffect(() => {
     const fetchRoutine = async () => {
@@ -57,7 +57,7 @@ export default function Page() {
     <>
       <div className="flex min-h-screen flex-col items-center bg-white py-4">
         <CalendarBar setIsOpen={setIsOpen} />
-        <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 py-11">
+        <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 pb-11">
           {/* 날짜, 진행률 바 */}
           <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
             <span className="text-xl font-semibold">
@@ -69,6 +69,7 @@ export default function Page() {
               currentStep={1}
               totalSteps={5}
               per="20%"
+              // per={`${currentStep} / ${totalSteps}`}
               wrapperClassName="h-6 bg-[#FFB84C]/25 mb-0"
               barClassName="h-6 bg-[#FFB84C] rounded-full text-white text-xs flex items-center justify-center"
             />

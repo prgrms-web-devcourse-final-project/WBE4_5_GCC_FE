@@ -3,11 +3,10 @@
 import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import item1 from '@/app/assets/images/item1.png';
-
-import character from '../../../../../public/images/character.png';
+import character from '/public/images/character.png';
 import Button from '@/app/components/common/ui/Button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const tabs = ['전체', '상의', '하의', '액세서리'];
 

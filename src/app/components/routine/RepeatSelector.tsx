@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import BottomSheet from '../common/ui/BottomSheet';
 // import { ChevronDown } from 'lucide-react';
@@ -8,9 +7,17 @@ import ThreeToggle from './ThreeToggle';
 // 날짜 선택 옵션
 const options = ['월', '화', '수', '목', '금', '토', '일'];
 
-// 반복주기 바텀시트
-export default function RepeatSelector() {
-  const [isOpen, setIsOpen] = useState(true);
+interface RepeatSelectorProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (cycleText: string) => void;
+}
+
+export default function RepeatSelector({
+  isOpen,
+  onClose,
+  onSubmit,
+}: RepeatSelectorProps) {
   const [selectedIndex, setSelectedIndex] = useState<number[]>([]);
   const [selectedWeek, setSelectedWeek] = useState('1');
   const [selectedIdx, setSelectedIdx] = useState(1);
@@ -21,10 +28,30 @@ export default function RepeatSelector() {
     );
   };
 
+  const handleSubmit = () => {
+    const selectedDays =
+      selectedIndex.length === options.length
+        ? '매일'
+        : selectedIndex.length > 0
+          ? selectedIndex
+              .sort((a, b) => a - b)
+              .map((i) => options[i])
+              .join(', ')
+          : '요일 미선택';
+
+    const cycleText =
+      selectedDays +
+      ' / ' +
+      (selectedWeek === '1' ? '매주' : `${selectedWeek}주마다`);
+
+    onSubmit(cycleText);
+    onClose();
+  };
+
   return (
     <>
       <BottomSheet
-        setIsOpen={setIsOpen}
+        setIsOpen={onClose}
         isOpen={isOpen}
         className="max-h-[588px] px-5 py-8"
       >
@@ -82,12 +109,19 @@ export default function RepeatSelector() {
                 <div className="w-[150px]">
                   <WeekPicker onChange={setSelectedWeek} />
                 </div>
-                <span className="pointer-events-none absolute bottom-30 left-2/5 translate-x-[60px] -translate-y-1/2 text-sm">
+                <span className="pointer-events-none absolute bottom-42 left-2/5 translate-x-[60px] -translate-y-1/2 text-sm">
                   주마다
                 </span>
               </div>
             </div>
           </div>
+          {/* 확인 버튼 */}
+          <button
+            className="mt-5 rounded bg-[#FFB84C] px-4 py-2 text-white"
+            onClick={handleSubmit}
+          >
+            확인
+          </button>
         </div>
       </BottomSheet>
     </>

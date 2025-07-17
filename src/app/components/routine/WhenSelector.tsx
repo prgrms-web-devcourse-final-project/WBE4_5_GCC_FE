@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import BottomSheet from '../common/ui/BottomSheet';
 import Input from '../common/ui/Input';
@@ -6,8 +5,17 @@ import Input from '../common/ui/Input';
 const options = ['눈 뜨자마자', '출근길에', '8:00', '자기 전 체크', '아무때나'];
 
 // 언제할래요 바텀시트
-export default function WhenSelector() {
-  const [isOpen, setIsOpen] = useState(true);
+interface WhenSelectorProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (value: string) => void;
+}
+
+export default function WhenSelector({
+  isOpen,
+  onClose,
+  onSubmit,
+}: WhenSelectorProps) {
   const [selectedIdx, setSelectedIdx] = useState('');
   const [value, setValue] = useState('');
 
@@ -16,6 +24,8 @@ export default function WhenSelector() {
     setValue(option);
     setTimeout(() => {
       setSelectedIdx('');
+      onSubmit(option); // 선택한 값 넘겨주기
+      onClose(); // 바텀시트 닫기
     }, 200);
   };
   return (
@@ -23,7 +33,7 @@ export default function WhenSelector() {
       <BottomSheet
         className="max-h-[333px] px-5 py-8"
         isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        setIsOpen={onClose}
       >
         <div className="flex items-center justify-start gap-2">
           <h2 className="text-lg font-semibold">✅</h2>

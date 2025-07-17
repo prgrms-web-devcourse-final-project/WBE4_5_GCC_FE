@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import LogoutModal from '../../components/common/LogoutModal';
-
+import SettingsItem from '@/app/components/mypage/SettingsItem';
 import Button from '../../components/common/ui/Button';
 import Profile from '../../components/main/Profile';
 import { logout } from '@/api/api';
