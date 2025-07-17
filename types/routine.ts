@@ -47,8 +47,8 @@ export interface AboutRoutine {
 export interface AddRoutine {
   categoryId: number;
   content: string;
-  triggerTime?: string;
-  isImportant?: boolean;
+  triggerTime: string;
+  isImportant: boolean;
   repeatType?: string;
   repeatValue?: string;
   date: string;

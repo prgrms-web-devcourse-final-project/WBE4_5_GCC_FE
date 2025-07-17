@@ -10,7 +10,8 @@ const options = ['월', '화', '수', '목', '금', '토', '일'];
 interface RepeatSelectorProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (cycleText: string) => void;
+  // onSubmit: (cycleText: string) => void;
+  onSubmit: (cycle: { days: string; week: string }) => void;
 }
 
 export default function RepeatSelector({
@@ -39,12 +40,12 @@ export default function RepeatSelector({
               .join(', ')
           : '요일 미선택';
 
-    const cycleText =
-      selectedDays +
-      ' / ' +
-      (selectedWeek === '1' ? '매주' : `${selectedWeek}주마다`);
+    const cycle = {
+      days: selectedDays,
+      week: selectedWeek,
+    };
 
-    onSubmit(cycleText);
+    onSubmit(cycle);
     onClose();
   };
 
@@ -117,8 +118,13 @@ export default function RepeatSelector({
           </div>
           {/* 확인 버튼 */}
           <button
-            className="mt-5 rounded bg-[#FFB84C] px-4 py-2 text-white"
+            className={`mt-5 rounded px-4 py-2 text-white transition-colors ${
+              selectedIndex.length === 0
+                ? 'cursor-not-allowed bg-[#E0E0E0]'
+                : 'cursor-pointer bg-[#FFB84C]'
+            }`}
             onClick={handleSubmit}
+            disabled={selectedIndex.length === 0}
           >
             확인
           </button>

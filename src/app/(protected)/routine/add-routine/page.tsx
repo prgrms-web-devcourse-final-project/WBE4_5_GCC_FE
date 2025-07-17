@@ -11,11 +11,17 @@ import CategoryBottomSheetContainer from '@/app/components/common/CategoryBottom
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
 import { CategoryItem } from '../../../../../types/types';
+import { addRoutine } from '@/api/routine/routine';
+import { AddRoutine } from '../../../../../types/routine';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
+  const router = useRouter();
   const [routineName, setRoutineName] = useState('');
   const [startDate, setStartDate] = useState('');
-  const [cycle, setCycle] = useState('');
+  const [cycle, setCycle] = useState<{ days: string; week: string } | null>(
+    null,
+  );
   const [doWhen, setDoWhen] = useState('');
   const [notification, setNotification] = useState(false);
   const [importance, setImportance] = useState(false);
@@ -32,8 +38,35 @@ export default function Page() {
     selectedCategory !== null &&
     routineName !== '' &&
     startDate !== '' &&
-    cycle !== '' &&
+    cycle !== null &&
     doWhen !== '';
+
+  const convertDaysToNumbers = (days: string) => {
+    const dayMap: Record<string, string> = {
+      월: '1',
+      화: '2',
+      수: '3',
+      목: '4',
+      금: '5',
+      토: '6',
+      일: '7',
+    };
+
+    return days
+      .split(', ')
+      .map((day) => dayMap[day])
+      .filter(Boolean) // 혹시 모를 undefined 제거
+      .join(',');
+  };
+  const getRepeatType = (days: string): 'DAILY' | 'WEEKLY' => {
+    return days.split(', ').length === 7 ? 'DAILY' : 'WEEKLY';
+  };
+
+  const getRepeatValue = (days: string): string | undefined => {
+    return days.split(', ').length === 7
+      ? undefined
+      : convertDaysToNumbers(days);
+  };
 
   useEffect(() => {
     console.log('폼 상태 변경됨:', {
@@ -80,8 +113,12 @@ export default function Page() {
             <ListSelector
               icon="♾️"
               label="반복주기"
-              value={cycle}
-              placeholder="매일 / 매주 "
+              value={
+                cycle
+                  ? `${cycle.days} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`
+                  : ''
+              }
+              placeholder="매일 / 매주"
               onClick={() => setIsCycleOpen(true)}
             />
             <ListSelector
@@ -112,11 +149,28 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="fixed right-5 bottom-[70px] left-5">
+        <div className="fixed right-5 bottom-[120px] left-5">
           <Button
             type="submit"
             disabled={!isSubmitEnabled}
-            onClick={() => console.log('확인')}
+            onClick={async () => {
+              const routineData: AddRoutine = {
+                categoryId: selectedCategory!.categoryId,
+                content: routineName,
+                triggerTime: doWhen,
+                isImportant: importance,
+                repeatType: getRepeatType(cycle!.days),
+                repeatValue: getRepeatValue(cycle!.days),
+                date: startDate,
+              };
+              try {
+                await addRoutine(routineData);
+                router.push('/routine');
+              } catch (err) {
+                console.error('루틴 추가 실패', err);
+                alert('루틴을 추가하는 중 오류가 발생했어요.');
+              }
+            }}
           >
             확인
           </Button>
@@ -138,8 +192,8 @@ export default function Page() {
         <RepeatSelector
           isOpen={isCycleOpen}
           onClose={() => setIsCycleOpen(false)}
-          onSubmit={(cycleText) => {
-            setCycle(cycleText);
+          onSubmit={(cycleData) => {
+            setCycle(cycleData);
           }}
         />
       )}

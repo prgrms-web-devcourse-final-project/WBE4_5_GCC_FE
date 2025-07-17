@@ -17,7 +17,7 @@ type SelectedDate = DatePiece | [DatePiece, DatePiece];
 export default function Page() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [routineData, setRoutineData] = useState<RoutineItem[] | null>(null);
 
   const setRoutines = useRoutineStore((state) => state.setRoutines);
@@ -56,7 +56,11 @@ export default function Page() {
   return (
     <>
       <div className="flex min-h-screen flex-col items-center bg-white px-5">
-        <CalendarBar setIsOpen={setIsOpen} />
+        <CalendarBar
+          setIsOpen={setIsOpen}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        />
         <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 pb-11">
           {/* 날짜, 진행률 바 */}
           <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">

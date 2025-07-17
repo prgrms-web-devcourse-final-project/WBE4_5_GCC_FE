@@ -1,5 +1,3 @@
-'use client';
-
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../styles/calendar.css';
@@ -25,7 +23,9 @@ export default function CalendarBottomSheet({
 }: CalendarBottomSheetProps) {
   //화면에 보여지는 달
   const [activeStartDate, setActiveStartDate] = useState(new Date());
-  const setIsCalendarBottomSheetOpen = useUIStore((state) => state.setIsCalendarBottomSheetOpen);
+  const setIsCalendarBottomSheetOpen = useUIStore(
+    (state) => state.setIsCalendarBottomSheetOpen,
+  );
 
   useEffect(() => {
     setIsCalendarBottomSheetOpen(!!isOpen);
