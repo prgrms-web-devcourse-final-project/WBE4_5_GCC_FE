@@ -66,14 +66,14 @@ export default function Practice() {
 
   return (
     <>
-      <div className="mx-auto flex w-full max-w-screen-sm flex-col px-5 min-h-screen overflow-y-auto">
+      <div className="mx-auto flex min-h-screen w-full max-w-screen-sm flex-col overflow-y-auto px-5">
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
         />
 
-        <div className="rounded-2 border-1 border-[#d9d9d9] px-4 py-6">
+        <div className="min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
           <div className="grid grid-cols-3 gap-5">
             {filteredItem.map((item) => (
               <ItemCard
