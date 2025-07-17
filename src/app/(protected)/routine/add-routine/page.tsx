@@ -10,9 +10,9 @@ import CategoryBottomSheetContainer from '@/app/components/common/CategoryBottom
 
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
+import { CategoryItem } from '../../../../../types/types';
 
 export default function Page() {
-  const [selectedCategory, setSelectedCategory] = useState<React.ReactNode>('');
   const [routineName, setRoutineName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [cycle, setCycle] = useState('');
@@ -21,11 +21,15 @@ export default function Page() {
   const [importance, setImportance] = useState(false);
 
   const [showCatModal, setShowCatModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(
+    null,
+  );
+
   const [isCycleOpen, setIsCycleOpen] = useState(false);
   const [isWhenDoOpen, setIsWhenDoOpen] = useState(false);
 
   const isSubmitEnabled =
-    selectedCategory !== '' &&
+    selectedCategory !== null &&
     routineName !== '' &&
     startDate !== '' &&
     cycle !== '' &&
@@ -122,6 +126,7 @@ export default function Page() {
           <CategoryBottomSheetContainer
             onClose={() => setShowCatModal(false)}
             onSelectCategory={(value) => {
+              console.log('선택된 카테고리:', value);
               setSelectedCategory(value);
               setShowCatModal(false);
             }}

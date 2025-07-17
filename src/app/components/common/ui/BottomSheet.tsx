@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { useUIStore } from '@/store/uiStore';
 
 interface BottomSheetProps {
   isOpen?: boolean;
@@ -14,6 +15,13 @@ export default function BottomSheet({
   children,
   className,
 }: BottomSheetProps) {
+  const setIsBottomSheetOpen = useUIStore((state) => state.setIsBottomSheetOpen);
+
+  useEffect(() => {
+    setIsBottomSheetOpen(!!isOpen);
+    return () => setIsBottomSheetOpen(false);
+  }, [isOpen, setIsBottomSheetOpen]);
+
   if (!isOpen) return null;
 
   return (

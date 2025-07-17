@@ -27,7 +27,7 @@ export const CategoryById = async (id: number) => {
 // 카테고리 생성
 interface CreateCategoryPayload {
   categoryName: string;
-  categoryType: 'MAIN' | 'SUB';
+  categoryType: 'MAJOR' | 'SUB';
   parentName?: string; // SUB일 때만 필요
 }
 

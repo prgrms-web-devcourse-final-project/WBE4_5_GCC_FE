@@ -1,45 +1,63 @@
 'use client';
+
 import Image from 'next/image';
-import logo from '/public/Logo.svg';
-import bell from '/public/bell.svg';
+import { Bell } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import logo from '/public/Logo.svg';
+import coin from '/public/coin.svg';
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const showHeader = !(
-    pathname.startsWith('/signup') ||
-    pathname.startsWith('/login') ||
-    pathname.startsWith('/shop') ||
-    pathname.startsWith('/admin')
-  );
   const [openNoti, setOpenNoti] = useState(false);
+
+  const isHome = pathname === '/';
+  const isRoutine = pathname === '/routine';
+  const isReport = pathname === '/report';
+  const isShop = pathname === '/shop';
+  const isMypage = pathname === '/mypage';
+
+  let title = '';
+  if (isRoutine) title = '루틴';
+  else if (isReport) title = '리포트';
+  else if (isShop) title = '상점';
+  else if (isMypage) title = '마이페이지'
+
+  const showHeader = isHome || title;
+
+  if (!showHeader) return null;
+
   return (
     <>
-      {showHeader && (
-        <div className="flex w-full items-center justify-between px-5 py-[18px] select-none">
+      <div className="fixed top-0 z-1000 flex h-[56px] w-full max-w-md items-center justify-between bg-white px-5 py-[18px] shadow-sm select-none">
+        {isHome ? (
           <Image
             src={logo}
             alt="logo"
             width={116}
-            //height={28}
             onClick={() => router.push('/')}
             className="h-auto cursor-pointer"
             style={{ height: 'auto' }}
-            priority
           />
-          <Image
-            src={bell}
-            alt="bell"
-            width={20}
-            //height={20}
-            className="cursor-pointer"
-            style={{ height: 'auto' }}
+        ) : (
+          <div className="text-xl font-semibold">{title}</div>
+        )}
+        {isShop ? (
+          <div className="flex items-center space-x-1">
+            <Image src={coin} alt="coin" width={14} height={14} />
+            <span className="text-[12px] text-[#FFB84C] font-semibold">1200</span>
+          </div>
+        ) : (
+          <Bell
+            className="text-[#222222] cursor-pointer"
+            size={20}
             onClick={() => setOpenNoti(true)}
           />
-        </div>
-      )}
+        )}
+      </div>
+
+      <div className="mb-[96px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
     </>
   );
 }

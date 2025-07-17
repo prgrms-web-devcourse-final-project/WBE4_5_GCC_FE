@@ -3,10 +3,16 @@ import { twMerge } from 'tailwind-merge';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
+  success?: string;
   icon?: React.ReactNode;
 }
 
-export default function Input({ error, className = '', ...props }: InputProps) {
+export default function Input({
+  error,
+  success,
+  className = '',
+  ...props
+}: InputProps) {
   return (
     <div className="w-full">
       <div className="relative">
@@ -20,6 +26,9 @@ export default function Input({ error, className = '', ...props }: InputProps) {
       </div>
       {error && (
         <p className="mt-2.5 ml-1.5 text-[12px] text-[#D32F2F]">{error}</p>
+      )}
+      {success && (
+        <p className="mt-2.5 ml-1.5 text-[12px] text-green-500">{success}</p>
       )}
     </div>
   );

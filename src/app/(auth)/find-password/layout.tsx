@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="flex min-h-screen flex-col">
-        <BackHeader title="비밀번호 변경" />
+        <BackHeader title="비밀번호 재설정" />
         <div>{children}</div>
         <NextBtn
           label={label}

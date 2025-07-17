@@ -2,8 +2,27 @@ import Image from 'next/image';
 import backGround from '/public/profileBackGround.svg';
 import character from '/public/images/character.png';
 import coin from '/public/coin.svg';
+import { useEffect, useState } from 'react';
+import { fetchProfile, fetchUserPoint } from '@/api/member';
+import { useUserStore } from '@/store/UserStore';
 
 export default function Profile() {
+  const [point, setPoint] = useState<number>(0);
+  useEffect(() => {
+    const loadProfileData = async () => {
+      try {
+        const data = await fetchUserPoint();
+        await fetchProfile();
+        setPoint(data.data.currentPoint);
+      } catch (err) {
+        console.error('유저 정보 불러오기 실패', err);
+      }
+    };
+    loadProfileData();
+  }, []);
+
+  const nickname = useUserStore((state) => state.nickname);
+
   return (
     <div className="relative z-0 flex h-[167px] w-full overflow-hidden rounded-md">
       <div className="absolute inset-0 z-5 bg-[#e5e5e5]/30"></div>
@@ -26,17 +45,14 @@ export default function Profile() {
           //height={125} // div에 맞춤
           className="h-auto"
         />
-        <div>
+        <div className="flex flex-col justify-center">
           <div className="z-20 mb-[7px] text-[10px] font-medium text-[#616161]">
             청소의 정령 소환사
           </div>
-          <div className="mb-1 text-[18px] font-bold">한상아</div>
-          <div className="mb-[14px] text-[14px] font-medium">
-            자취는 어렵다..
-          </div>
-          <div className="relative flex h-[21px] w-[53px] items-center gap-1 rounded bg-[#222222] px-2 opacity-70">
+          <div className="mb-[14px] text-[18px] font-bold">{nickname}</div>
+          <div className="relative flex h-[21px] w-[80px] items-center gap-1 rounded bg-[#222222] px-2 opacity-70">
             <Image src={coin} alt="coin" className="h-[11px] w-[11px]" />
-            <span className="text-[12px] text-[#FFB84C]">100</span>
+            <span className="text-[12px] text-[#FFB84C]">{point}</span>
           </div>
         </div>
       </div>

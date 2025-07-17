@@ -1,10 +1,8 @@
 'use client';
-import Image from 'next/image';
-//import check from '/public/check.svg';
-import checkGray from '/public/checkGray.svg';
-import checkGreen from '/public/checkGreen.svg';
-import eye from '/public/eye.svg';
-import eyeClosed from '/public/eyeClosed.svg';
+
+import { Eye } from 'lucide-react';
+import { EyeClosed } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSignUpStore } from '@/store/SignupStore';
 import Input from '../common/ui/Input';
@@ -38,8 +36,8 @@ export default function UserInfo() {
   const hasMinLength = password.length >= 8;
 
   // 조건이 맞는지 확인
-  const checkConditionImage = (condition: boolean) => {
-    return condition ? checkGreen : checkGray;
+  const checkConditionIcon = (condition: boolean) => {
+    return <Check size={16} color={condition ? '#388E3C' : '#9E9E9E'} />
   };
   const checkConditionText = (condition: boolean) => {
     return condition ? 'text-[#388E3C] ' : 'text-[#9E9E9E] ';
@@ -107,10 +105,10 @@ export default function UserInfo() {
           </div>
           <div className="mt-2">
             {canUseEmail === false && (
-              <p className="text-[14px] text-red-500">중복된 이메일 입니다.</p>
+              <p className="text-[14px] text-[#D32F2F]">중복된 이메일 입니다.</p>
             )}
             {canUseEmail === true && (
-              <p className="text-[14px] text-green-600">
+              <p className="text-[14px] text-[#388E3C]">
                 사용 가능한 이메일 입니다.
               </p>
             )}
@@ -128,40 +126,44 @@ export default function UserInfo() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <Image
-              src={showPassword ? eye : eyeClosed}
-              alt="비밀번호 보기 버튼"
-              width={20}
-              height={20}
-              className="absolute right-5"
+            <button
+              type="button"
+              className="absolute right-5 cursor-pointer"
               onClick={() => setShowPassword((prev) => !prev)}
-            />
+              aria-label={showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+            >
+              {showPassword ? (
+                <Eye size={20} color="#9E9E9E" />
+              ) : (
+                <EyeClosed size={20} color="#9E9E9E" />
+              )}
+            </button>
           </div>
           {/* 비밀번호 확인 체크 */}
           <div className="mt-[10px] text-[12px]">
             <div className="flex gap-9">
               <div className="flex w-[160px] items-center gap-[6px]">
-                <Image src={checkConditionImage(hasLowerUpper)} alt="check" />
+                {checkConditionIcon(hasLowerUpper)}
                 <span className={checkConditionText(hasLowerUpper)}>
                   영문 대소문자 최소 1개 포함
                 </span>
               </div>
               <div className="flex w-[160px] items-center gap-[6px]">
-                <Image src={checkConditionImage(hasNumber)} alt="check" />
+                {checkConditionIcon(hasNumber)}
                 <span className={checkConditionText(hasNumber)}>숫자 포함</span>
               </div>
             </div>
             <div className="flex gap-9">
               <div className="flex w-[160px] items-center gap-[6px]">
-                <Image src={checkConditionImage(hasMinLength)} alt="check" />
+                {checkConditionIcon(hasMinLength)}
                 <span className={checkConditionText(hasMinLength)}>
                   8자리 이상
                 </span>
               </div>
               <div className="flex w-[160px] items-center gap-[6px]">
-                <Image src={checkConditionImage(hasSpecial)} alt="check" />
+                {checkConditionIcon(hasSpecial)}
                 <span className={checkConditionText(hasSpecial)}>
-                  특수 문자 포함( \ " 제외)
+                  특수 문자 포함( \ &quot; 제외)
                 </span>
               </div>
             </div>
@@ -179,14 +181,18 @@ export default function UserInfo() {
               onChange={(e) => setCheckPassword(e.target.value)}
             />
 
-            <Image
-              src={showCheckPassword ? eye : eyeClosed}
-              alt="비밀번호 보기 버튼"
-              width={20}
-              height={20}
-              className="absolute right-5"
+            <button
+              type="button"
+              className="absolute right-5 cursor-pointer"
               onClick={() => setShowCheckPassword((prev) => !prev)}
-            />
+              aria-label={showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+            >
+              {showCheckPassword ? (
+                <Eye size={20} color="#9e9e9e" />
+              ) : (
+                <EyeClosed size={20} color="#9e9e9e" />
+              )}
+            </button>
           </div>
         </div>
       </div>
