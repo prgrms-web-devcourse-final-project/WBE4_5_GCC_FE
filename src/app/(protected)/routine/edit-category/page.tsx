@@ -4,13 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CategoryGrid from '@/app/components/common/CategoryGrid';
 import { Categories } from '@/api/categories';
-
-interface CategoryItem {
-  categoryId: number;
-  categoryName: string;
-  categoryType: 'MAJOR' | 'SUB' | 'CUSTOM';
-  parentName: string | null;
-}
+import { CategoryItem } from '../../../../../types/types';
 
 const categoryIconMap: Record<string, React.ReactNode> = {
   청소: '🧹',

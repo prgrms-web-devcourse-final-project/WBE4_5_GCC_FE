@@ -4,21 +4,13 @@ import { useEffect, useState } from 'react';
 import { PencilLine } from 'lucide-react';
 import CategoryGrid from './CategoryGrid';
 import { useRouter } from 'next/navigation';
-import { ChevronRight } from 'lucide-react';
 import SubCategoryGrid from './SubCategoryGrid';
-import { Category } from '../../../../types/types';
 import { Categories } from '@/api/categories';
+import { CategoryItem } from '../../../../types/types';
 
 interface Props {
   onClose: () => void;
-  onSelectCategory: (value: React.ReactNode) => void;
-}
-
-interface CategoryItem {
-  categoryId: number;
-  categoryName: string;
-  categoryType: 'MAJOR' | 'SUB';
-  parentName: string | null;
+  onSelectCategory: (value: CategoryItem) => void;
 }
 
 const categoryIconMap: Record<string, React.ReactNode> = {
@@ -52,9 +44,9 @@ export default function CategoryBottomSheetContainer({
   const [selectedMainCategory, setSelectedMainCategory] = useState<
     string | null
   >(null);
-
   const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
   const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [allCategoryData, setAllCategoryData] = useState<CategoryItem[]>([]);
   const [subCategoryMap, setSubCategoryMap] = useState<
     Record<string, string[]>
   >({});
@@ -65,19 +57,24 @@ export default function CategoryBottomSheetContainer({
 
   const handleSubCategorySelect = (sub: string) => {
     if (selectedMainCategory) {
-      const icon = categoryIconMap[selectedMainCategory];
-      if (icon) {
-        onSelectCategory(
-          // ReactNode 반환
-          <span className="inline-flex items-center gap-[6px] text-xs font-medium text-[#222222]">
-            <span className="text-xs">{icon}</span>
-            <span>{selectedMainCategory}</span>
-            <ChevronRight className="h-auto w-[11px]" />
-            <span>{sub}</span>
-          </span>,
+      const selectedMajor = allCategoryData.find(
+        (cat) =>
+          cat.categoryType === 'MAJOR' &&
+          cat.categoryName === selectedMainCategory,
+      );
+
+      if (selectedMajor) {
+        onSelectCategory({
+          ...selectedMajor, // MAJOR 카테고리 전달
+          subCategoryName: sub, // SUB 카테고리도 전달
+        });
+        onClose();
+      } else {
+        console.warn(
+          '해당 MAJOR 카테고리를 찾을 수 없습니다:',
+          selectedMainCategory,
         );
       }
-      onClose();
     }
   };
 
@@ -91,6 +88,8 @@ export default function CategoryBottomSheetContainer({
         setLoading(true);
         const res = await Categories();
         const data = res.data;
+
+        setAllCategoryData(data);
 
         const majors = data.filter(
           (cat: CategoryItem) => cat.categoryType === 'MAJOR',
@@ -148,7 +147,7 @@ export default function CategoryBottomSheetContainer({
           </button>
         </div>
 
-        {/* Main 카테고리 */}
+        {/* MAJOR 카테고리 */}
         <CategoryGrid
           categories={categories.map((cat) => ({
             icon: categoryIconMap[cat.categoryName] || <span>❓︎</span>,
@@ -161,7 +160,7 @@ export default function CategoryBottomSheetContainer({
           }}
         />
 
-        {/* Sub 카테고리 (오버레이 화면) */}
+        {/* SUB 카테고리 (오버레이 화면) */}
         {showSubCategory && (
           <div
             className="animate-slide-in fixed inset-0 z-50 flex items-end justify-center bg-transparent"
