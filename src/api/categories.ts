@@ -65,3 +65,15 @@ export const EditCategoryById = async (
     throw error;
   }
 };
+
+// 카테고리 삭제 - 사용 ㅇ
+export const DeleteCategoryById = async (id: number | null) => {
+  try {
+    const response = await axiosInstance.delete(`/api/v1/categories/${id}`);
+    console.log('카테고리 삭제 성공', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('특정 카테고리 삭제 실패', error);
+    throw error;
+  }
+};

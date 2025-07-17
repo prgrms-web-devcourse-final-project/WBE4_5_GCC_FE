@@ -5,7 +5,11 @@ import { CirclePlus } from 'lucide-react';
 import { CircleMinus } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Categories, EditCategoryById } from '@/api/categories';
+import {
+  Categories,
+  DeleteCategoryById,
+  EditCategoryById,
+} from '@/api/categories';
 import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
 import EditSubcategoryLayout from './EditSubcategoryLayout';
 import { CategoryItem } from '../../../../../types/types';
@@ -24,6 +28,7 @@ export default function Page() {
   const [categoryType, setCategoryType] = useState<'MAJOR' | 'SUB' | null>(
     null,
   );
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
   useEffect(() => {
     if (labelFromParams) setLabel(labelFromParams);
@@ -87,7 +92,7 @@ export default function Page() {
     setSubCategories((prev) => [
       ...prev,
       {
-        categoryId: 1, // 여기 Id 값 어떻게 전달해줘야 할 지.. 현재 스웨거에서는 id가 1,2,3 인 데이터에 대해서만 수정 요청을 할 수 있도록 되어 있음.
+        categoryId: 1, // 여기 Id 값 어떤 걸로 전달 할 지.. 현재 스웨거에서는 id가 1,2,3 인 데이터에 대해서만 수정 요청을 할 수 있도록 되어 있음.
         categoryName: newSubName,
         categoryType: 'SUB',
         parentName: label,
@@ -136,7 +141,12 @@ export default function Page() {
           <div className="flex flex-col gap-5">
             {subCategories.map((sub) => (
               <div key={sub.categoryId} className="flex gap-2.5">
-                <button onClick={() => setIsModalOpen(true)}>
+                <button
+                  onClick={() => {
+                    setDeleteTargetId(sub.categoryId);
+                    setIsModalOpen(true);
+                  }}
+                >
                   <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white" />
                 </button>
                 <p className="w-[307pxp] flex-auto border border-transparent border-b-[#E0E0E0] text-sm text-black">
@@ -155,8 +165,23 @@ export default function Page() {
             description="삭제 후 복구가 불가능합니다."
             confirmText="삭제"
             cancelText="취소"
-            onConfirm={() => setIsModalOpen(false)}
-            onCancel={() => setIsModalOpen(false)}
+            onCancel={() => {
+              setIsModalOpen(false);
+              setDeleteTargetId(null);
+            }}
+            onConfirm={async () => {
+              try {
+                await DeleteCategoryById(deleteTargetId);
+                setSubCategories((prev) =>
+                  prev.filter((cat) => cat.categoryId !== deleteTargetId),
+                );
+                setIsModalOpen(false);
+                setDeleteTargetId(null);
+              } catch (error) {
+                alert('삭제 실패');
+                console.error(error);
+              }
+            }}
           />
         )}
         {isBottomSheetOpen && (

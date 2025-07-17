@@ -7,9 +7,9 @@ import { Categories } from '@/api/categories';
 import { CategoryItem } from '../../../../../types/types';
 
 const categoryIconMap: Record<string, React.ReactNode> = {
-  청소: '🧹',
-  세탁: '🧺',
-  쓰레기: '♻️',
+  '청소 / 정리': '🧹',
+  '세탁 / 의류': '🧺',
+  '쓰레기 / 환경': '♻️',
   요리: '🍳',
   소비: '💸',
   행정: '📄',
@@ -17,8 +17,6 @@ const categoryIconMap: Record<string, React.ReactNode> = {
   자기개발: '💡',
   외출: '👜',
 };
-
-const customCategories = [{ icon: <span>🐾</span>, label: '반려동물' }];
 
 export default function Page() {
   const router = useRouter();
@@ -38,10 +36,8 @@ export default function Page() {
         const data: CategoryItem[] = res.data;
 
         const majors = data.filter((cat) => cat.categoryType === 'MAJOR');
-        const customs = data.filter((cat) => cat.categoryType === 'CUSTOM');
 
         setMajorCategories(majors);
-        setCustomCategories(customs);
       } catch (error) {
         console.error('카테고리 로딩 실패', error);
       } finally {
@@ -81,15 +77,6 @@ export default function Page() {
         selected={selectedCategory?.label || null}
         onSelectCategory={handleSelect}
         //isManage={true} // 관리자 페이지일 때 사용
-      />
-      <CategoryGrid
-        categories={customCategories.map((cat) => ({
-          icon: categoryIconMap[cat.categoryName] || <span>❓︎</span>,
-          label: cat.categoryName,
-        }))}
-        selected={selectedCategory?.label || null}
-        onSelectCategory={handleSelect}
-        isCustom={true}
       />
     </div>
   );
