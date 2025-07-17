@@ -5,10 +5,5 @@ export default function ShopLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      {/*<ShopHeader points={points} />*/}
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }
