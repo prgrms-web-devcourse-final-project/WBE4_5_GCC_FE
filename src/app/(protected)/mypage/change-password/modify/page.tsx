@@ -7,10 +7,11 @@ import Button from '@/app/components/common/ui/Button';
 import useDebounce from '@/hooks/useDebounce';
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import { handleChangePassword } from '@/api/member';
-import { useUserInfoStore } from '@/store/UserInfoStore';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
+  const router = useRouter();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
@@ -18,7 +19,6 @@ export default function Page() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [errors, setErrors] = useState('');
   const [showAlert, setShowAlert] = useState(false);
-  const { oldPassword } = useUserInfoStore();
 
   const hasUpperAndLower = /(?=.*[a-z])(?=.*[A-Z])/;
   const hasNumber = /(?=.*\d)/;
@@ -89,18 +89,14 @@ export default function Page() {
 
   // 변경하기 버튼
   const handleSubmit = async () => {
-    if (!oldPassword) {
-      setErrors('기존 비밀번호가 없습니다.');
-      setShowAlert(true);
-      return;
-    }
     if (!isPasswordValid) {
       setErrors('비밀번호 조건을 확인해주세요');
       setShowAlert(true);
       return;
     }
-    await handleChangePassword(oldPassword, newPassword);
-    console.log(newPassword);
+    await handleChangePassword(newPassword);
+    console.log('비밀번호 변경 성공');
+    router.push('/mypage');
   };
 
   return (

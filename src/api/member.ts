@@ -54,6 +54,18 @@ export const fetchUserItem = async () => {
   }
 };
 
+// 유저 장착 아이템 불러오기
+export const fetchEquippedItem = async () => {
+  try {
+    const response = await axiosInstance.get('/api/v1/members/items/equipped');
+    console.log('장착아이템 불러오기 성공');
+    return response.data;
+  } catch (error) {
+    console.error('장착아이템 불러오기 실패', error);
+    throw error;
+  }
+};
+
 // 기존 비밀번호 확인
 export const handleConfirmPassword = async (password: string) => {
   try {
@@ -68,13 +80,9 @@ export const handleConfirmPassword = async (password: string) => {
 };
 
 // 비밀번호 변경
-export const handleChangePassword = async (
-  oldPassword: string,
-  newPassword: string,
-) => {
+export const handleChangePassword = async (newPassword: string) => {
   try {
-    await axiosInstance.put('/api/v1/members/password', {
-      oldPassword,
+    await axiosInstance.patch('/api/v1/members/password', {
       newPassword,
     });
     console.log('비밀번호 변경 성공');
@@ -94,7 +102,7 @@ export const handleChangeProfile = async (
   regionDept3?: string,
 ) => {
   try {
-    const response = await axiosInstance.put('/api/v1/members', {
+    const response = await axiosInstance.patch('/api/v1/members', {
       name,
       nickname,
       residenceExperience,
@@ -105,6 +113,19 @@ export const handleChangeProfile = async (
     console.log('회원정보 변경 성공', response.data);
   } catch (error) {
     console.error('회원정보 변경 실패', error);
+    throw error;
+  }
+};
+
+// 회원 탈퇴
+export const deleteMember = async (withdrawType: string, etcReason: string) => {
+  try {
+    await axiosInstance.delete('/api/v1/members', {
+      data: { withdrawType, etcReason },
+    });
+    console.log('비밀번호 확인 성공');
+    return true;
+  } catch (error) {
     throw error;
   }
 };

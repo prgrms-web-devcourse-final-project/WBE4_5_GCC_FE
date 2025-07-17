@@ -8,7 +8,6 @@ import Button from '@/app/components/common/ui/Button';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
 import { handleConfirmPassword } from '@/api/member';
 import BackHeader from '@/app/components/common/ui/BackHeader';
-import { useUserInfoStore } from '@/store/UserInfoStore';
 
 export default function UserInfo() {
   const router = useRouter();
@@ -16,7 +15,6 @@ export default function UserInfo() {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ password?: string }>({});
   const [showAlert, setShowAlert] = useState(false);
-  const { setOldPassword } = useUserInfoStore();
 
   // 확인 버튼 활성화 조건
   const isSubmitEnabled = password.length > 0;
@@ -36,7 +34,6 @@ export default function UserInfo() {
       const result = await handleConfirmPassword(password);
 
       if (result) {
-        setOldPassword(password);
         router.push('/mypage/change-password/modify');
       }
     } catch (error) {
