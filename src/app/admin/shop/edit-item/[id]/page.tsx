@@ -22,6 +22,7 @@ export default function EditItem({
   const [selected, setSelected] = useState('');
 
   const [itemTitle, setItemTitle] = useState('');
+  const [itemKey, setItemKey] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
 
@@ -40,7 +41,7 @@ export default function EditItem({
   const handleSubmit = async () => {
     try {
       await EditAdminItemById(id, {
-        itemKey: `${selected.toLowerCase()}_item_000`, // itemKey 입력란 필요할 듯
+        itemKey: itemKey,
         itemName: itemTitle,
         price: Number(itemPrice),
         itemType: selected,
