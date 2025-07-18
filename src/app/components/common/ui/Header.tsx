@@ -6,11 +6,13 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import logo from '/public/Logo.svg';
 import coin from '/public/coin.svg';
+import { useUserStore } from '@/store/UserStore';
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [openNoti, setOpenNoti] = useState(false);
+  const currentPoint = useUserStore((state) => state.currentPoint);
 
   const isHome = pathname === '/';
   const isRoutine = pathname === '/routine';
@@ -22,7 +24,7 @@ export default function Header() {
   if (isRoutine) title = '루틴';
   else if (isReport) title = '리포트';
   else if (isShop) title = '상점';
-  else if (isMypage) title = '마이페이지'
+  else if (isMypage) title = '마이페이지';
 
   const showHeader = isHome || title;
 
@@ -46,18 +48,23 @@ export default function Header() {
         {isShop ? (
           <div className="flex items-center space-x-1">
             <Image src={coin} alt="coin" width={14} height={14} />
-            <span className="text-[12px] text-[#FFB84C] font-semibold">1200</span>
+            <span className="text-[12px] font-semibold text-[#FFB84C]">
+              {currentPoint}
+            </span>
           </div>
         ) : (
           <Bell
-            className="text-[#222222] cursor-pointer"
+            className="cursor-pointer text-[#222222]"
             size={20}
             onClick={() => setOpenNoti(true)}
           />
         )}
       </div>
 
-      <div className="mb-[96px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
+      <div
+        className="mb-[96px]"
+        style={{ marginTop: 'env(safe-area-inset-top)' }}
+      />
     </>
   );
 }
