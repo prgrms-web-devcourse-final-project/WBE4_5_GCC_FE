@@ -25,7 +25,7 @@ function Header() {
       <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222]">
         카테고리 편집
       </div>
-      <div className="flex gap-[7px] text-sm text-[#616161]">
+      <div className="flex gap-[16px] text-sm text-[#616161]">
         <button onClick={handleAddCat} className="cursor-pointer">
           추가
         </button>

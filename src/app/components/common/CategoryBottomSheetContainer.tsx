@@ -163,7 +163,7 @@ export default function CategoryBottomSheetContainer({
         {/* SUB 카테고리 (오버레이 화면) */}
         {showSubCategory && (
           <div
-            className="animate-slide-in fixed inset-0 z-50 flex items-end justify-center bg-transparent"
+            className="animate-slide-in ihttps://roadmap.sh/frontendtems-end fixed inset-0 z-50 flex justify-center bg-transparent"
             onClick={handleOutsideClick}
           >
             <div

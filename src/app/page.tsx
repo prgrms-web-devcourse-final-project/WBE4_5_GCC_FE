@@ -3,7 +3,6 @@ import Profile from './components/main/Profile';
 import Routine from './components/routine/Routine';
 import { useEffect, useState } from 'react';
 import { me } from '@/api/api';
-import { UserRoutine } from '@/api/routine';
 
 import quest from '/public/quest.svg';
 import acheivement from '/public/acheivement.svg';
@@ -11,6 +10,7 @@ import FloatingButton from './components/common/FloatingButton';
 import Donut from './components/common/ui/Donut';
 import { useRouter } from 'next/navigation';
 import Quest from './components/main/Quest';
+import { UserRoutine } from '@/api/routine/routine';
 
 export default function Main() {
   // 나중엔 true로 바꿔야함
@@ -86,7 +86,6 @@ export default function Main() {
             <div className="flex w-full flex-col space-y-3">
               <Routine
                 title="미지근한 물 한 잔 마시기"
-                Icon="🏃🏻"
                 category="건강"
                 time="13:00"
                 isImportant
@@ -94,31 +93,16 @@ export default function Main() {
               />
               <Routine
                 title="빨래 돌리기"
-                Icon="🧺"
                 category="세탁 / 의류"
                 subCategory="잠옷"
                 time="13:00"
               />
               <Routine
                 title="도시락 싸기"
-                Icon="🍳"
                 category="요리"
                 subCategory="회사 점심"
                 time="13:00"
                 isImportant
-              />
-              <Routine
-                title="쓰레기 분리수거"
-                Icon="♻️"
-                category="쓰레기 / 환경"
-                time="13:00"
-              />
-              <Routine
-                title="저녁 조깅"
-                Icon="🏃🏻"
-                category="건강"
-                subCategory=" 유산소 운동"
-                time="13:00"
               />
             </div>
           </div>

@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store/UserStore';
+import { useHasHydrated } from '@/hooks/useHasHydrated';
 
 export default function ProtectedLayout({
   children,
@@ -12,10 +13,11 @@ export default function ProtectedLayout({
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
 
   const router = useRouter();
-  const hydrated = useUserStore.persist.hasHydrated();
+  const hydrated = useHasHydrated();
 
   useEffect(() => {
     if (hydrated && !isLoggedIn) {
+      console.log(isLoggedIn);
       router.replace('/login');
     }
   }, [hydrated, isLoggedIn, router]);

@@ -3,24 +3,39 @@ import YellowCheckIcon from './YellowCheckIcon';
 
 export default function Routine({
   title,
-  Icon,
   category,
   subCategory,
   time,
   isImportant,
   isCompleted,
+  onClick,
 }: {
   title: string;
-  Icon: string;
   category: string;
   subCategory?: string;
   time?: string;
   isImportant?: boolean;
   isCompleted?: boolean;
+  onClick: () => void;
 }) {
+  const options = [
+    '🧹 청소 / 정리',
+    '💡 자기개발',
+    '🧳 외출',
+    '🧺 세탁 / 의류',
+    '🍳 요리',
+    '💸 소비',
+    '♻️ 쓰레기 / 환경',
+    '🏃🏻 건강',
+    '📄 행정',
+  ];
+  const iconHandler =
+    options.find((item) => item.includes(category)) || category;
+
   return (
     <div
       className={`flex w-full cursor-pointer items-center justify-between border px-3 py-4 ${isCompleted ? 'border-[#FFB84C]' : 'border-[#9E9E9E]'} rounded-[8px] bg-white`}
+      onClick={onClick}
     >
       {isCompleted ? (
         <YellowCheckIcon />
@@ -45,8 +60,7 @@ export default function Routine({
         </div>
 
         <div className="flex items-center gap-1.5 text-xs text-[#9E9E9E]">
-          <span>{Icon}</span>
-          <span>{category}</span>
+          <span>{iconHandler}</span>
           {subCategory && (
             <>
               <ChevronRight className="h-3 w-[9px]" />

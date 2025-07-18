@@ -2,9 +2,9 @@ import { Lock } from 'lucide-react';
 import clsx from 'clsx';
 
 const toggleList = [
-  { id: 1, label: '일간', locked: false },
+  { id: 1, label: '일간', locked: true },
   { id: 2, label: '주간', locked: false },
-  { id: 3, label: '월간', locked: false },
+  { id: 3, label: '월간', locked: true },
 ];
 
 // 일간, 주간, 월간 토글버튼

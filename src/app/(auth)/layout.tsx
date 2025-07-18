@@ -9,8 +9,8 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const hydrated = useUserStore.persist.hasHydrated();
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const router = useRouter();
 
   useEffect(() => {

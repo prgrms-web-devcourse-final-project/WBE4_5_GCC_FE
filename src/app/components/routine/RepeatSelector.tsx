@@ -1,16 +1,24 @@
-'use client';
 import { useState } from 'react';
 import BottomSheet from '../common/ui/BottomSheet';
-import { ChevronDown } from 'lucide-react';
+// import { ChevronDown } from 'lucide-react';
 import WeekPicker from './WeekPicker';
 import ThreeToggle from './ThreeToggle';
 
 // 날짜 선택 옵션
 const options = ['월', '화', '수', '목', '금', '토', '일'];
 
-// 반복주기 바텀시트
-export default function RepeatSelector() {
-  const [isOpen, setIsOpen] = useState(true);
+interface RepeatSelectorProps {
+  isOpen: boolean;
+  onClose: () => void;
+  // onSubmit: (cycleText: string) => void;
+  onSubmit: (cycle: { days: string; week: string }) => void;
+}
+
+export default function RepeatSelector({
+  isOpen,
+  onClose,
+  onSubmit,
+}: RepeatSelectorProps) {
   const [selectedIndex, setSelectedIndex] = useState<number[]>([]);
   const [selectedWeek, setSelectedWeek] = useState('1');
   const [selectedIdx, setSelectedIdx] = useState(1);
@@ -21,10 +29,30 @@ export default function RepeatSelector() {
     );
   };
 
+  const handleSubmit = () => {
+    const selectedDays =
+      selectedIndex.length === options.length
+        ? '매일'
+        : selectedIndex.length > 0
+          ? selectedIndex
+              .sort((a, b) => a - b)
+              .map((i) => options[i])
+              .join(', ')
+          : '요일 미선택';
+
+    const cycle = {
+      days: selectedDays,
+      week: selectedWeek,
+    };
+
+    onSubmit(cycle);
+    onClose();
+  };
+
   return (
     <>
       <BottomSheet
-        setIsOpen={setIsOpen}
+        setIsOpen={onClose}
         isOpen={isOpen}
         className="max-h-[588px] px-5 py-8"
       >
@@ -39,6 +67,7 @@ export default function RepeatSelector() {
             setSelectedIdx={setSelectedIdx}
           />
           <div className="mx-[5px] flex flex-col">
+            {/* 요일 선택 */}
             <div className="my-[27px] flex flex-col">
               <span className="text-sm font-semibold">요일 선택</span>
               <div className="mt-[18px] mr-2 mb-[22px] ml-[18px] flex justify-between">
@@ -73,19 +102,32 @@ export default function RepeatSelector() {
                         : '요일 미선택'}{' '}
                     / {selectedWeek === '1' ? '매주' : `${selectedWeek}주마다`}
                   </span>
-                  <ChevronDown className="h-3.5 w-3.5 cursor-pointer text-[#616161]" />
+                  {/* <ChevronDown className="h-3.5 w-3.5 cursor-pointer text-[#616161]" /> */}
                 </div>
               </div>
+              {/* 주 반복 설정 */}
               <div className="inline-flex w-fit items-center gap-2 self-center">
                 <div className="w-[150px]">
                   <WeekPicker onChange={setSelectedWeek} />
                 </div>
-                <span className="pointer-events-none absolute bottom-30 left-2/5 translate-x-[60px] -translate-y-1/2 text-sm">
+                <span className="pointer-events-none absolute bottom-42 left-2/5 translate-x-[60px] -translate-y-1/2 text-sm">
                   주마다
                 </span>
               </div>
             </div>
           </div>
+          {/* 확인 버튼 */}
+          <button
+            className={`mt-5 rounded px-4 py-2 text-white transition-colors ${
+              selectedIndex.length === 0
+                ? 'cursor-not-allowed bg-[#E0E0E0]'
+                : 'cursor-pointer bg-[#FFB84C]'
+            }`}
+            onClick={handleSubmit}
+            disabled={selectedIndex.length === 0}
+          >
+            확인
+          </button>
         </div>
       </BottomSheet>
     </>
