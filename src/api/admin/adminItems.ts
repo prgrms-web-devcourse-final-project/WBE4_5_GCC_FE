@@ -23,3 +23,28 @@ export const AdminItemById = async (id: string) => {
     throw error;
   }
 };
+
+// 아이템 수정
+interface EditAdminItemPayload {
+  itemKey: string;
+  itemName: string;
+  price: number;
+  itemType: string;
+}
+
+export const EditAdminItemById = async (
+  id: string,
+  payload: EditAdminItemPayload,
+) => {
+  try {
+    const response = await axiosInstance.patch(
+      `/api/v1/admin/items/${id}`,
+      payload,
+    );
+    console.log('아이템 수정 성공', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('아이템 수정 실패', error);
+    throw error;
+  }
+};

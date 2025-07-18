@@ -73,8 +73,8 @@ export default function Practice() {
           setSelectedTab={setSelectedTab}
         />
 
-        <div className="min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
-          <div className="grid grid-cols-3 gap-5">
+        <div className="w-full min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
+          <div className="w-full grid grid-cols-3 gap-5 place-items-center">
             {filteredItem.map((item) => (
               <ItemCard
                 key={item.itemId}

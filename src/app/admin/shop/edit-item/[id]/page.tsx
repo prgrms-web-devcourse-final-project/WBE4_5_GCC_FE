@@ -9,7 +9,8 @@ import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
 import Dropdown from '@/app/components/common/ui/Dropdown';
 import Button from '@/app/components/common/ui/Button';
-import { AdminItemById } from '@/api/admin/adminItems';
+import { AdminItemById, EditAdminItemById } from '@/api/admin/adminItems';
+import AlertModal from '@/app/components/common/alert/AlertModal';
 
 export default function EditItem({
   params,
@@ -26,8 +27,44 @@ export default function EditItem({
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(item1.src);
-
   const options = ['상의', '하의', '악세사리'];
+
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    type: 'success' | 'delete';
+    title: string;
+    description?: string;
+    onConfirm: () => void;
+  } | null>(null);
+
+  const handleSubmit = async () => {
+    try {
+      await EditAdminItemById(id, {
+        itemKey: `${selected.toLowerCase()}_item_000`, // itemKey 입력란 필요할 듯
+        itemName: itemTitle,
+        price: Number(itemPrice),
+        itemType: selected,
+      });
+      setModalState({
+        isOpen: true,
+        type: 'success',
+        title: '아이템이 성공적으로 수정되었습니다!',
+        onConfirm: () => {
+          setModalState(null);
+          router.push('/admin/shop');
+        },
+      });
+    } catch (error) {
+      setModalState({
+        isOpen: true,
+        type: 'delete',
+        title: '아이템 수정 실패',
+        description: '관리자 확인 요청 바랍니다.',
+        onConfirm: () => setModalState(null),
+      });
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -48,7 +85,7 @@ export default function EditItem({
   }, [id]);
 
   const isDisabled =
-    !itemTitle || !itemDescription || !itemPrice || !selected || !previewUrl; // !imageFile;
+    !itemTitle || !itemDescription || !itemPrice || !selected || !previewUrl;
 
   return (
     <div className="h-1vh flex flex-col gap-6 px-5 py-7">
@@ -146,8 +183,20 @@ export default function EditItem({
           />
         </div>
       </div>
-      {/* onClick={handleSubmit} */}
-      <Button disabled={isDisabled}>등록하기</Button>
+      <Button disabled={isDisabled} onClick={handleSubmit}>
+        등록하기
+      </Button>
+
+      {modalState?.isOpen && (
+        <AlertModal
+          isOpen={modalState.isOpen}
+          type={modalState.type}
+          title={modalState.title}
+          description={modalState.description}
+          confirmText="확인"
+          onConfirm={modalState.onConfirm}
+        />
+      )}
     </div>
   );
 }

@@ -67,8 +67,8 @@ export default function AdminShop() {
           setSelectedTab={setSelectedTab}
         />
 
-        <div className="min-w-[350px] rounded-tl-none rounded-b-lg rounded-tr-lg border-1 border-[#d9d9d9] px-4 py-6">
-          <div className="grid grid-cols-3 gap-3">
+        <div className="w-full min-w-[350px] rounded-tl-none rounded-tr-lg rounded-b-lg border-1 border-[#d9d9d9] px-4 py-6">
+          <div className="grid w-full grid-cols-3 place-items-center gap-3">
             {/* 아이템 등록 버튼 */}
             <button
               className="flex aspect-[92/128] h-[140px] min-w-[92px] items-center justify-center rounded-[5px] border-1 border-[#d9d9d9] text-[12px] text-[#9A9898] shadow-[1px_2px_4px_rgba(0,0,0,0.1)]"
