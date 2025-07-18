@@ -8,7 +8,7 @@ import ProgressBar from '@/app/components/common/PrgressBar';
 import Routine from '@/app/components/routine/Routine';
 import CalendarBottomSheet from '@/app/components/routine/CalendarBottomSheet';
 import { routineHandler, weekRoutine } from '@/api/routine/routine';
-import { useRoutineStore } from '@/store/RoutineStore';
+// import { useRoutineStore } from '@/store/RoutineStore';
 import { DayRoutine } from '../../../../types/routine';
 
 export default function Page() {
@@ -17,7 +17,7 @@ export default function Page() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [routineData, setRoutineData] = useState<DayRoutine[] | null>(null);
 
-  const setRoutines = useRoutineStore((state) => state.setRoutines);
+  // const setRoutines = useRoutineStore((state) => state.setRoutines);
   // const routines = useRoutineStore((state) => state.routineDateSet);
 
   useEffect(() => {
@@ -31,18 +31,30 @@ export default function Page() {
           2,
           '0',
         )}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+
       try {
-        console.log(dateStr);
+        // console.log('[1] 요청 날짜:', dateStr);
         const result = await weekRoutine(dateStr);
-        setRoutineData(result.routines);
-        // setRoutines(result.date, result.routines);
+        // console.log('[2] API 응답:', result);
+
+        const savedRoutine = result.routines
+          ? Object.values(result.routines).flat()
+          : [];
+
+        // console.log('[3] savedRoutine 저장됨', savedRoutine);
+        setRoutineData(savedRoutine);
       } catch (error) {
         console.error('루틴 불러오기 실패', error);
       }
     };
 
     fetchRoutine();
-  }, [selectedDate, setRoutines]);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    // console.log('[4] selectedDate 변경됨:', selectedDate);
+    // console.log('[5] 루틴 저장 (state):', routineData);
+  }, [routineData, selectedDate]);
 
   // 루틴 추가로 이동
   const handleAdd = () => {
@@ -53,10 +65,16 @@ export default function Page() {
     const today = new Date();
     setSelectedDate(today);
   };
+  if (!(selectedDate instanceof Date)) return;
 
-  useEffect(() => {
-    console.log('selectedDate 변경됨:', selectedDate);
-  }, [selectedDate]);
+  const dateStr = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+
+  const filteredRoutines = routineData?.filter(
+    (routine) => routine.date === dateStr,
+  );
+
   return (
     <>
       <div className="flex min-h-screen flex-col items-center bg-white px-5">
@@ -95,9 +113,9 @@ export default function Page() {
           </div>
 
           {/* 루틴 카드 목록 */}
-          {routineData && (
+          {filteredRoutines && filteredRoutines.length > 0 ? (
             <div className="flex w-full flex-col space-y-3">
-              {routineData.map((routine: DayRoutine) => (
+              {filteredRoutines.map((routine: DayRoutine) => (
                 <Routine
                   key={`${routine.routineId}-${routine.scheduleId}`}
                   title={routine.name}
@@ -110,6 +128,10 @@ export default function Page() {
                   }
                 />
               ))}
+            </div>
+          ) : (
+            <div className="mt-10 text-center text-gray-400">
+              해당 날짜에 루틴이 없습니다.
             </div>
           )}
 

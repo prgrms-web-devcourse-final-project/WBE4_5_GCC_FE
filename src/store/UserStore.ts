@@ -43,3 +43,6 @@ export const useUserStore = create<UserStore>()(
     },
   ),
 );
+
+// persist 안쓰고 로컬스토리지에 저장하는것도 한번 해보자
+// 토큰이 만료되었을때 처리도 해줘야한다.

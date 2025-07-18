@@ -20,16 +20,11 @@ export const UserRoutine = async (): Promise<DayRoutine[]> => {
 
 // 주간 루틴 불러오기
 export const weekRoutine = async (date?: string): Promise<WeekRoutineMap> => {
-  try {
-    const response = await axiosInstance.get('/api/v1/routines/weekly', {
-      params: { date },
-    });
-    console.log('주간 데이터 로드:', response.data.data);
-    return response.data;
-  } catch (error) {
-    console.error('루틴 불러오기 실패', error);
-    throw error;
-  }
+  const response = await axiosInstance.get('/api/v1/routines/weekly', {
+    params: { date },
+  });
+  console.log('주간 데이터 로드:', response.data.data);
+  return response.data.data;
 };
 
 // 특정 루틴 상세조회
