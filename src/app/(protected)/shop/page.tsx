@@ -15,10 +15,11 @@ import BackHeader from '@/app/components/common/ui/BackHeader';
 
 interface Item {
   itemId: number;
+  itemType: 'TOP' | 'BOTTOM' | 'ACCESSORY';
+  itemDescription: string;
   itemKey: string;
   itemName: string;
   itemPoint: number;
-  itemType: 'TOP' | 'BOTTOM' | 'ACCESSORY';
 }
 
 export default function Practice() {
@@ -44,146 +45,6 @@ export default function Practice() {
     액세서리: 'ACCESSORY',
   };
 
-  //type Item = {
-  //  id: number;
-  //  image: StaticImageData;
-  //  name: string;
-  //  description: string;
-  //  category: string;
-  //  price: number;
-  //};
-
-  //const dummyItems = [
-  //  {
-  //    id: 1,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '상의',
-  //    price: 200,
-  //  },
-  //  {
-  //    id: 2,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '상의',
-  //    price: 1000,
-  //  },
-  //  {
-  //    id: 3,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '상의',
-  //    price: 700,
-  //  },
-  //  {
-  //    id: 4,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '하의',
-  //    price: 800,
-  //  },
-  //  {
-  //    id: 5,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '액세서리',
-  //    price: 2200,
-  //  },
-  //  {
-  //    id: 6,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '액세서리',
-  //    price: 5200,
-  //  },
-  //  {
-  //    id: 7,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '액세서리',
-  //    price: 200,
-  //  },
-  //  {
-  //    id: 8,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '액세서리',
-  //    price: 100,
-  //  },
-  //  {
-  //    id: 9,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '액세서리',
-  //    price: 900,
-  //  },
-  //  {
-  //    id: 10,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '액세서리',
-  //    price: 10,
-  //  },
-  //  {
-  //    id: 11,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '액세서리',
-  //    price: 300,
-  //  },
-  //  {
-  //    id: 12,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '액세서리',
-  //    price: 1200,
-  //  },
-  //  {
-  //    id: 13,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '상의',
-  //    price: 1200,
-  //  },
-  //  {
-  //    id: 14,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '하의',
-  //    price: 6200,
-  //  },
-  //  {
-  //    id: 15,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '하의',
-  //    price: 200,
-  //  },
-  //  {
-  //    id: 16,
-  //    image: item1,
-  //    name: '인형탈',
-  //    description: '누군가 닮았어요.',
-  //    category: '하의',
-  //    price: 1200,
-  //  },
-  //];
-
   const filteredItem =
     selectedTab === '전체'
       ? items
@@ -205,14 +66,14 @@ export default function Practice() {
 
   return (
     <>
-      <div className="mx-auto flex w-full max-w-screen-sm flex-col px-5 min-h-screen overflow-y-auto">
+      <div className="mx-auto flex min-h-screen w-full max-w-screen-sm flex-col overflow-y-auto px-5">
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
         />
 
-        <div className="rounded-2 border-1 border-[#d9d9d9] px-4 py-6">
+        <div className="min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
           <div className="grid grid-cols-3 gap-5">
             {filteredItem.map((item) => (
               <ItemCard
@@ -221,7 +82,7 @@ export default function Practice() {
                   id: item.itemId,
                   image: item1,
                   name: item.itemName,
-                  description: '',
+                  description: item.itemDescription,
                   price: item.itemPoint,
                 }}
                 onClick={() => {

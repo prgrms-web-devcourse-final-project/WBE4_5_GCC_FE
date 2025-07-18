@@ -5,26 +5,30 @@ import { CirclePlus } from 'lucide-react';
 import { CircleMinus } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Categories, CreateCategory } from '@/api/categories';
+import {
+  Categories,
+  DeleteCategoryById,
+  EditCategoryById,
+} from '@/api/categories';
 import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
-import EditSubcategoryLayout from './layout';
+import EditSubcategoryLayout from './EditSubcategoryLayout';
 import { CategoryItem } from '../../../../../types/types';
 
 export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const labelFromParams = searchParams.get('label');
   const icon = searchParams.get('icon');
+  const labelFromParams = searchParams.get('label');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   const [label, setLabel] = useState('');
   const [subCategories, setSubCategories] = useState<CategoryItem[]>([]);
-  //const [mode, setMode] = useState<'MAJOR' | 'SUB' | null>(null); // 바텀 시트를 열은 버튼의 출처 (대분류 카테고리 인풋창 or 세부 카테고리 추가 버튼)
-  const [categoryType, setCategoryType] = useState<
-    'MAJOR' | 'SUB' | 'CUSTOM' | null
-  >(null);
+  const [categoryType, setCategoryType] = useState<'MAJOR' | 'SUB' | null>(
+    null,
+  );
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
   useEffect(() => {
     if (labelFromParams) setLabel(labelFromParams);
@@ -58,7 +62,7 @@ export default function Page() {
     fetchSubs();
   }, [label]);
 
-  // 완료 버튼에서 실제 생성 API 호출
+  // 완료 버튼에서 카테고리 수정 API 호출
   const handleComplete = async () => {
     if (!label || categoryType === 'SUB') {
       alert('카테고리 정보를 확인해주세요.');
@@ -68,24 +72,37 @@ export default function Page() {
     try {
       await Promise.all(
         subCategories.map((sub) =>
-          CreateCategory({
+          EditCategoryById(sub.categoryId, {
             categoryName: sub.categoryName,
             categoryType: 'SUB',
             parentName: label,
           }),
         ),
       );
-      alert('카테고리 생성 완료!');
+      alert('카테고리 수정 완료!');
       router.push('/routine/edit-category');
     } catch (err) {
-      console.error('카테고리 생성 실패', err);
-      alert('생성에 실패했습니다.');
+      console.error('카테고리 수정 실패', err);
+      alert('수정에 실패했습니다.');
     }
+  };
+
+  // 헤더 완료 버튼 클릭 시 서브 카테고리 저장
+  const handleAddSubCategory = (newSubName: string) => {
+    setSubCategories((prev) => [
+      ...prev,
+      {
+        categoryId: 1, // 여기 Id 값 어떤 걸로 전달 할 지.. 현재 스웨거에서는 id가 1,2,3 인 데이터에 대해서만 수정 요청을 할 수 있도록 되어 있음.
+        categoryName: newSubName,
+        categoryType: 'SUB',
+        parentName: label,
+      },
+    ]);
   };
 
   return (
     <>
-      <EditSubcategoryLayout onComplete={handleComplete}>
+      <EditSubcategoryLayout onComplete={handleComplete} label={label}>
         <div className="flex flex-col gap-7 px-5 py-7">
           <div className="flex items-center gap-3">
             {/* 좌측 아이콘 영역 */}
@@ -124,7 +141,12 @@ export default function Page() {
           <div className="flex flex-col gap-5">
             {subCategories.map((sub) => (
               <div key={sub.categoryId} className="flex gap-2.5">
-                <button onClick={() => setIsModalOpen(true)}>
+                <button
+                  onClick={() => {
+                    setDeleteTargetId(sub.categoryId);
+                    setIsModalOpen(true);
+                  }}
+                >
                   <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white" />
                 </button>
                 <p className="w-[307pxp] flex-auto border border-transparent border-b-[#E0E0E0] text-sm text-black">
@@ -143,16 +165,30 @@ export default function Page() {
             description="삭제 후 복구가 불가능합니다."
             confirmText="삭제"
             cancelText="취소"
-            onConfirm={() => setIsModalOpen(false)}
-            onCancel={() => setIsModalOpen(false)}
+            onCancel={() => {
+              setIsModalOpen(false);
+              setDeleteTargetId(null);
+            }}
+            onConfirm={async () => {
+              try {
+                await DeleteCategoryById(deleteTargetId);
+                setSubCategories((prev) =>
+                  prev.filter((cat) => cat.categoryId !== deleteTargetId),
+                );
+                setIsModalOpen(false);
+                setDeleteTargetId(null);
+              } catch (error) {
+                alert('삭제 실패');
+                console.error(error);
+              }
+            }}
           />
         )}
         {isBottomSheetOpen && (
           <CategoryNameInputBottomSheet
             onClose={() => setIsBottomSheetOpen(false)}
-            // 바텀 시트가 열린 버튼 출처에 따라 onSubmit 버튼 분기처리
-            onSubmit={() => {
-              setSubCategories(subCategories);
+            onSubmit={(newSubName) => {
+              handleAddSubCategory(newSubName);
               setIsBottomSheetOpen(false);
             }}
           />

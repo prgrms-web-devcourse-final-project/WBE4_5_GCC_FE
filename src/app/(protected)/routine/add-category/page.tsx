@@ -7,8 +7,10 @@ import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNam
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import { CreateCategory } from '@/api/categories';
 import AddCategoryLayout from './AddCategoryLayout';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
+  const router = useRouter();
   const pickerRef = useRef<HTMLDivElement>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -74,6 +76,7 @@ export default function Page() {
         ),
       );
       alert('카테고리 생성 완료!');
+      router.push('/routine/edit-category');
     } catch (err) {
       console.error('카테고리 생성 실패', err);
     }
