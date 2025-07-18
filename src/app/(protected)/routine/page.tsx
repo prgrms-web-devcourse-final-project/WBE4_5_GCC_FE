@@ -7,15 +7,15 @@ import CalendarBar from '@/app/components/routine/CalendarBar';
 import ProgressBar from '@/app/components/common/PrgressBar';
 import Routine from '@/app/components/routine/Routine';
 import CalendarBottomSheet from '@/app/components/routine/CalendarBottomSheet';
-import { routineHandler, UserRoutine } from '@/api/routine/routine';
-import type { RoutineItem } from '../../../../types/routine';
+import { routineHandler, weekRoutine } from '@/api/routine/routine';
 import { useRoutineStore } from '@/store/RoutineStore';
+import { DayRoutine } from '../../../../types/routine';
 
 export default function Page() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-  const [routineData, setRoutineData] = useState<RoutineItem[] | null>(null);
+  const [routineData, setRoutineData] = useState<DayRoutine[] | null>(null);
 
   const setRoutines = useRoutineStore((state) => state.setRoutines);
   // const routines = useRoutineStore((state) => state.routineDateSet);
@@ -23,7 +23,6 @@ export default function Page() {
   useEffect(() => {
     const fetchRoutine = async () => {
       if (!(selectedDate instanceof Date)) return;
-
       const dateStr = `${selectedDate.getFullYear()}-${(
         selectedDate.getMonth() + 1
       )
@@ -33,8 +32,8 @@ export default function Page() {
           '0',
         )}-${selectedDate.getDate().toString().padStart(2, '0')}`;
       try {
-        const result = await UserRoutine(dateStr);
         console.log(dateStr);
+        const result = await weekRoutine(dateStr);
         setRoutineData(result.routines);
         // setRoutines(result.date, result.routines);
       } catch (error) {
@@ -50,6 +49,14 @@ export default function Page() {
     router.push('/routine/add-routine');
   };
 
+  const goToToday = () => {
+    const today = new Date();
+    setSelectedDate(today);
+  };
+
+  useEffect(() => {
+    console.log('selectedDate 변경됨:', selectedDate);
+  }, [selectedDate]);
   return (
     <>
       <div className="flex min-h-screen flex-col items-center bg-white px-5">
@@ -61,11 +68,22 @@ export default function Page() {
         <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 pb-11">
           {/* 날짜, 진행률 바 */}
           <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
-            <span className="text-xl font-semibold">
-              {selectedDate instanceof Date
-                ? `${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`
-                : ''}
-            </span>
+            <div className="flex items-center justify-between">
+              <span className="text-xl font-semibold">
+                {selectedDate instanceof Date
+                  ? `${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`
+                  : ''}
+              </span>
+              {selectedDate &&
+                selectedDate.toDateString() !== new Date().toDateString() && (
+                  <button
+                    className="cursor-pointer rounded-[5px] border border-[#FFB84C] bg-[#FFB84C] px-2 py-1 text-[12px] text-white"
+                    onClick={goToToday}
+                  >
+                    Today
+                  </button>
+                )}
+            </div>
             <ProgressBar
               currentStep={1}
               totalSteps={5}
@@ -79,7 +97,7 @@ export default function Page() {
           {/* 루틴 카드 목록 */}
           {routineData && (
             <div className="flex w-full flex-col space-y-3">
-              {routineData.map((routine: RoutineItem) => (
+              {routineData.map((routine: DayRoutine) => (
                 <Routine
                   key={`${routine.routineId}-${routine.scheduleId}`}
                   title={routine.name}

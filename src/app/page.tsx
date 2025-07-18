@@ -2,7 +2,6 @@
 import Profile from './components/main/Profile';
 import Routine from './components/routine/Routine';
 import { useEffect, useState } from 'react';
-import { me } from '@/api/api';
 
 import quest from '/public/quest.svg';
 import acheivement from '/public/acheivement.svg';
@@ -10,34 +9,47 @@ import FloatingButton from './components/common/FloatingButton';
 import Donut from './components/common/ui/Donut';
 import { useRouter } from 'next/navigation';
 import Quest from './components/main/Quest';
-import { UserRoutine } from '@/api/routine/routine';
+import { routineHandler, UserRoutine } from '@/api/routine/routine';
+import { DayRoutine } from '../../types/routine';
 
 export default function Main() {
   // 나중엔 true로 바꿔야함
   const [loading, setLoading] = useState(false);
   const [openQuest, setOpenQuest] = useState(false);
+  const [dayRoutine, setDayRoutine] = useState<DayRoutine[]>([]);
 
   const router = useRouter();
   const goToCollection = () => {
     router.push('/collection');
   };
+  // 완료된 항목 개수
+  const doneCount = dayRoutine.filter((routine) => routine.isDone).length;
+
+  // 전체 항목 개수
+  const totalCount = dayRoutine.length;
+
+  // 성공 비율(백분율)
+  const successRate = (doneCount / totalCount) * 100;
 
   useEffect(() => {
-    try {
-      const fetchData = async () => {
-        // 유저 정보 불러오기 API
-        const userInfo = await me();
-        console.log('유저 정보:', userInfo);
-        // 오늘의 루틴 불러오기 API
-        UserRoutine();
-      };
-      fetchData();
-    } catch (error) {
-      console.error('유저 정보를 불러오지 못했습니다', error);
-    } finally {
-      setLoading(false);
-    }
+    const fetchDayRoutine = async () => {
+      try {
+        const result = await UserRoutine();
+        setDayRoutine(result);
+      } catch (error) {
+        console.error('오늘루틴 불러오기 실패:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDayRoutine();
   }, []);
+
+  useEffect(() => {
+    console.log('dayRoutine에 저장됨:', dayRoutine);
+  }, [dayRoutine]);
+
+  // 오늘 루틴을 상태에 저장하기?
   return (
     <>
       {loading && <div></div>}
@@ -72,39 +84,35 @@ export default function Main() {
               <div className="flex items-center gap-1 text-[22px] font-bold">
                 <div>
                   <span>
-                    오늘의 루틴 <span className="text-[#FFB84C]">4</span>
+                    오늘의 루틴{' '}
+                    <span className="text-[#FFB84C]">{dayRoutine.length}</span>
                   </span>
                 </div>
                 <Donut
                   width={46}
                   height={46}
-                  percent={20}
+                  percent={Number(successRate.toFixed())}
                   className="ml-auto flex"
                 />
               </div>
             </div>
-            <div className="flex w-full flex-col space-y-3">
-              <Routine
-                title="미지근한 물 한 잔 마시기"
-                category="건강"
-                time="13:00"
-                isImportant
-                isCompleted
-              />
-              <Routine
-                title="빨래 돌리기"
-                category="세탁 / 의류"
-                subCategory="잠옷"
-                time="13:00"
-              />
-              <Routine
-                title="도시락 싸기"
-                category="요리"
-                subCategory="회사 점심"
-                time="13:00"
-                isImportant
-              />
-            </div>
+            {dayRoutine && (
+              <div className="flex w-full flex-col space-y-3">
+                {dayRoutine.map((routine: DayRoutine) => (
+                  <Routine
+                    key={`${routine.routineId}-${routine.scheduleId}`}
+                    title={routine.name}
+                    category={routine.majorCategory}
+                    time={routine.triggerTime}
+                    isImportant={routine.isImportant}
+                    isCompleted={routine.isDone}
+                    onClick={() =>
+                      routineHandler(routine.scheduleId, !routine.isDone)
+                    }
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
