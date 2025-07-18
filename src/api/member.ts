@@ -66,6 +66,20 @@ export const fetchEquippedItem = async () => {
   }
 };
 
+// 장착 아이템 바꾸기
+export const changeItem = async (oldItemKey: string, newItemKey: string) => {
+  try {
+    const response = await axiosInstance.patch('/api/v1/members/items', {
+      oldItemKey,
+      newItemKey,
+    });
+    console.log('아이템 변경 성공', response.data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // 기존 비밀번호 확인
 export const handleConfirmPassword = async (password: string) => {
   try {
