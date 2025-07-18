@@ -30,10 +30,14 @@ export const emailCheck = async (email: string) => {
 };
 
 // 닉네임 중복 확인
-export const nicknameCheck = async (nickname: string) => {
+export const nicknameCheck = async (
+  email: string | null,
+  nickname: string | null,
+) => {
   try {
-    const response = await axiosInstance.post('/api/v1/check', null, {
-      params: { nickname },
+    const response = await axiosInstance.post('/api/v1/check', {
+      email: email ?? null,
+      nickname: nickname ?? null,
     });
     console.log('사용가능한 닉네임:', response.data);
   } catch (error) {

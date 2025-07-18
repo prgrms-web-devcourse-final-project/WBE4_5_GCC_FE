@@ -12,6 +12,7 @@ import ItemCard from '@/app/components/shop/ItemCard';
 import PurchaseModal from '@/app/components/shop/PurchaseModal';
 import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
 import BackHeader from '@/app/components/common/ui/BackHeader';
+import { useUserStore } from '@/store/UserStore';
 
 interface Item {
   itemId: number;
@@ -36,8 +37,8 @@ export default function Practice() {
   const [items, setItems] = useState<Item[]>([]);
 
   // 테스트
-  //const userPoint = 1200;
-  const [points, setPoints] = useState(1200);
+  const currentPoint = useUserStore((state) => state.currentPoint);
+  const [points, setPoints] = useState(currentPoint);
 
   const tabMap: Record<string, Item['itemType']> = {
     상의: 'TOP',
