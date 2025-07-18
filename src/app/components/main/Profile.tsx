@@ -8,12 +8,15 @@ import { useUserStore } from '@/store/UserStore';
 
 export default function Profile() {
   const [point, setPoint] = useState<number>(0);
+  const { setUser } = useUserStore.getState();
   useEffect(() => {
     const loadProfileData = async () => {
       try {
         const data = await fetchUserPoint();
         await fetchProfile();
-        setPoint(data.data.currentPoint);
+        const point = data.data.currentPoint;
+        setUser({ currentPoint: point });
+        setPoint(point);
       } catch (err) {
         console.error('유저 정보 불러오기 실패', err);
       }
