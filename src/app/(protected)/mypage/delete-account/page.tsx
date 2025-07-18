@@ -5,27 +5,30 @@ import Button from '@/app/components/common/ui/Button';
 import RadioGroup from '@/app/components/mypage/RadioGroup';
 import CustomCheckBox from '@/app/components/common/ui/CustomCheckBox';
 import BackHeader from '@/app/components/common/ui/BackHeader';
+import { deleteMember } from '@/api/member';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
+  const router = useRouter();
   const [selectedReason, setSelectedReason] = useState('');
   const [isAgreed, setIsAgreed] = useState(false);
   const [customReason, setCustomReason] = useState('');
 
   const reasons = [
-    { label: '기록하는 게 귀찮아요', value: 'lazy' },
-    { label: '루틴이 잘 안 맞았어요', value: 'not-fit' },
-    { label: '앱이 어렵거나 불편했어요', value: 'inconvenient' },
-    { label: '기대했던 기능이 없어요', value: 'no-feature' },
-    { label: '이미 비슷한 앱을 쓰고 있어요', value: 'using-other' },
-    { label: '혼자 하니까 동기부여가 안 됐어요', value: 'no-motivation' },
-    { label: '직접 입력', value: 'custom' },
+    { label: '기록하는 게 귀찮아요', value: 'TOO_MUCH_EFFORT' },
+    { label: '루틴이 잘 안 맞았어요', value: 'ROUTINE_MISMATCH' },
+    { label: '앱이 어렵거나 불편했어요', value: 'UX_ISSUE' },
+    { label: '기대했던 기능이 없어요', value: 'MISSING_FEATURE' },
+    { label: '이미 비슷한 앱을 쓰고 있어요', value: 'USING_OTHER_APP' },
+    { label: '혼자 하니까 동기부여가 안 됐어요', value: 'NO_MOTIVATION' },
+    { label: '직접 입력', value: 'ETC' },
   ];
 
   // 탈퇴하기 버튼 활성화 조건
   const isSubmitEnabled =
     isAgreed &&
-    ((selectedReason !== '' && selectedReason !== 'custom') ||
-      (selectedReason === 'custom' && customReason.trim() !== ''));
+    ((selectedReason !== '' && selectedReason !== 'ETC') ||
+      (selectedReason === 'ETC' && customReason.trim() !== ''));
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
@@ -34,6 +37,12 @@ export default function Page() {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 컨텐츠에 맞게 높이 조절
     }
   }, [customReason]);
+
+  const handleSubmit = () => {
+    console.log(selectedReason, customReason);
+    deleteMember(selectedReason, customReason);
+    router.push('/mypage'); //일단 편의상 지금은 마이페이지로 이동되도록 해놨습니다!
+  };
 
   return (
     <div className="flex min-h-screen flex-col gap-7">
@@ -91,11 +100,11 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="fixed bottom-[70px] left-5 right-5">
+      <div className="fixed right-5 bottom-[70px] left-5">
         <Button
           type="submit"
           disabled={!isSubmitEnabled}
-          onClick={() => console.log('탈퇴하기')}
+          onClick={handleSubmit}
         >
           탈퇴하기
         </Button>
