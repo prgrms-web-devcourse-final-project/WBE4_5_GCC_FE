@@ -35,7 +35,6 @@ export default function Page() {
     const loadUserItem = async () => {
       try {
         const data = await fetchUserItem();
-        console.log('받은 유저아이템 정보:', data.data);
         setUserItem(data.data);
         const data2 = await fetchEquippedItem();
         setEquippedItem(data2.data);
@@ -105,7 +104,6 @@ export default function Page() {
         '착용할 아이템:',
         newKeysString,
       );
-      console.log('아이템 변경 성공');
     }
     router.push('/mypage');
   };
