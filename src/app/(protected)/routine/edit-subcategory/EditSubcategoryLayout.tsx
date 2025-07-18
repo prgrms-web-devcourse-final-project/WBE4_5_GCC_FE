@@ -5,9 +5,11 @@ import { ChevronLeft } from 'lucide-react';
 
 export default function EditSubcategoryLayout({
   children,
+  label,
   onComplete,
 }: {
   children: React.ReactNode;
+  label: string;
   onComplete?: () => void;
 }) {
   return (
@@ -24,7 +26,7 @@ export default function EditSubcategoryLayout({
           </div>
 
           <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222]">
-            세탁/의류
+            {label}
           </div>
 
           <div className="text-medium flex gap-[7px] text-sm text-[#616161]">
