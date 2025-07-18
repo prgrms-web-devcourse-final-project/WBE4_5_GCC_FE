@@ -3,27 +3,83 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Input from '@/app/components/common/ui/Input';
-
 import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
 import Dropdown from '@/app/components/common/ui/Dropdown';
 import Button from '@/app/components/common/ui/Button';
+import AlertModal from '@/app/components/common/alert/AlertModal';
+import { AddAdminItems } from '@/api/admin/adminItems';
+
+const options = ['TOP', 'BOTTOM', 'ACCESSORY'];
+
+// 랜덤 키값 생성 (서버와 중복방지 처리는 안 되어 있음)
+const generateItemKey = (type: string, index: number) => {
+  const prefix = type.toLowerCase();
+  const number = String(index).padStart(2, '0');
+  return `${prefix}_item_${number}`;
+};
 
 export default function AddItem() {
   const router = useRouter();
-  const [selected, setSelected] = useState('');
 
-  const [itemTitle, setItemTitle] = useState('');
+  const [itemType, setItemType] = useState('');
+  const [itemName, setItemName] = useState('');
+  const [itemKey, setItemKey] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [modalstate, setModalState] = useState<{
+    isOpen: boolean;
+    type: 'success' | 'delete';
+    title: string;
+    description?: string;
+    onConfirm: () => void;
+  } | null>(null);
 
-  const options = ['상의', '하의', '악세사리'];
+  const handleGenerateItemKey = () => {
+    const randomIndex = Math.floor(Math.random() * 99) + 1;
+    const newKey = generateItemKey(itemType, randomIndex);
+    setItemKey(newKey);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await AddAdminItems({
+        itemKey,
+        itemName,
+        price: Number(itemPrice),
+        itemType,
+      });
+
+      setModalState({
+        isOpen: true,
+        type: 'success',
+        title: '아이템이 성공적으로 추가되었습니다!',
+        onConfirm: () => {
+          setModalState(null);
+          router.push('/admin/shop');
+        },
+      });
+    } catch (error) {
+      setModalState({
+        isOpen: true,
+        type: 'delete',
+        title: '아이템 추가 실패',
+        description: '관리자에게 문의해주세요.',
+        onConfirm: () => setModalState(null),
+      });
+    }
+  };
 
   const isDisabled =
-    !itemTitle || !itemDescription || !itemPrice || !selected || !imageFile;
+    !itemType ||
+    !itemName ||
+    !itemKey ||
+    !itemDescription ||
+    !itemPrice ||
+    !imageFile;
 
   return (
     <div className="h-1vh flex flex-col gap-6 px-5 py-7">
@@ -31,9 +87,10 @@ export default function AddItem() {
         <h1>아이템 분류</h1>
         <Dropdown
           options={options}
-          selected={selected}
+          selected={itemType}
           onSelect={(value) => {
-            setSelected(value);
+            setItemType(value);
+            setItemKey(''); // 키값 초기화
           }}
         />
       </div>
@@ -42,10 +99,28 @@ export default function AddItem() {
         <Input
           type="text"
           placeholder="ex)민트 티셔츠"
-          value={itemTitle}
+          value={itemName}
           onChange={(e) => {
-            setItemTitle(e.target.value);
+            setItemName(e.target.value);
           }}
+        />
+      </div>
+      <div className="flex flex-col gap-2">
+        <label className="flex items-center justify-between">
+          <span>아이템 키</span>
+          <button
+            type="button"
+            onClick={handleGenerateItemKey}
+            className="text-xs text-blue-500 underline"
+            disabled={!itemType}
+          >
+            자동 생성
+          </button>
+        </label>
+        <Input
+          value={itemKey}
+          onChange={(e) => setItemKey(e.target.value)}
+          placeholder="예: top_item_01"
         />
       </div>
       <div className="flex flex-col gap-[10px]">
@@ -121,38 +196,20 @@ export default function AddItem() {
           />
         </div>
       </div>
-      {/* onClick={handleSubmit} */}
-      <Button disabled={isDisabled}>등록하기</Button>
+      <Button disabled={isDisabled} onClick={handleSubmit}>
+        등록하기
+      </Button>
+
+      {modalstate?.isOpen && (
+        <AlertModal
+          isOpen={modalstate.isOpen}
+          type={modalstate.type}
+          title={modalstate.title}
+          description={modalstate.description}
+          confirmText="확인"
+          onConfirm={modalstate.onConfirm}
+        />
+      )}
     </div>
   );
 }
-
-// 서버로 전송하는 법이래요... 지피티한테 물어봐야할듯
-
-// const handleSubmit = async () => {
-//   if (!itemTitle || !itemDescription || !itemPrice || !category || !imageFile) {
-//     alert('모든 항목을 입력해주세요');
-//     return;
-//   }
-
-//   const formData = new FormData();
-//   formData.append('title', itemTitle);
-//   formData.append('description', itemDescription);
-//   formData.append('price', itemPrice.toString());
-//   formData.append('category', category);
-//   formData.append('image', imageFile); // 서버에서 'image' 필드로 받아야 함
-
-//   try {
-//     const res = await fetch('/api/items', {
-//       method: 'POST',
-//       body: formData,
-//     });
-
-//     if (!res.ok) throw new Error('업로드 실패');
-//     alert('업로드 성공!');
-//     router.push('/'); // 목록 페이지 등으로 이동
-//   } catch (error) {
-//     console.error(error);
-//     alert('업로드 실패');
-//   }
-// };

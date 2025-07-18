@@ -24,8 +24,8 @@ export const AdminItemById = async (id: string) => {
   }
 };
 
-// 아이템 수정
-interface EditAdminItemPayload {
+// 아이템 수정 - 사용 ㅇ
+interface AdminItemPayload {
   itemKey: string;
   itemName: string;
   price: number;
@@ -34,7 +34,7 @@ interface EditAdminItemPayload {
 
 export const EditAdminItemById = async (
   id: string,
-  payload: EditAdminItemPayload,
+  payload: AdminItemPayload,
 ) => {
   try {
     const response = await axiosInstance.patch(
@@ -45,6 +45,18 @@ export const EditAdminItemById = async (
     return response.data;
   } catch (error) {
     console.error('아이템 수정 실패', error);
+    throw error;
+  }
+};
+
+// 아이템 추가
+export const AddAdminItems = async (payload: AdminItemPayload) => {
+  try {
+    const response = await axiosInstance.post('/api/v1/admin/items', payload);
+    console.log('아이템 추가 성공', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('아이템 추가 실패', error);
     throw error;
   }
 };
