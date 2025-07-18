@@ -5,7 +5,7 @@ import { axiosInstance } from './axiosInstance';
 export const fetchProfile = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members');
-    console.log('회원정보 불러오기 성공');
+    console.log('회원정보 불러오기 성공', response.data);
     const { setUser } = useUserStore.getState();
     setUser({
       ...response.data.data,
@@ -22,7 +22,7 @@ export const fetchProfile = async () => {
 export const fetchUserPoint = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members/point');
-    console.log('보유포인트 불러오기 성공');
+    console.log('보유포인트 불러오기 성공', response.data);
     return response.data;
   } catch (error) {
     console.error('보유포인트 불러오기 실패', error);
@@ -46,7 +46,7 @@ export const fetchUserQuest = async () => {
 export const fetchUserItem = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members/items');
-    console.log('보유아이템 불러오기 성공');
+    console.log('보유아이템 불러오기 성공', response.data);
     return response.data;
   } catch (error) {
     console.error('보유아이템 불러오기 실패', error);
@@ -58,10 +58,24 @@ export const fetchUserItem = async () => {
 export const fetchEquippedItem = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members/items/equipped');
-    console.log('장착아이템 불러오기 성공');
+    console.log('장착아이템 불러오기 성공', response.data);
     return response.data;
   } catch (error) {
     console.error('장착아이템 불러오기 실패', error);
+    throw error;
+  }
+};
+
+// 장착 아이템 바꾸기
+export const changeItem = async (oldItemKey: string, newItemKey: string) => {
+  try {
+    const response = await axiosInstance.patch('/api/v1/members/items', {
+      oldItemKey,
+      newItemKey,
+    });
+    console.log('아이템 변경 성공', response.data);
+    return response.data;
+  } catch (error) {
     throw error;
   }
 };

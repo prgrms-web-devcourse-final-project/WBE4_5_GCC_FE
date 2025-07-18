@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 
 interface UserStore {
   isLoggedIn: boolean;
+  currentPoint: number;
   email: string;
   name: string;
   nickname: string;
@@ -18,6 +19,7 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       isLoggedIn: false,
+      currentPoint: 0,
       email: '',
       name: '',
       nickname: '',
@@ -29,6 +31,7 @@ export const useUserStore = create<UserStore>()(
       resetUser: () =>
         set({
           isLoggedIn: false,
+          currentPoint: 0,
           email: '',
           name: '',
           nickname: '',
