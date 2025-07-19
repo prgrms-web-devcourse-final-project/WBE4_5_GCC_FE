@@ -8,9 +8,22 @@ import {
 import { axiosInstance } from '../axiosInstance';
 
 // 루틴 불러오기 (수정 전까지는 이거 쓰기)
+//export const UserRoutine = async (date?: string): Promise<RoutineResponse> => {
+//  try {
+//    const response = await axiosInstance.get('/api/v1/routines', {
+//      params: { date },
+//    });
+//    console.log(response.data.data);
+//    return response.data.data; // date와 routines 둘 다 포함된 객체 리턴
+//  } catch (error) {
+//    console.error('루틴 불러오기 실패', error);
+//    throw error;
+//  }
+//};
+
 export const UserRoutine = async (date?: string): Promise<RoutineResponse> => {
   try {
-    const response = await axiosInstance.get('/api/v1/routines', {
+    const response = await axiosInstance.get('/api/v1/routines/weekly', {
       params: { date },
     });
     console.log(response.data.data);

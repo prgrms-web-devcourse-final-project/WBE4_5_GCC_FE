@@ -49,7 +49,7 @@ export const EditAdminItemById = async (
   }
 };
 
-// 아이템 추가
+// 아이템 추가 - 사용 ㅇ
 export const AddAdminItems = async (payload: AdminItemPayload) => {
   try {
     const response = await axiosInstance.post('/api/v1/admin/items', payload);
@@ -57,6 +57,18 @@ export const AddAdminItems = async (payload: AdminItemPayload) => {
     return response.data;
   } catch (error) {
     console.error('아이템 추가 실패', error);
+    throw error;
+  }
+};
+
+// 아이템 삭제 - 사용 ㅇ
+export const DeleteAdminItemById = async (id: number) => {
+  try {
+    const response = await axiosInstance.get(`/api/v1/admin/items/${id}`);
+    console.log('아이템 삭제 성공', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('아이템 삭제 실패', error);
     throw error;
   }
 };
