@@ -71,6 +71,7 @@ export default function AdminShop() {
     fetchData();
   }, []);
 
+  // 삭제 후 업데이트
   const fetchData = async () => {
     try {
       const res = await AdminItems();
