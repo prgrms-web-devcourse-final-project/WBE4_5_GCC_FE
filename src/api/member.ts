@@ -54,26 +54,34 @@ export const fetchUserItem = async () => {
   }
 };
 
-// 유저 장착 아이템 불러오기
-export const fetchEquippedItem = async () => {
+// 아이템 장착하기
+export const equipItem = async (itemKey: string) => {
   try {
-    const response = await axiosInstance.get('/api/v1/members/items/equipped');
-    console.log('장착아이템 불러오기 성공', response.data);
+    const response = await axiosInstance.patch(
+      '/api/v1/members/items/equip',
+      null,
+      {
+        params: { itemKey },
+      },
+    );
+    console.log('아이템 장착 성공', response.data);
     return response.data;
   } catch (error) {
-    console.error('장착아이템 불러오기 실패', error);
     throw error;
   }
 };
 
-// 장착 아이템 바꾸기
-export const changeItem = async (oldItemKey: string, newItemKey: string) => {
+// 아이템 장착해제
+export const unequipItem = async (itemKey: string) => {
   try {
-    const response = await axiosInstance.patch('/api/v1/members/items', {
-      oldItemKey,
-      newItemKey,
-    });
-    console.log('아이템 변경 성공', response.data);
+    const response = await axiosInstance.patch(
+      '/api/v1/members/items/unequip',
+      null,
+      {
+        params: { itemKey },
+      },
+    );
+    console.log('아이템 장착해제 성공', response.data);
     return response.data;
   } catch (error) {
     throw error;
