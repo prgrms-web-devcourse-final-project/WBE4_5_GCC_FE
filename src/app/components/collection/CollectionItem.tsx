@@ -5,6 +5,7 @@ import Image from 'next/image';
 
 interface CollectionItem {
   id: number;
+  key: string;
   name: string;
   description: string;
   image: {
