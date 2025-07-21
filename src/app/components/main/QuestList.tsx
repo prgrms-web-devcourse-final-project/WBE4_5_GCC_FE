@@ -39,10 +39,11 @@ export default function QuestList({ quest }: QuestListProps) {
         </div>
         <button
           className="relative flex h-[50px] w-[50px] cursor-pointer flex-col items-center justify-center gap-[6px] rounded-[8px] border-2 border-[#A47148]"
-          disabled={!quest.isDone}
+          disabled={quest.questProgress !== 100}
           onClick={handleClick}
         >
-          {!quest.isDone && (
+          {/* 퀘스트 진행률이 100일때만 수령가능 */}
+          {quest.questProgress !== 100 && (
             <div className="absolute inset-0 z-50 w-full cursor-auto bg-black/50"></div>
           )}
           <Image src={coin} alt="coin" className="h-5 w-5" />
