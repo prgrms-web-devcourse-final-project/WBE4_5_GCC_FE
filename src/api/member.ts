@@ -21,7 +21,7 @@ export const fetchProfile = async () => {
 // 유저 보유 포인트 불러오기
 export const fetchUserPoint = async () => {
   try {
-    const response = await axiosInstance.get('/api/v1/members/point');
+    const response = await axiosInstance.get('/api/v1/members/points');
     console.log('보유포인트 불러오기 성공', response.data);
     return response.data;
   } catch (error) {

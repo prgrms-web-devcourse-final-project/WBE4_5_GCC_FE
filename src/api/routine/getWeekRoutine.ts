@@ -4,20 +4,18 @@ import { axiosInstance } from '../axiosInstance';
 
 // API 요청 함수
 const fetchWeekRoutine = async (date?: string): Promise<WeekRoutineMap> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await axiosInstance.get('/api/v1/routines/weekly', {
     params: { date },
   });
-  console.log('주간 데이터 로드:', response.data.data);
   return response.data.data;
 };
 
 // 커스텀 훅
 export function useWeekRoutine(date?: string) {
   return useQuery({
-    queryKey: ['weekRoutine', date],
+    queryKey: ['routine-week', date],
     queryFn: () => fetchWeekRoutine(date),
+    staleTime: 5000,
   });
 }
-
-// 호출할때
-const { data } = useWeekRoutine('2025-07-18');

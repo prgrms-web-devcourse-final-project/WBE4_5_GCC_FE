@@ -60,7 +60,10 @@ export default function CalendarBar({
           >
             <span className="text-xs">{day.label}</span>
             <div
-              onClick={() => setSelectedDate(day.fullDate)}
+              onClick={() => {
+                setSelectedDate(day.fullDate);
+                setIsOpen(false);
+              }}
               className={`flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full text-sm transition-colors ${day.isToday && !day.isSelected ? 'border-2 border-[#FFB84C] bg-white text-black' : ''} ${day.isSelected ? 'bg-[#FFB84C] text-white' : ''} ${!day.isToday && !day.isSelected ? 'bg-[#EEF0F2] text-black' : ''}`}
             >
               {day.date}
