@@ -3,21 +3,21 @@ import item1 from '@/app/assets/images/item1.png';
 import coin from '/public/coin.svg';
 import { X } from 'lucide-react';
 
-interface AdminItem {
+interface Item {
   itemId: number;
   itemKey: string;
   itemName: string;
   itemPrice: number;
   itemType: 'TOP' | 'BOTTOM' | 'ACCESSORY';
   itemDescription?: string;
-  createTime: string;
-  updateTime: string;
+  createTime?: string;
+  updateTime?: string;
 }
 
 interface ItemCardProps {
-  item: AdminItem;
+  item: Item;
   onClick: () => void;
-  onDeleteClick?: (item: AdminItem) => void;
+  onDeleteClick?: (item: Item) => void;
   isDeleteMode?: boolean;
 }
 
@@ -37,11 +37,11 @@ export default function ItemCard({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              if (onDeleteClick) onDeleteClick(item as AdminItem);
+              if (onDeleteClick) onDeleteClick(item as Item);
             }}
-            className="absolute top-[-6px] right-[-6px] z-10 flex h-5 w-5 rounded-full items-center justify-center bg-[#E0E0E0]"
+            className="absolute top-[-6px] right-[-6px] z-10 flex h-5 w-5 items-center justify-center rounded-full bg-[#E0E0E0]"
           >
-            <X className='w-[10px] h-auto text-[#616161]' strokeWidth={2} />
+            <X className="h-auto w-[10px] text-[#616161]" strokeWidth={2} />
           </button>
         )}
         <div className="px-5 py-3">
