@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { BadgeRewardByKey, Badges } from '@/api/badges';
+import { BadgeRewardByKey, Badges, equipBadge } from '@/api/badges';
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 import { ChevronLeft, ChevronRight, ListFilter } from 'lucide-react';
@@ -33,14 +33,8 @@ const tierEmojiMap: Record<Badge['tier'], string> = {
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState('전체');
-  const [selectedItem, setSelectedItem] = useState<
-    Record<string, number | null>
-  >({
-    '🥇': null,
-    '🥈': null,
-    '🥉': null,
-    '🏆': null,
-  });
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
   const [badges, setBadges] = useState<Badge[]>([]);
   const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
   const [rewardInfo, setRewardInfo] = useState<{
@@ -48,12 +42,15 @@ export default function Page() {
     pointAdded: number;
   } | null>(null);
 
-  const handleSelect = (badge: { category: string; id: number }) => {
-    setSelectedItem((prev) => ({
-      ...prev,
-      [badge.category]: prev[badge.category] === badge.id ? null : badge.id,
-    }));
+  // 뱃지 장착 (하나만 선택 가능)
+  const handleSelect = async (badge: { key: string }) => {
+    await equipBadge(badge.key);
+    setSelectedItem((prev) => (prev === badge.key ? null : badge.key));
   };
+
+  useEffect(() => {
+    console.log('장착한 뱃지:', selectedItem);
+  }, [selectedItem]);
 
   const filteredBadges =
     selectedTab === '전체'
@@ -122,6 +119,7 @@ export default function Page() {
 
                 const item = {
                   id: badge.badgeId,
+                  key: badge.badgeKey,
                   name: badge.badgeName,
                   description: badge.how,
                   image: {
@@ -137,7 +135,7 @@ export default function Page() {
                   <CollectionItemCard
                     key={item.id}
                     item={item}
-                    isSelected={selectedItem[item.category] === item.id}
+                    isSelected={selectedItem === item.key}
                     onSelect={handleSelect}
                     action={
                       !badge.isReceived && (
