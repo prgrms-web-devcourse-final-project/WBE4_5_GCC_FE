@@ -33,10 +33,10 @@ export default function Quest({
     selectedTab === '전체'
       ? userQuest
       : userQuest.filter((quest) => {
-          if (selectedTab === '주간 퀘스트') {
+          if (selectedTab === '주간 퀘스트' && !quest.isDone) {
             return quest.questKey.startsWith('weekly_');
           }
-          if (selectedTab === '이벤트 퀘스트') {
+          if (selectedTab === '이벤트 퀘스트' && !quest.isDone) {
             return quest.questKey.startsWith('event_');
           }
           return false;
