@@ -7,24 +7,46 @@ import {
   EditModeProvider,
   useEditMode,
 } from '@/app/components/routine/EditModeContext';
+import {
+  CategoryFormProvider,
+  useCategoryForm,
+} from '@/app/components/admin/context/CategoryFormContext';
+import { CreateAdminCategories } from '@/api/admin/adminCategories';
 
 function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const isEditPage = pathname === '/admin/category';
-  const isAddSubcategoryPage = pathname === '/admin/category/add-subcategory';
+  const isAddCategoryPage = pathname === '/admin/category/add-category';
   const { isEditMode, toggleEditMode } = useEditMode();
 
-  const handleFinish = () => {
-    router.back();
+  // CategoryFromContext
+  const { name } = useCategoryForm();
+
+  const handleFinish = async () => {
+    if (!name) {
+      alert('이모지와 카테고리 이름을 모두 입력해주세요.');
+      return;
+    }
+
+    try {
+      await CreateAdminCategories({
+        categoryName: name,
+        //emoji,
+        categoryType: 'MAJOR',
+      });
+      router.back();
+    } catch (error) {
+      console.error('카테고리 생성 중 오류 발생:', error);
+    }
   };
 
   const handleAddCat = () => {
-    router.push('/admin/category/add-subcategory');
+    router.push('/admin/category/add-category');
   };
 
   const pageTitle =
-    pathname === '/admin/category/add-subcategory'
+    pathname === '/admin/category/add-category'
       ? '카테고리 추가'
       : '카테고리 관리';
 
@@ -50,7 +72,7 @@ function Header() {
           </>
         )}
 
-        {isAddSubcategoryPage && (
+        {isAddCategoryPage && (
           <button className="cursor-pointer" onClick={handleFinish}>
             완료
           </button>
@@ -67,10 +89,12 @@ export default function EditCategoryLayout({
 }) {
   return (
     <EditModeProvider>
-      <div className="flex flex-col">
-        <Header />
-        <div>{children}</div>
-      </div>
+      <CategoryFormProvider>
+        <div className="flex flex-col">
+          <Header />
+          <div>{children}</div>
+        </div>
+      </CategoryFormProvider>
     </EditModeProvider>
   );
 }
