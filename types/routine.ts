@@ -1,21 +1,4 @@
-// 이 두개는 곧 지울듯
-export interface RoutineResponse {
-  date: string;
-  routines: RoutineItem[];
-}
-
-export interface RoutineItem {
-  routineId: number;
-  scheduleId: number;
-  majorCategory: string;
-  subCategory: string;
-  name: string;
-  triggerTime: string;
-  isDone: boolean;
-  isImportant: boolean;
-}
-
-// 하루치 루틴
+// 오늘 루틴 불러오기
 export interface DayRoutine {
   scheduleId: number;
   routineId: number;
@@ -25,8 +8,9 @@ export interface DayRoutine {
   triggerTime: string;
   isDone: boolean;
   isImportant: boolean;
-  date: string;
+  date: string | null;
 }
+
 // 일주일 루틴 받아오는 타입
 export type WeekRoutineMap = Record<string, DayRoutine[]>;
 

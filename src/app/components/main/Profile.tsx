@@ -36,7 +36,6 @@ export default function Profile() {
         alt="bg"
         fill
         className="object-cover brightness-90"
-        priority
       />
 
       {/* 캐릭터 이미지 */}

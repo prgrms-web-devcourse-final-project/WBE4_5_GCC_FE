@@ -3,6 +3,7 @@ import './styles/calendar.css';
 import LayoutWrapper from './components/common/LayoutWrapper';
 
 import type { Metadata } from 'next';
+import Providers from './providers';
 
 export const metadata: Metadata = {
   title: '혼라이프',
@@ -23,7 +24,9 @@ export default function RootLayout({
         />
       </head>
       <body className="mt-[44px] pb-[110px]">
-        <LayoutWrapper>{children}</LayoutWrapper>
+        <Providers>
+          <LayoutWrapper>{children}</LayoutWrapper>
+        </Providers>
       </body>
     </html>
   );
