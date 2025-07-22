@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import item1 from '@/app/assets/images/item1.png';
 import Input from '@/app/components/common/ui/Input';
@@ -9,166 +9,84 @@ import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
 import Dropdown from '@/app/components/common/ui/Dropdown';
 import Button from '@/app/components/common/ui/Button';
+import { AdminItemById, EditAdminItemById } from '@/api/admin/adminItems';
+import AlertModal from '@/app/components/common/alert/AlertModal';
 
-export default function EditItem({ params }: { params: { id: string } }) {
+export default function EditItem({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
   const router = useRouter();
   const [selected, setSelected] = useState('');
 
   const [itemTitle, setItemTitle] = useState('');
+  const [itemKey, setItemKey] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
 
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
+  const [previewUrl, setPreviewUrl] = useState<string | null>(item1.src);
   const options = ['상의', '하의', '악세사리'];
 
-  const items = [
-    {
-      id: 1,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
-      price: 200,
-    },
-    {
-      id: 2,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
-      price: 1000,
-    },
-    {
-      id: 3,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
-      price: 700,
-    },
-    {
-      id: 4,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '하의',
-      price: 800,
-    },
-    {
-      id: 5,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 2200,
-    },
-    {
-      id: 6,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 5200,
-    },
-    {
-      id: 7,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 200,
-    },
-    {
-      id: 8,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 100,
-    },
-    {
-      id: 9,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 900,
-    },
-    {
-      id: 10,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 10,
-    },
-    {
-      id: 11,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 300,
-    },
-    {
-      id: 12,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '액세서리',
-      price: 1200,
-    },
-    {
-      id: 13,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '상의',
-      price: 1200,
-    },
-    {
-      id: 14,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '하의',
-      price: 6200,
-    },
-    {
-      id: 15,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '하의',
-      price: 200,
-    },
-    {
-      id: 16,
-      image: item1,
-      name: '인형탈',
-      description: '누군가 닮았어요.',
-      category: '하의',
-      price: 1200,
-    },
-  ];
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    type: 'success' | 'delete';
+    title: string;
+    description?: string;
+    onConfirm: () => void;
+  } | null>(null);
 
-  const item = items.find((i) => i.id === Number(params.id));
+  const handleSubmit = async () => {
+    try {
+      await EditAdminItemById(id, {
+        itemKey: itemKey,
+        itemName: itemTitle,
+        price: Number(itemPrice),
+        itemType: selected,
+      });
+      setModalState({
+        isOpen: true,
+        type: 'success',
+        title: '아이템이 성공적으로 수정되었습니다!',
+        onConfirm: () => {
+          setModalState(null);
+          router.push('/admin/shop');
+        },
+      });
+    } catch (error) {
+      setModalState({
+        isOpen: true,
+        type: 'delete',
+        title: '아이템 수정 실패',
+        description: '관리자 확인 요청 바랍니다.',
+        onConfirm: () => setModalState(null),
+      });
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    if (!item) return;
-    setItemTitle(item.name);
-    setItemDescription(item.description);
-    setItemPrice(String(item.price));
-    setSelected(item.category);
-    setPreviewUrl(item.image.src);
-  }, [item]);
+    const fetchItem = async () => {
+      try {
+        const res = await AdminItemById(id);
+        const data = res.data;
 
-  if (!item) return notFound();
+        setItemTitle(data.itemName);
+        setItemDescription(data.itemDescription ?? '');
+        setItemPrice(String(data.itemPrice));
+        setSelected(data.itemType);
+        //setPreviewUrl(data.itemImageUrl ?? item1); //이미지 필드 어떻게 받아올 지 (itemImageUrl 같은 건 응답 값에 없음 -> 임시)
+      } catch (error) {
+        console.error('아이템 상세 정보 조회 실패', error);
+      }
+    };
+    fetchItem();
+  }, [id]);
 
   const isDisabled =
-    !itemTitle || !itemDescription || !itemPrice || !selected || !imageFile;
+    !itemTitle || !itemDescription || !itemPrice || !selected || !previewUrl;
 
   return (
     <div className="h-1vh flex flex-col gap-6 px-5 py-7">
@@ -266,8 +184,20 @@ export default function EditItem({ params }: { params: { id: string } }) {
           />
         </div>
       </div>
-      {/* onClick={handleSubmit} */}
-      <Button disabled={isDisabled}>등록하기</Button>
+      <Button disabled={isDisabled} onClick={handleSubmit}>
+        등록하기
+      </Button>
+
+      {modalState?.isOpen && (
+        <AlertModal
+          isOpen={modalState.isOpen}
+          type={modalState.type}
+          title={modalState.title}
+          description={modalState.description}
+          confirmText="확인"
+          onConfirm={modalState.onConfirm}
+        />
+      )}
     </div>
   );
 }

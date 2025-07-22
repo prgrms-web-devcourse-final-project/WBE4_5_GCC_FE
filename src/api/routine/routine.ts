@@ -6,6 +6,7 @@ import {
 } from '../../../types/routine';
 import { axiosInstance } from '../axiosInstance';
 
+
 // 오늘 루틴 불러오기
 export const UserRoutine = async (): Promise<DayRoutine[]> => {
   try {

@@ -25,7 +25,7 @@ export default function Page() {
           캐릭터 꾸미기
         </Button>
 
-        <div className="mt-11 bg-white">
+        <div className="mt-8 bg-white">
           <SettingsItem
             label="회원정보 변경"
             type="link"
