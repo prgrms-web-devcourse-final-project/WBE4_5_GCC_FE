@@ -3,8 +3,8 @@
 import { createContext, useContext, useState } from 'react';
 
 interface CategoryFormContextProps {
-  //emoji: string | null;
-  //setEmoji: (emoji: string | null) => void;
+  emoji: string | null;
+  setEmoji: (emoji: string | null) => void;
   name: string;
   setName: (name: string) => void;
 }
@@ -28,11 +28,11 @@ export const CategoryFormProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  //const [emoji, setEmoji] = useState<string | null>(null);
+  const [emoji, setEmoji] = useState<string | null>(null);
   const [name, setName] = useState<string>('');
 
   return (
-    <CategoryFormContext.Provider value={{ name, setName }}>
+    <CategoryFormContext.Provider value={{ emoji, setEmoji, name, setName }}>
       {children}
     </CategoryFormContext.Provider>
   );

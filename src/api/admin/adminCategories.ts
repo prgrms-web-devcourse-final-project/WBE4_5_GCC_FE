@@ -16,7 +16,7 @@ export const AdminCategories = async () => {
 interface AdminCategoryPayload {
   categoryName: string;
   categoryType: string;
-  //emoji: string;
+  emoji?: string | null;
 }
 
 export const CreateAdminCategories = async (payload: AdminCategoryPayload) => {

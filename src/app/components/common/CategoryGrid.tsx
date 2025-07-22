@@ -11,6 +11,7 @@ interface CategoryGridProps {
   onSelectCategory: (label: string) => void;
   isCustom?: boolean;
   isManage?: boolean;
+  onDelete?: () => void;
 }
 
 export default function CategoryGrid({
@@ -19,6 +20,7 @@ export default function CategoryGrid({
   onSelectCategory,
   isCustom = false,
   isManage = false,
+  onDelete,
 }: CategoryGridProps) {
   const { isEditMode } = useEditMode();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +42,7 @@ export default function CategoryGrid({
     try {
       await DeleteAdminCategoryById(targetCategory.categoryId);
       console.log('카테고리 삭제 성공');
-      // 삭제 후 리스트 리프레시 -> 상위 컴포넌트로 콜백 전달
+      onDelete?.(); // 상위에서 전달한 fetch 함수 호출
     } catch (error) {
       console.error('카테고리 삭제 실패:', error);
     } finally {

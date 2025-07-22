@@ -22,18 +22,19 @@ export default function Page() {
   const [selectedCategory, setSelectedCategory] =
     useState<AdminCategory | null>(null);
 
+  const fetchData = async () => {
+    try {
+      const res = await AdminCategories();
+      console.log('카테고리 목록:', res);
+      setCategories(res.data);
+    } catch (error) {
+      console.error('카테고리 목록을 불러오지 못했습니다', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await AdminCategories();
-        console.log('카테고리 목록:', res);
-        setCategories(res.data);
-      } catch (error) {
-        console.error('카테고리 목록을 불러오지 못했습니다', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
@@ -55,6 +56,7 @@ export default function Page() {
                 setIsOpen(true);
               }}
               isCustom={true}
+              onDelete={fetchData}
             />
           </div>
           <CategoryEdit

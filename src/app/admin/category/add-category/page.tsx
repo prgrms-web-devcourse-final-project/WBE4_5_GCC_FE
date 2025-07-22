@@ -14,12 +14,12 @@ export default function EditSubcategoryPage() {
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
 
   const [categoryName, setCategoryName] = useState('');
-  const { name, setName } = useCategoryForm();
+  const { emoji, setEmoji, name, setName } = useCategoryForm();
 
   // 이모지 클릭 핸들러
   const handleEmojiSelect = (emojiData: EmojiClickData) => {
     setSelectedEmoji(emojiData.emoji);
-    //setEmoji(emojiData.emoji); // Context로 저장
+    setEmoji(emojiData.emoji);
     setIsPickerOpen(false);
   };
 

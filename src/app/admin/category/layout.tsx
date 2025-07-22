@@ -21,9 +21,13 @@ function Header() {
   const { isEditMode, toggleEditMode } = useEditMode();
 
   // CategoryFromContext
-  const { name } = useCategoryForm();
+  const { emoji, name } = useCategoryForm();
 
-  const handleFinish = async () => {
+  const goBack = () => {
+    router.back();
+  };
+
+  const handleSubmit = async () => {
     if (!name) {
       alert('이모지와 카테고리 이름을 모두 입력해주세요.');
       return;
@@ -32,7 +36,7 @@ function Header() {
     try {
       await CreateAdminCategories({
         categoryName: name,
-        //emoji,
+        emoji: emoji,
         categoryType: 'MAJOR',
       });
       router.back();
@@ -55,7 +59,7 @@ function Header() {
       <ChevronLeft
         className="h-auto w-6 text-[#222222]"
         strokeWidth={2}
-        onClick={handleFinish}
+        onClick={goBack}
       />
       <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222]">
         {pageTitle}
@@ -73,7 +77,7 @@ function Header() {
         )}
 
         {isAddCategoryPage && (
-          <button className="cursor-pointer" onClick={handleFinish}>
+          <button className="cursor-pointer" onClick={handleSubmit}>
             완료
           </button>
         )}
