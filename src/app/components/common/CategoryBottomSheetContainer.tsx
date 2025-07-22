@@ -19,8 +19,7 @@ export default function CategoryBottomSheetContainer({
 }: Props) {
   const rotuer = useRouter();
   const [showSubCategory, setShowSubCategory] = useState(false);
-  const [selectedMainCategory, setSelectedMainCategory] =
-    useState<CategoryItem>();
+  const [selectedMainCategory, setSelectedMainCategory] = useState<CategoryItem>();
   const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [allCategoryData, setAllCategoryData] = useState<CategoryItem[]>([]);

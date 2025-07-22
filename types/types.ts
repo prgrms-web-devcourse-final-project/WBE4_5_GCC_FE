@@ -1,7 +1,7 @@
 export interface CategoryItem {
   categoryId: number;
   categoryName: string;
-  emoji: string;
+  emoji?: string;
   categoryType: 'MAJOR' | 'SUB';
   parentId?: number | null;
   memberId?: number | null;
