@@ -64,7 +64,7 @@ export const AddAdminItems = async (payload: AdminItemPayload) => {
 // 아이템 삭제 - 사용 ㅇ
 export const DeleteAdminItemById = async (id: number) => {
   try {
-    const response = await axiosInstance.get(`/api/v1/admin/items/${id}`);
+    const response = await axiosInstance.delete(`/api/v1/admin/items/${id}`);
     console.log('아이템 삭제 성공', response.data);
     return response.data;
   } catch (error) {
