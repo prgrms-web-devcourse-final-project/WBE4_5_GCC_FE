@@ -46,3 +46,21 @@ export const DeleteAdminCategoryById = async (id: number) => {
     throw error;
   }
 };
+
+// 카테고리 수정
+export const EditAdminCategoryById = async (
+  id: string,
+  payload: AdminCategoryPayload,
+) => {
+  try {
+    const response = await axiosInstance.patch(
+      `/api/v1/admin/categories/${id}`,
+      payload,
+    );
+    console.log('카테고리 수정 성공', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('카테고리 수정 실패', error);
+    throw error;
+  }
+};

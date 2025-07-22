@@ -59,11 +59,16 @@ export default function Page() {
               onDelete={fetchData}
             />
           </div>
-          <CategoryEdit
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            label={selectedCategory?.categoryName}
-          />
+          {selectedCategory && (
+            <CategoryEdit
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              label={selectedCategory.categoryName}
+              icon={selectedCategory.emoji}
+              categoryId={selectedCategory.categoryId}
+              onEditComplete={fetchData}
+            />
+          )}
         </div>
       </div>
     </div>
