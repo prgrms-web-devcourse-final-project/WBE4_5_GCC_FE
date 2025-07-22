@@ -43,10 +43,7 @@ export default function Page() {
         <div>
           <div className="flex flex-col gap-2 px-4 py-10">
             <CategoryGrid
-              categories={categories.map((cat) => ({
-                icon: cat.emoji,
-                label: cat.categoryName,
-              }))}
+              categories={categories}
               selected={selectedCategory?.categoryName || null}
               onSelectCategory={(label) => {
                 const category = categories.find(

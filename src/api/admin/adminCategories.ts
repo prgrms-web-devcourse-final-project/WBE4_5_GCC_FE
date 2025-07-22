@@ -12,7 +12,7 @@ export const AdminCategories = async () => {
   }
 };
 
-// 카테고리 생성
+// 카테고리 생성 - 사용 ㅇ
 interface AdminCategoryPayload {
   categoryName: string;
   categoryType: string;
@@ -29,6 +29,20 @@ export const CreateAdminCategories = async (payload: AdminCategoryPayload) => {
     return response.data;
   } catch (error) {
     console.error('카테고리 생성 실패', error);
+    throw error;
+  }
+};
+
+// 카테고리 삭제
+export const DeleteAdminCategoryById = async (id: number) => {
+  try {
+    const response = await axiosInstance.delete(
+      `/api/v1/admin/categories/${id}`,
+    );
+    console.log('카테고리 삭제 성공', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('카테고리 삭제 실패', error);
     throw error;
   }
 };

@@ -1,12 +1,10 @@
-export interface Category {
-  icon: React.ReactNode | string;
-  label: string;
-}
-
 export interface CategoryItem {
   categoryId: number;
   categoryName: string;
+  emoji: string;
   categoryType: 'MAJOR' | 'SUB';
-  parentName: string | null;
+  parentName?: string | null;
   subCategoryName?: string;
+  createTime?: string;
+  updateTime?: string | null;
 }
