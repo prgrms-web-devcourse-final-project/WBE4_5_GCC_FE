@@ -22,18 +22,19 @@ export default function Page() {
   const [selectedCategory, setSelectedCategory] =
     useState<AdminCategory | null>(null);
 
+  const fetchData = async () => {
+    try {
+      const res = await AdminCategories();
+      console.log('카테고리 목록:', res);
+      setCategories(res.data);
+    } catch (error) {
+      console.error('카테고리 목록을 불러오지 못했습니다', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await AdminCategories();
-        console.log('카테고리 목록:', res);
-        setCategories(res.data);
-      } catch (error) {
-        console.error('카테고리 목록을 불러오지 못했습니다', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
@@ -43,10 +44,7 @@ export default function Page() {
         <div>
           <div className="flex flex-col gap-2 px-4 py-10">
             <CategoryGrid
-              categories={categories.map((cat) => ({
-                icon: cat.emoji,
-                label: cat.categoryName,
-              }))}
+              categories={categories}
               selected={selectedCategory?.categoryName || null}
               onSelectCategory={(label) => {
                 const category = categories.find(
@@ -58,13 +56,19 @@ export default function Page() {
                 setIsOpen(true);
               }}
               isCustom={true}
+              onDelete={fetchData}
             />
           </div>
-          <CategoryEdit
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            label={selectedCategory?.categoryName}
-          />
+          {selectedCategory && (
+            <CategoryEdit
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              label={selectedCategory.categoryName}
+              icon={selectedCategory.emoji}
+              categoryId={selectedCategory.categoryId}
+              onEditComplete={fetchData}
+            />
+          )}
         </div>
       </div>
     </div>
