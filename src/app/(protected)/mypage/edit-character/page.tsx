@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import character from '../../../../../public/images/character.png';
 import Button from '@/app/components/common/ui/Button';
-import { changeItem, fetchEquippedItem, fetchUserItem } from '@/api/member';
+import { equipItem, fetchUserItem, unequipItem } from '@/api/member';
 import { Item } from '../../../../../types/User';
 import ItemImg from '../../../assets/images/item1.png';
 import { useRouter } from 'next/navigation';
@@ -17,8 +17,8 @@ const tabs = ['전체', '상의', '하의', '액세서리'];
 export default function Page() {
   const router = useRouter();
   const [userItem, setUserItem] = useState<Item[]>([]);
-  const [equippedItem, setEquippedItem] = useState<Item[]>([]);
   const [selectedTab, setSelectedTab] = useState('전체');
+  const [hasInitialized, setHasInitialized] = useState(false);
   const [selectedItem, setSelectedItem] = useState<
     Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
   >({
@@ -26,9 +26,13 @@ export default function Page() {
     BOTTOM: null,
     ACCESSORY: null,
   });
-
-  const oldKeys: string[] = [];
-  const newKeys: string[] = [];
+  const [equippedItem, setEquippedItem] = useState<
+    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
+  >({
+    TOP: null,
+    BOTTOM: null,
+    ACCESSORY: null,
+  });
 
   // 보유아이템 불러오기
   useEffect(() => {
@@ -36,30 +40,31 @@ export default function Page() {
       try {
         const data = await fetchUserItem();
         setUserItem(data.data);
-        const data2 = await fetchEquippedItem();
-        setEquippedItem(data2.data);
+        const initSelected: Record<
+          'TOP' | 'BOTTOM' | 'ACCESSORY',
+          string | null
+        > = {
+          TOP: null,
+          BOTTOM: null,
+          ACCESSORY: null,
+        };
+
+        data.data.forEach((item: Item) => {
+          if (item.isEquipped) {
+            initSelected[item.itemtype] = item.itemKey;
+          }
+        });
+
+        // api 호출 시 아이템 비교용
+        setEquippedItem(initSelected); // 로딩 시 장작된 아이템 저장하기
+        setSelectedItem(initSelected); // 착용중, 착용해제 할 아이템 저장하기
+        setHasInitialized(true);
       } catch (err) {
         console.log('유저아이템 정보 받아오기 실패', err);
       }
     };
     loadUserItem();
   }, []);
-
-  // 페이지 로딩 시 장착중 아이템 보여주기
-  useEffect(() => {
-    const initSelected: Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null> =
-      {
-        TOP: null,
-        BOTTOM: null,
-        ACCESSORY: null,
-      };
-
-    equippedItem.forEach((item) => {
-      initSelected[item.itemtype] = item.itemKey;
-    });
-
-    setSelectedItem(initSelected);
-  }, [equippedItem]);
 
   // 착용중 -> 착용하기 토글
   const handleSelect = (item: Item) => {
@@ -70,41 +75,56 @@ export default function Page() {
     }));
   };
 
-  // old키가 벗고싶은거
-  // new키가 입고싶은거
-  // equipped아이템이랑 보내기 직전의 selected아이템이랑 비교해서
-  // 만약 selecteditem !== equippeditem -> equippedItem -> oldkey, selecteditem => newkey
-
-  Object.entries(selectedItem).forEach(([type, itemKey]) => {
-    const equippedKey = equippedItem.find(
-      (item) => item.itemtype === type,
-    )?.itemKey;
-
-    if (equippedKey !== itemKey) {
-      if (equippedKey) {
-        oldKeys.push(equippedKey);
-      }
-      if (itemKey) {
-        newKeys.push(itemKey);
-      }
+  useEffect(() => {
+    if (hasInitialized) {
+      console.log('선택된 아이템:', selectedItem);
     }
-  });
+  }, [selectedItem, hasInitialized]);
 
-  const oldKeysString = oldKeys.join(',');
-  const newKeysString = newKeys.join(',');
+  const categories: ('TOP' | 'BOTTOM' | 'ACCESSORY')[] = [
+    'TOP',
+    'BOTTOM',
+    'ACCESSORY',
+  ];
 
   // 저장하기 버튼 누를 시
-  // 테스트 시 아직 악세서리는 적용 X -> 상의랑 하의로만 테스트 가능
+  // 이미 입고있던 옷 유지 -> 호출 필요없음
+  // 다른옷으로 바꿨다면 -> equip만 호출 -> 기존옷은 자동으로 해제
+  // 옷 장착을 해제했다면 -> unequip만 호출
+  // 테스트 시 상의로만 테스트 가능 -> top_item_01
   const handleSubmit = async () => {
-    if (oldKeysString || newKeysString) {
-      await changeItem(oldKeysString, newKeysString);
-      console.log(
-        '착용해제 아이템:',
-        oldKeysString,
-        '착용할 아이템:',
-        newKeysString,
-      );
+    const unEquip: string[] = [];
+    const equip: string[] = [];
+
+    categories.forEach((category) => {
+      const selectedKey = selectedItem[category];
+      const equippedKey = equippedItem[category];
+
+      // 저장하기 직전, 선택된 아이템과 화면 첫 로딩 시 기존 장착된 아이템 비교
+      if (selectedKey !== equippedKey) {
+        // 카테고리별 기존 장착된 아이템은 있었으나, 현재 선택된 아이템은 없을 때 -> 장착해제
+        if (selectedKey === null && equippedKey !== null) {
+          unEquip.push(equippedKey);
+        }
+        // 카테고리별 현재 선택된 아이템이 있을 때 -> 장착(기존 장착된 아이템이 있었어도 현재 선택된 아이템으로 교체됨)
+        else if (selectedKey !== null) {
+          equip.push(selectedKey);
+        }
+      }
+    });
+
+    const unEquipString = unEquip.join(',');
+    const equipString = equip.join(',');
+
+    if (unEquipString) {
+      await unequipItem(unEquipString);
     }
+    if (equipString) {
+      await equipItem(equipString);
+    }
+
+    console.log('해제할 아이템:', unEquipString);
+    console.log('장착할 아이템:', equipString);
     router.push('/mypage');
   };
 
