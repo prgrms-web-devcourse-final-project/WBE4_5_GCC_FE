@@ -3,6 +3,8 @@ export interface CategoryItem {
   categoryName: string;
   emoji: string;
   categoryType: 'MAJOR' | 'SUB';
+  parentId?: number | null;
+  memberId?: number | null;
   parentName?: string | null;
   subCategoryName?: string;
   createTime?: string;
