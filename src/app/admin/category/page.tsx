@@ -1,28 +1,42 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import CategoryGrid from '@/app/components/common/CategoryGrid';
 import CategoryEdit from '@/app/components/admin/CategoryEdit';
+import { AdminCategories } from '@/api/admin/adminCategories';
 
-const categories = [
-  { icon: <span>🧹</span>, label: '청소 / 정리' },
-  { icon: <span>🧺</span>, label: '세탁 / 의류' },
-  { icon: <span>♻️</span>, label: '쓰레기 / 환경' },
-  { icon: <span>🍳</span>, label: '요리' },
-  { icon: <span>💸</span>, label: '소비' },
-  { icon: <span>📄</span>, label: '행정' },
-  { icon: <span>🏃🏻</span>, label: '건강' },
-  { icon: <span>💡</span>, label: '자기개발' },
-  { icon: <span>👜</span>, label: '외출' },
-];
+interface AdminCategory {
+  categoryId: number;
+  categoryName: string;
+  emoji: string;
+  categoryType: 'MAJOR';
+  createTime: string;
+  updateTime: string | null;
+}
 
 export default function Page() {
+  const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야 함
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<{
-    icon: React.ReactNode | string;
-    label: string;
-  } | null>(null);
+  const [categories, setCategories] = useState<AdminCategory[]>([]);
+  const [selectedCategory, setSelectedCategory] =
+    useState<AdminCategory | null>(null);
+
+  const fetchData = async () => {
+    try {
+      const res = await AdminCategories();
+      console.log('카테고리 목록:', res);
+      setCategories(res.data);
+    } catch (error) {
+      console.error('카테고리 목록을 불러오지 못했습니다', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -31,22 +45,30 @@ export default function Page() {
           <div className="flex flex-col gap-2 px-4 py-10">
             <CategoryGrid
               categories={categories}
-              selected={selectedCategory?.label || null}
+              selected={selectedCategory?.categoryName || null}
               onSelectCategory={(label) => {
-                const category = categories.find((cat) => cat.label === label);
+                const category = categories.find(
+                  (cat) => cat.categoryName === label,
+                );
                 if (!category) return;
 
                 setSelectedCategory(category);
                 setIsOpen(true);
               }}
               isCustom={true}
+              onDelete={fetchData}
             />
           </div>
-          <CategoryEdit
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            label={selectedCategory?.label}
-          />
+          {selectedCategory && (
+            <CategoryEdit
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              label={selectedCategory.categoryName}
+              icon={selectedCategory.emoji}
+              categoryId={selectedCategory.categoryId}
+              onEditComplete={fetchData}
+            />
+          )}
         </div>
       </div>
     </div>

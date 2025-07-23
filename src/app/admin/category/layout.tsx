@@ -7,24 +7,50 @@ import {
   EditModeProvider,
   useEditMode,
 } from '@/app/components/routine/EditModeContext';
+import {
+  CategoryFormProvider,
+  useCategoryForm,
+} from '@/app/components/admin/context/CategoryFormContext';
+import { CreateAdminCategories } from '@/api/admin/adminCategories';
 
 function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const isEditPage = pathname === '/admin/category';
-  const isAddSubcategoryPage = pathname === '/admin/category/add-subcategory';
+  const isAddCategoryPage = pathname === '/admin/category/add-category';
   const { isEditMode, toggleEditMode } = useEditMode();
 
-  const handleFinish = () => {
+  // CategoryFromContext
+  const { emoji, name } = useCategoryForm();
+
+  const goBack = () => {
     router.back();
   };
 
+  const handleSubmit = async () => {
+    if (!name) {
+      alert('이모지와 카테고리 이름을 모두 입력해주세요.');
+      return;
+    }
+
+    try {
+      await CreateAdminCategories({
+        categoryName: name,
+        emoji: emoji,
+        categoryType: 'MAJOR',
+      });
+      router.back();
+    } catch (error) {
+      console.error('카테고리 생성 중 오류 발생:', error);
+    }
+  };
+
   const handleAddCat = () => {
-    router.push('/admin/category/add-subcategory');
+    router.push('/admin/category/add-category');
   };
 
   const pageTitle =
-    pathname === '/admin/category/add-subcategory'
+    pathname === '/admin/category/add-category'
       ? '카테고리 추가'
       : '카테고리 관리';
 
@@ -33,7 +59,7 @@ function Header() {
       <ChevronLeft
         className="h-auto w-6 text-[#222222]"
         strokeWidth={2}
-        onClick={handleFinish}
+        onClick={goBack}
       />
       <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222]">
         {pageTitle}
@@ -50,8 +76,8 @@ function Header() {
           </>
         )}
 
-        {isAddSubcategoryPage && (
-          <button className="cursor-pointer" onClick={handleFinish}>
+        {isAddCategoryPage && (
+          <button className="cursor-pointer" onClick={handleSubmit}>
             완료
           </button>
         )}
@@ -67,10 +93,12 @@ export default function EditCategoryLayout({
 }) {
   return (
     <EditModeProvider>
-      <div className="flex flex-col">
-        <Header />
-        <div>{children}</div>
-      </div>
+      <CategoryFormProvider>
+        <div className="flex flex-col">
+          <Header />
+          <div>{children}</div>
+        </div>
+      </CategoryFormProvider>
     </EditModeProvider>
   );
 }

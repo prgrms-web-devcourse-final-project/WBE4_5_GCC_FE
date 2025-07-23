@@ -7,6 +7,7 @@ import {
 } from '../../../types/routine';
 import { axiosInstance } from '../axiosInstance';
 
+
 // 오늘 루틴 불러오기
 export const fetchTodayRoutine = async (): Promise<DayRoutine[]> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));

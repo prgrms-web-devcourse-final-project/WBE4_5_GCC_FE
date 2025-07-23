@@ -89,7 +89,7 @@ export default function Page() {
             {/* 좌측 아이콘 영역 */}
             <div
               onClick={() => setIsPickerOpen(true)}
-              className="flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0]"
+              className="flex min-h-[45px] min-w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0]"
             >
               {selectedEmoji ? (
                 <span className="text-2xl">{selectedEmoji}</span>
@@ -102,7 +102,7 @@ export default function Page() {
             </div>
 
             {/* 우측 인풋 영역 */}
-            <div className="min-w-70 border border-transparent border-b-[#E0E0E0] py-2 text-xl text-black">
+            <div className="w-full min-w-70 border border-transparent border-b-[#E0E0E0] py-2 text-xl text-black">
               <input
                 type="text"
                 value={mainCategoryName}
@@ -162,7 +162,7 @@ export default function Page() {
 
         {/* Emoji picker modal */}
         {isPickerOpen && (
-          <div ref={pickerRef} className="absolute top-57 left-5 z-50">
+          <div ref={pickerRef} className="absolute top-47 left-5 z-50">
             <EmojiPicker onEmojiClick={handleEmojiSelect} />
           </div>
         )}

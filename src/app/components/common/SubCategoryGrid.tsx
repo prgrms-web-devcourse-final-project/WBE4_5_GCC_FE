@@ -24,7 +24,7 @@ export default function SubCategoryGrid({
           onClick={() => onSelect(label)}
           className={clsx(
             'h-[54px] w-full border-b border-[#E0E0E0] text-sm font-semibold text-[#616161]',
-            idx === subCategories.length - 1 && 'border-b-0',
+            idx === subCategories.length && 'border-b-0',
           )}
         >
           <span>{label}</span>

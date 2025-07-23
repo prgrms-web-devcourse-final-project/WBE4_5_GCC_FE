@@ -13,43 +13,16 @@ interface Props {
   onSelectCategory: (value: CategoryItem) => void;
 }
 
-const categoryIconMap: Record<string, React.ReactNode> = {
-  청소: <span>🧹</span>,
-  세탁: <span>🧺</span>,
-  쓰레기: <span>♻️</span>,
-  요리: <span>🍳</span>,
-  소비: <span>💸</span>,
-  행정: <span>📄</span>,
-  건강: <span>🏃🏻</span>,
-  자기개발: <span>💡</span>,
-  외출: <span>👜</span>,
-};
-
-//const subCategoryMap: Record<string, string[]> = {
-//  '청소 / 정리': ['욕실', '주방', '거실', '창고'],
-//  '세탁 / 의류': ['빨래', '옷장 정리', '스타일링'],
-//  '쓰레기 / 환경': ['분리수거', '음식물', '재활용'],
-//  요리: ['아침 준비', '도시락', '저녁 요리'],
-//  소비: ['지출 점검', '영수증 정리', '예산 설정'],
-//  행정: ['서류 작성', '정부서비스 신청', '주소 변경'],
-//  운동: ['스트레칭', '러닝', '홈트레이닝'],
-//};
-
 export default function CategoryBottomSheetContainer({
   onClose,
   onSelectCategory,
 }: Props) {
   const rotuer = useRouter();
   const [showSubCategory, setShowSubCategory] = useState(false);
-  const [selectedMainCategory, setSelectedMainCategory] = useState<
-    string | null
-  >(null);
+  const [selectedMainCategory, setSelectedMainCategory] = useState<CategoryItem>();
   const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [allCategoryData, setAllCategoryData] = useState<CategoryItem[]>([]);
-  const [subCategoryMap, setSubCategoryMap] = useState<
-    Record<string, string[]>
-  >({});
 
   const handleEditClick = () => {
     rotuer.push('/routine/edit-category');
@@ -60,7 +33,7 @@ export default function CategoryBottomSheetContainer({
       const selectedMajor = allCategoryData.find(
         (cat) =>
           cat.categoryType === 'MAJOR' &&
-          cat.categoryName === selectedMainCategory,
+          cat.categoryName === selectedMainCategory.categoryName,
       );
 
       if (selectedMajor) {
@@ -104,7 +77,6 @@ export default function CategoryBottomSheetContainer({
           }
         });
         console.log('메인 카테고리:', majors);
-        setSubCategoryMap(subMap);
       } catch (error) {
         console.error('카테고리 정보 불러오기 실패', error);
       } finally {
@@ -128,13 +100,13 @@ export default function CategoryBottomSheetContainer({
           <div className="flex items-center gap-2">
             <span className="w-[18px]pt-[2px]">
               {selectedMainCategory ? (
-                categoryIconMap[selectedMainCategory]
+                selectedMainCategory.emoji
               ) : (
                 <span>🏷️</span>
               )}
             </span>
             <h2 className="text-base font-semibold text-black">
-              {selectedMainCategory || '카테고리 선택'}
+              {selectedMainCategory?.categoryName || '카테고리 선택'}
             </h2>
           </div>
 
@@ -149,34 +121,34 @@ export default function CategoryBottomSheetContainer({
 
         {/* MAJOR 카테고리 */}
         <CategoryGrid
-          categories={categories.map((cat) => ({
-            icon: categoryIconMap[cat.categoryName] || <span>❓︎</span>,
-            label: cat.categoryName,
-          }))}
-          selected={selectedMainCategory}
+          categories={categories}
+          selected={selectedMainCategory?.categoryName || null}
           onSelectCategory={(label) => {
-            setSelectedMainCategory(label);
-            setShowSubCategory(true);
+            const major = categories.find((cat) => cat.categoryName === label);
+            if (major) {
+              setSelectedMainCategory(major);
+              setShowSubCategory(true);
+            }
           }}
         />
 
         {/* SUB 카테고리 (오버레이 화면) */}
         {showSubCategory && (
           <div
-            className="animate-slide-in ihttps://roadmap.sh/frontendtems-end fixed inset-0 z-50 flex justify-center bg-transparent"
+            className="animate-slide-in fixed inset-0 z-50 flex justify-center bg-transparent"
             onClick={handleOutsideClick}
           >
             <div
-              className="min-h-[443px] w-full rounded-t-[24px] bg-white px-4 py-8"
+              className="fixed bottom-0 min-h-[443px] w-full rounded-t-[24px] bg-white px-4 py-8"
               onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
             >
               <div className="mb-[18px] flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-[18px]">
-                    {categoryIconMap[selectedMainCategory!]}
+                    {selectedMainCategory?.emoji}
                   </span>
                   <h2 className="text-base font-semibold text-black">
-                    {selectedMainCategory}
+                    {selectedMainCategory?.categoryName}
                   </h2>
                 </div>
                 <button
@@ -189,7 +161,13 @@ export default function CategoryBottomSheetContainer({
               </div>
 
               <SubCategoryGrid
-                subCategories={subCategoryMap[selectedMainCategory!] || []}
+                subCategories={allCategoryData
+                  .filter(
+                    (cat) =>
+                      cat.categoryType === 'SUB' &&
+                      cat.parentId === selectedMainCategory?.categoryId,
+                  )
+                  .map((cat) => cat.categoryName)}
                 onSelect={handleSubCategorySelect}
               />
             </div>
