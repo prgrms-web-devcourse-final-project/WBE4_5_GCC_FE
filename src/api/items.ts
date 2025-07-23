@@ -1,3 +1,4 @@
+import { ShopItem } from '../../types/general';
 import { axiosInstance } from './axiosInstance';
 
 // 아이템 조회
@@ -10,6 +11,13 @@ export const Items = async () => {
     console.error('아이템 불러오기 실패', error);
     throw error;
   }
+};
+
+export const fetchItems = async (): Promise<{ items: ShopItem[] }> => {
+  const res = await Items();
+  return {
+    items: res.data,
+  };
 };
 
 // 아이템 단건 조회
@@ -28,10 +36,10 @@ export const ItemByKey = async (key: string) => {
 export const ItemPurchaseByKey = async (key: string) => {
   try {
     const response = await axiosInstance.post(`/api/v1/items/${key}`);
-    console.log('아이템 구매 불러오기 성공', response.data);
+    console.log('아이템 구매 성공', response.data);
     return response.data;
   } catch (error) {
-    console.error('아이템 구매 조회 실패', error);
+    console.error('아이템 구매 실패', error);
     throw error;
   }
 };
