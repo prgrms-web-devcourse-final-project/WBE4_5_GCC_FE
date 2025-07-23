@@ -1,4 +1,4 @@
-import { CategoryItem } from '../../types/types';
+import { CategoryItem } from '../../types/general';
 import { axiosInstance } from './axiosInstance';
 
 interface CategoryPayload {
@@ -9,7 +9,7 @@ interface CategoryPayload {
 }
 
 // 카테고리 조회 - 사용 ㅇ
-export const getCategories = async (): Promise<{ data: CategoryItem}> => {
+export const getCategories = async (): Promise<{ data: CategoryItem[] }> => {
   try {
     const response = await axiosInstance.get('/api/v1/categories');
     console.log('카테고리 불러오기 성공', response.data);
