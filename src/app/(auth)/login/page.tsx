@@ -19,7 +19,11 @@ export default function Page() {
   const logInHandler = async () => {
     try {
       await handleSignIn(email, password);
-      router.push('/');
+      if (email === 'admin@test.com') {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
     } catch (err) {
       setErrors({
         password: '이메일 또는 비밀번호를 다시 확인하세요.',
