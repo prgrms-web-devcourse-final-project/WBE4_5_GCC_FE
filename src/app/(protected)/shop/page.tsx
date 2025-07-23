@@ -1,69 +1,84 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import item1 from '@/app/assets/images/item1.png';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ItemPurchaseByKey, Items } from '@/api/items';
 
-// 기능 구현때 삭제
-import { StaticImageData } from 'next/image';
+import { useState } from 'react';
+import { useUserStore } from '@/store/UserStore';
+import { ShopItem } from '../../../../types/general';
+import { ItemPurchaseByKey, fetchItems } from '@/api/items';
+import { useQuery, useMutation } from '@tanstack/react-query';
+
 import Tabs from '@/app/components/shop/Tabs';
 import ItemCard from '@/app/components/shop/ItemCard';
-import PurchaseModal from '@/app/components/shop/PurchaseModal';
-import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
 import BackHeader from '@/app/components/common/ui/BackHeader';
-import { useUserStore } from '@/store/UserStore';
+import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
+import PurchaseModal from '@/app/components/shop/PurchaseModal';
+import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 
-interface Item {
-  itemId: number;
-  itemType: 'TOP' | 'BOTTOM' | 'ACCESSORY';
-  itemDescription: string;
-  itemKey: string;
-  itemName: string;
-  itemPoint: number;
-}
-
-export default function Practice() {
-  // 나중엔 true로 바꿔야함
-  const [loading, setLoading] = useState(false);
+export default function Shop() {
   const tabList = ['전체', '상의', '하의', '액세서리'];
   const [selectedTab, setSelectedTab] = useState(tabList[0]);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
-  const [alertType, setAlertType] = useState<'success' | 'failed'>('success');
+  const [alertType, setAlertType] = useState<'success' | 'failed'>(
+    'success',
+  );
   const [showPModal, setShowPModal] = useState(false);
   const [showPAlert, setShowPAlert] = useState(false);
 
-  const [items, setItems] = useState<Item[]>([]);
-
-  // 테스트
   const currentPoint = useUserStore((state) => state.point);
-  const [points, setPoints] = useState(currentPoint);
+  const [points, setPoints] = useState(currentPoint); // 500 포인트
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
 
-  const tabMap: Record<string, Item['itemType']> = {
+  const tabMap: Record<string, ShopItem['itemType']> = {
     상의: 'TOP',
     하의: 'BOTTOM',
     액세서리: 'ACCESSORY',
   };
 
+  // 아이템 목록 불러오기
+  const { data, isLoading, isError, error } = useQuery<
+    { items: ShopItem[] },
+    Error
+  >({
+    queryKey: ['shop-items', currentPage],
+    queryFn: fetchItems,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // 아이템 구매
+  const purchaseMutation = useMutation({
+    mutationFn: (key: string) => ItemPurchaseByKey(key),
+    onSuccess: () => {
+      console.log('아이템 구매 성공');
+      setAlertType('success');
+    },
+    onError: (error) => {
+      console.error('아이템 구매 실패', error);
+      setAlertType('failed');
+    },
+    onSettled: () => {
+      setShowPModal(false);
+      setShowPAlert(true);
+    },
+  });
+
   const filteredItem =
     selectedTab === '전체'
-      ? items
-      : items.filter((item) => item.itemType === tabMap[selectedTab]);
+      ? data?.items || []
+      : (data?.items || []).filter(
+          (item) => item.itemType === tabMap[selectedTab],
+        );
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const res = await Items();
-        setItems(res.data);
-      } catch (error) {
-        console.error('불러오기 실패', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchItems();
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -85,13 +100,15 @@ export default function Practice() {
                   itemId: item.itemId,
                   itemName: item.itemName,
                   itemDescription: item.itemDescription,
-                  itemPrice: item.itemPoint,
+                  itemPoint: item.itemPoint,
                 }}
                 onClick={() => {
+                  if (ownedItemKeys.includes(item.itemKey)) return; // 이미 보유한 아이템일 경우 클릭 막음
                   setSelectedItem(item);
                   setSelectedPrice(item.itemPoint);
                   setShowPModal(true);
                 }}
+                isOwned={ownedItemKeys.includes(item.itemKey)} // 보유 중 아이템
               />
             ))}
           </div>
@@ -137,25 +154,20 @@ export default function Practice() {
             }
 
             try {
+              if (!selectedItem) return;
               // 서버에 구매 요청 (포인트 차감)
-              await ItemPurchaseByKey(selectedItem.itemKey);
-              console.log('아이템 구매 성공');
-              // 클라이언트 포인트 갱신
-              setPoints(remainingPoints);
-              setAlertType('success');
+              await purchaseMutation.mutateAsync(selectedItem.itemKey);
+              setPoints(remainingPoints); // 성공 시 포인트 차감
+              setOwnedItemKeys((prev) => [...prev, selectedItem.itemKey]); // 보유 중인 아이템으로 상태 업데이트
             } catch (error) {
-              console.error('아이템 구매 실패', error);
-              setAlertType('failed');
-            } finally {
-              setShowPAlert(true);
-              setShowPModal(false);
+              console.log('상점 아이템 구매 에러 발생:', error);
             }
           }}
           onCancel={() => setShowPModal(false)}
         />
       )}
 
-      {/* 구매 알림 모달 */}
+      {/* 구매 성공 여부 알림 모달 */}
       {showPAlert && (
         <PurchaseAlert
           isOpen={true}

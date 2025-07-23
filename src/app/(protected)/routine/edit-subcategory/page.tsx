@@ -13,7 +13,7 @@ import {
 } from '@/api/categories';
 import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
 import EditSubcategoryLayout from './EditSubcategoryLayout';
-import { CategoryItem } from '../../../../../types/types';
+import { CategoryItem } from '../../../../../types/general';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 export default function Page() {

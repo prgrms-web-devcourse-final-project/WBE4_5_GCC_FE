@@ -1,21 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import { WeekRoutineMap } from '../../../types/routine';
-import { axiosInstance } from '../axiosInstance';
+import { fetchWeekRoutine } from './routine';
+import { startOfWeek, format } from 'date-fns';
 
-// API 요청 함수
-const fetchWeekRoutine = async (date?: string): Promise<WeekRoutineMap> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  const response = await axiosInstance.get('/api/v1/routines/weekly', {
-    params: { date },
-  });
-  return response.data.data;
-};
+export function useWeekRoutine(dateStr?: string) {
+  const date = dateStr ? new Date(dateStr) : new Date();
 
-// 커스텀 훅
-export function useWeekRoutine(date?: string) {
+  // 월요일 구하기
+  const monday = startOfWeek(date, { weekStartsOn: 1 });
+  const mondayStr = format(monday, 'yyyy-MM-dd');
+
   return useQuery({
-    queryKey: ['routine-week', date],
-    queryFn: () => fetchWeekRoutine(date),
+    queryKey: ['routine-week', mondayStr],
+    queryFn: () => fetchWeekRoutine(mondayStr),
     staleTime: 5000,
   });
 }

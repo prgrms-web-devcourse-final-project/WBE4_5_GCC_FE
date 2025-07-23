@@ -14,10 +14,12 @@ import { DayRoutine } from '../../types/routine';
 import { useTodayRoutine } from '@/api/routine/getTodayRoutine';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from './components/common/ui/LoadingSpinner';
+import AlertModal from './components/common/alert/AlertModal';
 
 export default function Main() {
   const queryClient = useQueryClient();
   const [openQuest, setOpenQuest] = useState(false);
+  const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
 
   const { data: dayRoutine = [], isPending } = useTodayRoutine();
@@ -115,12 +117,23 @@ export default function Main() {
                       isDone: !routine.isDone,
                     })
                   }
+                  onDeleteClick={() => setCheckDelete(true)}
                 />
               ))}
             </div>
           </div>
         )}
       </div>
+      {checkDelete && (
+        <AlertModal
+          type="delete"
+          title="루틴을 삭제하시겠어요?"
+          onConfirm={() => console.log('삭제완료')}
+          cancelText="취소"
+          onCancel={() => setCheckDelete(false)}
+          isOpen={checkDelete}
+        />
+      )}
     </>
   );
 }

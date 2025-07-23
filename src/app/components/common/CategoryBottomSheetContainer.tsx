@@ -6,7 +6,7 @@ import CategoryGrid from './CategoryGrid';
 import { useRouter } from 'next/navigation';
 import SubCategoryGrid from './SubCategoryGrid';
 import { Categories } from '@/api/categories';
-import { CategoryItem } from '../../../../types/types';
+import { CategoryItem } from '../../../../types/general';
 
 interface Props {
   onClose: () => void;

@@ -23,7 +23,7 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1"
         />
       </head>
-      <body className="mt-[44px] pb-[110px]">
+      <body className="pb-[110px]">
         <Providers>
           <LayoutWrapper>{children}</LayoutWrapper>
         </Providers>

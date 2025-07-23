@@ -10,21 +10,32 @@ import CategoryBottomSheetContainer from '@/app/components/common/CategoryBottom
 
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
-import { CategoryItem } from '../../../../../types/general';
-import { addRoutine } from '@/api/routine/routine';
-import { AddRoutine } from '../../../../../types/routine';
+import { CategoryItem } from '../../../../../types/types';
 import { useRouter } from 'next/navigation';
+import { useRoutineStore } from '@/store/RoutineStore';
+import { useEditRoutine } from '@/api/routine/handleRoutine';
+import LoadingModal from '@/app/components/common/alert/LoadingModal';
 
 export default function Page() {
+  const {
+    routineId,
+    majorCategory,
+    subCategory,
+    name,
+    triggerTime,
+    isImportant,
+    startRoutineDate,
+  } = useRoutineStore();
+
   const router = useRouter();
-  const [routineName, setRoutineName] = useState('');
-  const [startDate, setStartDate] = useState('');
+  const [routineName, setRoutineName] = useState(name);
+  const [startDate, setStartDate] = useState(startRoutineDate);
   const [cycle, setCycle] = useState<{ days: string; week: string } | null>(
     null,
   );
-  const [doWhen, setDoWhen] = useState('');
+  const [doWhen, setDoWhen] = useState(triggerTime);
   const [notification, setNotification] = useState(false);
-  const [importance, setImportance] = useState(false);
+  const [importance, setImportance] = useState(isImportant);
 
   const [showCatModal, setShowCatModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(
@@ -33,6 +44,7 @@ export default function Page() {
 
   const [isCycleOpen, setIsCycleOpen] = useState(false);
   const [isWhenDoOpen, setIsWhenDoOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   const isSubmitEnabled =
     selectedCategory !== null &&
@@ -68,6 +80,15 @@ export default function Page() {
       : convertDaysToNumbers(days);
   };
 
+  // 수정 처리
+  const { mutate, isSuccess } = useEditRoutine();
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push('/routine');
+    }
+  }, [isSuccess, router]);
+
   useEffect(() => {
     console.log('폼 상태 변경됨:', {
       selectedCategory,
@@ -78,6 +99,13 @@ export default function Page() {
       importance,
     });
   }, [selectedCategory, routineName, startDate, cycle, doWhen, importance]);
+
+  useEffect(() => {
+    setRoutineName(name);
+    setDoWhen(triggerTime);
+    setImportance(isImportant);
+    setStartDate(startRoutineDate);
+  }, [name, triggerTime, isImportant, startRoutineDate]);
 
   return (
     <>
@@ -90,13 +118,14 @@ export default function Page() {
               icon="🏷️"
               label="카테고리"
               value={selectedCategory}
-              placeholder="카테고리를 선택하세요"
               onClick={() => setShowCatModal(true)}
+              storedMajorCategory={majorCategory}
+              storedSubCategory={subCategory}
             />
             <InputRoutineName
               icon="🌱"
               label="루틴이름"
-              placeholder="ex) 변기 청소하기"
+              placeholder={name}
               value={routineName}
               onChange={(e) => setRoutineName(e.target.value)}
             />
@@ -152,24 +181,24 @@ export default function Page() {
         <div className="fixed right-5 bottom-[120px] left-5">
           <Button
             type="submit"
+            className="bg-[#FFB84C]"
             disabled={!isSubmitEnabled}
-            onClick={async () => {
-              const routineData: AddRoutine = {
-                categoryId: selectedCategory!.categoryId,
-                content: routineName,
-                triggerTime: doWhen,
-                isImportant: importance,
-                repeatType: getRepeatType(cycle!.days),
-                repeatValue: getRepeatValue(cycle!.days),
-                date: startDate,
-              };
-              try {
-                await addRoutine(routineData);
-                router.push('/routine');
-              } catch (err) {
-                console.error('루틴 추가 실패', err);
-                alert('루틴을 추가하는 중 오류가 발생했어요.');
-              }
+            onClick={() => {
+              mutate({
+                routineId: routineId,
+                editData: {
+                  name: routineName,
+                  majorCategory: selectedCategory!.categoryName,
+                  subCategory: selectedCategory!.subCategoryName,
+                  startRoutineDate: startDate,
+                  triggerTime: doWhen,
+                  isImportant: importance,
+                  repeatType: getRepeatType(cycle!.days),
+                  repeatValue: getRepeatValue(cycle!.days),
+                  repeatInterval: parseInt(cycle!.week, 10), // string → number 변환
+                },
+              });
+              setIsEditing(true);
             }}
           >
             확인
@@ -206,6 +235,8 @@ export default function Page() {
           }}
         />
       )}
+
+      {isEditing && <LoadingModal isOpen={isEditing} />}
     </>
   );
 }
