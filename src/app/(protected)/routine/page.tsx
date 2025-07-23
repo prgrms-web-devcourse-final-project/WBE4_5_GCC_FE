@@ -7,43 +7,59 @@ import CalendarBar from '@/app/components/routine/CalendarBar';
 import ProgressBar from '@/app/components/common/PrgressBar';
 import Routine from '@/app/components/routine/Routine';
 import CalendarBottomSheet from '@/app/components/routine/CalendarBottomSheet';
-import { routineHandler } from '@/api/routine/routine';
 import { DayRoutine } from '../../../../types/routine';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
+import AlertModal from '@/app/components/common/alert/AlertModal';
+import { format } from 'date-fns';
+import {
+  useDeleteRoutine,
+  useHandleRoutine,
+} from '@/api/routine/handleRoutine';
+import { useRoutineStore } from '@/store/RoutineStore';
 
 export default function Page() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [checkDelete, setCheckDelete] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const queryClient = useQueryClient();
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+  useEffect(() => {
+    console.log(deleteTargetId);
+  }, [deleteTargetId]);
 
-  const dateStr: string = selectedDate.toISOString().split('T')[0];
+  const dateStr: string = format(selectedDate, 'yyyy-MM-dd');
+
+  useEffect(() => {
+    console.log('dateStr', dateStr);
+  }, [dateStr]);
 
   const { data: weekData, isPending } = useWeekRoutine(dateStr);
+
   useEffect(() => {
     console.log('weekData:', weekData);
   }, [weekData]);
 
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[dateStr] ?? [];
-
   const total = filteredRoutines.length;
   const done = filteredRoutines.filter((r) => r.isDone).length;
   const percent = total ? Math.round((done / total) * 100) : 0;
 
-  const { mutate } = useMutation({
-    mutationFn: ({
-      scheduleId,
-      isDone,
-    }: {
-      scheduleId: number;
-      isDone: boolean;
-    }) => routineHandler(scheduleId, isDone),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['week-routine'] });
-    },
-  });
+  // 완료 처리
+  const { mutate } = useHandleRoutine();
+
+  // delete routine
+  const {
+    mutate: handleDelete,
+    isPending: deleting,
+    isSuccess,
+  } = useDeleteRoutine();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setCheckDelete(false);
+    }
+  }, [isSuccess]);
 
   // 루틴 추가로 이동
   const handleAddRoutine = () => {
@@ -96,7 +112,7 @@ export default function Page() {
                 currentStep={done}
                 totalSteps={total}
                 per={`${percent}%`}
-                wrapperClassName="h-6 bg-[#FFB84C]/25 mb-0"
+                wrapperClassName="h-6 bg-[#FFB84C]/25 mb-0 text-white"
                 barClassName="h-6 bg-[#FFB84C] rounded-full text-white text-xs flex items-center justify-center"
               />
             </div>
@@ -114,10 +130,29 @@ export default function Page() {
                     isCompleted={routine.isDone}
                     onClick={() =>
                       mutate({
-                        scheduleId: routine.scheduleId,
+                        routineId: routine.routineId,
                         isDone: !routine.isDone,
                       })
                     }
+                    onEditClick={() => {
+                      useRoutineStore.getState().setRoutine({
+                        routineId: routine.routineId,
+                        scheduleId: routine.scheduleId,
+                        majorCategory: routine.majorCategory,
+                        subCategory: routine.subCategory,
+                        name: routine.name,
+                        triggerTime: routine.triggerTime,
+                        isDone: routine.isDone,
+                        isImportant: routine.isImportant,
+                        date: routine.date,
+                        startRoutineDate: routine.startRoutineDate,
+                      });
+                    }}
+                    onDeleteClick={() => {
+                      setCheckDelete(true);
+                      setDeleteTargetId(routine.scheduleId);
+                    }}
+                    scheduleId={routine.scheduleId}
                   />
                 ))}
               </div>
@@ -143,6 +178,22 @@ export default function Page() {
           setIsOpen={setIsOpen}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+        />
+      )}
+      {checkDelete && (
+        <AlertModal
+          type="delete"
+          title="루틴을 삭제하시겠어요?"
+          onConfirm={() => {
+            if (deleteTargetId) {
+              handleDelete({ routineId: deleteTargetId });
+              setDeleteTargetId(null);
+            }
+          }}
+          cancelText="취소"
+          onCancel={() => setCheckDelete(false)}
+          isOpen={checkDelete}
+          isLoading={deleting}
         />
       )}
     </>

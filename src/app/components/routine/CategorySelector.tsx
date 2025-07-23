@@ -1,5 +1,3 @@
-'use client';
-
 import { ChevronDown } from 'lucide-react';
 import { CategoryItem } from '../../../../types/general';
 
@@ -9,6 +7,8 @@ interface CategorySelectorProps {
   value: CategoryItem | null;
   placeholder?: string;
   onClick: () => void;
+  storedMajorCategory?: string;
+  storedSubCategory?: string | null;
 }
 
 const categoryIconMap: Record<string, React.ReactNode> = {
@@ -29,13 +29,15 @@ export default function CategorySelector({
   value,
   placeholder,
   onClick,
+  storedMajorCategory,
+  storedSubCategory,
 }: CategorySelectorProps) {
   const iconForValue =
     value?.categoryName && categoryIconMap[value.categoryName];
 
   const categoryDisplayText = value
     ? value.subCategoryName
-      ? `${value.categoryName} > ${value.subCategoryName}`
+      ? `${value.categoryName}` > `${value.subCategoryName}`
       : value.categoryName
     : placeholder;
 
