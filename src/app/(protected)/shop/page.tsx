@@ -37,7 +37,7 @@ export default function Practice() {
   const [items, setItems] = useState<Item[]>([]);
 
   // 테스트
-  const currentPoint = useUserStore((state) => state.currentPoint);
+  const currentPoint = useUserStore((state) => state.point);
   const [points, setPoints] = useState(currentPoint);
 
   const tabMap: Record<string, Item['itemType']> = {
@@ -74,17 +74,18 @@ export default function Practice() {
           setSelectedTab={setSelectedTab}
         />
 
-        <div className="w-full min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
-          <div className="w-full grid grid-cols-3 gap-5 place-items-center">
+        <div className="min-h-[250px] w-full min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
+          <div className="grid min-h-[140px] w-full grid-cols-3 place-items-center gap-5">
             {filteredItem.map((item) => (
               <ItemCard
                 key={item.itemId}
                 item={{
-                  id: item.itemId,
-                  image: item1,
-                  name: item.itemName,
-                  description: item.itemDescription,
-                  price: item.itemPoint,
+                  itemKey: item.itemKey,
+                  itemType: item.itemType,
+                  itemId: item.itemId,
+                  itemName: item.itemName,
+                  itemDescription: item.itemDescription,
+                  itemPrice: item.itemPoint,
                 }}
                 onClick={() => {
                   setSelectedItem(item);
