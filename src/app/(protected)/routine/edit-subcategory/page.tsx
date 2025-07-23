@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CirclePlus } from 'lucide-react';
 import { CircleMinus } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { BadgeQuestionMark } from 'lucide-react';
 import {
   Categories,
   DeleteCategoryById,
@@ -13,6 +14,7 @@ import {
 import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
 import EditSubcategoryLayout from './EditSubcategoryLayout';
 import { CategoryItem } from '../../../../../types/general';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 export default function Page() {
   const router = useRouter();
@@ -29,6 +31,39 @@ export default function Page() {
     null,
   );
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+
+  const pickerRef = useRef<HTMLDivElement>(null);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+
+  // 이모지 클릭 핸들러
+  const handleEmojiSelect = (emojiData: EmojiClickData) => {
+    setSelectedEmoji(emojiData.emoji);
+    //setEmoji(emojiData.emoji);
+    setIsPickerOpen(false);
+  };
+
+  // 이모지 피커 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        pickerRef.current &&
+        !pickerRef.current.contains(event.target as Node)
+      ) {
+        setIsPickerOpen(false);
+      }
+    };
+
+    if (isPickerOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isPickerOpen]);
 
   useEffect(() => {
     if (labelFromParams) setLabel(labelFromParams);
@@ -106,8 +141,15 @@ export default function Page() {
         <div className="flex flex-col gap-7 px-5 py-7">
           <div className="flex items-center gap-3">
             {/* 좌측 아이콘 영역 */}
-            <div className="flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0]">
-              {icon}
+            <div
+              onClick={() => setIsPickerOpen(true)}
+              className="flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0]"
+            >
+              {selectedEmoji ? (
+                <span className="text-2xl">{selectedEmoji}</span>
+              ) : (
+                <span className="text-2xl">{icon}</span>
+              )}
             </div>
 
             {/* 우측 인풋 영역 */}
@@ -194,6 +236,12 @@ export default function Page() {
           />
         )}
       </EditSubcategoryLayout>
+      {/* Emoji picker modal */}
+      {isPickerOpen && (
+        <div ref={pickerRef} className="absolute top-47 left-5 z-50">
+          <EmojiPicker onEmojiClick={handleEmojiSelect} />
+        </div>
+      )}
     </>
   );
 }

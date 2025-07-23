@@ -42,10 +42,11 @@ export const CreateCategory = async (payload: CreateCategoryPayload) => {
   }
 };
 
-// 특정 카테고리 수정 - 사용 ㅇ
+// 카테고리 수정 - 사용 ㅇ
 interface EditCategoryPayload {
   categoryName: string;
   categoryType: 'MAJOR' | 'SUB';
+  emoji?: string;
   parentName: string | null;
 }
 
@@ -54,7 +55,7 @@ export const EditCategoryById = async (
   payload: EditCategoryPayload,
 ) => {
   try {
-    const response = await axiosInstance.put(
+    const response = await axiosInstance.patch(
       `/api/v1/categories/${id}`,
       payload,
     );
