@@ -35,7 +35,7 @@ export default function Page() {
               onClick={() => router.push('/admin/category')}
             />
             <AdminCard
-              title="추친 루틴 관리"
+              title="추천 루틴 관리"
               description="추천 루틴을 등록하고 수정할 수 있어요"
               imageSrc="/images/icons/routineIcon.svg"
               imageClassName="w-[60px] h-[73px] mt-1"
