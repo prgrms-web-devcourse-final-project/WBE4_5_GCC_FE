@@ -6,24 +6,9 @@ import CategoryGrid from '@/app/components/common/CategoryGrid';
 import { Categories } from '@/api/categories';
 import { CategoryItem } from '../../../../../types/types';
 
-const categoryIconMap: Record<string, React.ReactNode> = {
-  '청소 / 정리': '🧹',
-  '세탁 / 의류': '🧺',
-  '쓰레기 / 환경': '♻️',
-  요리: '🍳',
-  소비: '💸',
-  행정: '📄',
-  건강: '🏃🏻',
-  자기개발: '💡',
-  외출: '👜',
-};
-
 export default function Page() {
   const router = useRouter();
-  const [selectedCategory, setSelectedCategory] = useState<{
-    icon: React.ReactNode | string;
-    label: string;
-  } | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryItem>();
 
   const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
   const [majorCategories, setMajorCategories] = useState<CategoryItem[]>([]);
@@ -52,17 +37,12 @@ export default function Page() {
       (cat) => cat.categoryName === label,
     );
     if (category) {
-      setSelectedCategory({
-        icon: categoryIconMap[category.categoryName] || <span>❓︎</span>,
-        label: category.categoryName,
-      });
+      setSelectedCategory(selectedCategory);
       // edit-subcategory 이동 시 label과 icon 전달,
       router.push(
         `/routine/edit-subcategory?label=${encodeURIComponent(
           category.categoryName,
-        )}&icon=${encodeURIComponent(
-          (categoryIconMap[category.categoryName] as string) || '❓',
-        )}`,
+        )}&icon=${encodeURIComponent(category?.emoji || '❓')}`,
       );
     }
   };
@@ -70,11 +50,8 @@ export default function Page() {
   return (
     <div className="flex flex-col gap-3 px-4 py-10">
       <CategoryGrid
-        categories={majorCategories.map((cat) => ({
-          icon: categoryIconMap[cat.categoryName] || <span>❓︎</span>,
-          label: cat.categoryName,
-        }))}
-        selected={selectedCategory?.label || null}
+        categories={majorCategories}
+        selected={selectedCategory?.categoryName || null}
         onSelectCategory={handleSelect}
         //isManage={true} // 관리자 페이지일 때 사용
       />
