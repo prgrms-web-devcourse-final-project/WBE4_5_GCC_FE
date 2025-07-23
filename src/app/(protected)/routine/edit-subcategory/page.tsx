@@ -12,7 +12,7 @@ import {
 } from '@/api/categories';
 import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
 import EditSubcategoryLayout from './EditSubcategoryLayout';
-import { CategoryItem } from '../../../../../types/types';
+import { CategoryItem } from '../../../../../types/general';
 
 export default function Page() {
   const router = useRouter();

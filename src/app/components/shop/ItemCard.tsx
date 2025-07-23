@@ -2,23 +2,14 @@ import Image, { StaticImageData } from 'next/image';
 import item1 from '@/app/assets/images/item1.png';
 import coin from '/public/coin.svg';
 import { X } from 'lucide-react';
-
-interface Item {
-  itemId: number;
-  itemKey: string;
-  itemName: string;
-  itemPrice: number;
-  itemType: 'TOP' | 'BOTTOM' | 'ACCESSORY';
-  itemDescription?: string;
-  createTime?: string;
-  updateTime?: string;
-}
+import { ShopItem } from '../../../../types/general';
 
 interface ItemCardProps {
-  item: Item;
+  item: ShopItem;
   onClick: () => void;
-  onDeleteClick?: (item: Item) => void;
+  onDeleteClick?: (item: ShopItem) => void;
   isDeleteMode?: boolean;
+  isOwned?: boolean;
 }
 
 export default function ItemCard({
@@ -26,6 +17,7 @@ export default function ItemCard({
   onClick,
   onDeleteClick,
   isDeleteMode = false,
+  isOwned = false,
 }: ItemCardProps) {
   return (
     <>
@@ -37,7 +29,7 @@ export default function ItemCard({
           <button
             onClick={(e) => {
               e.stopPropagation();
-              if (onDeleteClick) onDeleteClick(item as Item);
+              if (onDeleteClick) onDeleteClick(item as ShopItem);
             }}
             className="absolute top-[-6px] right-[-6px] z-10 flex h-5 w-5 items-center justify-center rounded-full bg-[#E0E0E0]"
           >
@@ -52,11 +44,19 @@ export default function ItemCard({
           <div className="h-[21px] text-[7px] font-medium text-[#616161]">
             {item.itemDescription || ''}
           </div>
-          {/* 포인트 박스 */}
-          <div className="mt-[5px] flex h-5 w-full items-center justify-between rounded-[6px] border-1 border-[#cfcfcf] py-[2px] pr-[14px] pl-[6px]">
-            <Image src={coin} alt="coin" className="h-[15px] w-[15px]" />
-            <span className="text-[12px] text-[#FFB84C]">{item.itemPrice}</span>
-          </div>
+          {/* 포인트 박스 / 보유 중 */}
+          {isOwned ? (
+            <div className="mt-[5px] flex h-5 w-full items-center justify-center rounded-[6px] border-1 border-[#FFB84C] bg-[#FFB84C] py-[2px] text-[8px] font-semibold text-white">
+              보유 중
+            </div>
+          ) : (
+            <div className="mt-[5px] flex h-5 w-full items-center justify-between rounded-[6px] border-1 border-[#cfcfcf] py-[2px] pr-[14px] pl-[6px]">
+              <Image src={coin} alt="coin" className="h-[15px] w-[15px]" />
+              <span className="text-[12px] text-[#FFB84C]">
+                {item.itemPoint}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </>

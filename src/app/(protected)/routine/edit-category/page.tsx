@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CategoryGrid from '@/app/components/common/CategoryGrid';
 import { Categories } from '@/api/categories';
-import { CategoryItem } from '../../../../../types/types';
+import { CategoryItem } from '../../../../../types/general';
 
 const categoryIconMap: Record<string, React.ReactNode> = {
   '청소 / 정리': '🧹',
