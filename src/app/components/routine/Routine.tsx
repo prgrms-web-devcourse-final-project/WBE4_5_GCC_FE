@@ -1,5 +1,7 @@
 import { ChevronRight, CircleCheck, Star } from 'lucide-react';
 import YellowCheckIcon from './YellowCheckIcon';
+import Button from '../common/ui/Button';
+import { useRouter } from 'next/navigation';
 
 export default function Routine({
   title,
@@ -9,6 +11,9 @@ export default function Routine({
   isImportant,
   isCompleted,
   onClick,
+  onEditClick,
+  onDeleteClick,
+  scheduleId,
 }: {
   title: string;
   category: string;
@@ -17,7 +22,11 @@ export default function Routine({
   isImportant?: boolean;
   isCompleted?: boolean;
   onClick: () => void;
+  onEditClick: () => void;
+  onDeleteClick: (scheduleId: number) => void;
+  scheduleId: number;
 }) {
+  const router = useRouter();
   const options = [
     '🧹 청소 / 정리',
     '💡 자기개발',
@@ -59,14 +68,37 @@ export default function Routine({
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs text-[#9E9E9E]">
-          <span>{iconHandler}</span>
-          {subCategory && (
-            <>
-              <ChevronRight className="h-3 w-[9px]" />
-              <span>{subCategory}</span>
-            </>
-          )}
+        <div className="flex items-center justify-between gap-1.5 text-xs text-[#9E9E9E]">
+          <div>
+            <span>{iconHandler}</span>
+            {subCategory && (
+              <>
+                <ChevronRight className="h-3 w-[9px]" />
+                <span>{subCategory}</span>
+              </>
+            )}
+          </div>
+          <div className="flex gap-1">
+            <Button
+              className="h-[25px] w-[50px] rounded-2xl border border-black bg-white text-black active:border-[#ffb84c] active:bg-[#FFB84C] active:text-white"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditClick();
+                router.push('/routine/edit-routine');
+              }}
+            >
+              수정
+            </Button>
+            <Button
+              className="h-[25px] w-[50px] rounded-2xl border border-black bg-white text-black active:border-none active:bg-[#ff4444] active:text-white"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteClick(scheduleId);
+              }}
+            >
+              삭제
+            </Button>
+          </div>
         </div>
       </div>
     </div>

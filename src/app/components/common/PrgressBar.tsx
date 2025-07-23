@@ -17,10 +17,11 @@ export default function ProgressBar({
   return (
     <div
       className={twMerge(
-        'mb-12 h-2 w-full overflow-hidden rounded-full bg-gray-200',
+        'relative mb-12 h-2 w-full overflow-hidden rounded-full bg-gray-200',
         wrapperClassName,
       )}
     >
+      <span className="absolute left-[46%] text-white">{per}</span>
       <div
         className={twMerge(
           'h-full bg-[#222222] transition-all duration-300',
@@ -28,7 +29,7 @@ export default function ProgressBar({
         )}
         style={{ width: `${percentage}%` }}
       >
-        {per}
+        {/* {per} */}
       </div>
     </div>
   );

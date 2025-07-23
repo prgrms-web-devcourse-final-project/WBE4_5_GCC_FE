@@ -2,28 +2,27 @@ import {
   AboutRoutine,
   AddRoutine,
   DayRoutine,
+  EditRoutine,
   WeekRoutineMap,
 } from '../../../types/routine';
 import { axiosInstance } from '../axiosInstance';
 
 // 오늘 루틴 불러오기
-export const UserRoutine = async (): Promise<DayRoutine[]> => {
-  try {
-    const response = await axiosInstance.get('/api/v1/routines/today');
-    console.log('오늘의 루틴:', response.data.data);
-    return response.data.data;
-  } catch (error) {
-    console.error('루틴 불러오기 실패', error);
-    throw error;
-  }
+export const fetchTodayRoutine = async (): Promise<DayRoutine[]> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const response = await axiosInstance.get('/api/v1/routines/today');
+  console.log('오늘 루틴 로드:', response.data.data);
+  return response.data.data;
 };
 
 // 주간 루틴 불러오기
-export const weekRoutine = async (date?: string): Promise<WeekRoutineMap> => {
+export const fetchWeekRoutine = async (
+  date?: string,
+): Promise<WeekRoutineMap> => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await axiosInstance.get('/api/v1/routines/weekly', {
     params: { date },
   });
-  console.log('주간 데이터 로드:', response.data.data);
   return response.data.data;
 };
 
@@ -68,7 +67,7 @@ export const addRoutine = async (routine: AddRoutine) => {
 };
 
 // 루틴 삭제
-export const deleteRoutine = async (id: string) => {
+export const deleteRoutine = async (id: number) => {
   try {
     const response = await axiosInstance.delete(`/api/v1/routines/${id}`);
     console.log('루틴삭제 성공:', response.data);
@@ -77,4 +76,11 @@ export const deleteRoutine = async (id: string) => {
     console.error('루틴삭제 실패:', err);
     throw err;
   }
+};
+
+// 루틴 수정
+export const editRoutine = async (id: number, data: EditRoutine) => {
+  const response = await axiosInstance.patch(`/api/v1/routines/${id}`, data);
+  console.log('루틴 수정 완료:', response);
+  return response.data;
 };

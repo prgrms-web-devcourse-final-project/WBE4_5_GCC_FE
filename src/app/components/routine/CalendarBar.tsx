@@ -52,7 +52,7 @@ export default function CalendarBar({
           onClick={() => setIsOpen(true)}
         />
       </div>
-      <div className="flex items-center justify-center gap-8">
+      <div className="flex items-center justify-between px-5">
         {thisWeek.map((day) => (
           <div
             key={day.date + day.label}
