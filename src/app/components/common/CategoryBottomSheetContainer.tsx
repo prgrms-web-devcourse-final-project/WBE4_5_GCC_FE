@@ -24,7 +24,8 @@ export default function CategoryBottomSheetContainer({
   const [showSubCategory, setShowSubCategory] = useState(false);
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [allCategoryData, setAllCategoryData] = useState<CategoryItem[]>([]);
-  const [selectedMainCategory, setSelectedMainCategory] = useState<CategoryItem>();
+  const [selectedMainCategory, setSelectedMainCategory] =
+    useState<CategoryItem>();
 
   const handleEditClick = () => {
     rotuer.push('/routine/edit-category');
@@ -65,9 +66,9 @@ export default function CategoryBottomSheetContainer({
 
   // 받아온 데이터 가공
   useEffect(() => {
-    if (!data?.data) return;
+    if (!data) return;
 
-    const allData = data.data;
+    const allData = data;
     setAllCategoryData(allData);
 
     const majors = allData.filter((cat) => cat.categoryType === 'MAJOR');

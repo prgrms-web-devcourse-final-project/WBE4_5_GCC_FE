@@ -4,16 +4,16 @@ import { axiosInstance } from './axiosInstance';
 interface CategoryPayload {
   categoryName: string;
   categoryType: 'MAJOR' | 'SUB';
-  emoji: string;
+  emoji: string | null;
   parentName: string | null;
 }
 
 // 카테고리 조회 - 사용 ㅇ
-export const getCategories = async (): Promise<{ data: CategoryItem[] }> => {
+export const getCategories = async (): Promise<CategoryItem[]> => {
   try {
     const response = await axiosInstance.get('/api/v1/categories');
-    console.log('카테고리 불러오기 성공', response.data);
-    return response.data;
+    console.log('카테고리 불러오기 성공', response.data.data);
+    return response.data.data;
   } catch (error) {
     console.error('카테고리 불러오기 실패', error);
     throw error;
