@@ -7,7 +7,7 @@ import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import { useRouter } from 'next/navigation';
 import { useSignUpStore } from '@/store/SignupStore';
-import { handleSignIn } from '@/api/api';
+import { signIn } from '@/api/auth';
 
 export default function Page() {
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ export default function Page() {
 
   const logInHandler = async () => {
     try {
-      await handleSignIn(email, password);
+      await signIn(email, password);
       router.push('/');
     } catch (err) {
       setErrors({

@@ -1,6 +1,6 @@
 'use client';
 
-import ProgressBar from '@/app/components/common/PrgressBar';
+import ProgressBar from '@/app/components/common/ProgressBar';
 import SelectButton from '@/app/components/common/SelectButton';
 import { useSignUpStore } from '@/store/SignupStore';
 

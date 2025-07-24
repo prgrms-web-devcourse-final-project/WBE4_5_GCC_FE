@@ -5,16 +5,25 @@ import { useSignUpStore } from '@/store/SignupStore';
 import { useEffect, useState } from 'react';
 import Button from '../common/ui/Button';
 import Input from '../common/ui/Input';
+import { sendVerificationEmail, verifyEmailCode } from '@/api/auth';
 
 export default function EmailConfirm() {
   const email = useSignUpStore((state) => state.email);
   const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
 
   const [emailSent, setEmailSent] = useState(false);
-  const emailHandler = () => {
-    alert('이메일이 전송되었습니다');
-    setEmailSent(true);
+  const emailHandler = async () => {
+    try {
+      await sendVerificationEmail(email);
+      alert('인증번호가 전송되었습니다'); // 토스트 메시지로 변경
+      console.log('📩 이메일 인증 API 호출 완료');
+      setEmailSent(true);
+    } catch (error) {
+      setEmailSent(false);
+      console.log('인증번호 전송되지 않음:', error);
+    }
   };
+
   // 입력된 코드
   const [code, setCode] = useState('');
 
@@ -22,12 +31,15 @@ export default function EmailConfirm() {
   // 코드가 맞는지 확인
   const [confirm, setConfirm] = useState(false);
 
-  const codeConfirm = () => {
-    if (isValidCode) {
+  const codeConfirm = async () => {
+    try {
+      await verifyEmailCode(email, code);
       alert('인증되었습니다');
+      console.log('인증 성공');
       setConfirm(true);
-    } else {
-      alert('인증번호는 6자리여야 합니다');
+    } catch (error) {
+      setConfirm(false);
+      console.log('인증 실패:', error);
     }
   };
 

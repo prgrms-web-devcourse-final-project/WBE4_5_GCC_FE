@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import CalendarBar from '@/app/components/routine/CalendarBar';
-import ProgressBar from '@/app/components/common/PrgressBar';
+import ProgressBar from '@/app/components/common/ProgressBar';
 import Routine from '@/app/components/routine/Routine';
 import CalendarBottomSheet from '@/app/components/routine/CalendarBottomSheet';
 import { DayRoutine } from '../../../../types/routine';

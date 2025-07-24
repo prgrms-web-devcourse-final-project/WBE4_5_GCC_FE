@@ -1,38 +1,46 @@
 'use client';
 
-import ProgressBar from '@/app/components/common/PrgressBar';
-import { useSignUpStore } from '@/store/SignupStore';
 import { useEffect, useState } from 'react';
+import { useSignUpStore } from '@/store/SignupStore';
+import { checkNickname } from '@/api/auth';
+import ProgressBar from '../common/ProgressBar';
 import Input from '../common/ui/Input';
 import Button from '../common/ui/Button';
-import { nicknameCheck } from '@/api/api';
 
 export default function Nickname() {
   const nickname = useSignUpStore((state) => state.nickname);
-  const setNickName = useSignUpStore((state) => state.setNickName);
-  const [checkNickName, setCheckNickName] = useState<true | false | null>(null);
+  const setNickname = useSignUpStore((state) => state.setNickname);
+  const [nicknameStatus, setNicknameStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
   const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
 
-  const [okay, setOkay] = useState(false);
+  const isNicknameLengthValid = nickname.length >= 2 && nickname.length <= 15;
 
   // 닉네임 중복 확인 로직
-  const checkHandler = async () => {
+  const validateNickname = async () => {
     try {
-      await nicknameCheck(nickname);
-      setCheckNickName(true);
-      setOkay(true);
+      const res = await checkNickname(nickname);
+      setNicknameStatus('valid');
+      console.log('닉네임 중복 검사 성공:', res);
     } catch (error) {
-      setCheckNickName(false);
-      console.log('닉네임 중복:', error);
+      setNicknameStatus('invalid');
+      console.error('닉네임 중복 에러:', error);
     }
   };
 
-  // 중복 확인 후 넘어가기로 변경해야함
-  const goNext = checkNickName === true && okay;
+  // 닉네임 입력 시 중복 상태 초기화
+  const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const noSpaceNickname = e.target.value.replace(/\s/g, '');
+    setNickname(noSpaceNickname);
+    setNicknameStatus('idle');
+  };
+
+  // 다음 버튼 활성화 조건
+  const goNext = nicknameStatus === 'valid';
 
   useEffect(() => {
     setIsNextEnabled(goNext);
   }, [setIsNextEnabled, goNext]);
+
   return (
     <>
       {/* 전체 박스 */}
@@ -46,27 +54,23 @@ export default function Nickname() {
             <Input
               value={nickname}
               placeholder="2~15자 이내로 입력해주세요"
-              onChange={(e) => {
-                setNickName(e.target.value);
-                setOkay(false);
-              }}
+              onChange={onChangeNickname}
             />
             <Button
-              disabled={nickname === ''}
-              onClick={checkHandler}
-              className={`w-[114px] ${nickname.length >= 2 ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}
+              disabled={!isNicknameLengthValid}
+              onClick={validateNickname}
+              className={`w-[114px] ${isNicknameLengthValid ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}
             >
               중복 확인
             </Button>
           </div>
         </div>
-        {checkNickName === false && (
-          <p className="text-[14px] text-red-500">중복된 닉네임 입니다.</p>
+
+        {nicknameStatus === 'invalid' && (
+          <p className="text-[14px] text-[#D32F2F]">이미 사용 중인 닉네임 입니다.</p>
         )}
-        {checkNickName === true && (
-          <p className="text-[14px] text-green-600">
-            사용 가능한 닉네임 입니다.
-          </p>
+        {nicknameStatus === 'valid' && (
+          <p className="text-[14px] text-[#388E3C]">사용 가능한 닉네임 입니다.</p>
         )}
       </div>
     </>

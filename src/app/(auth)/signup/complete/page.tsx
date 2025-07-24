@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 export default function SignUpComplete() {
 	const router = useRouter();
 
-	const handleGoLogin = () => {
-		router.push('/login');
+	const handleGoHome = () => {
+		router.push('/');
 	};
 
 	return (
@@ -27,10 +27,10 @@ export default function SignUpComplete() {
 				지금 로그인하여 나만의 루틴을 시작해보세요!
 			</p>
 			<button
-				onClick={handleGoLogin}
+				onClick={handleGoHome}
 				className="w-full max-w-xs cursor-pointer rounded-lg bg-[#222222] py-4 text-center font-semibold text-white shadow-md hover:bg-[#444444] transition-colors"
 			>
-				로그인하러 가기
+				홈으로
 			</button>
 		</div>
 	);
