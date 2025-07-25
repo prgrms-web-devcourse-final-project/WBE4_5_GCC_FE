@@ -23,6 +23,8 @@ export const fetchUserPoint = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members/points');
     console.log('보유포인트 불러오기 성공', response.data);
+    const { setUserPoint } = useUserStore.getState();
+    setUserPoint(response.data.data.points);
     return response.data;
   } catch (error) {
     console.error('보유포인트 불러오기 실패', error);

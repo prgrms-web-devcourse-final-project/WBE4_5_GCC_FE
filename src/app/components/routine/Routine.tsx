@@ -1,7 +1,7 @@
-import { ChevronRight, CircleCheck, Star } from 'lucide-react';
+import { ChevronRight, CircleCheck, Ellipsis, Star } from 'lucide-react';
 import YellowCheckIcon from './YellowCheckIcon';
-import Button from '../common/ui/Button';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Routine({
   title,
@@ -41,9 +41,31 @@ export default function Routine({
   const iconHandler =
     options.find((item) => item.includes(category)) || category;
 
+  const [isOpen, setIsOpen] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
     <div
-      className={`flex w-full cursor-pointer items-center justify-between border px-3 py-4 ${isCompleted ? 'border-[#FFB84C]' : 'border-[#9E9E9E]'} rounded-[8px] bg-white`}
+      className={`hover: flex w-full cursor-pointer items-center justify-between border px-3 py-4 ${isCompleted ? 'border-[#FFB84C]' : 'border-[#9E9E9E]'} rounded-[8px] bg-white`}
       onClick={onClick}
     >
       {isCompleted ? (
@@ -52,20 +74,21 @@ export default function Routine({
         <CircleCheck className="mr-4 h-[30px] w-[30px] text-[#C4C4C4]" />
       )}
 
-      <div className="flex w-full flex-col space-y-1">
-        <div className="flex items-center">
-          <p className="text-sm">{title}</p>
-          {isImportant && (
-            <Star className="ml-1.5 h-4 w-4 fill-[#FFB84C] text-[#FFB84C]" />
-          )}
-          <div className="ml-auto flex gap-1 text-[10px]">
-            {time && (
-              <>
-                <span>⏰</span>
-                <span className="ml-1">{time}</span>
-              </>
+      <div className="relative flex w-full flex-col space-y-1">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <p className="text-sm">{title}</p>
+            {isImportant && (
+              <Star className="ml-1.5 h-4 w-4 fill-[#FFB84C] text-[#FFB84C]" />
             )}
           </div>
+          <Ellipsis
+            className="h-[32px] w-[32px] cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpen(true);
+            }}
+          />
         </div>
 
         <div className="flex items-center justify-between gap-1.5 text-xs text-[#9E9E9E]">
@@ -78,27 +101,41 @@ export default function Routine({
               </>
             )}
           </div>
-          <div className="flex gap-1">
-            <Button
-              className="h-[25px] w-[50px] rounded-2xl border border-black bg-white text-black active:border-[#ffb84c] active:bg-[#FFB84C] active:text-white"
-              onClick={(e) => {
-                e.stopPropagation();
-                onEditClick();
-                router.push('/routine/edit-routine');
-              }}
-            >
-              수정
-            </Button>
-            <Button
-              className="h-[25px] w-[50px] rounded-2xl border border-black bg-white text-black active:border-none active:bg-[#ff4444] active:text-white"
-              onClick={(e) => {
-                e.stopPropagation();
-                onDeleteClick(scheduleId);
-              }}
-            >
-              삭제
-            </Button>
+          <div className="ml-auto flex gap-1 text-[10px]">
+            {time && (
+              <>
+                <span>⏰</span>
+                <span className="ml-1">{time}</span>
+              </>
+            )}
           </div>
+          {/* 수정삭제 창 */}
+          {isOpen && (
+            <div
+              ref={popupRef}
+              className="absolute top-5 right-0 flex min-w-[85px] flex-col rounded-lg border border-[#e0e0e0] bg-white"
+            >
+              <button
+                className="min-h-[33px] cursor-pointer border-b border-[#e0e0e0] px-5 py-2 text-[14px] font-medium text-black hover:bg-[#e0e0e0]"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEditClick();
+                  router.push('/routine/edit-routine');
+                }}
+              >
+                수정
+              </button>
+              <button
+                className="min-h-[33px] cursor-pointer px-5 py-2 text-[14px] font-medium text-[#D32F2F] hover:bg-[#e0e0e0]"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDeleteClick(scheduleId);
+                }}
+              >
+                삭제
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

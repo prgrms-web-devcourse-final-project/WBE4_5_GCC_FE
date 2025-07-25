@@ -30,10 +30,7 @@ export default function Page() {
 
   const dateStr: string = format(selectedDate, 'yyyy-MM-dd');
 
-  useEffect(() => {
-    console.log('dateStr', dateStr);
-  }, [dateStr]);
-
+  // 루틴 불러오기
   const { data: weekData, isPending } = useWeekRoutine(dateStr);
 
   useEffect(() => {
@@ -48,7 +45,7 @@ export default function Page() {
   // 완료 처리
   const { mutate } = useHandleRoutine();
 
-  // delete routine
+  // 루틴 삭제
   const {
     mutate: handleDelete,
     isPending: deleting,

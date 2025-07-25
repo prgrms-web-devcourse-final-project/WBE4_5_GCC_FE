@@ -12,7 +12,9 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [openNoti, setOpenNoti] = useState(false);
-  const currentPoint = useUserStore((state) => state.point);
+
+  const currentPoint = useUserStore((state) => state.userPoint);
+
 
   const isHome = pathname === '/';
   const isAdmin = pathname === '/admin';
@@ -33,8 +35,10 @@ export default function Header() {
 
   return (
     <>
-      <div className="fixed top-0 z-1000 flex h-[56px] w-full max-w-md items-center justify-between bg-white px-5 py-[18px] shadow-sm select-none">
+
+      <div className="fixed top-0 flex h-[56px] w-full items-center justify-between bg-white px-5 py-[18px] shadow-sm select-none">
         {isHome || isAdmin ? (
+
           <Image
             src={logo}
             alt="logo"
