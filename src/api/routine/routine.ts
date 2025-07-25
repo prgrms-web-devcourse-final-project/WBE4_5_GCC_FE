@@ -9,7 +9,7 @@ import { axiosInstance } from '../axiosInstance';
 
 // 오늘 루틴 불러오기
 export const fetchTodayRoutine = async (): Promise<DayRoutine[]> => {
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
+  // await new Promise((resolve) => seㅎtTimeout(resolve, 1000));
   const response = await axiosInstance.get('/api/v1/routines/today');
   console.log('오늘 루틴 로드:', response.data.data);
   return response.data.data;

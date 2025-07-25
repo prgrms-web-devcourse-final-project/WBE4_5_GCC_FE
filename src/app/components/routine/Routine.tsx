@@ -65,7 +65,7 @@ export default function Routine({
 
   return (
     <div
-      className={`flex w-full cursor-pointer items-center justify-between border px-3 py-4 ${isCompleted ? 'border-[#FFB84C]' : 'border-[#9E9E9E]'} rounded-[8px] bg-white`}
+      className={`hover: flex w-full cursor-pointer items-center justify-between border px-3 py-4 ${isCompleted ? 'border-[#FFB84C]' : 'border-[#9E9E9E]'} rounded-[8px] bg-white`}
       onClick={onClick}
     >
       {isCompleted ? (
@@ -113,7 +113,7 @@ export default function Routine({
           {isOpen && (
             <div
               ref={popupRef}
-              className="absolute top-5 right-0 flex min-w-[65px] flex-col rounded-lg border border-[#e0e0e0] bg-white"
+              className="absolute top-5 right-0 flex min-w-[85px] flex-col rounded-lg border border-[#e0e0e0] bg-white"
             >
               <button
                 className="min-h-[33px] cursor-pointer border-b border-[#e0e0e0] px-5 py-2 text-[14px] font-medium text-black hover:bg-[#e0e0e0]"
