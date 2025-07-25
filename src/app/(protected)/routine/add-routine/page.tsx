@@ -14,6 +14,7 @@ import { CategoryItem } from '../../../../../types/types';
 import { addRoutine } from '@/api/routine/routine';
 import { AddRoutine } from '../../../../../types/routine';
 import { useRouter } from 'next/navigation';
+import { useAddRoutine } from '@/api/routine/handleRoutine';
 
 export default function Page() {
   const router = useRouter();
@@ -78,6 +79,8 @@ export default function Page() {
       importance,
     });
   }, [selectedCategory, routineName, startDate, cycle, doWhen, importance]);
+
+  const { mutate, isPending, isSuccess } = useAddRoutine();
 
   return (
     <>
@@ -153,24 +156,22 @@ export default function Page() {
           <Button
             type="submit"
             disabled={!isSubmitEnabled}
-            onClick={async () => {
-              const routineData: AddRoutine = {
-                categoryId: selectedCategory!.categoryId,
-                content: routineName,
-                triggerTime: doWhen,
-                isImportant: importance,
-                repeatType: getRepeatType(cycle!.days),
-                repeatValue: getRepeatValue(cycle!.days),
-                date: startDate,
-              };
-              try {
-                await addRoutine(routineData);
-                router.push('/routine');
-              } catch (err) {
-                console.error('루틴 추가 실패', err);
-                alert('루틴을 추가하는 중 오류가 발생했어요.');
-              }
-            }}
+            onClick={() =>
+              mutate({
+                AddData: {
+                  name: routineName,
+                  majorCategory: selectedCategory!.categoryName,
+                  subCategory: selectedCategory?.subCategoryName,
+                  startRoutineDate: startDate,
+                  triggerTime: doWhen,
+                  isImportant: importance,
+                  // 아래 3개는 루틴 추가 주간 월간 일간 다 작업하고 추가하기
+                  repeatType: 'DAILY',
+                  repeatValue: '1',
+                  repeatInterval: 1,
+                },
+              })
+            }
           >
             확인
           </Button>
