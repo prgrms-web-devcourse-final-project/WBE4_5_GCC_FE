@@ -1,43 +1,38 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import CategoryGrid from '@/app/components/common/CategoryGrid';
-import { Categories } from '@/api/categories';
+import { useState } from 'react';
+import { getCategories } from '@/api/categories';
 import { CategoryItem } from '../../../../../types/general';
+import CategoryGrid from '@/app/components/common/CategoryGrid';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 
 export default function Page() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem>();
 
-  const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
-  const [majorCategories, setMajorCategories] = useState<CategoryItem[]>([]);
-  const [customCategories, setCustomCategories] = useState<CategoryItem[]>([]);
+  const {
+    data: categories = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery<CategoryItem[], Error>({
+    queryKey: ['edit-categories'],
+    queryFn: getCategories,
+    staleTime: 5 * 60 * 1000,
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await Categories();
-        const data: CategoryItem[] = res.data;
-
-        const majors = data.filter((cat) => cat.categoryType === 'MAJOR');
-
-        setMajorCategories(majors);
-      } catch (error) {
-        console.error('카테고리 로딩 실패', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  const majorCategories = categories.filter(
+    (cat) => cat.categoryType === 'MAJOR',
+  );
 
   const handleSelect = (label: string) => {
-    const category = [...majorCategories, ...customCategories].find(
+    const category = [...majorCategories].find(
       (cat) => cat.categoryName === label,
     );
     if (category) {
-      setSelectedCategory(selectedCategory);
+      setSelectedCategory(category);
       // edit-subcategory 이동 시 label과 icon 전달,
       router.push(
         `/routine/edit-subcategory?label=${encodeURIComponent(
@@ -46,6 +41,14 @@ export default function Page() {
       );
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-3 px-4 py-10">

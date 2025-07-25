@@ -21,3 +21,16 @@ export interface ShopItem {
   createTime?: string;
   updateTime?: string;
 }
+
+export interface Badge {
+  badgeId: number;
+  badgeKey: string;
+  badgeName: string;
+  categoryName: string;
+  how: string;
+  info: string;
+  isReceived: boolean;
+  receivedDate: string;
+  requirement: number;
+  tier: 'BRONZE' | 'SILVER' | 'GOLD' | 'TROPHY';
+}
