@@ -10,7 +10,7 @@ import CategoryBottomSheetContainer from '@/app/components/common/CategoryBottom
 
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
-import { CategoryItem } from '../../../../../types/types';
+import { CategoryItem } from '../../../../../types/general';
 import { addRoutine } from '@/api/routine/routine';
 import { AddRoutine } from '../../../../../types/routine';
 import { useRouter } from 'next/navigation';

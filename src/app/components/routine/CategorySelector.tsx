@@ -1,5 +1,5 @@
 import { ChevronDown } from 'lucide-react';
-import { CategoryItem } from '../../../../types/types';
+import { CategoryItem } from '../../../../types/general';
 
 interface CategorySelectorProps {
   icon: React.ReactNode;
