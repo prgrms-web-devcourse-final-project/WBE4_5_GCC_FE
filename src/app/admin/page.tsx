@@ -10,7 +10,7 @@ export default function Page() {
   const router = useRouter();
   return (
     <>
-      <div className="mb-5 flex min-h-screen flex-col items-center bg-white px-8">
+      <div className="flex min-h-screen flex-col items-center bg-white px-8">
         <ThreeToggle
           selectedIdx={selectedIdx}
           setSelectedIdx={setSelectedIdx}
@@ -53,7 +53,7 @@ export default function Page() {
               description="탈퇴 사유 현황을 한눈에 볼 수 있어요"
               imageSrc="/images/icons/leaveIcon.svg"
               imageClassName="w-[79px] h-[66px] mt-4"
-              onClick={() => router.push('/admin/leave')}
+              onClick={() => router.push('/admin/withdraw')}
             />
           </div>
         </div>
