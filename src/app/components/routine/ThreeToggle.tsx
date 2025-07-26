@@ -16,7 +16,7 @@ export default function ThreeToggle({
   setSelectedIdx: (idx: number) => void;
 }) {
   return (
-    <div className="flex w-full max-w-sm rounded-full bg-[#F5F5F5] p-1">
+    <div className="flex w-full max-w-sm rounded-full bg-[#FFF4D1] p-1">
       {toggleList.map(({ id, label, locked }, idx) => {
         const isSelected = selectedIdx === idx;
         return (
@@ -26,7 +26,7 @@ export default function ThreeToggle({
               'flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-all',
               isSelected
                 ? 'border border-[#FFB84C] bg-[#FFB84C] text-[#ffffff]'
-                : 'bg-[#FFF4D1] text-[#222222]',
+                : 'text-[#222222]',
               !isSelected && 'border border-transparent',
               locked && 'cursor-not-allowed',
             )}
