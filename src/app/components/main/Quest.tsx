@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Tabs from '../shop/Tabs';
 import QuestList from './QuestList';
 import { fetchUserQuest } from '@/api/member';
 import type { Quest } from '../../../../types/User';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '../common/ui/LoadingSpinner';
 
 export default function Quest({
   setOpenQuest,
@@ -13,21 +15,31 @@ export default function Quest({
 }) {
   const tabs = ['주간 퀘스트', '이벤트 퀘스트'];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
-  const [userQuest, setUserQuest] = useState<Quest[]>([]);
+  // const [userQuest, setUserQuest] = useState<Quest[]>([]);
 
-  useEffect(() => {
-    const loadUserQuest = async () => {
-      try {
-        const data = await fetchUserQuest();
-        console.log('유저 퀘스트:', data);
-        setUserQuest(data.data);
-      } catch (err) {
-        console.error('유저 정보 불러오기 실패', err);
-      }
-    };
+  // useEffect(() => {
+  //   const loadUserQuest = async () => {
+  //     try {
+  //       const data = await fetchUserQuest();
+  //       console.log('유저 퀘스트:', data);
+  //       setUserQuest(data.data);
+  //     } catch (err) {
+  //       console.error('유저 정보 불러오기 실패', err);
+  //     }
+  //   };
 
-    loadUserQuest();
-  }, []);
+  //   loadUserQuest();
+  // }, []);
+
+  const {
+    data: userQuest = [],
+    isLoading,
+    isError,
+  } = useQuery<Quest[], Error>({
+    queryKey: ['user-quests'],
+    queryFn: fetchUserQuest,
+    staleTime: 5 * 60 * 1000, // 5분 캐싱
+  });
 
   const filteredQuest =
     selectedTab === '전체'
@@ -41,6 +53,22 @@ export default function Quest({
           }
           return false;
         });
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div className="text-red-500">퀘스트 불러오기 실패</div>
+      </div>
+    );
+  }
 
   return (
     <>
