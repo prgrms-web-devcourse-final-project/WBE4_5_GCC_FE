@@ -4,16 +4,32 @@ import { Quest } from '../../../../types/User';
 import { acceptQuest } from '@/api/quests';
 import AlertModal from '../common/alert/AlertModal';
 import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface QuestListProps {
   quest: Quest;
 }
 
 export default function QuestList({ quest }: QuestListProps) {
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
-  const handleClick = async () => {
-    await acceptQuest(quest.questKey);
-    setIsOpen(true);
+
+  const acceptQuestMutation = useMutation({
+    mutationFn: (key: string) => acceptQuest(key),
+    onSuccess: () => {
+      console.log('퀘스트 보상받기 성공');
+      setIsOpen(true);
+
+      // 보상받기 후 퀘스트 목록 최신화
+      queryClient.invalidateQueries({ queryKey: ['user-quests'] });
+    },
+    onError: (error) => {
+      console.error('퀘스트 보상받기 실패', error);
+    },
+  });
+
+  const handleClick = () => {
+    acceptQuestMutation.mutate(quest.questKey);
   };
 
   return (
@@ -44,7 +60,7 @@ export default function QuestList({ quest }: QuestListProps) {
         >
           {/* 퀘스트 진행률이 100일때만 수령가능 */}
           {quest.questProgress !== 100 && (
-            <div className="absolute inset-0 z-50 w-full cursor-auto bg-black/50"></div>
+            <div className="absolute inset-0 z-50 w-full cursor-auto rounded-[6px] bg-black/50"></div>
           )}
           <Image src={coin} alt="coin" className="h-5 w-5" />
           <h1 className="text-[10px]">+ {quest.questReward}p</h1>
