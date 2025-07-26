@@ -52,28 +52,3 @@ export const useRoutineStore = create<RoutineStore>()(
     { name: 'routine-storage' },
   ),
 );
-
-interface whatToAdd {
-  categoryId: number;
-  content: string;
-  triggerTime?: string;
-  isImportant?: boolean;
-  repeatType?: string;
-  repeatValue?: string;
-}
-
-export const addRoutineStore = create<whatToAdd>()(
-  persist(
-    (set, get) => ({
-      categoryId: 0,
-      content: '',
-      triggerTime: '',
-      isImportant: false,
-      repeatType: '',
-      repeatValue: '',
-    }),
-    {
-      name: 'add-routine-storage',
-    },
-  ),
-);

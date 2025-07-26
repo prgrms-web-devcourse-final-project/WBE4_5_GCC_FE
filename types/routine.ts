@@ -29,17 +29,19 @@ export interface AboutRoutine {
   startRoutineDate: string;
 }
 
+type repeatType = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'CUSTOM';
+
 // 루틴 추가할때 보낼 데이터 아입
 export interface AddRoutine {
   name: string;
   majorCategory: string;
-  subCategory: string | null;
+  subCategory?: string | null;
   startRoutineDate: string;
   triggerTime: string;
   isImportant: boolean;
-  repeatType: string;
-  repeatValue: string;
-  repeatInterval: number;
+  repeatType: repeatType;
+  repeatValue?: string | null;
+  repeatInterval?: number;
 }
 
 // 루틴 완료 타입

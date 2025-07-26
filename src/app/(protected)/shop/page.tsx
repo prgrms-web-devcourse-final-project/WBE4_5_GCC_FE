@@ -11,7 +11,6 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 
 import Tabs from '@/app/components/shop/Tabs';
 import ItemCard from '@/app/components/shop/ItemCard';
-import BackHeader from '@/app/components/common/ui/BackHeader';
 import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
 import PurchaseModal from '@/app/components/shop/PurchaseModal';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
@@ -21,13 +20,11 @@ export default function Shop() {
   const [selectedTab, setSelectedTab] = useState(tabList[0]);
   const [selectedItem, setSelectedItem] = useState<ShopItem | null>(null);
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
-  const [alertType, setAlertType] = useState<'success' | 'failed'>(
-    'success',
-  );
+  const [alertType, setAlertType] = useState<'success' | 'failed'>('success');
   const [showPModal, setShowPModal] = useState(false);
   const [showPAlert, setShowPAlert] = useState(false);
 
-  const currentPoint = useUserStore((state) => state.point);
+  const currentPoint = useUserStore((state) => state.userPoint);
   const [points, setPoints] = useState(currentPoint); // 500 포인트
   const [currentPage, setCurrentPage] = useState(1);
   const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
@@ -39,10 +36,7 @@ export default function Shop() {
   };
 
   // 아이템 목록 불러오기
-  const { data, isLoading, isError, error } = useQuery<
-    { items: ShopItem[] },
-    Error
-  >({
+  const { data, isLoading } = useQuery<{ items: ShopItem[] }, Error>({
     queryKey: ['shop-items', currentPage],
     queryFn: fetchItems,
     staleTime: 5 * 60 * 1000,

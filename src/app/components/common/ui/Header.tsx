@@ -12,9 +12,12 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [openNoti, setOpenNoti] = useState(false);
-  const currentPoint = useUserStore((state) => state.currentPoint);
+
+  const currentPoint = useUserStore((state) => state.userPoint);
+
 
   const isHome = pathname === '/';
+  const isAdmin = pathname === '/admin';
   const isRoutine = pathname === '/routine';
   const isReport = pathname === '/report';
   const isShop = pathname === '/shop';
@@ -26,14 +29,16 @@ export default function Header() {
   else if (isShop) title = '상점';
   else if (isMypage) title = '마이페이지';
 
-  const showHeader = isHome || title;
+  const showHeader = isHome || isAdmin || title;
 
   if (!showHeader) return null;
 
   return (
     <>
-      <div className="fixed top-0 z-1000 flex h-[56px] w-full max-w-md items-center justify-between bg-white px-5 py-[18px] shadow-sm select-none">
-        {isHome ? (
+
+      <div className="fixed top-0 flex h-[56px] w-full items-center justify-between bg-white px-5 py-[18px] shadow-sm select-none">
+        {isHome || isAdmin ? (
+
           <Image
             src={logo}
             alt="logo"

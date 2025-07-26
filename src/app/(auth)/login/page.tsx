@@ -7,7 +7,7 @@ import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import { useRouter } from 'next/navigation';
 import { useSignUpStore } from '@/store/SignupStore';
-import { signIn } from '@/api/auth';
+import { handleSignIn } from '@/api/api';
 
 export default function Page() {
   const [email, setEmail] = useState('');
@@ -18,8 +18,12 @@ export default function Page() {
 
   const logInHandler = async () => {
     try {
-      await signIn(email, password);
-      router.push('/');
+      await handleSignIn(email, password);
+      if (email === 'admin@test.com') {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
     } catch (err) {
       setErrors({
         password: '이메일 또는 비밀번호를 다시 확인하세요.',
