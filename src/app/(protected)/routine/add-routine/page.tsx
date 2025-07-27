@@ -7,11 +7,13 @@ import ToggleSwitch from '@/app/components/common/ui/ToggleSwitch';
 import CategorySelector from '@/app/components/routine/CategorySelector';
 import InputRoutineName from '@/app/components/routine/InputRoutineName';
 import CategoryBottomSheetContainer from '@/app/components/common/CategoryBottomSheetContainer';
+import RecommendedRoutine from '@/app/components/routine/RecommendedRoutine';
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
 import { CategoryItem } from '../../../../../types/general';
 import { useAddRoutine } from '@/api/routine/handleRoutine';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
+
 
 export default function Page() {
   const [routineName, setRoutineName] = useState('');
@@ -123,6 +125,12 @@ export default function Page() {
               onChange={(e) => setRoutineName(e.target.value)}
             />
           </div>
+          <RecommendedRoutine
+            icon="🐣"
+            label="입문자를 위한 추천 루틴"
+            routines={["이불 세탁하기", "신발 관리하기", "셔츠 다림질하기", "계절 옷 정리하기"]}
+            onSelect={setRoutineName}
+          />
           {/* section 2 */}
           <div>
             <ListSelector

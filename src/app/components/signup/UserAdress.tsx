@@ -24,10 +24,10 @@ export default function UserAdress() {
 
     console.log('전달할 주소:', combinedAddress);
     // 쿼리스트링으로 주소 전달
-    router.push(
-      `/mypage/change-userinfo/userinfo?address=${encodeURIComponent(combinedAddress)}`,
-    );
-    // router.push(`/signup/userinfo?address=${encodeURIComponent(combinedAddress)}`);
+    // router.push(
+    //   `/mypage/change-userinfo/userinfo?address=${encodeURIComponent(combinedAddress)}`,
+    // );
+    router.push('/mypage/change-userinfo/userinfo');
   };
 
   return (

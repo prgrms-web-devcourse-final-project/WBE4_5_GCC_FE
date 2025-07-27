@@ -1,6 +1,6 @@
 'use client';
 
-import ProgressBar from '@/app/components/common/PrgressBar';
+import ProgressBar from '@/app/components/common/ProgressBar';
 import { useSignUpStore } from '@/store/SignupStore';
 
 import { useEffect, useState } from 'react';
@@ -48,11 +48,10 @@ export default function Experience() {
             <button
               key={idx}
               onClick={() => setSelectedIndex(idx)}
-              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
-                selectedIndex === idx
+              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${selectedIndex === idx
                   ? 'bg-[#FFB84C] text-[#ffffff]'
                   : 'border-[#E0E0E0]'
-              } `}
+                } `}
             >
               {option}
             </button>
@@ -64,11 +63,10 @@ export default function Experience() {
             <button
               key={idx + 3}
               onClick={() => setSelectedIndex(idx + 3)}
-              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
-                selectedIndex === idx + 3
+              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${selectedIndex === idx + 3
                   ? 'bg-[#FFB84C] text-[#ffffff]'
                   : 'border-[#E0E0E0]'
-              } `}
+                } `}
             >
               {option}
             </button>

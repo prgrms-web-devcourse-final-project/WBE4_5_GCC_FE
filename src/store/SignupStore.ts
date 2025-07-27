@@ -12,7 +12,7 @@ type SignUpState = {
   categories: number[];
   setName: (name: string) => void;
   setEmail: (email: string) => void;
-  setNickName: (nickname: string) => void;
+  setNickname: (nickname: string) => void;
   setPassword: (password: string) => void;
   setCheckPassword: (checkPassword: string) => void;
   setWantEmail: (wantEmail: boolean) => void;
@@ -46,7 +46,7 @@ export const useSignUpStore = create<SignUpState>()(
       setPassword: (password) => set({ password }),
       setCheckPassword: (checkPassword) => set({ checkPassword }),
       setWantEmail: (wantEmail) => set({ wantEmail }),
-      setNickName: (nickname) => set({ nickname }),
+      setNickname: (nickname) => set({ nickname }),
       setResidenceExperience: (residenceExperience) =>
         set({ residenceExperience }),
       step: 1,

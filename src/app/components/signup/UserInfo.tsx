@@ -1,15 +1,12 @@
 'use client';
 
-import { Eye } from 'lucide-react';
-import { EyeClosed } from 'lucide-react';
-import { Check } from 'lucide-react';
+import { Eye, EyeClosed, Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useSignUpStore } from '@/store/SignupStore';
 import Input from '../common/ui/Input';
-import Button from '../common/ui/Button';
-import { emailCheck } from '@/api/api';
+import { checkEmail } from '@/api/auth';
 
-export default function UserInfo() {
+export default function UserInfo({ onValidChange }: { onValidChange?: (valid: boolean) => void }) {
   const name = useSignUpStore((state) => state.name);
   const email = useSignUpStore((state) => state.email);
   const password = useSignUpStore((state) => state.password);
@@ -20,59 +17,57 @@ export default function UserInfo() {
   const setPassword = useSignUpStore((state) => state.setPassword);
   const setCheckPassword = useSignUpStore((state) => state.setCheckPassword);
 
-  const [canUseEmail, setCanUseEmail] = useState<true | false | null>(null);
-  const [okay, setOkay] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
 
-  // 비밀번호 유효성 검사
-  // 영문 대소문자
+  const [showPassword, setShowPassword] = useState(false);
+  const [showCheckPassword, setShowCheckPassword] = useState(false);
+
+  // 이메일 조건 검사
+  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+  // 이메일 중복 확인 로직
+  const validateEmail = async () => {
+    if (!email.trim()) return;
+    if (!emailRegex.test(email)) return;
+
+    try {
+      await checkEmail(email);
+      setEmailStatus('valid');
+    } catch (error) {
+      setEmailStatus('invalid');
+      console.log('이메일 중복:', error);
+    }
+  };
+
+  // 비밀번호 조건 검사
   const hasLowerUpper = /[a-z]/.test(password) && /[A-Z]/.test(password);
-  // 숫자 포함
   const hasNumber = /[0-9]/.test(password);
-  // 특수문자 포함
-  const hasSpecial = /[/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-='|]/.test(
-    password,
-  );
-  // 8자리 이상
+  const hasSpecial = /[/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-='|]/.test(password,);
   const hasMinLength = password.length >= 8;
 
-  // 조건이 맞는지 확인
+  const isPasswordOkay =
+    hasLowerUpper && hasNumber && hasSpecial && hasMinLength;
+
   const checkConditionIcon = (condition: boolean) => {
     return <Check size={16} color={condition ? '#388E3C' : '#9E9E9E'} />
   };
+
   const checkConditionText = (condition: boolean) => {
     return condition ? 'text-[#388E3C] ' : 'text-[#9E9E9E] ';
   };
 
-  // 비밀번호 텍스트로 변경
-  const [showPassword, setShowPassword] = useState(false);
-  const [showCheckPassword, setShowCheckPassword] = useState(false);
-
-  // 이메일 중복 확인 로직
-  const checkHandler = async () => {
-    try {
-      await emailCheck(email);
-      setCanUseEmail(true);
-      setOkay(true);
-    } catch (error) {
-      setCanUseEmail(false);
-      console.log('닉네임 중복:', error);
-    }
-  };
-
   // 다음 버튼 활성화 조건
-  const isPasswordOkay =
-    hasLowerUpper && hasNumber && hasSpecial && hasMinLength;
-  const goNext =
+  const isFormValid =
     name.trim() !== '' &&
     email.trim() !== '' &&
-    canUseEmail === true &&
-    okay &&
+    emailStatus === 'valid' &&
     isPasswordOkay &&
     password === checkPassword;
 
   useEffect(() => {
-    setIsNextEnabled(goNext);
-  }, [goNext, setIsNextEnabled]);
+    setIsNextEnabled(isFormValid);
+    onValidChange?.(isFormValid);
+  }, [isFormValid, setIsNextEnabled, onValidChange]);
 
   return (
     <>
@@ -95,19 +90,17 @@ export default function UserInfo() {
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-                setOkay(false);
+                setEmailStatus('idle');
               }}
+              onBlur={validateEmail}
               placeholder="이메일을 입력해주세요"
             />
-            <Button className="w-[75px]" onClick={checkHandler}>
-              중복 확인
-            </Button>
           </div>
           <div className="mt-2">
-            {canUseEmail === false && (
-              <p className="text-[14px] text-[#D32F2F]">중복된 이메일 입니다.</p>
+            {emailStatus === 'invalid' && (
+              <p className="text-[14px] text-[#D32F2F]">이미 사용 중인 이메일입니다. 다른 이메일을 입력해 주세요.</p>
             )}
-            {canUseEmail === true && (
+            {emailStatus === 'valid' && (
               <p className="text-[14px] text-[#388E3C]">
                 사용 가능한 이메일 입니다.
               </p>
