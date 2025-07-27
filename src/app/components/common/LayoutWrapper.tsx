@@ -20,7 +20,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
     '/login',
     '/find-password',
     '/signup',
-    'signup-complete',
+    '/signup/complete',
     '/find-password/reset',
     '/collection',
     // '/admin',

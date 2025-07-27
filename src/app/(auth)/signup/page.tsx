@@ -18,10 +18,10 @@ export default function SignUp() {
       StepComponent = <UserInfo />;
       break;
     case 2:
-      StepComponent = <EmailConfirm />;
+      StepComponent = <Agreement />;
       break;
     case 3:
-      StepComponent = <Agreement />;
+      StepComponent = <EmailConfirm />;
       break;
     case 4:
       StepComponent = <Nickname />;

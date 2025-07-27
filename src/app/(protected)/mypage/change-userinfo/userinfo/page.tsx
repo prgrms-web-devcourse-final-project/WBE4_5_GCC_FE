@@ -8,7 +8,7 @@ import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import Dropdown from '@/app/components/common/ui/Dropdown';
 import { useUserStore } from '@/store/UserStore';
-import { nicknameCheck } from '@/api/api';
+import { checkNickname } from '@/api/auth';
 import { handleChangeProfile } from '@/api/member';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
 import BackHeader from '@/app/components/common/ui/BackHeader';
@@ -83,15 +83,15 @@ export default function Page() {
       return;
     }
     try {
-      await nicknameCheck(null, nickname);
+      await checkNickname(nickname);
       setError('');
       setSuccess('사용 가능한 닉네임입니다.');
       setCheckNickName(true);
     } catch (error) {
       setCheckNickName(false);
-      setError('중복된 닉네임입니다.');
+      setError('이미 사용 중인 닉네임입니다.');
       setSuccess('');
-      console.log('닉네임 중복:', error);
+      console.error('닉네임 중복:', error);
     }
   };
 
@@ -144,7 +144,10 @@ export default function Page() {
           <div className="flex gap-2.5">
             <Input
               value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\s/g, '');
+                setNickname(value);
+              }}
               placeholder="2~15자 이내로 입력해 주세요"
               maxLength={15}
               error={error}

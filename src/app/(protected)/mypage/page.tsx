@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { logout } from '@/api/api';
+import { logout } from '@/api/auth';
 import SettingsItem from '@/app/components/mypage/SettingsItem';
 import Profile from '@/app/components/main/Profile';
 import Button from '@/app/components/common/ui/Button';
@@ -69,10 +69,14 @@ export default function Page() {
       {showLogoutModal && (
         <LogoutModal
           onClose={() => setShowLogoutModal(false)}
-          onConfirm={() => {
-            console.log('로그아웃');
-            logout(router);
-            setShowLogoutModal(false);
+          onConfirm={async () => {
+            try {
+              await logout(router);
+            } catch (error) {
+              console.error('로그아웃 중 에러 발생:', error);
+            } finally {
+              setShowLogoutModal(false);
+            }
           }}
         />
       )}

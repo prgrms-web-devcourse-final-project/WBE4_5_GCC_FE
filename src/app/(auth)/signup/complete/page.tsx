@@ -20,11 +20,11 @@ export default function SignUpComplete() {
 					height={160}
 				/>
 			</div>
-			<h1 className="text-xl font-semibold text-[#222222] mb-4">
+			<h1 className="text-2xl font-semibold text-[#222222] mb-4">
 				회원가입이 완료되었습니다
 			</h1>
-			<p className="text-sm text-center text-[#9e9e9e] mb-[182px]">
-				지금 로그인하여 나만의 루틴을 시작해보세요!
+			<p className="text-base text-center text-[#9e9e9e] mb-[182px]">
+				지금 바로 나만의 루틴을 시작해보세요!
 			</p>
 			<button
 				onClick={handleGoHome}
