@@ -1,23 +1,24 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store/UserStore';
-import { useHasHydrated } from '@/hooks/useHasHydrated';
 
 export default function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
-
   const router = useRouter();
-  const hydrated = useHasHydrated();
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     if (hydrated && !isLoggedIn) {
-      console.log(isLoggedIn);
       router.replace('/login');
     }
   }, [hydrated, isLoggedIn, router]);

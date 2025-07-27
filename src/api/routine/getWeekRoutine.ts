@@ -5,7 +5,7 @@ import { startOfWeek, format } from 'date-fns';
 export function useWeekRoutine(dateStr?: string) {
   const date = dateStr ? new Date(dateStr) : new Date();
 
-  // 월요일 구하기
+  // 입력된 날짜의 주 월요일 구하기.
   const monday = startOfWeek(date, { weekStartsOn: 1 });
   const mondayStr = format(monday, 'yyyy-MM-dd');
 

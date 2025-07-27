@@ -1,12 +1,15 @@
 'use client';
-
-import { useEffect, useState } from 'react';
 import { PencilLine } from 'lucide-react';
-import CategoryGrid from './CategoryGrid';
+
 import { useRouter } from 'next/navigation';
-import SubCategoryGrid from './SubCategoryGrid';
-import { Categories } from '@/api/categories';
+import { useEffect, useState } from 'react';
+import { getCategories } from '@/api/categories';
 import { CategoryItem } from '../../../../types/general';
+
+import CategoryGrid from './CategoryGrid';
+import SubCategoryGrid from './SubCategoryGrid';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from './ui/LoadingSpinner';
 
 interface Props {
   onClose: () => void;
@@ -19,10 +22,10 @@ export default function CategoryBottomSheetContainer({
 }: Props) {
   const rotuer = useRouter();
   const [showSubCategory, setShowSubCategory] = useState(false);
-  const [selectedMainCategory, setSelectedMainCategory] = useState<CategoryItem>();
-  const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야함
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [allCategoryData, setAllCategoryData] = useState<CategoryItem[]>([]);
+  const [selectedMainCategory, setSelectedMainCategory] =
+    useState<CategoryItem>();
 
   const handleEditClick = () => {
     rotuer.push('/routine/edit-category');
@@ -55,36 +58,30 @@ export default function CategoryBottomSheetContainer({
     onClose();
   };
 
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['user-categories'],
+    queryFn: getCategories,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // 받아온 데이터 가공
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await Categories();
-        const data = res.data;
+    if (!data) return;
 
-        setAllCategoryData(data);
+    const allData = data;
+    setAllCategoryData(allData);
 
-        const majors = data.filter(
-          (cat: CategoryItem) => cat.categoryType === 'MAJOR',
-        );
-        setCategories(majors);
+    const majors = allData.filter((cat) => cat.categoryType === 'MAJOR');
+    setCategories(majors);
+  }, [data]);
 
-        const subMap: Record<string, string[]> = {};
-        data.forEach((cat: CategoryItem) => {
-          if (cat.categoryType === 'SUB' && cat.parentName) {
-            if (!subMap[cat.parentName]) subMap[cat.parentName] = [];
-            subMap[cat.parentName].push(cat.categoryName);
-          }
-        });
-        console.log('메인 카테고리:', majors);
-      } catch (error) {
-        console.error('카테고리 정보 불러오기 실패', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="h-1vh flex w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -119,7 +116,7 @@ export default function CategoryBottomSheetContainer({
           </button>
         </div>
 
-        {/* MAJOR 카테고리 */}
+        {/* MAJOR 카테고리 선택 바텀시트 */}
         <CategoryGrid
           categories={categories}
           selected={selectedMainCategory?.categoryName || null}
@@ -132,7 +129,7 @@ export default function CategoryBottomSheetContainer({
           }}
         />
 
-        {/* SUB 카테고리 (오버레이 화면) */}
+        {/* SUB 카테고리 선택 바텀시트 */}
         {showSubCategory && (
           <div
             className="animate-slide-in fixed inset-0 z-50 flex justify-center bg-transparent"

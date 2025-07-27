@@ -11,10 +11,12 @@ import { useRouter } from 'next/navigation';
 import Quest from './components/main/Quest';
 import { routineHandler } from '@/api/routine/routine';
 import { DayRoutine } from '../../types/routine';
-import { useTodayRoutine } from '@/api/routine/getTodayRoutine';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from './components/common/ui/LoadingSpinner';
 import AlertModal from './components/common/alert/AlertModal';
+import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
+import { format } from 'date-fns';
+import { useRoutineStore } from '@/store/RoutineStore';
 
 export default function Main() {
   const queryClient = useQueryClient();
@@ -22,7 +24,17 @@ export default function Main() {
   const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
 
-  const { data: dayRoutine = [], isPending } = useTodayRoutine();
+  const { data: weekData, isPending: weekLoading } = useWeekRoutine();
+
+  const today = format(new Date(), 'yyyy-MM-dd');
+  const filteredRoutines: DayRoutine[] = weekData?.routines?.[today] ?? [];
+  const total = filteredRoutines.length;
+  const done = filteredRoutines.filter((r) => r.isDone).length;
+  const successRate = total ? Math.round((done / total) * 100) : 0;
+  console.log(filteredRoutines);
+
+  const dateStr: string = format(new Date(), 'yyyy-MM-dd');
+  console.log(dateStr);
 
   const { mutate } = useMutation({
     mutationFn: ({
@@ -41,12 +53,6 @@ export default function Main() {
   const goToCollection = () => {
     router.push('/collection');
   };
-  // 완료된 항목 개수
-  const doneCount = dayRoutine.filter((routine) => routine.isDone).length;
-  // 전체 항목 개수
-  const totalCount = dayRoutine.length;
-  // 성공 비율(백분율)
-  const successRate = (doneCount / totalCount) * 100;
 
   return (
     <>
@@ -74,7 +80,7 @@ export default function Main() {
         <div className="flex w-full px-5">
           <Profile />
         </div>
-        {isPending && (
+        {weekLoading && (
           <div className="mt-[50px] flex flex-col items-center justify-center gap-6">
             <LoadingSpinner />
             <p className="text-[20px] font-semibold">
@@ -82,7 +88,7 @@ export default function Main() {
             </p>
           </div>
         )}
-        {!isPending && (
+        {!weekLoading && (
           <div className="flex w-full flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 py-4">
             <div className="mb-6 flex w-full flex-col justify-start">
               <span className="text-xs font-semibold">2025년 7월 9일</span>
@@ -90,7 +96,9 @@ export default function Main() {
                 <div>
                   <span>
                     오늘의 루틴{' '}
-                    <span className="text-[#FFB84C]">{dayRoutine.length}</span>
+                    <span className="text-[#FFB84C]">
+                      {filteredRoutines.length}
+                    </span>
                   </span>
                 </div>
                 <Donut
@@ -103,9 +111,10 @@ export default function Main() {
             </div>
 
             <div className="flex w-full flex-col space-y-3">
-              {dayRoutine.map((routine: DayRoutine) => (
+              {filteredRoutines.map((routine: DayRoutine) => (
                 <Routine
                   key={`${routine.routineId}-${routine.scheduleId}`}
+                  scheduleId={routine.scheduleId}
                   title={routine.name}
                   category={routine.majorCategory}
                   time={routine.triggerTime}
@@ -117,6 +126,20 @@ export default function Main() {
                       isDone: !routine.isDone,
                     })
                   }
+                  onEditClick={() => {
+                    useRoutineStore.getState().setRoutine({
+                      routineId: routine.routineId,
+                      scheduleId: routine.scheduleId,
+                      majorCategory: routine.majorCategory,
+                      subCategory: routine.subCategory,
+                      name: routine.name,
+                      triggerTime: routine.triggerTime,
+                      isDone: routine.isDone,
+                      isImportant: routine.isImportant,
+                      date: routine.date,
+                      startRoutineDate: routine.startRoutineDate,
+                    });
+                  }}
                   onDeleteClick={() => setCheckDelete(true)}
                 />
               ))}

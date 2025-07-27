@@ -1,11 +1,11 @@
 import { axiosInstance } from './axiosInstance';
 
 // 업적 조회
-export const Badges = async () => {
+export const getBadges = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/badges');
-    console.log('업적 불러오기 성공', response.data);
-    return response.data;
+    console.log('업적 불러오기 성공', response.data.data);
+    return response.data.data;
   } catch (error) {
     console.error('업적 불러오기 실패', error);
     throw error;
@@ -30,8 +30,8 @@ export const BadgeRewardByKey = async (key: string) => {
     const response = await axiosInstance.post('/api/v1/badges', null, {
       params: { badgeKey: key },
     });
-    console.log('업적 보상 수령 불러오기 성공', response.data);
-    return response.data;
+    console.log('업적 보상 수령 불러오기 성공', response.data.data);
+    return response.data.data;
   } catch (error) {
     console.error('업적 보상 수령 조회 실패', error);
     throw error;

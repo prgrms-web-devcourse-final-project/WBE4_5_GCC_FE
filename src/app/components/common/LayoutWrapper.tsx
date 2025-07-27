@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { usePathname } from "next/navigation"
-import { useUIStore } from "@/store/uiStore";
-import Header from "./ui/Header";
-import BottomNav from "./ui/BottomNav";
+import { usePathname } from 'next/navigation';
+import { useUIStore } from '@/store/uiStore';
+import Header from './ui/Header';
+import BottomNav from './ui/BottomNav';
 
 interface LayoutWrapperProps {
   children: React.ReactNode;
@@ -12,7 +12,9 @@ interface LayoutWrapperProps {
 export default function LayoutWrapper({ children }: LayoutWrapperProps) {
   const pathname = usePathname();
   const isBottomSheetOpen = useUIStore((state) => state.isBottomSheetOpen);
-  const isCalendarBottomSheetOpen = useUIStore((state) => state.isCalendarBottomSheetOpen);
+  const isCalendarBottomSheetOpen = useUIStore(
+    (state) => state.isCalendarBottomSheetOpen,
+  );
 
   const hiddenBottomNavRoutes = [
     '/login',
@@ -21,11 +23,21 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
     'signup-complete',
     '/find-password/reset',
     '/collection',
+    // '/admin',
   ];
 
-  const isMypageSubRoute = pathname.startsWith('/mypage/') && pathname !== '/mypage';
+  const isMypageSubRoute =
+    pathname.startsWith('/mypage/') && pathname !== '/mypage';
 
-  const showBottomNav = !hiddenBottomNavRoutes.includes(pathname) && !isBottomSheetOpen && !isCalendarBottomSheetOpen && !isMypageSubRoute
+  const isAdminSubRoute =
+    pathname.startsWith('/admin/') && pathname !== '/admin';
+
+  const showBottomNav =
+    !hiddenBottomNavRoutes.includes(pathname) &&
+    !isBottomSheetOpen &&
+    !isCalendarBottomSheetOpen &&
+    !isMypageSubRoute &&
+    !isAdminSubRoute;
 
   return (
     <>

@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import BottomSheet from '../common/ui/BottomSheet';
 import Input from '../common/ui/Input';
+import Button from '../common/ui/Button';
 
 const options = ['눈 뜨자마자', '출근길에', '8:00', '자기 전 체크', '아무때나'];
-
-// 언제할래요 바텀시트
 interface WhenSelectorProps {
   isOpen: boolean;
   onClose: () => void;
@@ -56,6 +55,7 @@ export default function WhenSelector({
             </button>
           ))}
         </div>
+        <Button onClick={() => handleClick(value)}>확인</Button>
       </BottomSheet>
     </>
   );

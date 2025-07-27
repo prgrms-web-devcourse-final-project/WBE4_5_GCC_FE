@@ -31,15 +31,16 @@ export interface AboutRoutine {
 
 // 루틴 추가할때 보낼 데이터 아입
 export interface AddRoutine {
+  categoryId: number;
   name: string;
   majorCategory: string;
-  subCategory: string | null;
+  subCategory?: string | null;
   startRoutineDate: string;
   triggerTime: string;
   isImportant: boolean;
   repeatType: string;
-  repeatValue: string;
-  repeatInterval: number;
+  repeatValue?: string | null;
+  repeatInterval?: number;
 }
 
 // 루틴 완료 타입

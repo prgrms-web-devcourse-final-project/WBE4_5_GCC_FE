@@ -1,20 +1,24 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import { CirclePlus } from 'lucide-react';
 import { CircleMinus } from 'lucide-react';
-import AlertModal from '@/app/components/common/alert/AlertModal';
-import { useSearchParams, useRouter } from 'next/navigation';
 import { BadgeQuestionMark } from 'lucide-react';
+
+import EditSubcategoryLayout from './EditSubcategoryLayout';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import AlertModal from '@/app/components/common/alert/AlertModal';
+import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
+import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
+
+import { useEffect, useRef, useState } from 'react';
+import { CategoryItem } from '../../../../../types/general';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  Categories,
+  getCategories,
   DeleteCategoryById,
   EditCategoryById,
 } from '@/api/categories';
-import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
-import EditSubcategoryLayout from './EditSubcategoryLayout';
-import { CategoryItem } from '../../../../../types/general';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 export default function Page() {
   const router = useRouter();
@@ -27,11 +31,10 @@ export default function Page() {
 
   const [label, setLabel] = useState('');
   const [subCategories, setSubCategories] = useState<CategoryItem[]>([]);
-  const [categoryType, setCategoryType] = useState<'MAJOR' | 'SUB' | null>(
-    null,
-  );
+  const [categoryType, setCategoryType] = useState<'MAJOR' | 'SUB'>();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
+  const queryClient = useQueryClient();
   const pickerRef = useRef<HTMLDivElement>(null);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
@@ -39,7 +42,6 @@ export default function Page() {
   // 이모지 클릭 핸들러
   const handleEmojiSelect = (emojiData: EmojiClickData) => {
     setSelectedEmoji(emojiData.emoji);
-    //setEmoji(emojiData.emoji);
     setIsPickerOpen(false);
   };
 
@@ -69,33 +71,62 @@ export default function Page() {
     if (labelFromParams) setLabel(labelFromParams);
   }, [labelFromParams]);
 
+  // 카테고리 수정 API 호출
+  const {
+    data: categories = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery<CategoryItem[], Error>({
+    queryKey: ['edit-subcategory'],
+    queryFn: getCategories,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const editCategoryMutation = useMutation({
+    mutationFn: async (subCategories: CategoryItem[]) => {
+      return await Promise.all(
+        subCategories.map((sub) =>
+          EditCategoryById(sub.categoryId, {
+            categoryName: sub.categoryName,
+            categoryType: 'SUB',
+            parentName: label,
+            emoji: null,
+          }),
+        ),
+      );
+    },
+    onSuccess: () => {
+      alert('카테고리 수정 완료!');
+      queryClient.invalidateQueries({ queryKey: ['edit-subcategory'] });
+      router.push('/routine/edit-category');
+    },
+    onError: (error) => {
+      console.error('카테고리 수정 실패', error);
+      alert('수정에 실패했습니다.');
+    },
+  });
+
   // MAJOR 카테고리는 이름 수정 막기
   useEffect(() => {
-    const fetchCategoryType = async () => {
-      const res = await Categories();
-      const data: CategoryItem[] = res.data;
-      const matched = data.find((cat) => cat.categoryName === labelFromParams);
-      if (matched) {
-        setCategoryType(matched.categoryType);
-        setLabel(matched.categoryName); // 이걸로 label 초기화
-      }
-    };
-    fetchCategoryType();
-  }, [labelFromParams]);
+    if (!categories || !labelFromParams) return;
+    const matched = categories.find(
+      (cat) => cat.categoryName === labelFromParams,
+    );
+    if (matched) {
+      setCategoryType(matched.categoryType);
+      setLabel(matched.categoryName);
+    }
+  }, [categories, labelFromParams]);
 
   // 서브 카테고리 불러오기
   useEffect(() => {
-    if (!label) return;
-    const fetchSubs = async () => {
-      const res = await Categories();
-      const data: CategoryItem[] = res.data;
-      const filtered = data.filter(
-        (cat) => cat.categoryType === 'SUB' && cat.parentName === label,
-      );
-      setSubCategories(filtered);
-    };
-    fetchSubs();
-  }, [label]);
+    if (!categories || !label) return;
+    const filtered = categories.filter(
+      (cat) => cat.categoryType === 'SUB' && cat.parentName === label,
+    );
+    setSubCategories(filtered);
+  }, [categories, label]);
 
   // 완료 버튼에서 카테고리 수정 API 호출
   const handleComplete = async () => {
@@ -103,23 +134,7 @@ export default function Page() {
       alert('카테고리 정보를 확인해주세요.');
       return;
     }
-
-    try {
-      await Promise.all(
-        subCategories.map((sub) =>
-          EditCategoryById(sub.categoryId, {
-            categoryName: sub.categoryName,
-            categoryType: 'SUB',
-            parentName: label,
-          }),
-        ),
-      );
-      alert('카테고리 수정 완료!');
-      router.push('/routine/edit-category');
-    } catch (err) {
-      console.error('카테고리 수정 실패', err);
-      alert('수정에 실패했습니다.');
-    }
+    editCategoryMutation.mutate(subCategories);
   };
 
   // 헤더 완료 버튼 클릭 시 서브 카테고리 저장
@@ -134,6 +149,14 @@ export default function Page() {
       },
     ]);
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -222,6 +245,7 @@ export default function Page() {
               } catch (error) {
                 alert('삭제 실패');
                 console.error(error);
+                setIsModalOpen(false);
               }
             }}
           />

@@ -12,29 +12,33 @@ import RecommendedRoutine from '@/app/components/routine/RecommendedRoutine';
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
 import { CategoryItem } from '../../../../../types/general';
-import { addRoutine } from '@/api/routine/routine';
-import { AddRoutine } from '../../../../../types/routine';
-import { useRouter } from 'next/navigation';
+import { useAddRoutine } from '@/api/routine/handleRoutine';
+import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
+
 
 
 export default function Page() {
-  const router = useRouter();
   const [routineName, setRoutineName] = useState('');
   const [startDate, setStartDate] = useState('');
-  const [cycle, setCycle] = useState<{ days: string; week: string } | null>(
-    null,
-  );
+  const [cycle, setCycle] = useState<{
+    daily?: string;
+    days?: string;
+    week?: string;
+    month?: string;
+  } | null>(null);
   const [doWhen, setDoWhen] = useState('');
   const [notification, setNotification] = useState(false);
   const [importance, setImportance] = useState(false);
-
   const [showCatModal, setShowCatModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(
     null,
   );
-
   const [isCycleOpen, setIsCycleOpen] = useState(false);
   const [isWhenDoOpen, setIsWhenDoOpen] = useState(false);
+  const [cycleText, setCycleText] = useState('');
+  const [repeatType, setRepeatType] = useState('');
+  const [repeatValue, setRepeatValue] = useState('');
+  const [repeatInterval, setRepeatInterval] = useState('');
 
   const isSubmitEnabled =
     selectedCategory !== null &&
@@ -42,33 +46,6 @@ export default function Page() {
     startDate !== '' &&
     cycle !== null &&
     doWhen !== '';
-
-  const convertDaysToNumbers = (days: string) => {
-    const dayMap: Record<string, string> = {
-      월: '1',
-      화: '2',
-      수: '3',
-      목: '4',
-      금: '5',
-      토: '6',
-      일: '7',
-    };
-
-    return days
-      .split(', ')
-      .map((day) => dayMap[day])
-      .filter(Boolean) // 혹시 모를 undefined 제거
-      .join(',');
-  };
-  const getRepeatType = (days: string): 'DAILY' | 'WEEKLY' => {
-    return days.split(', ').length === 7 ? 'DAILY' : 'WEEKLY';
-  };
-
-  const getRepeatValue = (days: string): string | undefined => {
-    return days.split(', ').length === 7
-      ? undefined
-      : convertDaysToNumbers(days);
-  };
 
   useEffect(() => {
     console.log('폼 상태 변경됨:', {
@@ -78,8 +55,55 @@ export default function Page() {
       cycle,
       doWhen,
       importance,
+      repeatType,
+      repeatValue,
+      repeatInterval,
     });
-  }, [selectedCategory, routineName, startDate, cycle, doWhen, importance]);
+  }, [
+    selectedCategory,
+    routineName,
+    startDate,
+    cycle,
+    doWhen,
+    importance,
+    repeatType,
+    repeatValue,
+    repeatInterval,
+  ]);
+
+  const { mutate, isPending } = useAddRoutine();
+
+  useEffect(() => {
+    if (!cycle) {
+      setCycleText('');
+      return;
+    }
+
+    switch (true) {
+      case !!cycle.daily:
+        setCycleText(`매 ${cycle.daily}일 마다`);
+        setRepeatType('DAILY');
+        setRepeatValue(cycle.daily!);
+        break;
+      case !!cycle.week:
+        setCycleText(
+          `${cycle.days} / ${
+            cycle.week === '1' ? '매주' : `${cycle.week}주마다`
+          }`,
+        );
+        setRepeatType('WEEKLY');
+        setRepeatValue(cycle.days!);
+        setRepeatInterval(cycle.week);
+        break;
+      case !!cycle.month:
+        setCycleText(`매월 ${cycle.month}일 마다`);
+        setRepeatType('MONTHLY');
+        setRepeatValue(cycle.month!);
+        break;
+      default:
+        setCycleText('');
+    }
+  }, [cycle]);
 
   return (
     <>
@@ -121,11 +145,7 @@ export default function Page() {
             <ListSelector
               icon="♾️"
               label="반복주기"
-              value={
-                cycle
-                  ? `${cycle.days} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`
-                  : ''
-              }
+              value={cycleText}
               placeholder="매일 / 매주"
               onClick={() => setIsCycleOpen(true)}
             />
@@ -161,24 +181,22 @@ export default function Page() {
           <Button
             type="submit"
             disabled={!isSubmitEnabled}
-            onClick={async () => {
-              const routineData: AddRoutine = {
-                categoryId: selectedCategory!.categoryId,
-                content: routineName,
-                triggerTime: doWhen,
-                isImportant: importance,
-                repeatType: getRepeatType(cycle!.days),
-                repeatValue: getRepeatValue(cycle!.days),
-                date: startDate,
-              };
-              try {
-                await addRoutine(routineData);
-                router.push('/routine');
-              } catch (err) {
-                console.error('루틴 추가 실패', err);
-                alert('루틴을 추가하는 중 오류가 발생했어요.');
-              }
-            }}
+            onClick={() =>
+              mutate({
+                AddData: {
+                  categoryId: selectedCategory!.categoryId,
+                  name: routineName,
+                  majorCategory: selectedCategory!.categoryName,
+                  subCategory: selectedCategory?.subCategoryName,
+                  startRoutineDate: startDate,
+                  triggerTime: doWhen,
+                  isImportant: importance,
+                  repeatType: repeatType,
+                  repeatValue: repeatValue,
+                  repeatInterval: Number(repeatInterval),
+                },
+              })
+            }
           >
             확인
           </Button>
@@ -203,6 +221,9 @@ export default function Page() {
           onSubmit={(cycleData) => {
             setCycle(cycleData);
           }}
+          // setRepeatType={setRepeatType}
+          // setRepeatValue={setRepeatValue}
+          // setRepeatInterval={setRepeatInterval}
         />
       )}
       {isWhenDoOpen && (
@@ -213,6 +234,14 @@ export default function Page() {
             setDoWhen(value);
           }}
         />
+      )}
+      {isPending && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222]/50">
+          <div className="flex h-[200px] w-[335px] flex-col items-center justify-center rounded-[20px] bg-white">
+            <LoadingSpinner />
+            <p className="mt-4 text-[15px] text-black">루틴 추가 중...</p>
+          </div>
+        </div>
       )}
     </>
   );

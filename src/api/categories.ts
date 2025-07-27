@@ -1,11 +1,19 @@
+import { CategoryItem } from '../../types/general';
 import { axiosInstance } from './axiosInstance';
 
+interface CategoryPayload {
+  categoryName: string;
+  categoryType: 'MAJOR' | 'SUB';
+  emoji: string | null;
+  parentName: string | null;
+}
+
 // 카테고리 조회 - 사용 ㅇ
-export const Categories = async () => {
+export const getCategories = async (): Promise<CategoryItem[]> => {
   try {
     const response = await axiosInstance.get('/api/v1/categories');
-    console.log('카테고리 불러오기 성공', response.data);
-    return response.data;
+    console.log('카테고리 불러오기 성공', response.data.data);
+    return response.data.data;
   } catch (error) {
     console.error('카테고리 불러오기 실패', error);
     throw error;
@@ -25,13 +33,7 @@ export const CategoryById = async (id: number) => {
 };
 
 // 카테고리 생성 - 사용 ㅇ
-interface CreateCategoryPayload {
-  categoryName: string;
-  categoryType: 'MAJOR' | 'SUB';
-  parentName?: string; // SUB일 때만 필요
-}
-
-export const CreateCategory = async (payload: CreateCategoryPayload) => {
+export const CreateCategory = async (payload: CategoryPayload) => {
   try {
     const response = await axiosInstance.post('/api/v1/categories', payload);
     console.log('카테고리 생성 성공', response.data);
@@ -43,16 +45,10 @@ export const CreateCategory = async (payload: CreateCategoryPayload) => {
 };
 
 // 카테고리 수정 - 사용 ㅇ
-interface EditCategoryPayload {
-  categoryName: string;
-  categoryType: 'MAJOR' | 'SUB';
-  emoji?: string;
-  parentName: string | null;
-}
 
 export const EditCategoryById = async (
   id: number,
-  payload: EditCategoryPayload,
+  payload: CategoryPayload,
 ) => {
   try {
     const response = await axiosInstance.patch(
