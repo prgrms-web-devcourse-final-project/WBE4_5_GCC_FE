@@ -67,6 +67,7 @@ export default function Profile() {
         src={backGround}
         alt="bg"
         fill
+        priority
         className="object-cover brightness-90"
       />
 
