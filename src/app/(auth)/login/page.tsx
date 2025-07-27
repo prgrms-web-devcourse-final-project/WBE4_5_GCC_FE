@@ -8,6 +8,7 @@ import Button from '@/app/components/common/ui/Button';
 import { useRouter } from 'next/navigation';
 import { useSignUpStore } from '@/store/SignupStore';
 import { signIn } from '@/api/auth';
+import kakao from '/public/kakao.svg';
 
 export default function Page() {
   const [email, setEmail] = useState('');
@@ -60,6 +61,12 @@ export default function Page() {
     reset();
   }, [reset]);
 
+  // 카카오 로그인
+  // const handleKakaoLogin = () => {
+  //   // 백엔드 카카오 요청 보내는 url
+  //   window.location.href = "http://localhost:4000/auth/kakao"
+  // }
+
   return (
     <div className="mt-[150px] flex min-h-screen flex-col items-center bg-white px-5">
       <div className="w-full max-w-md">
@@ -106,15 +113,27 @@ export default function Page() {
               <span>또는</span>
               <hr className="flex-1 border-gray-300" />
             </div>
-            <Button className="gap-2 border border-[#E0E0E0] bg-white text-black">
-              <Image
-                src="/images/google.svg"
-                alt="Google"
-                width={20}
-                height={20}
-              />
-              구글 계정으로 로그인
-            </Button>
+            <div className="flex flex-col gap-3">
+              <Button
+                type="button"
+                className="gap-2 border border-[#E0E0E0] bg-white text-black"
+              >
+                <Image
+                  src="/images/google.svg"
+                  alt="Google"
+                  width={20}
+                  height={20}
+                />
+                구글 계정으로 로그인
+              </Button>
+              <button
+                type="button"
+                className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#FEE500] py-3 font-medium text-[#000000] transition-colors hover:bg-[#FDD800]"
+              >
+                <Image src={kakao} alt="Kakao Logo" className="h-5 w-5" />
+                카카오로 로그인
+              </button>
+            </div>
           </div>
         </form>
         <div className="flex justify-center gap-6 text-sm text-[#909090]">

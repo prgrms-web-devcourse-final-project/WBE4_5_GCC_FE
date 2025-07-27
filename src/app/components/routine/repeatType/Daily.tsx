@@ -1,0 +1,51 @@
+import { useState } from 'react';
+import DayPicker from './DayPicker';
+
+interface DailyProps {
+  onClose: () => void;
+  onSubmit: (cycle: { daily: string }) => void;
+  // setRepeatType: (value: string) => void;
+  // setRepeatValue: (value: string) => void;
+}
+
+export default function Daily({
+  onSubmit,
+  onClose,
+  // setRepeatType,
+  // setRepeatValue,
+}: DailyProps) {
+  const [selectedDay, setSelectedDay] = useState('1');
+
+  const handleSubmit = () => {
+    const cycle = {
+      daily: selectedDay,
+    };
+    // setRepeatType('DAILY');
+    // setRepeatValue(selectedDay);
+    onSubmit(cycle);
+    onClose();
+  };
+
+  return (
+    <>
+      <div className="relative mx-[5px] my-[27px] flex min-h-[588px] flex-col">
+        <span className="text-sm font-semibold">n일 마다</span>
+        <div className="flex justify-center">
+          <div className="w-[150px]">
+            <DayPicker onChange={setSelectedDay} />
+          </div>
+          <span className="left-2.5/5 pointer-events-none absolute top-[130px] translate-x-[60px] -translate-y-1/2 text-sm">
+            일마다
+          </span>
+        </div>
+        {/* 확인 버튼 */}
+        <button
+          className="mt-[140px] rounded bg-[#FFB84C] px-4 py-2 text-white transition-colors"
+          onClick={handleSubmit}
+        >
+          확인
+        </button>
+      </div>
+    </>
+  );
+}

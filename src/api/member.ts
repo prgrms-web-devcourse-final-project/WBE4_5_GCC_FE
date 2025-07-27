@@ -1,5 +1,6 @@
 import { useUserStore } from '@/store/UserStore';
 import { axiosInstance } from './axiosInstance';
+import { Quest } from '../../types/User';
 
 // 유저정보 불러오기
 export const fetchProfile = async () => {
@@ -33,11 +34,11 @@ export const fetchUserPoint = async () => {
 };
 
 // 유저 보유 퀘스트 불러오기
-export const fetchUserQuest = async () => {
+export const fetchUserQuest = async (): Promise<Quest[]> => {
   try {
     const response = await axiosInstance.get('/api/v1/members/quests');
     console.log('보유퀘스트 불러오기 성공');
-    return response.data;
+    return response.data.data;
   } catch (error) {
     console.error('보유퀘스트 불러오기 실패', error);
     throw error;
