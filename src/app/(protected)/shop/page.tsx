@@ -24,7 +24,7 @@ export default function Shop() {
   const [showPModal, setShowPModal] = useState(false);
   const [showPAlert, setShowPAlert] = useState(false);
 
-  const currentPoint = useUserStore((state) => state.userPoint);
+  const currentPoint = useUserStore((state) => state.points);
   const [points, setPoints] = useState(currentPoint); // 500 포인트
   const [currentPage, setCurrentPage] = useState(1);
   const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
