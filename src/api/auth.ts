@@ -18,6 +18,9 @@ export const signIn = async (email: string, password: string) => {
     email,
     password,
   });
+  // 로그인 성공 시 유저 상태 업데이트
+  const { setIsLoggedIn } = useUserStore.getState();
+  setIsLoggedIn(true);
   return response.data;
 };
 
