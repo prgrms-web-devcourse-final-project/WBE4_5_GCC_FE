@@ -1,6 +1,6 @@
 import { axiosInstance } from '../axiosInstance';
 
-// 카테고리 목록 조회 - 사용 ㅇ
+// 카테고리 목록 조회
 export const AdminCategories = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/admin/categories');
@@ -12,11 +12,10 @@ export const AdminCategories = async () => {
   }
 };
 
-// 카테고리 생성 - 사용 ㅇ
+// 카테고리 생성
 interface AdminCategoryPayload {
-  categoryName: string;
-  categoryType: string;
-  emoji?: string | null;
+  name: string;
+  emoji: string;
 }
 
 export const CreateAdminCategories = async (payload: AdminCategoryPayload) => {
