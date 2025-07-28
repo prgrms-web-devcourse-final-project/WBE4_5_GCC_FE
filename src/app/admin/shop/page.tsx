@@ -1,87 +1,77 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import item1 from '@/app/assets/images/item1.png';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Trash2 } from 'lucide-react';
-import AlertModal from '@/app/components/common/alert/AlertModal';
-import { DeleteAdminItemById } from '@/api/admin/adminItems';
+import { useRouter } from 'next/navigation';
+import { ShopItem } from '../../../../types/general';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { AdminItems, DeleteAdminItemByKey } from '@/api/admin/adminItems';
 
-// 기능 구현때 삭제
-import { StaticImageData } from 'next/image';
 import Tabs from '@/app/components/shop/Tabs';
 import ItemCard from '@/app/components/shop/ItemCard';
-import { useRouter } from 'next/navigation';
-import { AdminItems } from '@/api/admin/adminItems';
-
-interface AdminItem {
-  itemId: number;
-  itemKey: string;
-  itemName: string;
-  itemPrice: number;
-  itemType: 'TOP' | 'BOTTOM' | 'ACCESSORY';
-  itemDescription?: string;
-  createTime: string;
-  updateTime: string;
-}
+import { Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import AlertModal from '@/app/components/common/alert/AlertModal';
+import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 
 export default function AdminShop() {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const tabList = ['전체', '상의', '하의', '액세서리'];
   const [selectedTab, setSelectedTab] = useState(tabList[0]);
 
-  const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야 함
-  const [items, setItems] = useState<AdminItem[]>([]);
-  const [isDeleteMode, setIsDeleteMode] = useState<{
-    isOpen: boolean;
-    item: AdminItem | null;
-  }>({
+  const [isDeleteMode, setIsDeleteMode] = useState({
     isOpen: false,
-    item: null,
+    item: null as ShopItem | null,
   });
 
-  const [deleteModal, setDeleteModal] = useState<{
-    isOpen: boolean;
-    item: AdminItem | null;
-  }>({ isOpen: false, item: null });
+  const [deleteModal, setDeleteModal] = useState({
+    isOpen: false,
+    item: null as ShopItem | null,
+  });
 
-  const tabMap: Record<string, AdminItem['itemType']> = {
+  const tabMap: Record<string, ShopItem['itemType']> = {
     상의: 'TOP',
     하의: 'BOTTOM',
     액세서리: 'ACCESSORY',
   };
 
+  // 아이템 목록 조회
+  const {
+    data: items = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['admin-items'],
+    queryFn: AdminItems,
+    staleTime: 5 * 60 * 1000,
+    select: (res) => res.data,
+  });
+
   const filteredItem =
     selectedTab === '전체'
       ? items
-      : items.filter((item) => item.itemType === tabMap[selectedTab]);
+      : items.filter((item: ShopItem) => item.itemType === tabMap[selectedTab]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await AdminItems();
-        console.log('아이템 정보:', res);
-        setItems(res.data);
-      } catch (error) {
-        console.error('아이템 정보를 불러오지 못했습니다', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  // 아이템 삭제
+  const deleteItemMutation = useMutation({
+    mutationFn: DeleteAdminItemByKey,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['delete-admin-items'] }); // 삭제 후 목록 갱신
+    },
+    onError: (error) => {
+      console.error('삭제 실패', error);
+      alert('삭제에 실패했습니다.');
+    },
+  });
 
-  // 삭제 후 업데이트
-  const fetchData = async () => {
-    try {
-      const res = await AdminItems();
-      setItems(res.data);
-    } catch (error) {
-      console.error('아이템 정보를 불러오지 못했습니다', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (isLoading) {
+    return (
+      <div className="h-screen flex w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -118,7 +108,7 @@ export default function AdminShop() {
             >
               + 아이템 등록
             </button>
-            {filteredItem.map((item) => (
+            {filteredItem.map((item: ShopItem) => (
               <ItemCard
                 key={item.itemId}
                 item={item}
@@ -146,6 +136,7 @@ export default function AdminShop() {
             </button>
           </div>
         </div>
+
         {deleteModal.isOpen && deleteModal.item && (
           <AlertModal
             isOpen={true}
@@ -156,9 +147,8 @@ export default function AdminShop() {
             cancelText="취소"
             // 아이템 삭제 후 전체 목록 새로 불러오기
             onConfirm={() => {
-              DeleteAdminItemById(deleteModal.item!.itemId)
-                .then(() => fetchData())
-                .finally(() => setDeleteModal({ isOpen: false, item: null }));
+              deleteItemMutation.mutate(deleteModal.item!.itemKey);
+              setDeleteModal({ isOpen: false, item: null });
             }}
             onCancel={() => setDeleteModal({ isOpen: true, item: null })}
           />

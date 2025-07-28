@@ -1,15 +1,18 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import item1 from '@/app/assets/images/item1.png';
-import Input from '@/app/components/common/ui/Input';
-
 import { ImagePlus } from 'lucide-react';
+import item1 from '@/app/assets/images/item1.png';
+
 import Image from 'next/image';
-import Dropdown from '@/app/components/common/ui/Dropdown';
+import { useRouter } from 'next/navigation';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { use, useEffect, useState } from 'react';
+import { ShopItem } from '../../../../../../types/general';
+import { AdminItems, EditAdminItemByKey } from '@/api/admin/adminItems';
+
+import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
-import { AdminItemById, EditAdminItemById } from '@/api/admin/adminItems';
+import Dropdown from '@/app/components/common/ui/Dropdown';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 
 export default function EditItem({
@@ -19,6 +22,7 @@ export default function EditItem({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [selected, setSelected] = useState('');
 
   const [itemTitle, setItemTitle] = useState('');
@@ -38,24 +42,68 @@ export default function EditItem({
     onConfirm: () => void;
   } | null>(null);
 
-  const handleSubmit = async () => {
-    try {
-      await EditAdminItemById(id, {
-        itemKey: itemKey,
-        itemName: itemTitle,
-        price: Number(itemPrice),
-        itemType: selected,
-      });
+  // 전체 아이템 조회 후 해당 아이템 찾기
+  const {
+    data: items = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['admin-items'],
+    queryFn: AdminItems,
+    select: (res) => res.data,
+  });
+
+  useEffect(() => {
+    if (!id || !items.length) return;
+
+    const foundItem = items.find(
+      (item: ShopItem) => String(item.itemId) === String(id),
+    );
+    if (!foundItem) return;
+
+    setItemTitle(foundItem.itemName);
+    setItemDescription(foundItem.itemDescription ?? '');
+    setItemPrice(String(foundItem.itemPrice));
+    setSelected(foundItem.itemType);
+    setItemKey(foundItem.itemKey);
+    // setPreviewUrl(foundItem.itemImageUrl ?? item1.src); // 어떻게 넘겨줄지..
+  }, [id, items]);
+
+  // 아이템 수정 API 호출
+  const { mutate: editItemMutate, isPending } = useMutation({
+    mutationFn: ({
+      itemName,
+      itemPrice,
+      itemType,
+      itemDescription,
+    }: {
+      itemName: string;
+      itemPrice: number;
+      itemType: string;
+      itemDescription: string;
+    }) =>
+      EditAdminItemByKey(itemKey, {
+        itemName,
+        price: itemPrice,
+        itemType,
+        itemDescription,
+      }),
+
+    onSuccess: () => {
       setModalState({
         isOpen: true,
         type: 'success',
         title: '아이템이 성공적으로 수정되었습니다!',
         onConfirm: () => {
           setModalState(null);
+          queryClient.invalidateQueries({ queryKey: ['admin-items'] });
           router.push('/admin/shop');
         },
       });
-    } catch (error) {
+    },
+
+    onError: () => {
       setModalState({
         isOpen: true,
         type: 'delete',
@@ -63,27 +111,18 @@ export default function EditItem({
         description: '관리자 확인 요청 바랍니다.',
         onConfirm: () => setModalState(null),
       });
-      console.log(error);
-    }
+    },
+  });
+
+  const handleSubmit = () => {
+    if (!itemKey) return;
+    editItemMutate({
+      itemName: itemTitle,
+      itemPrice: Number(itemPrice),
+      itemType: selected,
+      itemDescription,
+    });
   };
-
-  useEffect(() => {
-    const fetchItem = async () => {
-      try {
-        const res = await AdminItemById(id);
-        const data = res.data;
-
-        setItemTitle(data.itemName);
-        setItemDescription(data.itemDescription ?? '');
-        setItemPrice(String(data.itemPrice));
-        setSelected(data.itemType);
-        //setPreviewUrl(data.itemImageUrl ?? item1); //이미지 필드 어떻게 받아올 지 (itemImageUrl 같은 건 응답 값에 없음 -> 임시)
-      } catch (error) {
-        console.error('아이템 상세 정보 조회 실패', error);
-      }
-    };
-    fetchItem();
-  }, [id]);
 
   const isDisabled =
     !itemTitle || !itemDescription || !itemPrice || !selected || !previewUrl;
@@ -184,7 +223,7 @@ export default function EditItem({
           />
         </div>
       </div>
-      <Button disabled={isDisabled} onClick={handleSubmit}>
+      <Button disabled={isDisabled || isPending} onClick={handleSubmit}>
         등록하기
       </Button>
 
