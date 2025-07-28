@@ -1,11 +1,12 @@
 import { CircleAlert, CircleCheckBig } from 'lucide-react';
 import LoadingSpinner from '../ui/LoadingSpinner';
+import { me } from '@/api/api';
 
-type MessageType = 'login' | 'delete' | 'success';
+type MessageType = 'login' | 'delete' | 'success' | 'none';
 
 interface AlertModalProps {
   type?: MessageType;
-  title: string;
+  title: React.ReactNode;
   description?: string;
   confirmText?: string;
   cancelText?: string;
@@ -44,9 +45,11 @@ export default function AlertModal({
       )}
       {!isLoading && (
         <div className="h-fit w-[335px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[19px] text-center">
-          <div className="flex flex-col items-center bg-white">
-            {typeIcon[type]}
-          </div>
+          {type !== 'none' && (
+            <div className="flex flex-col items-center bg-white">
+              {typeIcon[type]}
+            </div>
+          )}
           <h2 className="mb-6 text-[18px] font-semibold text-[#222222]">
             {title}
           </h2>

@@ -3,30 +3,21 @@ import backGround from '/public/profileBackGround.svg';
 import character from '/public/images/character.png';
 import coin from '/public/coin.svg';
 // import { useEffect, useState } from 'react';
-import { fetchProfile, fetchUserPoint } from '@/api/member';
+import { fetchProfile, fetchUserItem, fetchUserPoint } from '@/api/member';
 // import { useUserStore } from '@/store/UserStore';
-import { ProfileData } from '../../../../types/User';
+import { Item, ProfileData } from '../../../../types/User';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../common/ui/LoadingSpinner';
+import { useEffect, useState } from 'react';
 
 export default function Profile() {
-  // const [point, setPoint] = useState<number>(0);
-  // const { setPoints } = useUserStore.getState();
-  // useEffect(() => {
-  //   const loadProfileData = async () => {
-  //     try {
-  //       const data = await fetchUserPoint();
-  //       await fetchProfile();
-  //       const point = data.data.points;
-  //       setPoints(point);
-  //       setPoint(point);
-  //     } catch (err) {
-  //       console.error('유저 정보 불러오기 실패', err);
-  //     }
-  //   };
-  //   loadProfileData();
-  // }, [setPoints]);
-
+  const [equippedItem, setEquippedItem] = useState<
+    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
+  >({
+    TOP: null,
+    BOTTOM: null,
+    ACCESSORY: null,
+  });
   const { data: profileData, isLoading: profileLoading } = useQuery<
     ProfileData,
     Error
@@ -45,12 +36,44 @@ export default function Profile() {
     staleTime: 5 * 60 * 1000,
   });
 
+  // 보유아이템 목록 불러오기
+  const { data, isLoading: characterLoading } = useQuery<
+    { data: Item[] },
+    Error
+  >({
+    queryKey: ['user-items'],
+    queryFn: fetchUserItem,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    if (!data) return;
+
+    const allData = data;
+    // 로딩 시 장착된 아이템 초기화
+    const initSelected: Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null> =
+      {
+        TOP: null,
+        BOTTOM: null,
+        ACCESSORY: null,
+      };
+
+    allData.data.forEach((item: Item) => {
+      if (item.isEquipped) {
+        initSelected[item.itemtype] = item.itemKey;
+      }
+    });
+
+    // api 호출 시 아이템 비교용
+    setEquippedItem(initSelected); // 로딩 시 장작된 아이템 저장하기
+  }, [data]);
+
   const nickname = profileData?.member?.nickname ?? '익명';
   const badgeKey = profileData?.badge?.badgeKey ?? 'clean_bronze';
   const badgeName = profileData?.badge?.badgeName ?? '배지 없음';
   const point = userPointData?.points ?? 0;
 
-  if (profileLoading || pointLoading) {
+  if (profileLoading || pointLoading || characterLoading) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
         <LoadingSpinner />
@@ -72,14 +95,47 @@ export default function Profile() {
       />
 
       {/* 캐릭터 이미지 */}
-      <div className="absolute z-10 flex gap-[22px] p-[22px]">
-        <Image
-          src={character}
-          alt="character"
-          width={80} // 정확한 가로값 지정
-          //height={125} // div에 맞춤
-          className="h-auto"
-        />
+      <div className="relative z-10 flex items-center">
+        <div className="relative h-[130px] w-[130px] flex-shrink-0">
+          <Image
+            src="/images/mainCharacter.png"
+            alt="기본 캐릭터"
+            width={130}
+            height={130}
+            priority
+            className="object-contain"
+          />
+          {equippedItem.TOP && (
+            <Image
+              src={`/images/items/${equippedItem.TOP}.png`}
+              alt="상의"
+              width={130}
+              height={130}
+              priority
+              className="absolute top-[4px] object-contain"
+            />
+          )}
+          {equippedItem.BOTTOM && (
+            <Image
+              src={`/images/items/${equippedItem.BOTTOM}.png`}
+              alt="하의"
+              width={130}
+              height={130}
+              priority
+              className="absolute object-contain"
+            />
+          )}
+          {equippedItem.ACCESSORY && (
+            <Image
+              src={`/images/items/${equippedItem.ACCESSORY}.png`}
+              alt="액세서리"
+              width={130}
+              height={130}
+              priority
+              className="absolute top-[0px] object-contain"
+            />
+          )}
+        </div>
         <div className="flex flex-col justify-center">
           <div className="z-20 mb-[7px] flex items-center gap-[5px]">
             <Image
@@ -90,7 +146,7 @@ export default function Profile() {
               style={{ verticalAlign: 'middle' }}
             />
             <span className="text-[10px] font-medium text-[#616161]">
-              {badgeName || '배지 없음'}
+              {badgeName}
             </span>
           </div>
           <div className="mb-[14px] text-[18px] font-bold">{nickname}</div>
