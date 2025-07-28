@@ -7,14 +7,8 @@ export const fetchProfile = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members');
     console.log('회원정보 불러오기 성공', response.data);
-
-    // 로그인 상태 확인
-    // 로그인 상태가 아닐 경우, 유저 정보 저장하지 않음
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return;
-
-    // 유저 정보와 배지 정보 저장
-    const { setMember, setBadge } = useUserStore.getState();
+    const { setIsLoggedIn, setMember, setBadge } = useUserStore.getState();
+    setIsLoggedIn(true);
     setMember(response.data.data.member);
     setBadge(response.data.data.badge);
     return response.data.data;
@@ -29,13 +23,6 @@ export const fetchUserPoint = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members/points');
     console.log('보유포인트 불러오기 성공', response.data);
-
-    // 로그인 상태 확인
-    // 로그인 상태가 아닐 경우, 포인트 정보 저장하지 않음
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return;
-
-    // 유저 포인트 정보 저장
     const { setPoints } = useUserStore.getState();
     setPoints(response.data.data.points);
     return response.data.data;
