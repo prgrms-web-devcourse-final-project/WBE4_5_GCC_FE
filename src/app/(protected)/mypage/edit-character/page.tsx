@@ -5,11 +5,9 @@ import Image from 'next/image';
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import character from '../../../../../public/images/character.png';
 import Button from '@/app/components/common/ui/Button';
 import { equipItem, fetchUserItem, unequipItem } from '@/api/member';
 import { Item } from '../../../../../types/User';
-import ItemImg from '../../../assets/images/item1.png';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
@@ -124,7 +122,6 @@ export default function Page() {
     if (equipString) {
       await equipItem(equipString);
     }
-
     console.log('해제할 아이템:', unEquipString);
     console.log('장착할 아이템:', equipString);
     router.push('/mypage');
@@ -158,13 +155,47 @@ export default function Page() {
       <BackHeader title="캐릭터 꾸미기" />
       <div className="flex flex-col px-5">
         <div className="mt-[27px] mb-[29px] flex h-[178px] min-w-[350px] items-center justify-center rounded-lg border border-[#D9D9D9]">
-          <Image
-            src={character}
-            alt="기본 캐릭터"
-            height={100}
-            priority
-            className="m-2 my-auto w-auto"
-          />
+          {/* 기본 캐릭터 (맨 아래) */}
+          <div className="relative h-[130px] w-[130px] overflow-hidden bg-transparent">
+            <Image
+              src="/images/mainCharacter.png"
+              alt="기본 캐릭터"
+              width={130}
+              height={130}
+              priority
+              className="absolute inset-0 z-0"
+            />
+            {selectedItem.TOP && (
+              <Image
+                src={`/images/items/${selectedItem.TOP}.png`}
+                alt="상의"
+                width={130}
+                height={130}
+                priority
+                className="absolute inset-0 top-[4px] z-10"
+              />
+            )}
+            {selectedItem.BOTTOM && (
+              <Image
+                src={`/images/items/${selectedItem.BOTTOM}.png`}
+                alt="하의"
+                width={130}
+                height={130}
+                priority
+                className="absolute inset-0 z-20"
+              />
+            )}
+            {selectedItem.ACCESSORY && (
+              <Image
+                src={`/images/items/${selectedItem.ACCESSORY}.png`}
+                alt="액세서리"
+                width={130}
+                height={130}
+                priority
+                className="absolute inset-0 z-30"
+              />
+            )}
+          </div>
         </div>
 
         <div className="mb-[22px] min-h-[340px] min-w-[350px]">
@@ -203,9 +234,10 @@ export default function Page() {
                   }}
                 >
                   <Image
-                    src={ItemImg}
+                    src={`/images/items/${item.itemKey}.png`}
                     alt={item.itemName}
                     width={50}
+                    height={70}
                     priority
                     className="mx-auto mt-[3px] mb-2 h-auto"
                   />
