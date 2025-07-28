@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import { BadgeQuestionMark } from 'lucide-react';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
+
+import { useEffect, useRef, useState } from 'react';
 import { useCategoryForm } from '../../../components/admin/context/CategoryFormContext';
 
 export default function EditSubcategoryPage() {
@@ -19,7 +20,7 @@ export default function EditSubcategoryPage() {
   // 이모지 클릭 핸들러
   const handleEmojiSelect = (emojiData: EmojiClickData) => {
     setSelectedEmoji(emojiData.emoji);
-    setEmoji(emojiData.emoji);
+    setEmoji(emojiData.emoji); // context 저장
     setIsPickerOpen(false);
   };
 

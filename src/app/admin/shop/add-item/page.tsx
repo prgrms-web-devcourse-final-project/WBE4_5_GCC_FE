@@ -1,36 +1,34 @@
 'use client';
 
+import Image from 'next/image';
+import { ImagePlus } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+
+import { AdminItems, AddAdminItems } from '@/api/admin/adminItems';
+
 import Input from '@/app/components/common/ui/Input';
-import { ImagePlus } from 'lucide-react';
-import Image from 'next/image';
-import Dropdown from '@/app/components/common/ui/Dropdown';
 import Button from '@/app/components/common/ui/Button';
+import Dropdown from '@/app/components/common/ui/Dropdown';
 import AlertModal from '@/app/components/common/alert/AlertModal';
-import { AddAdminItems } from '@/api/admin/adminItems';
+import { ShopItem } from '../../../../../types/general';
 
 const options = ['TOP', 'BOTTOM', 'ACCESSORY'];
 
-// 랜덤 키값 생성 (서버와 중복방지 처리는 안 되어 있음)
-const generateItemKey = (type: string, index: number) => {
-  const prefix = type.toLowerCase();
-  const number = String(index).padStart(2, '0');
-  return `${prefix}_item_${number}`;
-};
-
 export default function AddItem() {
   const router = useRouter();
-
+  const queryClient = useQueryClient();
   const [itemType, setItemType] = useState('');
   const [itemName, setItemName] = useState('');
   const [itemKey, setItemKey] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
-
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [modalstate, setModalState] = useState<{
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const [modalState, setModalState] = useState<{
     isOpen: boolean;
     type: 'success' | 'delete';
     title: string;
@@ -38,21 +36,47 @@ export default function AddItem() {
     onConfirm: () => void;
   } | null>(null);
 
-  const handleGenerateItemKey = () => {
-    const randomIndex = Math.floor(Math.random() * 99) + 1;
-    const newKey = generateItemKey(itemType, randomIndex);
-    setItemKey(newKey);
+  // 전체 아이템 목록 조회
+  const { data: items = [] } = useQuery({
+    queryKey: ['admin-items'],
+    queryFn: AdminItems,
+    select: (res) => res.data,
+  });
+
+  // 키 생성 함수
+  const generateItemKey = (type: string, index: number) => {
+    const prefix = type.toLowerCase();
+    const number = String(index).padStart(2, '0');
+    return `${prefix}_item_${number}`;
   };
 
-  const handleSubmit = async () => {
-    try {
-      await AddAdminItems({
-        itemKey,
-        itemName,
-        price: Number(itemPrice),
-        itemType,
-      });
+  // 중복되지 않는 키 생성
+  const generateUniqueItemKey = async (type: string): Promise<string> => {
+    for (let i = 1; i <= 99; i++) {
+      const key = generateItemKey(type, i);
+      const isDuplicate = items.some((item: ShopItem) => item.itemKey === key);
+      if (!isDuplicate) return key;
+    }
+    throw new Error('사용 가능한 itemKey를 찾을 수 없습니다.');
+  };
 
+  const handleGenerateItemKey = async () => {
+    if (!itemType) return;
+    setIsGenerating(true);
+    try {
+      const newKey = await generateUniqueItemKey(itemType);
+      setItemKey(newKey);
+    } catch (error) {
+      alert('itemKey 생성 실패');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const addItemMutation = useMutation({
+    mutationFn: AddAdminItems,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-items'] }); // 아이템 목록 갱신
       setModalState({
         isOpen: true,
         type: 'success',
@@ -62,7 +86,8 @@ export default function AddItem() {
           router.push('/admin/shop');
         },
       });
-    } catch (error) {
+    },
+    onError: () => {
       setModalState({
         isOpen: true,
         type: 'delete',
@@ -70,7 +95,17 @@ export default function AddItem() {
         description: '관리자에게 문의해주세요.',
         onConfirm: () => setModalState(null),
       });
-    }
+    },
+  });
+
+  const handleSubmit = () => {
+    addItemMutation.mutate({
+      itemKey,
+      itemName,
+      price: Number(itemPrice),
+      itemType,
+      itemDescription,
+    });
   };
 
   const isDisabled =
@@ -83,6 +118,7 @@ export default function AddItem() {
 
   return (
     <div className="h-1vh flex flex-col gap-6 px-5 py-7">
+      {/* 분류 */}
       <div className="flex flex-col gap-[10px]">
         <h1>아이템 분류</h1>
         <Dropdown
@@ -90,21 +126,23 @@ export default function AddItem() {
           selected={itemType}
           onSelect={(value) => {
             setItemType(value);
-            setItemKey(''); // 키값 초기화
+            setItemKey('');
           }}
         />
       </div>
+
+      {/* 이름 */}
       <div className="flex flex-col gap-[10px]">
         <h1>아이템 이름</h1>
         <Input
           type="text"
-          placeholder="ex)민트 티셔츠"
+          placeholder="ex) 민트 티셔츠"
           value={itemName}
-          onChange={(e) => {
-            setItemName(e.target.value);
-          }}
+          onChange={(e) => setItemName(e.target.value)}
         />
       </div>
+
+      {/* 키 */}
       <div className="flex flex-col gap-2">
         <label className="flex items-center justify-between">
           <span>아이템 키</span>
@@ -112,9 +150,9 @@ export default function AddItem() {
             type="button"
             onClick={handleGenerateItemKey}
             className="text-xs text-blue-500 underline"
-            disabled={!itemType}
+            disabled={!itemType || isGenerating}
           >
-            자동 생성
+            {isGenerating ? '생성 중...' : '자동 생성'}
           </button>
         </label>
         <Input
@@ -123,9 +161,11 @@ export default function AddItem() {
           placeholder="예: top_item_01"
         />
       </div>
+
+      {/* 이미지 */}
       <div className="flex flex-col gap-[10px]">
         <h1>아이템 이미지</h1>
-        <div className="flex h-[121px] w-full flex-col items-center justify-center rounded-[8px] border-1 border-[#e0e0e0]">
+        <div className="flex h-[121px] w-full items-center justify-center rounded-[8px] border border-[#e0e0e0]">
           {previewUrl ? (
             <div className="relative h-full w-full">
               <Image
@@ -145,69 +185,68 @@ export default function AddItem() {
               </button>
             </div>
           ) : (
-            <>
-              <label
-                htmlFor="item-image"
-                className="flex h-[121px] w-full cursor-pointer flex-col items-center justify-center rounded-[8px]"
-              >
-                <ImagePlus className="h-10 w-10 text-[#9e9e9e]" />
-                <input
-                  id="item-image"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      setImageFile(file);
-                      const url = URL.createObjectURL(file);
-                      setPreviewUrl(url);
-                    }
-                  }}
-                  className="hidden"
-                />
-              </label>
-            </>
+            <label
+              htmlFor="item-image"
+              className="flex h-[121px] w-full cursor-pointer flex-col items-center justify-center rounded-[8px]"
+            >
+              <ImagePlus className="h-10 w-10 text-[#9e9e9e]" />
+              <input
+                id="item-image"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setImageFile(file);
+                    setPreviewUrl(URL.createObjectURL(file));
+                  }
+                }}
+                className="hidden"
+              />
+            </label>
           )}
         </div>
       </div>
-      <div>
-        <div className="flex flex-col gap-[10px]">
-          <h1>아이템 설명</h1>
-          <Input
-            type="text"
-            placeholder="ex)시원한 색감의 반팔 티셔츠"
-            value={itemDescription}
-            onChange={(e) => {
-              setItemDescription(e.target.value);
-            }}
-          />
-        </div>
+
+      {/* 설명 */}
+      <div className="flex flex-col gap-[10px]">
+        <h1>아이템 설명</h1>
+        <Input
+          type="text"
+          placeholder="ex) 시원한 색감의 반팔 티셔츠"
+          value={itemDescription}
+          onChange={(e) => setItemDescription(e.target.value)}
+        />
       </div>
-      <div>
-        <div className="flex flex-col gap-[10px]">
-          <h1>아이템 가격</h1>
-          <Input
-            type="number"
-            placeholder="ex) 500"
-            value={itemPrice}
-            onChange={(e) => {
-              setItemPrice(e.target.value);
-            }}
-          />
-        </div>
+
+      {/* 가격 */}
+      <div className="flex flex-col gap-[10px]">
+        <h1>아이템 가격</h1>
+        <Input
+          type="number"
+          placeholder="ex) 500"
+          value={itemPrice}
+          onChange={(e) => setItemPrice(e.target.value)}
+        />
       </div>
-      <Button disabled={isDisabled} onClick={handleSubmit}>
+
+      {/* 등록 버튼 */}
+      <Button
+        disabled={isDisabled || addItemMutation.isPending}
+        onClick={handleSubmit}
+      >
         등록하기
       </Button>
 
-      {modalstate?.isOpen && (
+      {/* 모달 */}
+      {modalState?.isOpen && (
         <AlertModal
-          isOpen={modalstate.isOpen}
-          type={modalstate.type}
-          title={modalstate.title}
-          description={modalstate.description}
+          isOpen={modalState.isOpen}
+          type={modalState.type}
+          title={modalState.title}
+          description={modalState.description}
           confirmText="확인"
-          onConfirm={modalstate.onConfirm}
+          onConfirm={modalState.onConfirm}
         />
       )}
     </div>

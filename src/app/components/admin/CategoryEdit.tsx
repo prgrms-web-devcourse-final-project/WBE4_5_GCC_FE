@@ -1,11 +1,14 @@
 'use client';
+
 import { useEffect, useState, useRef } from 'react';
-import BottomSheet from '../common/ui/BottomSheet';
-import Input from '../common/ui/Input';
-import { X } from 'lucide-react';
-import { BadgeQuestionMark } from 'lucide-react';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { EditAdminCategoryById } from '@/api/admin/adminCategories';
+
+import { X } from 'lucide-react';
+import Input from '../common/ui/Input';
+import { BadgeQuestionMark } from 'lucide-react';
+import BottomSheet from '../common/ui/BottomSheet';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
 
 // 언제할래요 바텀시트
 export default function CategoryEdit({
@@ -23,30 +26,40 @@ export default function CategoryEdit({
   categoryId: number;
   onEditComplete: () => void; // 수정 후 리렌더링
 }) {
+  const queryClient = useQueryClient();
   const [value, setValue] = useState('');
   const pickerRef = useRef<HTMLDivElement>(null);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      return await EditAdminCategoryById(String(categoryId), {
+        name: value,
+        emoji: selectedEmoji ?? '',
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); // 카테고리 목록 갱신
+      onEditComplete();
+      setIsOpen(false);
+    },
+    onError: (error) => {
+      console.error('카테고리 수정 실패:', error);
+      alert('카테고리 수정 중 오류 발생');
+    },
+  });
 
   const handleClick = () => {
     setIsOpen(false);
   };
 
   const handleSubmit = async () => {
-    if (!value || !selectedEmoji) return;
-
-    try {
-      await EditAdminCategoryById(String(categoryId), {
-        categoryName: value,
-        emoji: selectedEmoji,
-        categoryType: 'MAJOR',
-      });
-      console.log('카테고리 수정 완료');
-      onEditComplete(); // 리스트 리프레시
-      setIsOpen(false);
-    } catch (error) {
-      console.error('카테고리 수정 실패', error);
+    if (!value || !selectedEmoji) {
+      alert('이모지와 카테고리 이름을 모두 입력해주세요.');
+      return;
     }
+    mutate();
   };
 
   // 이모지 클릭 핸들러
@@ -99,8 +112,12 @@ export default function CategoryEdit({
           <h2 className="text-base font-semibold text-black">
             카테고리 이름을 입력하세요.
           </h2>
-          <button className="cursor-pointer text-sm" onClick={handleSubmit}>
-            확인
+          <button
+            className="cursor-pointer text-sm"
+            onClick={handleSubmit}
+            disabled={isPending}
+          >
+            {isPending ? '저장 중...' : '확인'}
           </button>
         </div>
 
