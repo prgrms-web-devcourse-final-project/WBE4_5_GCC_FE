@@ -13,7 +13,11 @@ import LoadingSpinner from './ui/LoadingSpinner';
 
 interface Props {
   onClose: () => void;
-  onSelectCategory: (value: CategoryItem) => void;
+  onSelectCategory: (value: SelectedCategory) => void;
+}
+
+interface SelectedCategory extends CategoryItem {
+  subCategoryName?: string;
 }
 
 export default function CategoryBottomSheetContainer({
@@ -23,7 +27,6 @@ export default function CategoryBottomSheetContainer({
   const rotuer = useRouter();
   const [showSubCategory, setShowSubCategory] = useState(false);
   const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [allCategoryData, setAllCategoryData] = useState<CategoryItem[]>([]);
   const [selectedMainCategory, setSelectedMainCategory] =
     useState<CategoryItem>();
 
@@ -33,24 +36,11 @@ export default function CategoryBottomSheetContainer({
 
   const handleSubCategorySelect = (sub: string) => {
     if (selectedMainCategory) {
-      const selectedMajor = allCategoryData.find(
-        (cat) =>
-          cat.categoryType === 'MAJOR' &&
-          cat.categoryName === selectedMainCategory.categoryName,
-      );
-
-      if (selectedMajor) {
-        onSelectCategory({
-          ...selectedMajor, // MAJOR 카테고리 전달
-          subCategoryName: sub, // SUB 카테고리도 전달
-        });
-        onClose();
-      } else {
-        console.warn(
-          '해당 MAJOR 카테고리를 찾을 수 없습니다:',
-          selectedMainCategory,
-        );
-      }
+      onSelectCategory({
+        ...selectedMainCategory,
+        subCategoryName: sub,
+      });
+      onClose();
     }
   };
 
@@ -58,7 +48,7 @@ export default function CategoryBottomSheetContainer({
     onClose();
   };
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useQuery<CategoryItem[]>({
     queryKey: ['user-categories'],
     queryFn: getCategories,
     staleTime: 5 * 60 * 1000,
@@ -68,10 +58,7 @@ export default function CategoryBottomSheetContainer({
   useEffect(() => {
     if (!data) return;
 
-    const allData = data;
-    setAllCategoryData(allData);
-
-    const majors = allData.filter((cat) => cat.categoryType === 'MAJOR');
+    const majors = data.filter((cat) => cat.categoryType === 'MAJOR');
     setCategories(majors);
   }, [data]);
 
@@ -130,46 +117,46 @@ export default function CategoryBottomSheetContainer({
         />
 
         {/* SUB 카테고리 선택 바텀시트 */}
-        {showSubCategory && (
-          <div
-            className="animate-slide-in fixed inset-0 z-50 flex justify-center bg-transparent"
-            onClick={handleOutsideClick}
-          >
+        {showSubCategory &&
+          selectedMainCategory &&
+          selectedMainCategory.children !== undefined && (
             <div
-              className="fixed bottom-0 min-h-[443px] w-full rounded-t-[24px] bg-white px-4 py-8"
-              onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
+              className="animate-slide-in fixed inset-0 z-50 flex justify-center bg-transparent"
+              onClick={handleOutsideClick}
             >
-              <div className="mb-[18px] flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-[18px]">
-                    {selectedMainCategory?.emoji}
-                  </span>
-                  <h2 className="text-base font-semibold text-black">
-                    {selectedMainCategory?.categoryName}
-                  </h2>
+              <div
+                className="fixed bottom-0 min-h-[443px] w-full rounded-t-[24px] bg-white px-4 py-8"
+                onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
+              >
+                <div className="mb-[18px] flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[18px]">
+                      {selectedMainCategory?.emoji}
+                    </span>
+                    <h2 className="text-base font-semibold text-black">
+                      {selectedMainCategory?.categoryName}
+                    </h2>
+                  </div>
+                  <button
+                    onClick={handleEditClick}
+                    className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9E9E9E]"
+                  >
+                    <PencilLine className="size-3" />
+                    편집
+                  </button>
                 </div>
-                <button
-                  onClick={handleEditClick}
-                  className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9E9E9E]"
-                >
-                  <PencilLine className="size-3" />
-                  편집
-                </button>
-              </div>
 
-              <SubCategoryGrid
-                subCategories={allCategoryData
-                  .filter(
-                    (cat) =>
-                      cat.categoryType === 'SUB' &&
-                      cat.parentId === selectedMainCategory?.categoryId,
-                  )
-                  .map((cat) => cat.categoryName)}
-                onSelect={handleSubCategorySelect}
-              />
+                <SubCategoryGrid
+                  subCategories={
+                    selectedMainCategory.children?.map(
+                      (cat) => cat.categoryName,
+                    ) ?? []
+                  }
+                  onSelect={handleSubCategorySelect}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
     </div>
   );
