@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import Button from '@/app/components/common/ui/Button';
 import ListSelector from '@/app/components/routine/ListSelector';
 import ToggleSwitch from '@/app/components/common/ui/ToggleSwitch';
-import CategorySelector from '@/app/components/routine/CategorySelector';
+
 import InputRoutineName from '@/app/components/routine/InputRoutineName';
-import CategoryBottomSheetContainer from '@/app/components/common/CategoryBottomSheetContainer';
+import CategoryBottomSheetContainer from '@/app/components/routine/category/CategoryBottomSheetContainer';
 import RecommendedRoutine from '@/app/components/routine/RecommendedRoutine';
 
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
@@ -14,8 +14,8 @@ import WhenSelector from '@/app/components/routine/WhenSelector';
 import { CategoryItem } from '../../../../../types/general';
 import { useAddRoutine } from '@/api/routine/handleRoutine';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
-
-
+import CategorySelector from '@/app/components/routine/category/CategorySelector';
+import { useRoutinePreset } from '@/api/routine/getRoutinePreset';
 
 export default function Page() {
   const [routineName, setRoutineName] = useState('');
@@ -105,6 +105,14 @@ export default function Page() {
     }
   }, [cycle]);
 
+  const categoryId = Number(selectedCategory?.categoryId);
+  const { data: presetData, isLoading } = useRoutinePreset(categoryId);
+  console.log(presetData);
+
+  useEffect(() => {
+    console.log('카테고리id 선택됨:', categoryId);
+  });
+
   return (
     <>
       <div className="h-1vh flex flex-col px-5 py-7">
@@ -128,10 +136,10 @@ export default function Page() {
             />
           </div>
           <RecommendedRoutine
-            icon="🐣"
-            label="입문자를 위한 추천 루틴"
-            routines={["이불 세탁하기", "신발 관리하기", "셔츠 다림질하기", "계절 옷 정리하기"]}
+            routines={presetData}
             onSelect={setRoutineName}
+            onSelectTime={setDoWhen}
+            isLoading={isLoading}
           />
           {/* section 2 */}
           <div>
@@ -188,12 +196,12 @@ export default function Page() {
                   name: routineName,
                   majorCategory: selectedCategory!.categoryName,
                   subCategory: selectedCategory?.subCategoryName,
-                  startRoutineDate: startDate,
+                  InitDate: startDate,
                   triggerTime: doWhen,
                   isImportant: importance,
                   repeatType: repeatType,
                   repeatValue: repeatValue,
-                  repeatInterval: Number(repeatInterval),
+                  repeatTerm: Number(repeatInterval),
                 },
               })
             }

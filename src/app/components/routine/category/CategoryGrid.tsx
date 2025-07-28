@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { CircleX } from 'lucide-react';
-import { CategoryItem } from '../../../../types/general';
-import { useEditMode } from '../routine/EditModeContext';
+
 import AlertModal from '@/app/components/common/alert/AlertModal';
 import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
+import { useEditMode } from '../EditModeContext';
+import { CategoryItem } from '../../../../../types/general';
 
 interface CategoryGridProps {
   categories: CategoryItem[];

@@ -4,47 +4,69 @@ import { useEffect, useState } from 'react';
 import Button from '@/app/components/common/ui/Button';
 import ListSelector from '@/app/components/routine/ListSelector';
 import ToggleSwitch from '@/app/components/common/ui/ToggleSwitch';
-import CategorySelector from '@/app/components/routine/CategorySelector';
+
 import InputRoutineName from '@/app/components/routine/InputRoutineName';
-import CategoryBottomSheetContainer from '@/app/components/common/CategoryBottomSheetContainer';
+import CategoryBottomSheetContainer from '@/app/components/routine/category/CategoryBottomSheetContainer';
 
 import RepeatSelector from '@/app/components/routine/RepeatSelector';
 import WhenSelector from '@/app/components/routine/WhenSelector';
-import { CategoryItem } from '../../../../../types/types';
+
 import { useRouter } from 'next/navigation';
 import { useRoutineStore } from '@/store/RoutineStore';
 import { useEditRoutine } from '@/api/routine/handleRoutine';
 import LoadingModal from '@/app/components/common/alert/LoadingModal';
+import { CategoryItem } from '../../../../../types/general';
+import CategorySelector from '@/app/components/routine/category/CategorySelector';
 
 export default function Page() {
   const {
     routineId,
-    majorCategory,
-    subCategory,
     name,
     triggerTime,
+    majorCategory,
+    subCategory,
     isImportant,
     startRoutineDate,
+    repeatType,
+    repeatValue,
   } = useRoutineStore();
+
+  useEffect(() => {
+    if (repeatType === 'DAILY') {
+      setCycle({ daily: repeatValue });
+    } else if (repeatType === 'WEEKLY') {
+      setCycle({ days: repeatValue, week: '1' });
+    } else if (repeatType === 'MONTHLY') {
+      setCycle({ month: repeatValue });
+    }
+  }, [repeatType, repeatValue]);
 
   const router = useRouter();
   const [routineName, setRoutineName] = useState(name);
   const [startDate, setStartDate] = useState(startRoutineDate);
-  const [cycle, setCycle] = useState<{ days: string; week: string } | null>(
-    null,
-  );
   const [doWhen, setDoWhen] = useState(triggerTime);
   const [notification, setNotification] = useState(false);
   const [importance, setImportance] = useState(isImportant);
-
   const [showCatModal, setShowCatModal] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(
-    null,
-  );
-
   const [isCycleOpen, setIsCycleOpen] = useState(false);
   const [isWhenDoOpen, setIsWhenDoOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  // ✅ 카테고리 초기값 세팅
+  const [selectedCategory, setSelectedCategory] = useState<CategoryItem>({
+    categoryName: majorCategory,
+    subCategoryName: subCategory ?? undefined,
+    categoryId: 0,
+    categoryType: 'MAJOR',
+  });
+
+  // ✅ cycle 초기값 세팅
+  const [cycle, setCycle] = useState<{
+    daily?: string;
+    days?: string;
+    week?: string;
+    month?: string;
+  } | null>(null);
 
   const isSubmitEnabled =
     selectedCategory !== null &&
@@ -52,33 +74,6 @@ export default function Page() {
     startDate !== '' &&
     cycle !== null &&
     doWhen !== '';
-
-  const convertDaysToNumbers = (days: string) => {
-    const dayMap: Record<string, string> = {
-      월: '1',
-      화: '2',
-      수: '3',
-      목: '4',
-      금: '5',
-      토: '6',
-      일: '7',
-    };
-
-    return days
-      .split(', ')
-      .map((day) => dayMap[day])
-      .filter(Boolean) // 혹시 모를 undefined 제거
-      .join(',');
-  };
-  const getRepeatType = (days: string): 'DAILY' | 'WEEKLY' => {
-    return days.split(', ').length === 7 ? 'DAILY' : 'WEEKLY';
-  };
-
-  const getRepeatValue = (days: string): string | undefined => {
-    return days.split(', ').length === 7
-      ? undefined
-      : convertDaysToNumbers(days);
-  };
 
   // 수정 처리
   const { mutate, isSuccess } = useEditRoutine();
@@ -110,17 +105,13 @@ export default function Page() {
   return (
     <>
       <div className="h-1vh flex flex-col px-5 py-7">
-        {/* 버튼 제외 콘텐츠 */}
         <div className="flex flex-col gap-6">
-          {/* section 1 */}
           <div className="flex flex-col">
             <CategorySelector
               icon="🏷️"
               label="카테고리"
               value={selectedCategory}
               onClick={() => setShowCatModal(true)}
-              storedMajorCategory={majorCategory}
-              storedSubCategory={subCategory}
             />
             <InputRoutineName
               icon="🌱"
@@ -130,7 +121,6 @@ export default function Page() {
               onChange={(e) => setRoutineName(e.target.value)}
             />
           </div>
-          {/* section 2 */}
           <div>
             <ListSelector
               icon="🗓️"
@@ -143,9 +133,13 @@ export default function Page() {
               icon="♾️"
               label="반복주기"
               value={
-                cycle
-                  ? `${cycle.days} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`
-                  : ''
+                cycle?.daily
+                  ? `매 ${cycle.daily}일 마다`
+                  : cycle?.week
+                    ? `${cycle.days} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`
+                    : cycle?.month
+                      ? `매월 ${cycle.month}일 마다`
+                      : ''
               }
               placeholder="매일 / 매주"
               onClick={() => setIsCycleOpen(true)}
@@ -159,7 +153,6 @@ export default function Page() {
               className="rounded-b-lg"
             />
           </div>
-          {/* section 3 */}
           <div>
             <ToggleSwitch
               icon="🔔"
@@ -190,12 +183,12 @@ export default function Page() {
                   name: routineName,
                   majorCategory: selectedCategory!.categoryName,
                   subCategory: selectedCategory!.subCategoryName,
-                  startRoutineDate: startDate,
+                  InitDate: startDate,
                   triggerTime: doWhen,
                   isImportant: importance,
-                  repeatType: getRepeatType(cycle!.days),
-                  repeatValue: getRepeatValue(cycle!.days),
-                  repeatInterval: parseInt(cycle!.week, 10), // string → number 변환
+                  repeatType: repeatType,
+                  repeatValue: repeatValue,
+                  repeatTerm: Number(1),
                 },
               });
               setIsEditing(true);

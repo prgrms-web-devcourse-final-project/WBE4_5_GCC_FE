@@ -1,15 +1,15 @@
-'use client';
 import { PencilLine } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getCategories } from '@/api/categories';
-import { CategoryItem } from '../../../../types/general';
+import { CategoryItem } from '../../../../../types/general';
 
-import CategoryGrid from './CategoryGrid';
-import SubCategoryGrid from './SubCategoryGrid';
+import SubCategoryGrid from '../../common/SubCategoryGrid';
 import { useQuery } from '@tanstack/react-query';
-import LoadingSpinner from './ui/LoadingSpinner';
+import LoadingSpinner from '../../common/ui/LoadingSpinner';
+import CategoryGrid from './CategoryGrid';
+import BottomSheetHeader from './BottomSheetHeader';
 
 interface Props {
   onClose: () => void;
@@ -21,11 +21,13 @@ export default function CategoryBottomSheetContainer({
   onSelectCategory,
 }: Props) {
   const rotuer = useRouter();
-  const [showSubCategory, setShowSubCategory] = useState(false);
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  // 전체 카테고리 데이터 (major + sub)
   const [allCategoryData, setAllCategoryData] = useState<CategoryItem[]>([]);
+  // 현재 선택된 대분류 카테고리
   const [selectedMainCategory, setSelectedMainCategory] =
     useState<CategoryItem>();
+  // 소분류 카테고리 창 열기
+  const [showSubCategory, setShowSubCategory] = useState(false);
 
   const handleEditClick = () => {
     rotuer.push('/routine/edit-category');
@@ -54,26 +56,21 @@ export default function CategoryBottomSheetContainer({
     }
   };
 
-  const handleOutsideClick = () => {
-    onClose();
-  };
-
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['user-categories'],
     queryFn: getCategories,
     staleTime: 5 * 60 * 1000,
   });
 
-  // 받아온 데이터 가공
+  // 데이터 세팅
   useEffect(() => {
-    if (!data) return;
-
-    const allData = data;
-    setAllCategoryData(allData);
-
-    const majors = allData.filter((cat) => cat.categoryType === 'MAJOR');
-    setCategories(majors);
+    if (data) setAllCategoryData(data);
+    console.log(data);
   }, [data]);
+
+  const categories = allCategoryData.filter(
+    (cat) => cat.categoryType === 'MAJOR',
+  );
 
   if (isLoading) {
     return (
@@ -83,7 +80,12 @@ export default function CategoryBottomSheetContainer({
     );
   }
 
+  const handleOutsideClick = () => {
+    onClose();
+  };
+
   return (
+    // 창 닫기
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50"
       onClick={handleOutsideClick}
@@ -93,28 +95,11 @@ export default function CategoryBottomSheetContainer({
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
         {/* 헤더 */}
-        <div className="mb-[18px] flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="w-[18px]pt-[2px]">
-              {selectedMainCategory ? (
-                selectedMainCategory.emoji
-              ) : (
-                <span>🏷️</span>
-              )}
-            </span>
-            <h2 className="text-base font-semibold text-black">
-              {selectedMainCategory?.categoryName || '카테고리 선택'}
-            </h2>
-          </div>
-
-          <button
-            onClick={handleEditClick}
-            className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9E9E9E]"
-          >
-            <PencilLine className="size-3" />
-            편집
-          </button>
-        </div>
+        <BottomSheetHeader
+          emoji={selectedMainCategory?.emoji}
+          title={selectedMainCategory?.categoryName || '카테고리 선택'}
+          onEdit={handleEditClick}
+        />
 
         {/* MAJOR 카테고리 선택 바텀시트 */}
         <CategoryGrid

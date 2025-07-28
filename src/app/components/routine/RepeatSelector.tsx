@@ -9,16 +9,12 @@ import Monthly from './repeatType/Monthly';
 interface RepeatSelectorProps {
   isOpen: boolean;
   onClose: () => void;
-  // onSubmit: (cycleText: string) => void;
   onSubmit: (cycle: {
     daily?: string;
     days?: string;
     week?: string;
     month?: string;
   }) => void;
-  // setRepeatType: (value: string) => void;
-  // setRepeatValue: (value: string) => void;
-  // setRepeatInterval: (value: string) => void;
 }
 
 export default function RepeatSelector({
@@ -26,7 +22,6 @@ export default function RepeatSelector({
   onClose,
   onSubmit,
 }: RepeatSelectorProps) {
-  // 월간 일간 주간 선택
   const [selectedIdx, setSelectedIdx] = useState(1);
 
   return (
@@ -41,7 +36,6 @@ export default function RepeatSelector({
           <h2 className="text-base font-semibold text-black">반복주기</h2>
         </div>
         <div className="flex flex-col">
-          {/* 월간/주간/일간 선택 */}
           <ThreeToggle
             selectedIdx={selectedIdx}
             setSelectedIdx={setSelectedIdx}

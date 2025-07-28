@@ -142,7 +142,9 @@ export default function Page() {
                         isDone: routine.isDone,
                         isImportant: routine.isImportant,
                         date: routine.date,
-                        startRoutineDate: routine.startRoutineDate,
+                        startRoutineDate: routine.InitDate,
+                        repeatType: routine.repeatType,
+                        repeatValue: routine.repeatValue,
                       });
                     }}
                     onDeleteClick={() => {
