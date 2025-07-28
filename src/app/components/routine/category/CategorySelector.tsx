@@ -1,5 +1,5 @@
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { CategoryItem } from '../../../../types/general';
+import { CategoryItem } from '../../../../../types/general';
 
 interface CategorySelectorProps {
   icon: string;

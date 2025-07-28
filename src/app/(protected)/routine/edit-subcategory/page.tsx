@@ -2,7 +2,6 @@
 
 import { CirclePlus } from 'lucide-react';
 import { CircleMinus } from 'lucide-react';
-import { BadgeQuestionMark } from 'lucide-react';
 
 import EditSubcategoryLayout from './EditSubcategoryLayout';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
@@ -38,14 +37,11 @@ export default function Page() {
   const pickerRef = useRef<HTMLDivElement>(null);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
-
-  // 이모지 클릭 핸들러
   const handleEmojiSelect = (emojiData: EmojiClickData) => {
     setSelectedEmoji(emojiData.emoji);
     setIsPickerOpen(false);
   };
 
-  // 이모지 피커 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -71,19 +67,12 @@ export default function Page() {
     if (labelFromParams) setLabel(labelFromParams);
   }, [labelFromParams]);
 
-  // 카테고리 목록 조회
-  const {
-    data: categories = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery<CategoryItem[], Error>({
+  const { data: categories = [], isLoading } = useQuery<CategoryItem[], Error>({
     queryKey: ['edit-subcategory'],
     queryFn: getCategories,
     staleTime: 5 * 60 * 1000,
   });
 
-  // 서브(소분류) 카테고리 수정
   const editSubCategories = async (subCategories: CategoryItem[]) => {
     return await Promise.all(
       subCategories.map((sub) =>
@@ -110,7 +99,6 @@ export default function Page() {
     },
   });
 
-  // 카테고리 삭제
   const deleteCategoryMutation = useMutation({
     mutationFn: DeleteCategoryById,
     onSuccess: (_, deletedId) => {
@@ -128,7 +116,6 @@ export default function Page() {
     },
   });
 
-  // MAJOR 카테고리는 이름 수정 막기
   useEffect(() => {
     if (!categories || !labelFromParams) return;
     const matched = categories.find(
@@ -140,7 +127,6 @@ export default function Page() {
     }
   }, [categories, labelFromParams]);
 
-  // 서브 카테고리 불러오기
   useEffect(() => {
     if (!categories || !label) return;
 
@@ -150,7 +136,6 @@ export default function Page() {
 
     const newSubCategories = major?.children ?? [];
 
-    // 현재 subCategories와 다를 때만 set
     setSubCategories((prev) => {
       const isSame =
         prev.length === newSubCategories.length &&
@@ -162,7 +147,6 @@ export default function Page() {
     });
   }, [categories, label]);
 
-  // 완료 버튼에서 카테고리 수정 API 호출
   const handleComplete = async () => {
     if (!label || categoryType === 'SUB') {
       alert('카테고리 정보를 확인해주세요.');
@@ -171,12 +155,11 @@ export default function Page() {
     editCategoryMutation.mutate(subCategories);
   };
 
-  // 헤더 완료 버튼 클릭 시 서브 카테고리 저장
   const handleAddSubCategory = (newSubName: string) => {
     setSubCategories((prev) => [
       ...prev,
       {
-        categoryId: 1, // 여기 Id 값 어떤 걸로 전달 할 지.. 현재 스웨거에서는 id가 1,2,3 인 데이터에 대해서만 수정 요청을 할 수 있도록 되어 있음.
+        categoryId: 1,
         categoryName: newSubName,
         categoryType: 'SUB',
         parentName: label,
@@ -197,7 +180,6 @@ export default function Page() {
       <EditSubcategoryLayout onComplete={handleComplete} label={label}>
         <div className="flex flex-col gap-7 px-5 py-7">
           <div className="flex items-center gap-3">
-            {/* 좌측 아이콘 영역 */}
             <div
               onClick={() => setIsPickerOpen(true)}
               className="flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0]"
@@ -209,7 +191,6 @@ export default function Page() {
               )}
             </div>
 
-            {/* 우측 인풋 영역 */}
             <div className="w-70 flex-auto border border-transparent border-b-[#E0E0E0] py-2 text-xl text-black">
               <input
                 type="text"
@@ -222,10 +203,8 @@ export default function Page() {
             </div>
           </div>
 
-          {/* 서브 카테고리 추가 */}
           <button
             onClick={() => {
-              //setMode('SUB');
               setIsBottomSheetOpen(true);
             }}
             className="flex gap-2"
@@ -236,7 +215,6 @@ export default function Page() {
             </p>
           </button>
 
-          {/* 소분류 (서브 카테고리) 영역 */}
           <div className="flex flex-col gap-5">
             {subCategories.map((sub) => (
               <div key={sub.categoryId} className="flex gap-2.5">
@@ -285,7 +263,7 @@ export default function Page() {
           />
         )}
       </EditSubcategoryLayout>
-      {/* Emoji picker modal */}
+
       {isPickerOpen && (
         <div ref={pickerRef} className="absolute top-47 left-5 z-50">
           <EmojiPicker onEmojiClick={handleEmojiSelect} />

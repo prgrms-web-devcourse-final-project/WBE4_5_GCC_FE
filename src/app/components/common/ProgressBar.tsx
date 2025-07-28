@@ -28,9 +28,7 @@ export default function ProgressBar({
           barClassName,
         )}
         style={{ width: `${percentage}%` }}
-      >
-        {/* {per} */}
-      </div>
+      ></div>
     </div>
   );
 }

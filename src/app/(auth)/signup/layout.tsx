@@ -17,7 +17,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const name = useSignUpStore((state) => state.name);
   const email = useSignUpStore((state) => state.email);
   const password = useSignUpStore((state) => state.password);
-  const residenceExperience = useSignUpStore((state) => state.residenceExperience);
+  const residenceExperience = useSignUpStore(
+    (state) => state.residenceExperience,
+  );
   const nickname = useSignUpStore((state) => state.nickname);
   const regionDept1 = useSignUpStore((state) => state.regionDept1);
   const regionDept2 = useSignUpStore((state) => state.regionDept2);
@@ -61,6 +63,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       console.error('❌ 에러 발생:', error);
     }
   };
+
+  const params = useSearchParams();
+  useEffect(() => {
+    const isSocial = params.get('social');
+    if (isSocial === 'true') {
+      setStep(4);
+    }
+  }, [params, setStep]);
 
   return (
     <div className="flex min-h-screen flex-col">

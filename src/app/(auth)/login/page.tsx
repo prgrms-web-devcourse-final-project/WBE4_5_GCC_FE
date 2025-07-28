@@ -61,11 +61,12 @@ export default function Page() {
     reset();
   }, [reset]);
 
-  // 카카오 로그인
-  // const handleKakaoLogin = () => {
-  //   // 백엔드 카카오 요청 보내는 url
-  //   window.location.href = "http://localhost:4000/auth/kakao"
-  // }
+  const handleKakaoLogin = () => {
+    window.location.href = 'https://honlife.kro.kr/oauth2/authorization/kakao';
+  };
+  const handleGoogleLogin = () => {
+    window.location.href = 'https://honlife.kro.kr/oauth2/authorization/google';
+  };
 
   return (
     <div className="mt-[150px] flex min-h-screen flex-col items-center bg-white px-5">
@@ -117,6 +118,7 @@ export default function Page() {
               <Button
                 type="button"
                 className="gap-2 border border-[#E0E0E0] bg-white text-black"
+                onClick={handleGoogleLogin}
               >
                 <Image
                   src="/images/google.svg"
@@ -129,6 +131,7 @@ export default function Page() {
               <button
                 type="button"
                 className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#FEE500] py-3 font-medium text-[#000000] transition-colors hover:bg-[#FDD800]"
+                onClick={handleKakaoLogin}
               >
                 <Image src={kakao} alt="Kakao Logo" className="h-5 w-5" />
                 카카오로 로그인

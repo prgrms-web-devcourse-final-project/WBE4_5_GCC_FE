@@ -4,20 +4,16 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { getCategories } from '@/api/categories';
 import { CategoryItem } from '../../../../../types/general';
-import CategoryGrid from '@/app/components/common/CategoryGrid';
+
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
+import CategoryGrid from '@/app/components/routine/category/CategoryGrid';
 
 export default function Page() {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem>();
 
-  const {
-    data: categories = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery<CategoryItem[], Error>({
+  const { data: categories = [], isLoading } = useQuery<CategoryItem[], Error>({
     queryKey: ['edit-categories'],
     queryFn: getCategories,
     staleTime: 5 * 60 * 1000,

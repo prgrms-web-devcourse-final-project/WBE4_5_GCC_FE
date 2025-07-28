@@ -4,8 +4,6 @@ import DayPicker from './DayPicker';
 interface DailyProps {
   onClose: () => void;
   onSubmit: (cycle: { daily: string }) => void;
-  // setRepeatType: (value: string) => void;
-  // setRepeatValue: (value: string) => void;
 }
 
 export default function Daily({
@@ -20,8 +18,6 @@ export default function Daily({
     const cycle = {
       daily: selectedDay,
     };
-    // setRepeatType('DAILY');
-    // setRepeatValue(selectedDay);
     onSubmit(cycle);
     onClose();
   };

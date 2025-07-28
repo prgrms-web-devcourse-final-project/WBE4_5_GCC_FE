@@ -7,13 +7,15 @@ export interface RoutineItem {
   routineId: number;
   scheduleId: number;
   majorCategory: string;
-  subCategory: string | null;
+  subCategory?: string | null;
   name: string;
   triggerTime: string;
   isDone: boolean;
   isImportant: boolean;
   date: string;
   startRoutineDate: string;
+  repeatType: string;
+  repeatValue: string;
 }
 
 interface RoutineStore extends RoutineItem {
@@ -27,20 +29,22 @@ export const useRoutineStore = create<RoutineStore>()(
       routineId: 0,
       scheduleId: 0,
       majorCategory: '',
-      subCategory: null,
+      subCategory: '',
       name: '',
       triggerTime: '',
       isDone: false,
       isImportant: false,
       date: '',
       startRoutineDate: '',
+      repeatType: '',
+      repeatValue: '',
       setRoutine: (routine: RoutineItem) => set(() => ({ ...routine })),
       resetRoutine: () =>
         set(() => ({
           routineId: 0,
           scheduleId: 0,
           majorCategory: '',
-          subCategory: null,
+          subCategory: '',
           name: '',
           triggerTime: '',
           isDone: false,

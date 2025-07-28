@@ -5,8 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 import { AdminCategories } from '@/api/admin/adminCategories';
 
 import CategoryEdit from '@/app/components/admin/CategoryEdit';
-import CategoryGrid from '@/app/components/common/CategoryGrid';
+
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
+import CategoryGrid from '@/app/components/routine/category/CategoryGrid';
 
 interface AdminCategory {
   categoryId: number;

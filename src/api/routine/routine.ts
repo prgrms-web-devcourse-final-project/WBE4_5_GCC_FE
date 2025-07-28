@@ -84,3 +84,12 @@ export const editRoutine = async (id: number, data: EditRoutine) => {
   console.log('루틴 수정 완료:', response);
   return response.data;
 };
+
+// 루틴 프리셋 불러오기
+export const getPreset = async (categoryId: number) => {
+  const response = await axiosInstance.get(`/api/v1/routines/presets`, {
+    params: { categoryId },
+  });
+  console.log('프리셋 불러옴:', response.data.data.presets);
+  return response.data.data.presets;
+};
