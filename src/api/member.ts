@@ -7,12 +7,11 @@ export const fetchProfile = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members');
     console.log('회원정보 불러오기 성공', response.data);
-    const { setUser } = useUserStore.getState();
-    setUser({
-      ...response.data.data,
-      isLoggedIn: true,
-    });
-    return response.data;
+    const { setIsLoggedIn, setMember, setBadge } = useUserStore.getState();
+    setIsLoggedIn(true);
+    setMember(response.data.data.member);
+    setBadge(response.data.data.badge);
+    return response.data.data;
   } catch (error) {
     console.error('회원정보 불러오기 실패', error);
     throw error;
@@ -24,9 +23,9 @@ export const fetchUserPoint = async () => {
   try {
     const response = await axiosInstance.get('/api/v1/members/points');
     console.log('보유포인트 불러오기 성공', response.data);
-    const { setUserPoint } = useUserStore.getState();
-    setUserPoint(response.data.data.points);
-    return response.data;
+    const { setPoints } = useUserStore.getState();
+    setPoints(response.data.data.points);
+    return response.data.data;
   } catch (error) {
     console.error('보유포인트 불러오기 실패', error);
     throw error;

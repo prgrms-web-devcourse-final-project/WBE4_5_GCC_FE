@@ -19,7 +19,7 @@ import { useRoutinePreset } from '@/api/routine/getRoutinePreset';
 
 export default function Page() {
   const [routineName, setRoutineName] = useState('');
-  const [startDate, setStartDate] = useState('');
+  const [InitDate, setInitDate] = useState('');
   const [cycle, setCycle] = useState<{
     daily?: string;
     days?: string;
@@ -38,12 +38,12 @@ export default function Page() {
   const [cycleText, setCycleText] = useState('');
   const [repeatType, setRepeatType] = useState('');
   const [repeatValue, setRepeatValue] = useState('');
-  const [repeatInterval, setRepeatInterval] = useState('');
+  const [repeatTerm, setRepeatTerm] = useState('');
 
   const isSubmitEnabled =
     selectedCategory !== null &&
     routineName !== '' &&
-    startDate !== '' &&
+    InitDate !== '' &&
     cycle !== null &&
     doWhen !== '';
 
@@ -51,24 +51,24 @@ export default function Page() {
     console.log('폼 상태 변경됨:', {
       selectedCategory,
       routineName,
-      startDate,
+      InitDate,
       cycle,
       doWhen,
       importance,
       repeatType,
       repeatValue,
-      repeatInterval,
+      repeatTerm,
     });
   }, [
     selectedCategory,
     routineName,
-    startDate,
+    InitDate,
     cycle,
     doWhen,
     importance,
     repeatType,
     repeatValue,
-    repeatInterval,
+    repeatTerm,
   ]);
 
   const { mutate, isPending } = useAddRoutine();
@@ -93,7 +93,7 @@ export default function Page() {
         );
         setRepeatType('WEEKLY');
         setRepeatValue(cycle.days!);
-        setRepeatInterval(cycle.week);
+        setRepeatTerm(cycle.week);
         break;
       case !!cycle.month:
         setCycleText(`매월 ${cycle.month}일 마다`);
@@ -146,9 +146,9 @@ export default function Page() {
             <ListSelector
               icon="🗓️"
               label="시작일"
-              value={startDate}
+              value={InitDate}
               className="rounded-t-lg"
-              setSelectedDate={setStartDate}
+              setSelectedDate={setInitDate}
             />
             <ListSelector
               icon="♾️"
@@ -196,12 +196,12 @@ export default function Page() {
                   name: routineName,
                   majorCategory: selectedCategory!.categoryName,
                   subCategory: selectedCategory?.subCategoryName,
-                  InitDate: startDate,
+                  InitDate: InitDate,
                   triggerTime: doWhen,
                   isImportant: importance,
                   repeatType: repeatType,
                   repeatValue: repeatValue,
-                  repeatTerm: Number(repeatInterval),
+                  repeatTerm: Number(repeatTerm),
                 },
               })
             }
@@ -229,9 +229,6 @@ export default function Page() {
           onSubmit={(cycleData) => {
             setCycle(cycleData);
           }}
-          // setRepeatType={setRepeatType}
-          // setRepeatValue={setRepeatValue}
-          // setRepeatInterval={setRepeatInterval}
         />
       )}
       {isWhenDoOpen && (

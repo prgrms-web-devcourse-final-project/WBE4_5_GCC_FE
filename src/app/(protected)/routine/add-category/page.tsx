@@ -1,16 +1,19 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { CirclePlus, CircleMinus } from 'lucide-react';
 import { BadgeQuestionMark } from 'lucide-react';
-import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
-import { CreateCategory } from '@/api/categories';
-import AddCategoryLayout from './AddCategoryLayout';
+import { CirclePlus, CircleMinus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { CreateCategory } from '@/api/categories';
+import { useState, useRef, useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+import AddCategoryLayout from './AddCategoryLayout';
+import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import CategoryNameInputBottomSheet from '@/app/components/common/ui/CategoryNameInputBottomSheet';
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const pickerRef = useRef<HTMLDivElement>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -53,6 +56,22 @@ export default function Page() {
     };
   }, [isPickerOpen]);
 
+  const createCategoryMutation = useMutation({
+    mutationFn: (category: {
+      categoryName: string;
+      categoryType: 'MAJOR' | 'SUB';
+      emoji: string | null;
+      parentName: string | null;
+    }) => CreateCategory(category),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['add-category'] });
+    },
+    onError: (error) => {
+      console.log('카테고리 생성 실패', error);
+      alert('카테고리 생성 실패');
+    },
+  });
+
   // 헤더 완료 버튼 클릭 시 카테고리 생성 API 호출
   const handleComplete = async () => {
     if (!mainCategoryName || !selectedEmoji) {
@@ -61,26 +80,31 @@ export default function Page() {
     }
 
     try {
-      await CreateCategory({
+      await createCategoryMutation.mutateAsync({
         categoryName: mainCategoryName,
         categoryType: 'MAJOR',
+        emoji: selectedEmoji,
+        parentName: null,
       });
 
       await Promise.all(
         subCategories.map((subName) =>
-          CreateCategory({
+          createCategoryMutation.mutateAsync({
             categoryName: subName,
             categoryType: 'SUB',
+            emoji: null,
             parentName: mainCategoryName,
           }),
         ),
       );
+
       alert('카테고리 생성 완료!');
       router.push('/routine/edit-category');
     } catch (err) {
       console.error('카테고리 생성 실패', err);
     }
   };
+
   return (
     <>
       <AddCategoryLayout onComplete={handleComplete}>

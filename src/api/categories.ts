@@ -12,8 +12,9 @@ interface CategoryPayload {
 export const getCategories = async (): Promise<CategoryItem[]> => {
   try {
     const response = await axiosInstance.get('/api/v1/categories');
-    console.log('카테고리 불러오기 성공', response.data.data);
-    return response.data.data.categories;
+    const categories = response.data.data.categories;
+    console.log('카테고리 불러오기 성공', categories);
+    return categories;
   } catch (error) {
     console.error('카테고리 불러오기 실패', error);
     throw error;

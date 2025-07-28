@@ -12,9 +12,11 @@ import { nicknameCheck } from '@/api/api';
 import { handleChangeProfile } from '@/api/member';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
 import BackHeader from '@/app/components/common/ui/BackHeader';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const yearOptions = ['1년 미만', '1~3년', '3~5년', '5~10년', '10년 이상'];
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -23,13 +25,14 @@ export default function Page() {
   const [showAlert, setShowAlert] = useState(false);
 
   // zustand에서 프로필정보 불러오기
-  const userNickname = useUserStore((state) => state.nickname);
-  const name = useUserStore((state) => state.name);
+  const userNickname = useUserStore((state) => state.member.nickname);
+  const name = useUserStore((state) => state.member.name);
   const residenceExperience = useUserStore(
-    (state) => state.residenceExperience,
+    (state) => state.member.residenceExperience,
   );
   const region = useUserStore(
-    (state) => `${state.regionDept1} ${state.regionDept2} ${state.regionDept3}`,
+    (state) =>
+      `${state.member.regionDept1} ${state.member.regionDept2} ${state.member.regionDept3}`,
   );
 
   const experience =
@@ -106,6 +109,38 @@ export default function Page() {
     }
   }, [showAlert]);
 
+  const userInfoMutation = useMutation({
+    mutationFn: (params: {
+      nickname: string;
+      residenceExperience: string;
+      regionDept1: string;
+      regionDept2: string;
+      regionDept3: string;
+    }) =>
+      handleChangeProfile(
+        name,
+        params.nickname,
+        params.residenceExperience,
+        params.regionDept1,
+        params.regionDept2,
+        params.regionDept3,
+      ),
+    onSuccess: () => {
+      console.log('회원정보 변경 성공');
+      const prevMember = useUserStore.getState().member;
+      useUserStore
+        .getState()
+        .setMember({ ...prevMember, nickname: trimNickname });
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      router.push('/mypage'); // 회원정보 변경 후 마이페이지로 이동
+    },
+    onError: (error) => {
+      console.error('회원정보 변경 실패', error);
+      setErrors('회원정보 변경에 실패했습니다. 다시 시도해주세요.');
+      setShowAlert(true);
+    },
+  });
+
   // 저장버튼 누를 때
   const handleSubmit = () => {
     if (trimNickname.length === 0) {
@@ -119,17 +154,13 @@ export default function Page() {
       return;
     }
     if (canSave) {
-      handleChangeProfile(
-        name,
-        trimNickname,
+      userInfoMutation.mutate({
+        nickname: trimNickname,
         residenceExperience,
         regionDept1,
         regionDept2,
         regionDept3,
-      );
-
-      const { setUser } = useUserStore.getState();
-      setUser({ nickname: trimNickname });
+      });
       router.push('/mypage');
     }
   };

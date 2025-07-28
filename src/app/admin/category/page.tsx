@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 
-import CategoryGrid from '@/app/components/common/CategoryGrid';
 import CategoryEdit from '@/app/components/admin/CategoryEdit';
 import { AdminCategories } from '@/api/admin/adminCategories';
+import CategoryGrid from '@/app/components/routine/category/CategoryGrid';
 
 interface AdminCategory {
   categoryId: number;

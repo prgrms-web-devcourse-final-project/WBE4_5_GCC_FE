@@ -4,7 +4,8 @@ import BackHeader from '@/app/components/common/ui/BackHeader';
 import NextBtn from '@/app/components/common/ui/NextBtn';
 
 import { useSignUpStore } from '@/store/SignupStore';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const isNextEnabled = useSignUpStore((state) => state.isNextEnabled);
 
-  const signUpHandler = () => { };
+  const signUpHandler = () => {};
 
   const goNext = () => {
     if (step < 7) {
@@ -38,6 +39,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       router.push('/signup/complete');
     }
   };
+
+  const params = useSearchParams();
+  useEffect(() => {
+    const isSocial = params.get('social');
+    if (isSocial === 'true') {
+      setStep(4);
+    }
+  }, [params, setStep]);
 
   return (
     <>
