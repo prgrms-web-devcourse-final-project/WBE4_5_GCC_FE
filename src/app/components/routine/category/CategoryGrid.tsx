@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CircleX } from 'lucide-react';
-
 import AlertModal from '@/app/components/common/alert/AlertModal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
 import { useEditMode } from '../EditModeContext';
 import { CategoryItem } from '../../../../../types/general';
@@ -12,7 +12,6 @@ interface CategoryGridProps {
   onSelectCategory: (label: string) => void;
   isCustom?: boolean;
   isManage?: boolean;
-  onDelete?: () => void;
 }
 
 export default function CategoryGrid({
@@ -21,48 +20,36 @@ export default function CategoryGrid({
   onSelectCategory,
   isCustom = false,
   isManage = false,
-  onDelete,
 }: CategoryGridProps) {
   const { isEditMode } = useEditMode();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetCategory, setTargetCategory] = useState<CategoryItem | null>(
     null,
   );
+  const queryClient = useQueryClient();
 
-  const [flash, setFlash] = useState(false);
-
-  const handleClick = (label: string) => {
-    onSelectCategory?.(label);
-    setFlash(true);
-    setTimeout(() => setFlash(false), 150);
-  };
+  const { mutate: deleteCategory } = useMutation({
+    mutationFn: (id: number) => DeleteAdminCategoryById(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); // 카테고리 목록 갱신
+    },
+    onError: (error) => {
+      console.error('카테고리 삭제 실패:', error);
+      alert('카테고리 삭제 중 오류 발생');
+    },
+  });
 
   const handleDelete = async () => {
     if (!targetCategory) return;
-
-    try {
-      await DeleteAdminCategoryById(targetCategory.categoryId);
-      console.log('카테고리 삭제 성공');
-      onDelete?.(); // 상위에서 전달한 fetch 함수 호출
-    } catch (error) {
-      console.error('카테고리 삭제 실패:', error);
-    } finally {
-      setIsModalOpen(false);
-    }
+    deleteCategory(targetCategory.categoryId);
+    setIsModalOpen(false);
   };
 
   return (
     <div className="grid w-full grid-cols-3 place-items-center gap-x-8 gap-y-3">
       {categories.map((cat, idx) => {
         const isSelected = selected === cat.categoryName;
-        //console.log(
-        //  'selected:',
-        //  selected,
-        //  'cat.label:',
-        //  cat.label,
-        //  'match:',
-        //  selected === cat.label,
-        //);
+
         return (
           <div key={idx} className="flex w-full justify-center">
             <button

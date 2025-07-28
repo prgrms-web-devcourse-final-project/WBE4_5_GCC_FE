@@ -12,33 +12,22 @@ export const AdminItems = async () => {
   }
 };
 
-// 특정 아이템 조회 - 사용 ㅇ
-export const AdminItemById = async (id: string) => {
-  try {
-    const response = await axiosInstance.get(`/api/v1/admin/items/${id}`);
-    console.log('아이템 단건 불러오기 성공', response.data);
-    return response.data;
-  } catch (error) {
-    console.error('아이템 단건 조회 실패', error);
-    throw error;
-  }
-};
-
 // 아이템 수정 - 사용 ㅇ
 interface AdminItemPayload {
-  itemKey: string;
   itemName: string;
   price: number;
   itemType: string;
+  itemDescription: string;
+  itemKey?: string; // 아이템 추가 시 필요
 }
 
-export const EditAdminItemById = async (
-  id: string,
+export const EditAdminItemByKey = async (
+  key: string,
   payload: AdminItemPayload,
 ) => {
   try {
     const response = await axiosInstance.patch(
-      `/api/v1/admin/items/${id}`,
+      `/api/v1/admin/items/${key}`,
       payload,
     );
     console.log('아이템 수정 성공', response.data);
@@ -62,9 +51,9 @@ export const AddAdminItems = async (payload: AdminItemPayload) => {
 };
 
 // 아이템 삭제 - 사용 ㅇ
-export const DeleteAdminItemById = async (id: number) => {
+export const DeleteAdminItemByKey = async (key: string) => {
   try {
-    const response = await axiosInstance.delete(`/api/v1/admin/items/${id}`);
+    const response = await axiosInstance.delete(`/api/v1/admin/items/${key}`);
     console.log('아이템 삭제 성공', response.data);
     return response.data;
   } catch (error) {

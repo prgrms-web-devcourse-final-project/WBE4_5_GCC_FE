@@ -1,9 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { AdminCategories } from '@/api/admin/adminCategories';
 
 import CategoryEdit from '@/app/components/admin/CategoryEdit';
-import { AdminCategories } from '@/api/admin/adminCategories';
+
+import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import CategoryGrid from '@/app/components/routine/category/CategoryGrid';
 
 interface AdminCategory {
@@ -16,27 +19,30 @@ interface AdminCategory {
 }
 
 export default function Page() {
-  const [loading, setLoading] = useState(false); // 나중엔 true로 바꿔야 함
   const [isOpen, setIsOpen] = useState(false);
-  const [categories, setCategories] = useState<AdminCategory[]>([]);
   const [selectedCategory, setSelectedCategory] =
     useState<AdminCategory | null>(null);
 
-  const fetchData = async () => {
-    try {
-      const res = await AdminCategories();
-      console.log('카테고리 목록:', res);
-      setCategories(res.data);
-    } catch (error) {
-      console.error('카테고리 목록을 불러오지 못했습니다', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    data: categories = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['admin-categories'],
+    queryFn: AdminCategories,
+    staleTime: 5 * 60 * 1000,
+    select: (res) => res.data,
+  });
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -48,7 +54,7 @@ export default function Page() {
               selected={selectedCategory?.categoryName || null}
               onSelectCategory={(label) => {
                 const category = categories.find(
-                  (cat) => cat.categoryName === label,
+                  (cat: AdminCategory) => cat.categoryName === label,
                 );
                 if (!category) return;
 
@@ -56,7 +62,6 @@ export default function Page() {
                 setIsOpen(true);
               }}
               isCustom={true}
-              onDelete={fetchData}
             />
           </div>
           {selectedCategory && (
@@ -66,7 +71,7 @@ export default function Page() {
               label={selectedCategory.categoryName}
               icon={selectedCategory.emoji}
               categoryId={selectedCategory.categoryId}
-              onEditComplete={fetchData}
+              onEditComplete={refetch} // 수정 후 갱신
             />
           )}
         </div>

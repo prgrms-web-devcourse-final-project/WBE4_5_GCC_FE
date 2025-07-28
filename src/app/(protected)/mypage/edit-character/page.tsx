@@ -5,22 +5,23 @@ import Image from 'next/image';
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import character from '../../../../../public/images/character.png';
 import Button from '@/app/components/common/ui/Button';
 import { equipItem, fetchUserItem, unequipItem } from '@/api/member';
 import { Item } from '../../../../../types/User';
-import ItemImg from '../../../assets/images/item1.png';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
+import AlertModal from '@/app/components/common/alert/AlertModal';
 
 const tabs = ['전체', '상의', '하의', '액세서리'];
 
 export default function Page() {
   const router = useRouter();
   const [userItem, setUserItem] = useState<Item[]>([]);
+  const [modalItem, setModalItem] = useState<Item | null>(null);
   const [selectedTab, setSelectedTab] = useState('전체');
   const [hasInitialized, setHasInitialized] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<
     Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
   >({
@@ -80,6 +81,11 @@ export default function Page() {
     'ACCESSORY',
   ];
 
+  const handleModal = (item: Item) => {
+    setShowModal(true);
+    setModalItem(item);
+  };
+
   // 착용중 -> 착용하기 토글
   const handleSelect = (item: Item) => {
     setSelectedItem((prev) => ({
@@ -87,6 +93,7 @@ export default function Page() {
       [item.itemtype]:
         prev[item.itemtype] === item.itemKey ? null : item.itemKey,
     }));
+    setShowModal(false);
   };
 
   // 저장하기 버튼 누를 시
@@ -124,7 +131,6 @@ export default function Page() {
     if (equipString) {
       await equipItem(equipString);
     }
-
     console.log('해제할 아이템:', unEquipString);
     console.log('장착할 아이템:', equipString);
     router.push('/mypage');
@@ -154,20 +160,141 @@ export default function Page() {
     );
   }
   return (
-    <div className="h-1vh flex flex-col">
+    <div className="h-1vh mx-auto flex w-full max-w-5xl flex-col">
       <BackHeader title="캐릭터 꾸미기" />
       <div className="flex flex-col px-5">
-        <div className="mt-[27px] mb-[29px] flex h-[178px] min-w-[350px] items-center justify-center rounded-lg border border-[#D9D9D9]">
+        <div className="relative mt-[27px] mb-[29px] flex h-[198px] w-full items-center justify-center overflow-hidden rounded-lg">
+          {/* 배경 이미지 */}
           <Image
-            src={character}
-            alt="기본 캐릭터"
-            height={100}
+            src="/images/itemBackGround.svg"
+            alt="bg"
+            fill
             priority
-            className="m-2 my-auto w-auto"
+            className="object-cover"
           />
+          {/* 아이템박스 */}
+          <div className="absolute left-[33px] z-0 space-y-[9px]">
+            <div
+              className="relative h-[52px] w-[52px] rounded-[4px] border border-[#FFB84C] bg-white"
+              onClick={() => {
+                if (selectedItem.ACCESSORY) {
+                  const equippedKey = userItem.find(
+                    (item) => item.itemKey === selectedItem.ACCESSORY,
+                  );
+                  if (equippedKey) {
+                    handleModal(equippedKey);
+                  }
+                }
+              }}
+            >
+              {selectedItem.ACCESSORY && (
+                <Image
+                  src={`/images/items/thumbs/${selectedItem.ACCESSORY}.png`}
+                  alt="액세서리"
+                  width={53}
+                  height={53}
+                  priority
+                  className="cursor-pointer object-contain p-[4px]"
+                />
+              )}
+            </div>
+            <div
+              className="relative h-[52px] w-[52px] rounded-[4px] border border-[#FFB84C] bg-white"
+              onClick={() => {
+                if (selectedItem.TOP) {
+                  const equippedKey = userItem.find(
+                    (item) => item.itemKey === selectedItem.TOP,
+                  );
+                  if (equippedKey) {
+                    handleModal(equippedKey);
+                  }
+                }
+              }}
+            >
+              {selectedItem.TOP && (
+                <Image
+                  src={`/images/items/thumbs/${selectedItem.TOP}.png`}
+                  alt="상의"
+                  width={53}
+                  height={53}
+                  priority
+                  className="cursor-pointer object-contain p-[4px]"
+                />
+              )}
+            </div>
+            <div
+              className="relative h-[52px] w-[52px] rounded-[4px] border border-[#FFB84C] bg-white"
+              onClick={() => {
+                if (selectedItem.BOTTOM) {
+                  const equippedKey = userItem.find(
+                    (item) => item.itemKey === selectedItem.BOTTOM,
+                  );
+                  if (equippedKey) {
+                    handleModal(equippedKey);
+                  }
+                }
+              }}
+            >
+              {selectedItem.BOTTOM && (
+                <Image
+                  src={`/images/items/thumbs/${selectedItem.BOTTOM}.png`}
+                  alt="하의"
+                  width={53}
+                  height={53}
+                  priority
+                  className="cursor-pointer object-contain p-[4px]"
+                />
+              )}
+            </div>
+          </div>
+
+          {/* 기본 캐릭터 (맨 아래) */}
+          <div className="relative flex h-[130px] w-[130px] flex-shrink-0 items-center justify-center overflow-hidden">
+            <Image
+              src="/images/mainCharacter.png"
+              alt="기본 캐릭터"
+              width={130}
+              height={130}
+              priority
+              className="absolute inset-0 z-0"
+            />
+            {/* 상의 아이템 */}
+            {selectedItem.TOP && (
+              <Image
+                src={`/images/items/${selectedItem.TOP}.png`}
+                alt="상의"
+                width={130}
+                height={130}
+                priority
+                className="absolute inset-0 top-[4px] z-10"
+              />
+            )}
+            {/* 하의 아이템 */}
+            {selectedItem.BOTTOM && (
+              <Image
+                src={`/images/items/${selectedItem.BOTTOM}.png`}
+                alt="하의"
+                width={130}
+                height={130}
+                priority
+                className="absolute inset-0 z-20"
+              />
+            )}
+            {/* 악세사리 아이템 */}
+            {selectedItem.ACCESSORY && (
+              <Image
+                src={`/images/items/${selectedItem.ACCESSORY}.png`}
+                alt="액세서리"
+                width={130}
+                height={130}
+                priority
+                className="absolute inset-0 z-30"
+              />
+            )}
+          </div>
         </div>
 
-        <div className="mb-[22px] min-h-[340px] min-w-[350px]">
+        <div className="mb-[22px] min-h-[340px]">
           {/* 탭 버튼 */}
           <div className="flex">
             {tabs.map((tab) => (
@@ -187,7 +314,10 @@ export default function Page() {
           </div>
 
           {/* 아이템 카드 리스트 */}
-          <div className="relative grid min-h-[340px] min-w-[350px] grid-cols-3 gap-x-[21px] gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[#D9D9D9] bg-white px-[15px] pt-[23px] pb-[54px]">
+          <div
+            className="relative grid min-h-[340px] w-full grid-cols-3 gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[#D9D9D9] bg-white px-[15px] pt-[23px] pb-[54px]"
+            style={{ columnGap: 'clamp(8px, 4vw, 21px)' }}
+          >
             {filteredItem.map((item) => {
               const isSelected = selectedItem[item.itemtype] === item.itemKey;
 
@@ -195,19 +325,24 @@ export default function Page() {
                 <div
                   key={item.itemKey}
                   className={clsx(
-                    'px-auto aspect-[92/128] h-[140px] min-w-[92px] rounded-[5px] border py-[7px] text-center',
-                    isSelected ? 'border-[#FFB84C]' : 'border-[#D9D9D9]',
+                    'px-auto aspect-[92/128] h-[106px] min-w-[92px] cursor-pointer rounded-[5px] border py-[7px] text-center',
+                    isSelected
+                      ? 'border-2 border-[#FFB84C]'
+                      : 'border-[#D9D9D9]',
                   )}
                   style={{
                     boxShadow: '1px 2px 3px 0 rgba(0, 0, 0, 0.15)',
                   }}
+                  // onClick={() => handleSelect(item)}
+                  onClick={() => handleModal(item)}
                 >
                   <Image
-                    src={ItemImg}
+                    src={`/images/items/thumbs/${item.itemKey}.png`}
                     alt={item.itemName}
                     width={50}
+                    height={50}
                     priority
-                    className="mx-auto mt-[3px] mb-2 h-auto"
+                    className="mx-auto h-auto"
                   />
                   <div className="border-t-[0.5px] border-[#E0E0E0] px-[9px] pt-[6px] text-left">
                     <div className="text-[8px] font-medium">
@@ -217,17 +352,6 @@ export default function Page() {
                       {item.itemDescription}
                     </div>
                   </div>
-                  <button
-                    onClick={() => handleSelect(item)}
-                    className={clsx(
-                      'min-h-4 min-w-18 cursor-pointer rounded-[3px] border border-[#E0E0E0] text-[8px]',
-                      isSelected
-                        ? 'border-[#FFB84C] bg-[#FFB84C] font-semibold text-white'
-                        : 'border-[#E0E0E0] bg-white text-[#616161]',
-                    )}
-                  >
-                    {isSelected ? '착용 중' : '착용하기'}
-                  </button>
                 </div>
               );
             })}
@@ -264,6 +388,33 @@ export default function Page() {
           저장하기
         </Button>
       </div>
+      {showModal && modalItem && (
+        <AlertModal
+          isOpen={true}
+          type="none"
+          title={
+            selectedItem[modalItem.itemtype] === modalItem.itemKey ? (
+              <>
+                {modalItem.itemName}를<br />
+                장착 해제하시겠습니까?
+              </>
+            ) : (
+              <>
+                {modalItem.itemName}를<br />
+                장착하시겠습니까?
+              </>
+            )
+          }
+          confirmText={
+            selectedItem[modalItem.itemtype] === modalItem.itemKey
+              ? '장착 해제'
+              : '장착'
+          }
+          cancelText="취소"
+          onConfirm={() => handleSelect(modalItem)}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 }

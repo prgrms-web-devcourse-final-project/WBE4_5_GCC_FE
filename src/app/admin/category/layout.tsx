@@ -3,6 +3,7 @@
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   EditModeProvider,
   useEditMode,
@@ -16,33 +17,31 @@ import { CreateAdminCategories } from '@/api/admin/adminCategories';
 function Header() {
   const router = useRouter();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
   const isEditPage = pathname === '/admin/category';
   const isAddCategoryPage = pathname === '/admin/category/add-category';
   const { isEditMode, toggleEditMode } = useEditMode();
+  const { emoji, name } = useCategoryForm(); // CategoryFromContext
 
-  // CategoryFromContext
-  const { emoji, name } = useCategoryForm();
-
-  const goBack = () => {
-    router.back();
-  };
+  // 카테고리 생성
+  const { mutate, isPending } = useMutation({
+    mutationFn: CreateAdminCategories,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); // 카테고리 목록 갱신
+      router.back();
+    },
+    onError: (error) => {
+      console.error('카테고리 생성 중 오류 발생:', error);
+      alert('카테고리 생성 중 오류 발생');
+    },
+  });
 
   const handleSubmit = async () => {
-    if (!name) {
+    if (!name || !emoji) {
       alert('이모지와 카테고리 이름을 모두 입력해주세요.');
       return;
     }
-
-    try {
-      await CreateAdminCategories({
-        categoryName: name,
-        emoji: emoji,
-        categoryType: 'MAJOR',
-      });
-      router.back();
-    } catch (error) {
-      console.error('카테고리 생성 중 오류 발생:', error);
-    }
+    mutate({ name, emoji }); // 최신 값이 들어감
   };
 
   const handleAddCat = () => {
@@ -59,7 +58,7 @@ function Header() {
       <ChevronLeft
         className="h-auto w-6 text-[#222222]"
         strokeWidth={2}
-        onClick={goBack}
+        onClick={router.back}
       />
       <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222]">
         {pageTitle}
@@ -77,8 +76,12 @@ function Header() {
         )}
 
         {isAddCategoryPage && (
-          <button className="cursor-pointer" onClick={handleSubmit}>
-            완료
+          <button
+            className="cursor-pointer"
+            onClick={handleSubmit}
+            disabled={isPending}
+          >
+            {isPending ? '등록 중...' : '완료'}
           </button>
         )}
       </div>

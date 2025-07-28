@@ -1,7 +1,7 @@
-import Image, { StaticImageData } from 'next/image';
-import item1 from '@/app/assets/images/item1.png';
-import coin from '/public/coin.svg';
+import Image from 'next/image';
 import { X } from 'lucide-react';
+import coin from '/public/coin.svg';
+import item1 from '@/app/assets/images/item1.png';
 import { ShopItem } from '../../../../types/general';
 
 interface ItemCardProps {
@@ -53,7 +53,9 @@ export default function ItemCard({
             <div className="mt-[5px] flex h-5 w-full items-center justify-between rounded-[6px] border-1 border-[#cfcfcf] py-[2px] pr-[14px] pl-[6px]">
               <Image src={coin} alt="coin" className="h-[15px] w-[15px]" />
               <span className="text-[12px] text-[#FFB84C]">
-                {item.itemPoint}
+                {item.itemPoint != null
+                  ? `${item.itemPoint}`
+                  : `${item.itemPrice}`}
               </span>
             </div>
           )}

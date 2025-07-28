@@ -16,7 +16,8 @@ export interface ShopItem {
   itemDescription: string;
   itemKey: string;
   itemName: string;
-  itemPoint: number;
+  itemPoint?: number;
+  itemPrice?: number;
   createTime?: string;
   updateTime?: string;
 }

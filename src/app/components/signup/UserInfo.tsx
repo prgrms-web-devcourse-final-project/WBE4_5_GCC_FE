@@ -35,7 +35,7 @@ export default function UserInfo({ onValidChange }: { onValidChange?: (valid: bo
       setEmailStatus('valid');
     } catch (error) {
       setEmailStatus('invalid');
-      console.log('이메일 중복:', error);
+      console.error('❌ 이메일 중복:', error);
     }
   };
 
@@ -165,18 +165,22 @@ export default function UserInfo({ onValidChange }: { onValidChange?: (valid: bo
         {/* 비밀번호 확인 */}
         <div className="mb-[34px]">
           <p className="mb-[10px] text-[16px] font-semibold">비밀번호 확인</p>
-
-          <div className="relative flex h-[50px] w-full items-center">
+          <div className="relative h-[50px] w-full items-center">
             <Input
               type={showCheckPassword ? 'text' : 'password'}
               value={checkPassword}
               placeholder="비밀번호를 한번 더 입력해주세요"
               onChange={(e) => setCheckPassword(e.target.value)}
+              error={
+                checkPassword.length > 0 && checkPassword !== password
+                  ? '비밀번호가 일치하지 않습니다.'
+                  : ''
+              }
             />
 
             <button
               type="button"
-              className="absolute right-5 cursor-pointer"
+              className="absolute right-5 top-3.5 cursor-pointer"
               onClick={() => setShowCheckPassword((prev) => !prev)}
               aria-label={showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             >
