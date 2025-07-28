@@ -1,7 +1,5 @@
 'use client';
-import { Eye } from 'lucide-react';
-import { EyeClosed } from 'lucide-react';
-import { Check } from 'lucide-react';
+import { Eye, EyeClosed, Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Input from '@/app/components/common/ui/Input';
 import { useFindPwdStore } from '@/store/useFindPwdStore';
@@ -11,46 +9,40 @@ export default function ResetPage() {
   const [checkPassword, setCheckPassword] = useState('');
 
   const setIsNextEnabled = useFindPwdStore((state) => state.setIsNextEnabled);
+  const setNewPassword = useFindPwdStore((state) => state.setNewPassword);
 
   // 비밀번호 유효성 검사
-  // 영문 대소문자
   const hasLowerUpper = /[a-z]/.test(password) && /[A-Z]/.test(password);
-  // 숫자 포함
   const hasNumber = /[0-9]/.test(password);
-  // 특수문자 포함
   const hasSpecial = /[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-='|]/.test(password);
-  // 8자리 이상
   const hasMinLength = password.length >= 8;
 
-  // 조건이 맞는지 확인
   const checkConditionIcon = (condition: boolean) => {
-    return <Check size={16} color={condition ? '#388E3C' : '#9E9E9E'} />
+    return <Check size={16} color={condition ? '#388E3C' : '#9E9E9E'} />;
   };
-  const checkConditionText = (condition: boolean) => {
-    return condition ? 'text-[#388E3C] ' : 'text-[#9E9E9E] ';
-  };
+  const checkConditionText = (condition: boolean) =>
+    condition ? 'text-[#388E3C]' : 'text-[#9E9E9E]';
 
-  // 비밀번호 텍스트로 변경
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPassword, setShowCheckPassword] = useState(false);
 
-  // 다음 버튼 활성화 조건
   const isPasswordOkay =
     hasLowerUpper && hasNumber && hasSpecial && hasMinLength;
   const goNext = isPasswordOkay && password === checkPassword;
 
   useEffect(() => {
     setIsNextEnabled(goNext);
-  }, [goNext, setIsNextEnabled]);
+    if (goNext) {
+      setNewPassword(password);
+    }
+  }, [goNext, setIsNextEnabled, setNewPassword, password]);
 
   return (
     <>
-      {/* 전체 박스 */}
       <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5">
         {/* 비밀번호 */}
         <div className="mb-[34px]">
           <p className="mb-[10px] text-[16px] font-semibold">비밀번호</p>
-
           <div className="relative flex h-[50px] w-full items-center">
             <Input
               type={showPassword ? 'text' : 'password'}
@@ -58,12 +50,11 @@ export default function ResetPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-
             <button
               type="button"
               className="absolute right-5 cursor-pointer"
               onClick={() => setShowPassword((prev) => !prev)}
-              aria-label={showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+              aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             >
               {showPassword ? (
                 <Eye size={20} color="#9E9E9E" />
@@ -72,7 +63,8 @@ export default function ResetPage() {
               )}
             </button>
           </div>
-          {/* 비밀번호 확인 체크 */}
+
+          {/* 비밀번호 조건 */}
           <div className="mt-[10px] text-[12px]">
             <div className="flex gap-9">
               <div className="flex w-[160px] items-center gap-[6px]">
@@ -102,10 +94,10 @@ export default function ResetPage() {
             </div>
           </div>
         </div>
+
         {/* 비밀번호 확인 */}
         <div className="mb-[34px]">
           <p className="mb-[10px] text-[16px] font-semibold">비밀번호 확인</p>
-
           <div className="relative h-[50px] w-full items-center">
             <Input
               type={showCheckPassword ? 'text' : 'password'}
@@ -118,10 +110,9 @@ export default function ResetPage() {
                   : ''
               }
             />
-
             <button
               type="button"
-              className="absolute right-5 cursor-pointer"
+              className="absolute right-5 top-3.5 cursor-pointer"
               onClick={() => setShowCheckPassword((prev) => !prev)}
               aria-label={showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             >

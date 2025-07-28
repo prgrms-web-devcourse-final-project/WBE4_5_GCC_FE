@@ -1,25 +1,26 @@
 'use client';
 
 import Image from 'next/image';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Eye, EyeClosed } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import { useRouter } from 'next/navigation';
 import { useSignUpStore } from '@/store/SignupStore';
-import { handleSignIn } from '@/api/api';
+import { signIn } from '@/api/auth';
 import kakao from '/public/kakao.svg';
 
 export default function Page() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {},
   );
 
   const logInHandler = async () => {
     try {
-      await handleSignIn(email, password);
+      await signIn(email, password);
       if (email === 'admin@test.com') {
         router.push('/admin');
       } else {
@@ -77,13 +78,29 @@ export default function Page() {
             onChange={(e) => setEmail(e.target.value)}
             error={errors.email}
           />
-          <Input
-            placeholder="비밀번호를 입력해 주세요"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={errors.password}
-          />
+          <div className="relative">
+            <Input
+              placeholder="비밀번호를 입력해 주세요"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={errors.password}
+              className="pr-10"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-5 top-3.5 cursor-pointer"
+              aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+            >
+              {showPassword ? (
+                <Eye size={20} color="#9E9E9E" />
+              ) : (
+                <EyeClosed size={20} color="#9E9E9E" />
+              )}
+            </button>
+          </div>
+
           <div className="my-6 space-y-6">
             <Button
               type="submit"

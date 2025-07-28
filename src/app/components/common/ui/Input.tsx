@@ -28,7 +28,7 @@ export default function Input({
         <p className="mt-2.5 ml-1.5 text-[12px] text-[#D32F2F]">{error}</p>
       )}
       {success && (
-        <p className="mt-2.5 ml-1.5 text-[12px] text-green-500">{success}</p>
+        <p className="mt-2.5 ml-1.5 text-[12px] text-[#388E3C]">{success}</p>
       )}
     </div>
   );

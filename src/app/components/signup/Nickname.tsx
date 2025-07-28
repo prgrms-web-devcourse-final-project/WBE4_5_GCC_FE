@@ -18,9 +18,8 @@ export default function Nickname() {
   // 닉네임 중복 확인 로직
   const validateNickname = async () => {
     try {
-      const res = await checkNickname(nickname);
+      await checkNickname(nickname);
       setNicknameStatus('valid');
-      console.log('닉네임 중복 검사 성공:', res);
     } catch (error) {
       setNicknameStatus('invalid');
       console.error('닉네임 중복 에러:', error);
@@ -46,10 +45,12 @@ export default function Nickname() {
       {/* 전체 박스 */}
       <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 select-none">
         {/* 진행률 바 */}
-        <ProgressBar currentStep={1} totalSteps={3} />
+        <ProgressBar currentStep={1} totalSteps={4} />
 
         <div className="mt-11 mb-2 flex flex-col gap-6">
-          <span>닉네임을 입력해 주세요</span>
+          <h1 className="text-[20px] font-semibold">
+            닉네임을 입력해 주세요
+          </h1>
           <div className="flex gap-[10px]">
             <Input
               value={nickname}
@@ -67,10 +68,10 @@ export default function Nickname() {
         </div>
 
         {nicknameStatus === 'invalid' && (
-          <p className="text-[14px] text-[#D32F2F]">이미 사용 중인 닉네임 입니다.</p>
+          <p className="text-[14px] text-[#D32F2F]">이미 사용 중인 닉네임입니다.</p>
         )}
         {nicknameStatus === 'valid' && (
-          <p className="text-[14px] text-[#388E3C]">사용 가능한 닉네임 입니다.</p>
+          <p className="text-[14px] text-[#388E3C]">사용 가능한 닉네임입니다.</p>
         )}
       </div>
     </>

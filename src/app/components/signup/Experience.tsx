@@ -1,6 +1,6 @@
 'use client';
 
-import ProgressBar from '@/app/components/common/ProgressBar';
+import ProgressBar from '../common/ProgressBar';
 import { useSignUpStore } from '@/store/SignupStore';
 
 import { useEffect, useState } from 'react';
@@ -39,7 +39,7 @@ export default function Experience() {
     <>
       {/* 전체 박스 */}
       <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 select-none">
-        <ProgressBar currentStep={2} totalSteps={3} />
+        <ProgressBar currentStep={3} totalSteps={4} />
         <h1 className="mb-7 text-[20px] font-semibold">
           자취 경력이 어떻게 되시나요?
         </h1>
@@ -49,8 +49,8 @@ export default function Experience() {
               key={idx}
               onClick={() => setSelectedIndex(idx)}
               className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${selectedIndex === idx
-                  ? 'bg-[#FFB84C] text-[#ffffff]'
-                  : 'border-[#E0E0E0]'
+                ? 'bg-[#FFB84C] text-[#ffffff]'
+                : 'border-[#E0E0E0]'
                 } `}
             >
               {option}
@@ -64,8 +64,8 @@ export default function Experience() {
               key={idx + 3}
               onClick={() => setSelectedIndex(idx + 3)}
               className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${selectedIndex === idx + 3
-                  ? 'bg-[#FFB84C] text-[#ffffff]'
-                  : 'border-[#E0E0E0]'
+                ? 'bg-[#FFB84C] text-[#ffffff]'
+                : 'border-[#E0E0E0]'
                 } `}
             >
               {option}
