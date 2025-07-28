@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function EditSubcategoryLayout({
   children,
@@ -12,17 +12,17 @@ export default function EditSubcategoryLayout({
   label: string;
   onComplete?: () => void;
 }) {
+  const router = useRouter();
   return (
     <div>
       <div className="flex flex-col">
         <header className="relative flex w-full items-center justify-between border-[0.5px] border-transparent border-b-[#CCCCCC] px-3 py-4">
           <div>
-            <Link href={'/routine/edit-category'}>
-              <ChevronLeft
-                className="h-auto w-6 text-[#222222]"
-                strokeWidth={2}
-              />
-            </Link>
+            <ChevronLeft
+              className="h-auto w-6 text-[#222222]"
+              strokeWidth={2}
+              onClick={() => router.push('/routine/edit-category')}
+            />
           </div>
 
           <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222]">

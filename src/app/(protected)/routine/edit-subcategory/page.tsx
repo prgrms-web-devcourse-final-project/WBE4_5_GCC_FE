@@ -71,7 +71,7 @@ export default function Page() {
     if (labelFromParams) setLabel(labelFromParams);
   }, [labelFromParams]);
 
-  // 카테고리 수정 API 호출
+  // 카테고리 목록 조회
   const {
     data: categories = [],
     isLoading,
@@ -83,19 +83,22 @@ export default function Page() {
     staleTime: 5 * 60 * 1000,
   });
 
+  // 서브(소분류) 카테고리 수정
+  const editSubCategories = async (subCategories: CategoryItem[]) => {
+    return await Promise.all(
+      subCategories.map((sub) =>
+        EditCategoryById(sub.categoryId, {
+          categoryName: sub.categoryName,
+          categoryType: 'SUB',
+          parentName: label,
+          emoji: null,
+        }),
+      ),
+    );
+  };
+
   const editCategoryMutation = useMutation({
-    mutationFn: async (subCategories: CategoryItem[]) => {
-      return await Promise.all(
-        subCategories.map((sub) =>
-          EditCategoryById(sub.categoryId, {
-            categoryName: sub.categoryName,
-            categoryType: 'SUB',
-            parentName: label,
-            emoji: null,
-          }),
-        ),
-      );
-    },
+    mutationFn: editSubCategories,
     onSuccess: () => {
       alert('카테고리 수정 완료!');
       queryClient.invalidateQueries({ queryKey: ['edit-subcategory'] });
@@ -103,7 +106,25 @@ export default function Page() {
     },
     onError: (error) => {
       console.error('카테고리 수정 실패', error);
-      alert('수정에 실패했습니다.');
+      alert('카테고리 수정에 실패했습니다.');
+    },
+  });
+
+  // 카테고리 삭제
+  const deleteCategoryMutation = useMutation({
+    mutationFn: DeleteCategoryById,
+    onSuccess: (_, deletedId) => {
+      queryClient.invalidateQueries({ queryKey: ['delete-subcategory'] });
+      setSubCategories((prev) =>
+        prev.filter((cat) => cat.categoryId !== deletedId),
+      );
+      setIsModalOpen(false);
+      setDeleteTargetId(null);
+    },
+    onError: (error) => {
+      console.error('삭제 실패', error);
+      alert('삭제 실패');
+      setIsModalOpen(false);
     },
   });
 
@@ -122,10 +143,23 @@ export default function Page() {
   // 서브 카테고리 불러오기
   useEffect(() => {
     if (!categories || !label) return;
-    const filtered = categories.filter(
-      (cat) => cat.categoryType === 'SUB' && cat.parentName === label,
+
+    const major = categories.find(
+      (cat) => cat.categoryName === label && cat.categoryType === 'MAJOR',
     );
-    setSubCategories(filtered);
+
+    const newSubCategories = major?.children ?? [];
+
+    // 현재 subCategories와 다를 때만 set
+    setSubCategories((prev) => {
+      const isSame =
+        prev.length === newSubCategories.length &&
+        prev.every(
+          (prevCat, index) =>
+            prevCat.categoryId === newSubCategories[index].categoryId,
+        );
+      return isSame ? prev : newSubCategories;
+    });
   }, [categories, label]);
 
   // 완료 버튼에서 카테고리 수정 API 호출
@@ -234,18 +268,9 @@ export default function Page() {
               setIsModalOpen(false);
               setDeleteTargetId(null);
             }}
-            onConfirm={async () => {
-              try {
-                await DeleteCategoryById(deleteTargetId);
-                setSubCategories((prev) =>
-                  prev.filter((cat) => cat.categoryId !== deleteTargetId),
-                );
-                setIsModalOpen(false);
-                setDeleteTargetId(null);
-              } catch (error) {
-                alert('삭제 실패');
-                console.error(error);
-                setIsModalOpen(false);
+            onConfirm={() => {
+              if (deleteTargetId !== null) {
+                deleteCategoryMutation.mutate(deleteTargetId);
               }
             }}
           />

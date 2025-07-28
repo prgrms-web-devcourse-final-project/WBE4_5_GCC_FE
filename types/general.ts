@@ -4,11 +4,10 @@ export interface CategoryItem {
   emoji?: string;
   categoryType: 'MAJOR' | 'SUB';
   parentId?: number | null;
-  memberId?: number | null;
-  parentName?: string | null;
-  subCategoryName?: string;
+  children?: CategoryItem[] | null; // MAJOR에만 사용
   createTime?: string;
   updateTime?: string | null;
+  subCategoryName?: string | null;
 }
 
 export interface ShopItem {

@@ -9,6 +9,7 @@ import BackHeader from '@/app/components/common/ui/BackHeader';
 import { handleChangePassword } from '@/api/member';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
 import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 
 export default function Page() {
   const router = useRouter();
@@ -74,7 +75,7 @@ export default function Page() {
   const isPasswordOkay = newPassword.length > 0 && confirmPassword.length > 0;
   // && password.length > 0;
   const goNext =
-    isPasswordOkay && passwordChecks && newPassword === confirmPassword;
+    isPasswordOkay && isPasswordValid && newPassword === confirmPassword;
 
   // 알림창 시간
   useEffect(() => {
@@ -87,101 +88,117 @@ export default function Page() {
     }
   }, [showAlert]);
 
+  const newPasswordMutation = useMutation({
+    mutationFn: (newPassword: string) => handleChangePassword(newPassword),
+    onSuccess: () => {
+      console.log('비밀번호 변경 성공');
+      router.push('/mypage');
+    },
+    onError: (error) => {
+      console.error('비밀번호 변경 실패', error);
+      setErrors('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
+      setShowAlert(true);
+    },
+  });
+
   // 변경하기 버튼
-  const handleSubmit = async () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!isPasswordValid) {
       setErrors('비밀번호 조건을 확인해주세요');
       setShowAlert(true);
       return;
     }
-    await handleChangePassword(newPassword);
-    console.log('비밀번호 변경 성공');
-    router.push('/mypage');
+    newPasswordMutation.mutate(newPassword);
   };
 
   return (
     <div className="flex min-h-screen flex-col gap-7">
       {/* 상단 컨텐츠 */}
       <BackHeader title="비밀번호 변경" />
-      <div className="flex flex-col gap-y-6 px-5">
-        <div className="flex flex-col gap-y-2.5">
-          <h1 className="text-[16px] font-semibold text-[#222222]">
-            새 비밀번호
-          </h1>
-          <div className="relative">
-            <Input
-              type={showNew ? 'text' : 'password'}
-              placeholder="새 비밀번호를 입력해 주세요"
-              value={newPassword}
-              onChange={(e) => handleNewPasswordChange(e.target.value)}
-            />
-            <button
-              type="button"
-              className="absolute top-1/2 right-3 -translate-y-1/2"
-              onClick={() => setShowNew(!showNew)}
-            >
-              {showNew ? (
-                <Eye className="h-auto w-[18px] text-[#9E9E9E]" />
-              ) : (
-                <EyeClosed className="h-auto w-[18px] text-[#9E9E9E]" />
-              )}
-            </button>
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-y-6 px-5">
+          <div className="flex flex-col gap-y-2.5">
+            <h1 className="text-[16px] font-semibold text-[#222222]">
+              새 비밀번호
+            </h1>
+            <div className="relative">
+              <Input
+                type={showNew ? 'text' : 'password'}
+                placeholder="새 비밀번호를 입력해 주세요"
+                value={newPassword}
+                autoComplete="off"
+                onChange={(e) => handleNewPasswordChange(e.target.value)}
+              />
+              <button
+                type="button"
+                className="absolute top-1/2 right-3 -translate-y-1/2"
+                onClick={() => setShowNew(!showNew)}
+              >
+                {showNew ? (
+                  <Eye className="h-auto w-[18px] text-[#9E9E9E]" />
+                ) : (
+                  <EyeClosed className="h-auto w-[18px] text-[#9E9E9E]" />
+                )}
+              </button>
+            </div>
+
+            {/* 비밀번호 조건 */}
+            <div className="mt-[10px] grid grid-cols-2 gap-x-6 gap-y-[10px]">
+              {conditionList.map(({ key, label }) => (
+                <div key={key} className="flex items-center gap-[6px]">
+                  <Check
+                    className={`h-auto w-4 ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C]' : 'text-[#C4C4C4]'}`}
+                  />
+                  <p
+                    className={`text-[12px] ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C]' : 'text-[#9E9E9E]'}`}
+                  >
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* 비밀번호 조건 */}
-          <div className="mt-[10px] grid grid-cols-2 gap-x-6 gap-y-[10px]">
-            {conditionList.map(({ key, label }) => (
-              <div key={key} className="flex items-center gap-[6px]">
-                <Check
-                  className={`h-auto w-4 ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C]' : 'text-[#C4C4C4]'}`}
-                />
-                <p
-                  className={`text-[12px] ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C]' : 'text-[#9E9E9E]'}`}
-                >
-                  {label}
-                </p>
-              </div>
-            ))}
+          <div className="flex flex-col gap-y-2.5">
+            <h1 className="text-[16px] font-semibold text-[#222222]">
+              새 비밀번호 확인
+            </h1>
+            <div className="relative h-[50px] w-full items-center">
+              <Input
+                type={showConfirm ? 'text' : 'password'}
+                placeholder="새 비밀번호를 한 번 더 입력해 주세요"
+                value={confirmPassword}
+                autoComplete="off"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                error={confirmPasswordError}
+              />
+              <button
+                type="button"
+                className="absolute top-1/2 right-3 -translate-y-1/2"
+                onClick={() => setShowConfirm(!showConfirm)}
+              >
+                {showConfirm ? (
+                  <Eye className="h-auto w-[18px] text-[#9E9E9E]" />
+                ) : (
+                  <EyeClosed className="h-auto w-[18px] text-[#9E9E9E]" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col gap-y-2.5">
-          <h1 className="text-[16px] font-semibold text-[#222222]">
-            새 비밀번호 확인
-          </h1>
-          <div className="relative h-[50px] w-full items-center">
-            <Input
-              type={showConfirm ? 'text' : 'password'}
-              placeholder="새 비밀번호를 한 번 더 입력해 주세요"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              error={confirmPasswordError}
-            />
-            <button
-              type="button"
-              className="absolute top-1/2 right-3 -translate-y-1/2"
-              onClick={() => setShowConfirm(!showConfirm)}
-            >
-              {showConfirm ? (
-                <Eye className="h-auto w-[18px] text-[#9E9E9E]" />
-              ) : (
-                <EyeClosed className="h-auto w-[18px] text-[#9E9E9E]" />
-              )}
-            </button>
+        <div className="fixed right-5 bottom-[70px] left-5">
+          <div className="flex justify-center">
+            {errors && showAlert && (
+              <AlertMessage type="error" message={errors} className="mb-10" />
+            )}
           </div>
+          <Button type="submit" disabled={!goNext}>
+            변경하기
+          </Button>
         </div>
-      </div>
-
-      <div className="fixed right-5 bottom-[70px] left-5">
-        <div className="flex justify-center">
-          {errors && showAlert && (
-            <AlertMessage type="error" message={errors} className="mb-10" />
-          )}
-        </div>
-        <Button type="submit" onClick={handleSubmit} disabled={!goNext}>
-          변경하기
-        </Button>
-      </div>
+      </form>
     </div>
   );
 }

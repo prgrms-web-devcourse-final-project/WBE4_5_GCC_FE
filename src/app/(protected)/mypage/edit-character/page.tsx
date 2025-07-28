@@ -11,6 +11,8 @@ import { equipItem, fetchUserItem, unequipItem } from '@/api/member';
 import { Item } from '../../../../../types/User';
 import ItemImg from '../../../assets/images/item1.png';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 
 const tabs = ['전체', '상의', '하의', '액세서리'];
 
@@ -34,46 +36,37 @@ export default function Page() {
     ACCESSORY: null,
   });
 
-  // 보유아이템 불러오기
+  // 보유아이템 목록 불러오기
+  const { data, isLoading } = useQuery<{ data: Item[] }, Error>({
+    queryKey: ['user-items'],
+    queryFn: fetchUserItem,
+    staleTime: 5 * 60 * 1000,
+  });
+
   useEffect(() => {
-    const loadUserItem = async () => {
-      try {
-        const data = await fetchUserItem();
-        setUserItem(data.data);
-        const initSelected: Record<
-          'TOP' | 'BOTTOM' | 'ACCESSORY',
-          string | null
-        > = {
-          TOP: null,
-          BOTTOM: null,
-          ACCESSORY: null,
-        };
+    if (!data) return;
 
-        data.data.forEach((item: Item) => {
-          if (item.isEquipped) {
-            initSelected[item.itemtype] = item.itemKey;
-          }
-        });
+    const allData = data;
+    setUserItem(allData.data);
+    // 로딩 시 장착된 아이템 초기화
+    const initSelected: Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null> =
+      {
+        TOP: null,
+        BOTTOM: null,
+        ACCESSORY: null,
+      };
 
-        // api 호출 시 아이템 비교용
-        setEquippedItem(initSelected); // 로딩 시 장작된 아이템 저장하기
-        setSelectedItem(initSelected); // 착용중, 착용해제 할 아이템 저장하기
-        setHasInitialized(true);
-      } catch (err) {
-        console.log('유저아이템 정보 받아오기 실패', err);
+    allData.data.forEach((item: Item) => {
+      if (item.isEquipped) {
+        initSelected[item.itemtype] = item.itemKey;
       }
-    };
-    loadUserItem();
-  }, []);
+    });
 
-  // 착용중 -> 착용하기 토글
-  const handleSelect = (item: Item) => {
-    setSelectedItem((prev) => ({
-      ...prev,
-      [item.itemtype]:
-        prev[item.itemtype] === item.itemKey ? null : item.itemKey,
-    }));
-  };
+    // api 호출 시 아이템 비교용
+    setEquippedItem(initSelected); // 로딩 시 장작된 아이템 저장하기
+    setSelectedItem(initSelected); // 착용중, 착용해제 할 아이템 저장하기
+    setHasInitialized(true);
+  }, [data]);
 
   useEffect(() => {
     if (hasInitialized) {
@@ -86,6 +79,15 @@ export default function Page() {
     'BOTTOM',
     'ACCESSORY',
   ];
+
+  // 착용중 -> 착용하기 토글
+  const handleSelect = (item: Item) => {
+    setSelectedItem((prev) => ({
+      ...prev,
+      [item.itemtype]:
+        prev[item.itemtype] === item.itemKey ? null : item.itemKey,
+    }));
+  };
 
   // 저장하기 버튼 누를 시
   // 이미 입고있던 옷 유지 -> 호출 필요없음
@@ -144,6 +146,13 @@ export default function Page() {
           return false;
         });
 
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
   return (
     <div className="h-1vh flex flex-col">
       <BackHeader title="캐릭터 꾸미기" />
