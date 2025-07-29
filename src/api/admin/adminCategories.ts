@@ -28,18 +28,12 @@ interface AdminCategoryPayload {
 }
 
 export const CreateAdminCategories = async (payload: AdminCategoryPayload) => {
-  try {
-    const response = await axiosInstance.post(
-      '/api/v1/admin/categories',
-      payload,
-    );
-    console.log('카테고리 생성 성공', response.data);
-    return response.data;
-  } catch (error: any) {
-    console.error('카테고리 생성 실패', error);
-    console.error('서버 에러 응답:', error.response?.data);
-    throw error;
-  }
+  const response = await axiosInstance.post(
+    '/api/v1/admin/categories',
+    payload,
+  );
+  console.log('카테고리 생성 성공', response.data);
+  return response.data;
 };
 
 // 카테고리 삭제
@@ -61,16 +55,10 @@ export const EditAdminCategoryById = async (
   id: string,
   payload: AdminCategoryPayload,
 ) => {
-  try {
-    const response = await axiosInstance.patch(
-      `/api/v1/admin/categories/${id}`,
-      payload,
-    );
-    console.log('카테고리 수정 성공', response.data);
-    return response.data;
-  } catch (error: any) {
-    console.error('카테고리 수정 실패', error);
-    console.error('서버 에러 응답:', error.response?.data);
-    throw error;
-  }
+  const response = await axiosInstance.patch(
+    `/api/v1/admin/categories/${id}`,
+    payload,
+  );
+  console.log('카테고리 수정 성공', response.data);
+  return response.data;
 };

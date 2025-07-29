@@ -18,18 +18,6 @@ const options = [
   '📄 행정',
 ];
 
-const serverOptions = [
-  'clean', // 청소 / 정리
-  'self_development', // 자기개발
-  'outing', // 외출
-  'laundry', // 세탁 / 의류
-  'cooking', // 요리
-  'spending', // 소비
-  'waste', // 쓰레기 / 환경
-  'health', // 건강
-  'administration', // 행정
-];
-
 export default function Category() {
   const setIsNextEnabled = useSignUpStore((state) => state.setIsNextEnabled);
   const [selectedIndex, setSelectedIndex] = useState<number[]>([]);

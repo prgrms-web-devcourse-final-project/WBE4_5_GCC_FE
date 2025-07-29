@@ -1,6 +1,5 @@
 import { CircleAlert, CircleCheckBig } from 'lucide-react';
 import LoadingSpinner from '../ui/LoadingSpinner';
-import { me } from '@/api/api';
 
 type MessageType = 'login' | 'delete' | 'success' | 'none';
 

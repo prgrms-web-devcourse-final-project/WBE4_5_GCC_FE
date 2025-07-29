@@ -21,8 +21,16 @@ export default function Header() {
   const router = useRouter();
   const [openNoti, setOpenNoti] = useState(false);
   const [notiList, setNotiList] = useState<Noti[]>([
-    { title: '아직 끝내지 않은 루틴이 있어요. 힘내서 마무리해 볼까요?', date: '2025.07.29', new: true },
-    { title: '축하해요! 퀘스트 보상이 준비되었어요. 멋지게 받아가세요!', date: '2025.07.28', new: false },
+    {
+      title: '아직 끝내지 않은 루틴이 있어요. 힘내서 마무리해 볼까요?',
+      date: '2025.07.29',
+      new: true,
+    },
+    {
+      title: '축하해요! 퀘스트 보상이 준비되었어요. 멋지게 받아가세요!',
+      date: '2025.07.28',
+      new: false,
+    },
   ]);
 
   const currentPoint = useUserStore((state) => state.points);
@@ -74,7 +82,9 @@ export default function Header() {
         {isShop ? (
           <div className="flex items-center space-x-1">
             <Image src={coin} alt="coin" width={14} height={14} />
-            <span className="text-[12px] font-semibold text-[#FFB84C]">{currentPoint}</span>
+            <span className="text-[12px] font-semibold text-[#FFB84C]">
+              {currentPoint}
+            </span>
           </div>
         ) : (
           <Bell
@@ -87,7 +97,10 @@ export default function Header() {
 
       {openNoti && <Notification noti={notiList} setOpenNoti={setOpenNoti} />}
 
-      <div className="mb-[0px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
+      <div
+        className="mb-[96px]"
+        style={{ marginTop: 'env(safe-area-inset-top)' }}
+      />
     </>
   );
 }

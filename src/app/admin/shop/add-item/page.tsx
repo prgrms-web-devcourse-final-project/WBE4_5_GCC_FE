@@ -67,7 +67,7 @@ export default function AddItem() {
       const newKey = await generateUniqueItemKey(itemType);
       setItemKey(newKey);
     } catch (error) {
-      alert('itemKey 생성 실패');
+      alert(`itemKey 생성 실패, ${error}`);
     } finally {
       setIsGenerating(false);
     }
