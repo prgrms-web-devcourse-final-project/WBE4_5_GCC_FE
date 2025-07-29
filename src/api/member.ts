@@ -1,6 +1,6 @@
 import { useUserStore } from '@/store/UserStore';
 import { axiosInstance } from './axiosInstance';
-import { Quest } from '../../types/User';
+import { QuestResponse } from '../../types/general';
 
 // 유저정보 불러오기
 export const fetchProfile = async () => {
@@ -46,11 +46,16 @@ export const fetchUserPoint = async () => {
 };
 
 // 유저 보유 퀘스트 불러오기
-export const fetchUserQuest = async (): Promise<Quest[]> => {
+export const fetchUserQuest = async (): Promise<QuestResponse> => {
+  // 로그인 상태 확인
+  // 로그인 상태가 아닐 경우, 포인트 정보 저장하지 않음
+  const { isLoggedIn } = useUserStore.getState();
+  if (!isLoggedIn) return { weeklyQuests: [], eventQuests: [] };
+
   try {
     const response = await axiosInstance.get('/api/v1/members/quests');
-    console.log('보유퀘스트 불러오기 성공');
-    return response.data.data;
+    console.log('보유퀘스트 불러오기 성공', response.data);
+    return response.data.data as QuestResponse;
   } catch (error) {
     console.error('보유퀘스트 불러오기 실패', error);
     throw error;

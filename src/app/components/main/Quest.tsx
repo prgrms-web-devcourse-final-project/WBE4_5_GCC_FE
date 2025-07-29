@@ -2,11 +2,11 @@ import { useState } from 'react';
 import Tabs from '../shop/Tabs';
 import QuestList from './QuestList';
 import { fetchUserQuest } from '@/api/member';
-import type { Quest } from '../../../../types/User';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../common/ui/LoadingSpinner';
+import { EventQuest, Quest, QuestResponse } from '../../../../types/general';
 
-export default function Quest({
+export default function QuestPage({
   setOpenQuest,
   className,
 }: {
@@ -15,44 +15,28 @@ export default function Quest({
 }) {
   const tabs = ['주간 퀘스트', '이벤트 퀘스트'];
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
-  // const [userQuest, setUserQuest] = useState<Quest[]>([]);
-
-  // useEffect(() => {
-  //   const loadUserQuest = async () => {
-  //     try {
-  //       const data = await fetchUserQuest();
-  //       console.log('유저 퀘스트:', data);
-  //       setUserQuest(data.data);
-  //     } catch (err) {
-  //       console.error('유저 정보 불러오기 실패', err);
-  //     }
-  //   };
-
-  //   loadUserQuest();
-  // }, []);
 
   const {
-    data: userQuest = [],
+    data: userQuest = { weeklyQuests: [], eventQuests: [] },
     isLoading,
     isError,
-  } = useQuery<Quest[], Error>({
+  } = useQuery<QuestResponse, Error>({
     queryKey: ['user-quests'],
     queryFn: fetchUserQuest,
     staleTime: 5 * 60 * 1000, // 5분 캐싱
   });
 
-  const filteredQuest =
-    selectedTab === '전체'
-      ? userQuest
-      : userQuest.filter((quest) => {
-          if (selectedTab === '주간 퀘스트' && !quest.isDone) {
-            return quest.questKey.startsWith('weekly_');
-          }
-          if (selectedTab === '이벤트 퀘스트' && !quest.isDone) {
-            return quest.questKey.startsWith('event_');
-          }
-          return false;
-        });
+  const allQuests: (Quest | EventQuest)[] = [
+    ...userQuest.weeklyQuests,
+    ...userQuest.eventQuests,
+  ];
+
+  const filteredQuest: (Quest | EventQuest)[] =
+    selectedTab === '주간 퀘스트'
+      ? userQuest.weeklyQuests
+      : selectedTab === '이벤트 퀘스트'
+        ? userQuest.eventQuests
+        : allQuests;
 
   if (isLoading) {
     return (
@@ -91,7 +75,7 @@ export default function Quest({
             className="h-[37px] min-w-[140px] text-[14px]"
           />
           <div
-            className={`mx-auto flex h-[569px] w-full min-w-[350px] flex-col items-center gap-4 overflow-y-scroll rounded-[8px] rounded-tl-none border-3 border-[#A47148] bg-white px-4 py-[18px] ${className}`}
+            className={`mx-auto flex h-[569px] w-full min-w-[360px] flex-col items-center gap-4 overflow-y-scroll rounded-[8px] rounded-tl-none border-3 border-[#A47148] bg-white px-4 py-[18px] ${className}`}
           >
             {filteredQuest.map((quest) => (
               <QuestList key={quest.questKey} quest={quest} />
