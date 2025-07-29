@@ -10,7 +10,7 @@ export default function NotiContent({ noti }: { noti: Noti[] }) {
       {noti.map((item, idx) => (
         <div
           key={idx}
-          className="relative cursor-pointer border-b border-dotted border-[#a47148] pt-[14px] pb-[14px]"
+          className="relative cursor-pointer border-b-2 border-dotted border-[#A47148] pt-[8px] pb-[14px]"
           onClick={() => {
             // 클릭 시 처리 로직
           }}
@@ -21,7 +21,7 @@ export default function NotiContent({ noti }: { noti: Noti[] }) {
                 }`}
             />
             <div className="flex-1">
-              <h1 className="text-[14px] font-medium text-[#3a2d18] mb-[2px]">
+              <h1 className="text-[14px] font-medium text-[#222] mb-[2px]">
                 {item.title}
               </h1>
               <h2 className="text-[12px] text-[#9e9e9e]">{item.date}</h2>

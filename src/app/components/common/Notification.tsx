@@ -17,26 +17,22 @@ export default function Notification({
 }) {
   return (
     <div
-      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60"
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 px-4"
       onClick={() => setOpenNoti(false)}
     >
-      <div
-        className="absolute z-100"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="w-full max-w-[360px]" onClick={(e) => e.stopPropagation()}>
         <div
-          className={`flex h-[384px] w-[350px] px-5 flex-col rounded-[8px] border-[3px] border-[#A47148] bg-white ${className}`}
+          className={`flex flex-col max-h-[50vh] rounded-[8px] border-[3px] border-[#A47148] bg-white shadow-xl ${className}`}
         >
-          <div className="flex items-center justify-between border-b border-[#A47148] py-[14px] text-[15px] font-bold text-[#222]">
+          <div className="flex items-center justify-between border-b-2 border-[#d3bba7] px-5 pt-5 pb-4 text-[15px] font-bold text-[#222]">
             <span>
               <span className="mr-1">🔔</span> 알림
             </span>
-            <button className="text-[12px] font-medium text-[#9e9e9e] cursor-pointer">
+            <button className="mr-2 text-[12px] font-medium text-[#616161] cursor-pointer">
               모두 읽기
             </button>
           </div>
-
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto px-5 py-3 mb-5 space-y-2">
             <NotiContent noti={noti} />
           </div>
         </div>
