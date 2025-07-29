@@ -2,7 +2,7 @@ export interface CategoryItem {
   categoryId: number;
   categoryName: string;
   emoji?: string;
-  categoryType: 'MAJOR' | 'SUB';
+  categoryType: 'MAJOR' | 'SUB' | 'DEFAULT';
   parentId?: number | null;
   children?: CategoryItem[] | null; // MAJOR에만 사용
   createTime?: string;
@@ -39,4 +39,25 @@ export interface Badge {
   pointAdded?: number;
   totalPoint?: number;
   receivedAt?: string;
+}
+
+export interface Quest {
+  questId: number;
+  progressId: number;
+  categoryId: number;
+  questKey: string;
+  questName: string;
+  target: number;
+  points: number;
+  progress: number;
+}
+
+export interface EventQuest extends Quest {
+  startAt: string;
+  endAt: string;
+}
+
+export interface QuestResponse {
+  weeklyQuests: Quest[];
+  eventQuests: EventQuest[];
 }

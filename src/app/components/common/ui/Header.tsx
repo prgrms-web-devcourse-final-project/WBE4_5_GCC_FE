@@ -36,7 +36,7 @@ export default function Header() {
   return (
     <>
 
-      <div className="fixed top-0 flex h-[56px] w-full items-center justify-between bg-white px-5 py-[18px] shadow-sm select-none">
+      <div className="fixed top-0 z-50 flex h-[56px] w-full items-center justify-between bg-white px-5 py-[18px] shadow-sm select-none">
         {isHome || isAdmin ? (
 
           <Image

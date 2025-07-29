@@ -1,7 +1,7 @@
 'use client';
 import Profile from './components/main/Profile';
 import Routine from './components/routine/Routine';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import quest from '/public/quest.svg';
 import acheivement from '/public/acheivement.svg';
@@ -9,7 +9,7 @@ import FloatingButton from './components/common/FloatingButton';
 import Donut from './components/common/ui/Donut';
 import { useRouter } from 'next/navigation';
 import Quest from './components/main/Quest';
-import { routineHandler } from '@/api/routine/routine';
+import { fetchWeekRoutine, routineHandler } from '@/api/routine/routine';
 import { DayRoutine } from '../../types/routine';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from './components/common/ui/LoadingSpinner';
@@ -25,6 +25,7 @@ export default function Main() {
   const router = useRouter();
 
   const { data: weekData, isPending: weekLoading } = useWeekRoutine();
+  console.log('weekData:', weekData);
 
   const today = format(new Date(), 'yyyy-MM-dd');
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[today] ?? [];
@@ -45,8 +46,10 @@ export default function Main() {
       isDone: boolean;
     }) => routineHandler(scheduleId, isDone),
     onSuccess: () => {
-      // 완료/취소 후 다시 조회
-      queryClient.invalidateQueries({ queryKey: ['routine-today'] });
+      queryClient.invalidateQueries({
+        queryKey: ['routine-week'],
+        exact: false,
+      });
     },
   });
 
@@ -54,9 +57,13 @@ export default function Main() {
     router.push('/collection');
   };
 
+  useEffect(() => {
+    fetchWeekRoutine('2025-07-31');
+  }, []);
+
   return (
     <>
-      <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col items-center bg-white">
+      <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col items-center bg-white select-none">
         <div className="absolute top-[-20px] right-10 z-30 my-8">
           <FloatingButton
             src={quest}
@@ -130,6 +137,7 @@ export default function Main() {
                     useRoutineStore.getState().setRoutine({
                       routineId: routine.routineId,
                       scheduleId: routine.scheduleId,
+                      categoryId: routine.categoryId,
                       majorCategory: routine.majorCategory,
                       subCategory: routine.subCategory,
                       name: routine.name,
@@ -137,7 +145,9 @@ export default function Main() {
                       isDone: routine.isDone,
                       isImportant: routine.isImportant,
                       date: routine.date,
-                      startRoutineDate: routine.startRoutineDate,
+                      initDate: routine.initDate,
+                      repeatType: routine.repeatType,
+                      repeatValue: routine.repeatValue!,
                     });
                   }}
                   onDeleteClick={() => setCheckDelete(true)}

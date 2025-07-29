@@ -26,8 +26,6 @@ export default function Page() {
   const {
     data: categories = [],
     isLoading,
-    isError,
-    error,
     refetch,
   } = useQuery({
     queryKey: ['admin-categories'],

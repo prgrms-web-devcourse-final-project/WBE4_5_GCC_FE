@@ -1,8 +1,9 @@
 'use client';
 import { AdminWithdraw } from '@/api/admin/adminWithdraw';
-import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 
 interface Reason {
   reason: string;
@@ -11,21 +12,23 @@ interface Reason {
 
 export default function Page() {
   const { idx } = useParams();
-  const [reason, setReason] = useState<Reason | null>(null);
 
-  useEffect(() => {
-    const fetchWithdraw = async () => {
-      try {
-        const res = await AdminWithdraw();
-        const list: Reason[] = res.data;
-        const current = list[Number(idx)];
-        setReason(current || null);
-      } catch (error) {
-        console.error('불러오기 실패', error);
-      }
-    };
-    fetchWithdraw();
-  }, [idx]);
+  const { data: reasons = [], isLoading } = useQuery<Reason[]>({
+    queryKey: ['adminWithdrawReasons'],
+    queryFn: AdminWithdraw,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const reason = reasons[Number(idx)] || null;
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex min-h-screen bg-white px-5">

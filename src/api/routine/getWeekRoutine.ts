@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchWeekRoutine } from './routine';
 import { startOfWeek, format } from 'date-fns';
 import { DayRoutine } from '../../../types/routine';
-interface WeekRoutineResponse {
+export interface WeekRoutineResponse {
   routines: Record<string, DayRoutine[]>;
 }
 export function useWeekRoutine(dateStr?: string) {
@@ -15,6 +15,6 @@ export function useWeekRoutine(dateStr?: string) {
   return useQuery<WeekRoutineResponse>({
     queryKey: ['routine-week', mondayStr],
     queryFn: () => fetchWeekRoutine(mondayStr),
-    staleTime: 5000,
+    staleTime: 0,
   });
 }
