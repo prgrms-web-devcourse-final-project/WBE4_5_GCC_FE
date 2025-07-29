@@ -16,10 +16,12 @@ import { useAddRoutine } from '@/api/routine/handleRoutine';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import CategorySelector from '@/app/components/routine/category/CategorySelector';
 import { useRoutinePreset } from '@/api/routine/getRoutinePreset';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
+  const router = useRouter();
   const [routineName, setRoutineName] = useState('');
-  const [InitDate, setInitDate] = useState('');
+  const [initDate, setInitDate] = useState('');
   const [cycle, setCycle] = useState<{
     daily?: string;
     days?: string;
@@ -43,7 +45,7 @@ export default function Page() {
   const isSubmitEnabled =
     selectedCategory !== null &&
     routineName !== '' &&
-    InitDate !== '' &&
+    initDate !== '' &&
     cycle !== null &&
     doWhen !== '';
 
@@ -51,7 +53,7 @@ export default function Page() {
     console.log('폼 상태 변경됨:', {
       selectedCategory,
       routineName,
-      InitDate,
+      initDate,
       cycle,
       doWhen,
       importance,
@@ -62,7 +64,7 @@ export default function Page() {
   }, [
     selectedCategory,
     routineName,
-    InitDate,
+    initDate,
     cycle,
     doWhen,
     importance,
@@ -71,7 +73,17 @@ export default function Page() {
     repeatTerm,
   ]);
 
-  const { mutate, isPending } = useAddRoutine();
+  const { mutate, isPending, isSuccess } = useAddRoutine();
+
+  useEffect(() => {
+    if (isSuccess) {
+      // queryClient.invalidateQueries({
+      //   queryKey: ['routine-week'],
+      //   exact: false,
+      // });
+      router.push('/routine');
+    }
+  }, [isSuccess, router]);
 
   useEffect(() => {
     if (!cycle) {
@@ -83,7 +95,7 @@ export default function Page() {
       case !!cycle.daily:
         setCycleText(`매 ${cycle.daily}일 마다`);
         setRepeatType('DAILY');
-        setRepeatValue(cycle.daily!);
+        setRepeatTerm(cycle.daily!);
         break;
       case !!cycle.week:
         setCycleText(
@@ -97,6 +109,7 @@ export default function Page() {
       case !!cycle.month:
         setCycleText(`매월 ${cycle.month}일 마다`);
         setRepeatType('MONTHLY');
+        setRepeatTerm('1');
         setRepeatValue(cycle.month!);
         break;
       default:
@@ -145,7 +158,7 @@ export default function Page() {
             <ListSelector
               icon="🗓️"
               label="시작일"
-              value={InitDate}
+              value={initDate}
               className="rounded-t-lg"
               setSelectedDate={setInitDate}
             />
@@ -188,22 +201,20 @@ export default function Page() {
           <Button
             type="submit"
             disabled={!isSubmitEnabled}
-            onClick={() =>
+            onClick={() => {
               mutate({
                 AddData: {
-                  categoryId: selectedCategory!.categoryId,
                   name: routineName,
-                  majorCategory: selectedCategory!.categoryName,
-                  subCategory: selectedCategory?.subCategoryName,
-                  InitDate: InitDate,
+                  categoryId: selectedCategory!.categoryId,
+                  initDate: initDate,
                   triggerTime: doWhen,
                   isImportant: importance,
                   repeatType: repeatType,
                   repeatValue: repeatValue,
                   repeatTerm: Number(repeatTerm),
                 },
-              })
-            }
+              });
+            }}
           >
             확인
           </Button>

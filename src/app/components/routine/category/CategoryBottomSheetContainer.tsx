@@ -24,14 +24,14 @@ export default function CategoryBottomSheetContainer({
   onClose,
   onSelectCategory,
 }: Props) {
-  const rotuer = useRouter();
+  const router = useRouter();
   const [showSubCategory, setShowSubCategory] = useState(false);
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [selectedMainCategory, setSelectedMainCategory] =
     useState<CategoryItem>();
 
   const handleEditClick = () => {
-    rotuer.push('/routine/edit-category');
+    router.push('/routine/edit-category');
   };
 
   const handleSubCategorySelect = (sub: string) => {
@@ -54,7 +54,7 @@ export default function CategoryBottomSheetContainer({
   useEffect(() => {
     if (!data) return;
 
-    const majors = data.filter((cat) => cat.categoryType === 'MAJOR');
+    const majors = data.filter((cat) => cat.categoryType === 'DEFAULT');
     setCategories(majors);
   }, [data]);
 
@@ -77,7 +77,7 @@ export default function CategoryBottomSheetContainer({
       onClick={handleOutsideClick}
     >
       <div
-        className="min-h-[443px] w-full rounded-t-[24px] bg-white px-4 py-8"
+        className="min-h-[490px] w-full rounded-t-[24px] bg-white px-4 py-8"
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
         {/* 헤더 */}

@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 
 interface Reason {
   reason: string;
@@ -14,21 +16,14 @@ interface Reason {
 
 export default function Page() {
   const router = useRouter();
-  const [reasons, setReasons] = useState<Reason[]>([]);
   const [errors, setErrors] = useState('');
   const [showAlert, setShowAlert] = useState(false);
 
-  useEffect(() => {
-    const fetchWithdraw = async () => {
-      try {
-        const res = await AdminWithdraw();
-        setReasons(res.data);
-      } catch (error) {
-        console.error('불러오기 실패', error);
-      }
-    };
-    fetchWithdraw();
-  }, []);
+  const { data: reasons = [], isLoading } = useQuery<Reason[]>({
+    queryKey: ['adminWithdrawReasons'],
+    queryFn: AdminWithdraw,
+    staleTime: 5 * 60 * 1000,
+  });
 
   useEffect(() => {
     if (showAlert) {
@@ -39,6 +34,14 @@ export default function Page() {
       return () => clearTimeout(timer);
     }
   }, [showAlert]);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <>

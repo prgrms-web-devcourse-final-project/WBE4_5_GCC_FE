@@ -3,9 +3,10 @@
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import NextBtn from '@/app/components/common/ui/NextBtn';
 import { useSignUpStore } from '@/store/SignupStore';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { signUp } from '@/api/auth';
 import { handleChangeProfile } from '@/api/member';
+import { useEffect } from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();

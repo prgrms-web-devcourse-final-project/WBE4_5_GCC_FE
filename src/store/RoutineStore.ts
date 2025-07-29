@@ -6,6 +6,7 @@ import { persist } from 'zustand/middleware';
 export interface RoutineItem {
   routineId: number;
   scheduleId: number;
+  categoryId: number;
   majorCategory: string;
   subCategory?: string | null;
   name: string;
@@ -13,7 +14,7 @@ export interface RoutineItem {
   isDone: boolean;
   isImportant: boolean;
   date: string;
-  startRoutineDate: string;
+  initDate: string;
   repeatType: string;
   repeatValue: string;
 }
@@ -30,12 +31,13 @@ export const useRoutineStore = create<RoutineStore>()(
       scheduleId: 0,
       majorCategory: '',
       subCategory: '',
+      categoryId: 1,
       name: '',
       triggerTime: '',
       isDone: false,
       isImportant: false,
       date: '',
-      startRoutineDate: '',
+      initDate: '',
       repeatType: '',
       repeatValue: '',
       setRoutine: (routine: RoutineItem) => set(() => ({ ...routine })),
@@ -43,6 +45,7 @@ export const useRoutineStore = create<RoutineStore>()(
         set(() => ({
           routineId: 0,
           scheduleId: 0,
+          categoryId: 1,
           majorCategory: '',
           subCategory: '',
           name: '',
@@ -50,7 +53,9 @@ export const useRoutineStore = create<RoutineStore>()(
           isDone: false,
           isImportant: false,
           date: '',
-          startRoutineDate: '',
+          initDate: '',
+          repeatType: '',
+          repeatValue: '',
         })),
     }),
     { name: 'routine-storage' },
