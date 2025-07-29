@@ -19,7 +19,6 @@ export default function QuestList({ quest, type }: QuestListProps) {
     mutationFn: ({ type, id }: { type: string; id: number }) =>
       acceptQuest(type, id),
     onSuccess: () => {
-      console.log('퀘스트 보상받기 성공');
       setIsOpen(true);
 
       // 보상받기 후 퀘스트 목록, 유저 포인트 최신화
