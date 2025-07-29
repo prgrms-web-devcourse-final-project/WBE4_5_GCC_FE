@@ -8,20 +8,23 @@ import { EventQuest, Quest } from '../../../../types/general';
 
 interface QuestListProps {
   quest: Quest | EventQuest;
+  type: 'WEEKLY' | 'EVENT';
 }
 
-export default function QuestList({ quest }: QuestListProps) {
+export default function QuestList({ quest, type }: QuestListProps) {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
 
   const acceptQuestMutation = useMutation({
-    mutationFn: (key: string) => acceptQuest(key),
+    mutationFn: ({ type, id }: { type: string; id: number }) =>
+      acceptQuest(type, id),
     onSuccess: () => {
       console.log('퀘스트 보상받기 성공');
       setIsOpen(true);
 
-      // 보상받기 후 퀘스트 목록 최신화
+      // 보상받기 후 퀘스트 목록, 유저 포인트 최신화
       queryClient.invalidateQueries({ queryKey: ['user-quests'] });
+      queryClient.invalidateQueries({ queryKey: ['user-point'] });
     },
     onError: (error) => {
       console.error('퀘스트 보상받기 실패', error);
@@ -29,7 +32,7 @@ export default function QuestList({ quest }: QuestListProps) {
   });
 
   const handleClick = () => {
-    acceptQuestMutation.mutate('weekly_quest_01');
+    acceptQuestMutation.mutate({ type, id: quest.progressId });
   };
 
   const questProgress = Math.floor((quest.progress / quest.target) * 100);
