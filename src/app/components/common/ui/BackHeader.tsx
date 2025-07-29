@@ -1,6 +1,6 @@
 'use client';
 import { ChevronLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSignUpStore } from '@/store/SignupStore';
 
 interface BackHeaderProps {
@@ -15,11 +15,17 @@ export default function BackHeader({
   defaultBackPath = '/',
 }: BackHeaderProps) {
   const router = useRouter();
-
+  const params = useSearchParams();
   const step = useSignUpStore((state) => state.step);
   const setStep = useSignUpStore((state) => state.setStep);
+  const isSocial = params.get('social') === 'true';
 
   const goBack = () => {
+    if (isSocial) {
+      router.push('/login');
+      return;
+    }
+
     if (useStep) {
       if (step === 1) {
         router.push(defaultBackPath);
@@ -41,33 +47,3 @@ export default function BackHeader({
     </div>
   );
 }
-
-// import { ChevronLeft } from 'lucide-react';
-
-// import { useSignUpStore } from '@/store/SignupStore';
-// import { useRouter } from 'next/navigation';
-
-// export default function BackHeader({ title,useStep,defaultBackPath }: { title: string; useStep?: boolean; // 회원가입처럼 step 로직을 쓸지
-//   defaultBackPath?: string; // step === 1 이면 갈 경로 }) {
-//   const router = useRouter();
-//   const step = useSignUpStore((state) => state.step);
-//   const setStep = useSignUpStore((state) => state.setStep);
-//   const goBack = () => {
-//     if (step === 1) {
-//       router.push('/login');
-//     } else {
-//       setStep(step - 1);
-//     }
-//   };
-//   return (
-//     <>
-//       <div className="relative flex h-[56px] w-[100%] items-center justify-center px-5">
-//         <ChevronLeft
-//           className="absolute left-3 h-6 w-6 cursor-pointer"
-//           onClick={goBack}
-//         />
-//         <p className="text-lg font-semibold">{title}</p>
-//       </div>
-//     </>
-//   );
-// }

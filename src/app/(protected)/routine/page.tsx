@@ -30,7 +30,6 @@ export default function Page() {
 
   const dateStr: string = format(selectedDate, 'yyyy-MM-dd');
 
-  // 루틴 불러오기
   const { data: weekData, isPending } = useWeekRoutine(dateStr);
 
   useEffect(() => {
@@ -42,10 +41,8 @@ export default function Page() {
   const done = filteredRoutines.filter((r) => r.isDone).length;
   const percent = total ? Math.round((done / total) * 100) : 0;
 
-  // 완료 처리
   const { mutate } = useHandleRoutine();
 
-  // 루틴 삭제
   const {
     mutate: handleDelete,
     isPending: deleting,
@@ -58,7 +55,6 @@ export default function Page() {
     }
   }, [isSuccess]);
 
-  // 루틴 추가로 이동
   const handleAddRoutine = () => {
     router.push('/routine/add-routine');
   };
@@ -88,7 +84,6 @@ export default function Page() {
         )}
         {!isPending && (
           <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 pb-11">
-            {/* 날짜, 진행률 바 */}
             <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
               <div className="flex items-center justify-between">
                 <span className="text-xl font-semibold">
@@ -114,7 +109,6 @@ export default function Page() {
               />
             </div>
 
-            {/* 루틴 카드 목록 */}
             {filteredRoutines && filteredRoutines.length > 0 ? (
               <div className="flex w-full flex-col space-y-3">
                 {filteredRoutines.map((routine: DayRoutine) => (
@@ -142,7 +136,9 @@ export default function Page() {
                         isDone: routine.isDone,
                         isImportant: routine.isImportant,
                         date: routine.date,
-                        startRoutineDate: routine.startRoutineDate,
+                        startRoutineDate: routine.InitDate,
+                        repeatType: routine.repeatType,
+                        repeatValue: routine.repeatValue,
                       });
                     }}
                     onDeleteClick={() => {
