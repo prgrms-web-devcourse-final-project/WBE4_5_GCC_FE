@@ -7,6 +7,13 @@ import { useState } from 'react';
 import logo from '/public/Logo.svg';
 import coin from '/public/coin.svg';
 import { useUserStore } from '@/store/UserStore';
+import Notification from '../Notification';
+
+const dummyNoti = [
+  { title: '아직 끝내지 않은 루틴이 있어요. 힘내서 마무리해 볼까요?', date: '2025.07.29', new: true },
+  { title: '축하해요! 퀘스트 보상이 준비되었어요. 멋지게 받아가세요!', date: '2025.07.28', new: false },
+  { title: '축하해요! 퀘스트 보상이 준비되었어요. 멋지게 받아가세요!', date: '2025.07.28', new: false },
+];
 
 export default function Header() {
   const pathname = usePathname();
@@ -62,6 +69,10 @@ export default function Header() {
           />
         )}
       </div>
+
+      {openNoti && (
+        <Notification noti={dummyNoti} setOpenNoti={setOpenNoti} />
+      )}
 
       <div
         className="mb-[96px]"

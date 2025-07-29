@@ -41,7 +41,8 @@ function Header() {
       alert('이모지와 카테고리 이름을 모두 입력해주세요.');
       return;
     }
-    mutate({ name, emoji }); // 최신 값이 들어감
+    //console.log('제출 데이터:', { name, emoji });
+    mutate({ categoryName: name, emoji }); // 최신 값이 들어감
   };
 
   const handleAddCat = () => {

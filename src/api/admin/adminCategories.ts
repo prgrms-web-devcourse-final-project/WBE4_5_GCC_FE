@@ -5,9 +5,8 @@ import { CategoryItem } from '../../../types/general';
 // 카테고리 목록 조회
 export const AdminCategories = async (): Promise<CategoryItem[]> => {
   try {
-    // '/api/v1/admin/categories',
     const response = await axiosInstance.get('/api/v1/categories');
-    console.log('카테고리 목록 불러오기 성공', response.data);
+    console.log('카테고리 목록 불러오기 성공', response.data.data.categories);
     return response.data.data.categories;
   } catch (error) {
     console.error('카테고리 목록 불러오기 실패', error);
@@ -24,7 +23,7 @@ export function UseAdminCategory() {
 
 // 카테고리 생성
 interface AdminCategoryPayload {
-  name: string;
+  categoryName: string;
   emoji: string;
 }
 
@@ -36,8 +35,9 @@ export const CreateAdminCategories = async (payload: AdminCategoryPayload) => {
     );
     console.log('카테고리 생성 성공', response.data);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error('카테고리 생성 실패', error);
+    console.error('서버 에러 응답:', error.response?.data);
     throw error;
   }
 };
@@ -68,8 +68,9 @@ export const EditAdminCategoryById = async (
     );
     console.log('카테고리 수정 성공', response.data);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error('카테고리 수정 실패', error);
+    console.error('서버 에러 응답:', error.response?.data);
     throw error;
   }
 };
