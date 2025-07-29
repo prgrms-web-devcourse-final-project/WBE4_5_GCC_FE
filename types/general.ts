@@ -50,6 +50,7 @@ export interface Quest {
   target: number;
   points: number;
   progress: number;
+  isRewarded: boolean;
 }
 
 export interface EventQuest extends Quest {
