@@ -63,8 +63,11 @@ export default function Page() {
     }
   }, [searchedAddress]);
 
-  const [regionDept1 = '', regionDept2 = '', regionDept3 = ''] =
-    address.split(' ');
+  const [regionDept1 = '', regionDept2 = '', regionDept3 = ''] = (
+    address + '  '
+  )
+    .split(' ')
+    .slice(0, 3);
 
   // 닉네임 중복확인 조건
   const trimNickname = nickname.trim();
@@ -86,17 +89,32 @@ export default function Page() {
       return;
     }
     try {
-      await checkNickname(nickname);
-      setError('');
-      setSuccess('사용 가능한 닉네임입니다.');
-      setCheckNickName(true);
+      const res = await checkNickname(trimNickname);
+      const isDuplicated = res.data.isDuplicated;
+      if (isDuplicated) {
+        setCheckNickName(false);
+        setError('이미 사용 중인 닉네임입니다.');
+        setSuccess('');
+      } else {
+        setError('');
+        setSuccess('사용 가능한 닉네임입니다.');
+        setCheckNickName(true);
+      }
     } catch (error) {
-      setCheckNickName(false);
-      setError('이미 사용 중인 닉네임입니다.');
-      setSuccess('');
-      console.error('닉네임 중복:', error);
+      console.error('닉네임 중복 확인 실패:', error);
     }
   };
+
+  const experienceCode =
+    selected === '1년 미만'
+      ? 'UNDER_1Y'
+      : selected === '1~3년'
+        ? 'Y1_TO_3'
+        : selected === '3~5년'
+          ? 'Y3_TO_5'
+          : selected === '5~10년'
+            ? 'Y5_TO_10'
+            : 'OVER_10Y';
 
   // 알림창 시간
   useEffect(() => {
@@ -126,11 +144,15 @@ export default function Page() {
         params.regionDept3,
       ),
     onSuccess: () => {
-      console.log('회원정보 변경 성공');
       const prevMember = useUserStore.getState().member;
-      useUserStore
-        .getState()
-        .setMember({ ...prevMember, nickname: trimNickname });
+      useUserStore.getState().setMember({
+        ...prevMember,
+        nickname: trimNickname,
+        residenceExperience: experienceCode,
+        regionDept1,
+        regionDept2,
+        regionDept3,
+      });
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       router.push('/mypage'); // 회원정보 변경 후 마이페이지로 이동
     },
@@ -156,7 +178,7 @@ export default function Page() {
     if (canSave) {
       userInfoMutation.mutate({
         nickname: trimNickname,
-        residenceExperience,
+        residenceExperience: experienceCode,
         regionDept1,
         regionDept2,
         regionDept3,

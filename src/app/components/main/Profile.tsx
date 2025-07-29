@@ -1,10 +1,7 @@
 import Image from 'next/image';
 import backGround from '/public/profileBackGround.svg';
-import character from '/public/images/character.png';
 import coin from '/public/coin.svg';
-// import { useEffect, useState } from 'react';
 import { fetchProfile, fetchUserItem, fetchUserPoint } from '@/api/member';
-// import { useUserStore } from '@/store/UserStore';
 import { Item, ProfileData } from '../../../../types/User';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../common/ui/LoadingSpinner';
@@ -12,7 +9,7 @@ import { useEffect, useState } from 'react';
 
 export default function Profile() {
   const [equippedItem, setEquippedItem] = useState<
-    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
+    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', Item | null>
   >({
     TOP: null,
     BOTTOM: null,
@@ -51,21 +48,21 @@ export default function Profile() {
 
     const allData = data;
     // 로딩 시 장착된 아이템 초기화
-    const initSelected: Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null> =
-      {
-        TOP: null,
-        BOTTOM: null,
-        ACCESSORY: null,
-      };
+    const initSelected: Record<'TOP' | 'BOTTOM' | 'ACCESSORY', Item | null> = {
+      TOP: null,
+      BOTTOM: null,
+      ACCESSORY: null,
+    };
 
     allData.data.forEach((item: Item) => {
       if (item.isEquipped) {
-        initSelected[item.itemtype] = item.itemKey;
+        initSelected[item.itemtype] = item;
       }
     });
 
     // api 호출 시 아이템 비교용
-    setEquippedItem(initSelected); // 로딩 시 장작된 아이템 저장하기
+    setEquippedItem(initSelected);
+    // 로딩 시 장작된 아이템 저장하기
   }, [data]);
 
   const nickname = profileData?.member?.nickname ?? '익명';
@@ -107,17 +104,17 @@ export default function Profile() {
           />
           {equippedItem.TOP && (
             <Image
-              src={`/images/items/${equippedItem.TOP}.png`}
+              src={`/images/items/${equippedItem.TOP.itemKey}.png`}
               alt="상의"
               width={130}
               height={130}
               priority
-              className="absolute top-[4px] object-contain"
+              className="absolute top-[0px] object-contain"
             />
           )}
           {equippedItem.BOTTOM && (
             <Image
-              src={`/images/items/${equippedItem.BOTTOM}.png`}
+              src={`/images/items/${equippedItem.BOTTOM.itemKey}.png`}
               alt="하의"
               width={130}
               height={130}
@@ -127,7 +124,7 @@ export default function Profile() {
           )}
           {equippedItem.ACCESSORY && (
             <Image
-              src={`/images/items/${equippedItem.ACCESSORY}.png`}
+              src={`/images/items/${equippedItem.ACCESSORY.itemKey}.png`}
               alt="액세서리"
               width={130}
               height={130}
