@@ -1,11 +1,19 @@
+'use client';
+
+import { UseAdminPreset } from '@/api/admin/adminRoutinePreset';
 import PresetList from '@/app/components/admin/routine/PresetList';
 import RoutineSelector from '@/app/components/admin/routine/routineSelector';
 
 export default function routineManager() {
+  const { data: presets, isLoading } = UseAdminPreset();
   return (
     <>
       <RoutineSelector />
-      <PresetList />
+      <PresetList
+        presets={presets}
+        onClick={() => console.log('clicked')}
+        isLoading={isLoading}
+      />
     </>
   );
 }

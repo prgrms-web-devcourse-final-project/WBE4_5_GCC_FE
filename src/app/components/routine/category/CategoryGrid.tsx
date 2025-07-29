@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CircleX } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
 import { useEditMode } from '../EditModeContext';
@@ -21,6 +22,7 @@ export default function CategoryGrid({
   isCustom = false,
   isManage = false,
 }: CategoryGridProps) {
+  console.log('categoreis:', categories);
   const { isEditMode } = useEditMode();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetCategory, setTargetCategory] = useState<CategoryItem | null>(

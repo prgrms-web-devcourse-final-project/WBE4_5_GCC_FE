@@ -1,6 +1,7 @@
 // 오늘 루틴 불러오기
 export interface DayRoutine {
   scheduleId: number;
+  categoryId: number;
   routineId: number;
   majorCategory: string;
   subCategory: string | null;
@@ -9,13 +10,11 @@ export interface DayRoutine {
   isDone: boolean;
   isImportant: boolean;
   date: string;
-  InitDate: string;
+  initDate: string;
   repeatType: string;
   repeatValue: string;
+  // emoji: string;
 }
-
-// 일주일 루틴 받아오는 타입
-// export type WeekRoutineMap =  Record<string, DayRoutine[]>;
 export interface WeekRoutineMap {
   date: string | null;
   routines: Record<string, DayRoutine[]>;
@@ -32,19 +31,18 @@ export interface AboutRoutine {
   isImportant: boolean;
   repeatType: string;
   repeatValue: string;
-  InitDate: string;
+  initDate: string;
+  emoji: string;
 }
 
 // 루틴 추가할때 보낼 데이터 아입
 export interface AddRoutine {
-  categoryId: number;
   name: string;
-  majorCategory: string;
-  subCategory?: string | null;
-  InitDate: string;
+  categoryId: number;
+  initDate: string;
+  repeatType: string;
   triggerTime: string;
   isImportant: boolean;
-  repeatType: string;
   repeatValue?: string | null;
   repeatTerm?: number;
 }
@@ -66,12 +64,11 @@ export interface DeleteRoutine {
 // 루틴 수정
 export interface EditRoutine {
   name: string;
-  majorCategory: string;
-  subCategory?: string | null;
-  InitDate: string;
+  categoryId: number;
+  initDate: string;
   triggerTime: string;
   isImportant: boolean;
   repeatType: string;
-  repeatValue: string | undefined;
-  repeatTerm: number;
+  repeatValue?: string | null;
+  repeatTerm?: number;
 }

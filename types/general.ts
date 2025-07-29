@@ -2,7 +2,7 @@ export interface CategoryItem {
   categoryId: number;
   categoryName: string;
   emoji?: string;
-  categoryType: 'MAJOR' | 'SUB';
+  categoryType: 'MAJOR' | 'SUB' | 'DEFAULT';
   parentId?: number | null;
   children?: CategoryItem[] | null; // MAJOR에만 사용
   createTime?: string;

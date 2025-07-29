@@ -27,15 +27,8 @@ export default function Page() {
   useEffect(() => {
     console.log(deleteTargetId);
   }, [deleteTargetId]);
-
   const dateStr: string = format(selectedDate, 'yyyy-MM-dd');
-
   const { data: weekData, isPending } = useWeekRoutine(dateStr);
-
-  useEffect(() => {
-    console.log('weekData:', weekData);
-  }, [weekData]);
-
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[dateStr] ?? [];
   const total = filteredRoutines.length;
   const done = filteredRoutines.filter((r) => r.isDone).length;
@@ -75,7 +68,7 @@ export default function Page() {
           setSelectedDate={setSelectedDate}
         />
         {isPending && (
-          <div className="mt-[50px] flex flex-col items-center justify-center gap-6">
+          <div className="mt-[50px] flex flex-col items-center justify-center gap-6 select-none">
             <LoadingSpinner />
             <p className="text-[20px] font-semibold">
               루틴을 불러오는 중입니다.
@@ -84,7 +77,7 @@ export default function Page() {
         )}
         {!isPending && (
           <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 pb-11">
-            <div className="mb-6 flex w-full flex-col justify-start space-y-4.5">
+            <div className="mb-6 flex w-full flex-col justify-start space-y-4.5 select-none">
               <div className="flex items-center justify-between">
                 <span className="text-xl font-semibold">
                   {selectedDate instanceof Date
@@ -121,7 +114,7 @@ export default function Page() {
                     isCompleted={routine.isDone}
                     onClick={() =>
                       mutate({
-                        routineId: routine.routineId,
+                        scheduleId: routine.scheduleId,
                         isDone: !routine.isDone,
                       })
                     }
@@ -129,6 +122,7 @@ export default function Page() {
                       useRoutineStore.getState().setRoutine({
                         routineId: routine.routineId,
                         scheduleId: routine.scheduleId,
+                        categoryId: routine.categoryId,
                         majorCategory: routine.majorCategory,
                         subCategory: routine.subCategory,
                         name: routine.name,
@@ -136,21 +130,21 @@ export default function Page() {
                         isDone: routine.isDone,
                         isImportant: routine.isImportant,
                         date: routine.date,
-                        startRoutineDate: routine.InitDate,
+                        initDate: routine.initDate,
                         repeatType: routine.repeatType,
                         repeatValue: routine.repeatValue,
                       });
                     }}
                     onDeleteClick={() => {
                       setCheckDelete(true);
-                      setDeleteTargetId(routine.scheduleId);
+                      setDeleteTargetId(routine.routineId);
                     }}
                     scheduleId={routine.scheduleId}
                   />
                 ))}
               </div>
             ) : (
-              <div className="mt-10 text-center text-gray-400">
+              <div className="mt-10 text-center text-gray-400 select-none">
                 해당 날짜에 루틴이 없습니다.
               </div>
             )}

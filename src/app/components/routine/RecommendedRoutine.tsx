@@ -3,26 +3,22 @@ import '../../styles/recommended-routine.css';
 interface Preset {
   presetId: number;
   categoryId: number;
-  majorCategory: string;
-  subCategory: string;
-  name: string;
-  triggerTime: string;
-  isDone: boolean;
-  isImportant: boolean;
+  content: string;
 }
 
 interface RecommendedRoutineProps {
-  routines: Preset[]; // ✅ 문자열 배열이 아니라 Preset 객체 배열
+  routines: Preset[];
   onSelect: (name: string) => void;
   onSelectTime: (triggerTime: string) => void;
   isLoading: boolean;
 }
+
 export default function RecommendedRoutine({
   routines,
   onSelect,
-  onSelectTime,
   isLoading,
 }: RecommendedRoutineProps) {
+  console.log('프리셋 루틴:', routines);
   return (
     <div className="flex w-full flex-col gap-2 rounded-lg border border-[#E0E0E0] bg-white px-4 py-4">
       <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
@@ -41,12 +37,11 @@ export default function RecommendedRoutine({
             <button
               key={index}
               onClick={() => {
-                onSelect(routine.name);
-                onSelectTime(routine.triggerTime);
+                onSelect(routine.content);
               }}
               className="font-regular shrink-0 rounded-lg border border-[#e0e0e0] px-4 py-2 text-xs whitespace-nowrap text-[#616161]"
             >
-              {routine.name}
+              {routine.content}
             </button>
           ))}
         </div>
