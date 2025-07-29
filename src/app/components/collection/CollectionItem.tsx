@@ -98,7 +98,7 @@ export default function CollectionItemCard({
           </div>
 
           {/* 착용 / 수령 버튼 영역 */}
-          <div className="mt-2">
+          <div className="mt-2 flex justify-center">
             {action ? (
               action // 수령 가능한 뱃지의 경우 수령 버튼 렌더링
             ) : !item.isLocked ? (
