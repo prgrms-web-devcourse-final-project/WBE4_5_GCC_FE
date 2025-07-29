@@ -8,20 +8,13 @@ import CategoryEdit from '@/app/components/admin/CategoryEdit';
 
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import CategoryGrid from '@/app/components/routine/category/CategoryGrid';
-
-interface AdminCategory {
-  categoryId: number;
-  categoryName: string;
-  emoji: string;
-  categoryType: 'MAJOR';
-  createTime: string;
-  updateTime: string | null;
-}
+import { CategoryItem } from '../../../../types/general';
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] =
-    useState<AdminCategory | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(
+    null,
+  );
 
   const {
     data: categories = [],
@@ -31,7 +24,6 @@ export default function Page() {
     queryKey: ['admin-categories'],
     queryFn: AdminCategories,
     staleTime: 5 * 60 * 1000,
-    select: (res) => res.data,
   });
 
   if (isLoading) {
@@ -52,7 +44,7 @@ export default function Page() {
               selected={selectedCategory?.categoryName || null}
               onSelectCategory={(label) => {
                 const category = categories.find(
-                  (cat: AdminCategory) => cat.categoryName === label,
+                  (cat: CategoryItem) => cat.categoryName === label,
                 );
                 if (!category) return;
 
