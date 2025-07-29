@@ -1,14 +1,19 @@
 import { useUserStore } from '@/store/UserStore';
 import { axiosInstance } from './axiosInstance';
-import { Quest } from '../../types/User';
+import { QuestResponse } from '../../types/general';
 
 // 유저정보 불러오기
 export const fetchProfile = async () => {
+  // 로그인 상태 확인
+  // 로그인 상태가 아닐 경우, 유저 정보 저장하지 않음
+  const { isLoggedIn } = useUserStore.getState();
+  if (!isLoggedIn) return;
+
   try {
     const response = await axiosInstance.get('/api/v1/members');
     console.log('회원정보 불러오기 성공', response.data);
-    const { setIsLoggedIn, setMember, setBadge } = useUserStore.getState();
-    setIsLoggedIn(true);
+    // 유저 정보와 배지 정보 저장
+    const { setMember, setBadge } = useUserStore.getState();
     setMember(response.data.data.member);
     setBadge(response.data.data.badge);
     return response.data.data;
@@ -20,9 +25,15 @@ export const fetchProfile = async () => {
 
 // 유저 보유 포인트 불러오기
 export const fetchUserPoint = async () => {
+  // 로그인 상태 확인
+  // 로그인 상태가 아닐 경우, 포인트 정보 저장하지 않음
+  const { isLoggedIn } = useUserStore.getState();
+  if (!isLoggedIn) return;
+
   try {
     const response = await axiosInstance.get('/api/v1/members/points');
     console.log('보유포인트 불러오기 성공', response.data);
+    // 유저 포인트 정보 저장
     const { setPoints } = useUserStore.getState();
     setPoints(response.data.data.points);
     return response.data.data;
@@ -33,11 +44,16 @@ export const fetchUserPoint = async () => {
 };
 
 // 유저 보유 퀘스트 불러오기
-export const fetchUserQuest = async (): Promise<Quest[]> => {
+export const fetchUserQuest = async (): Promise<QuestResponse> => {
+  // 로그인 상태 확인
+  // 로그인 상태가 아닐 경우, 포인트 정보 저장하지 않음
+  const { isLoggedIn } = useUserStore.getState();
+  if (!isLoggedIn) return { weeklyQuests: [], eventQuests: [] };
+
   try {
     const response = await axiosInstance.get('/api/v1/members/quests');
-    console.log('보유퀘스트 불러오기 성공');
-    return response.data.data;
+    console.log('보유퀘스트 불러오기 성공', response.data);
+    return response.data.data as QuestResponse;
   } catch (error) {
     console.error('보유퀘스트 불러오기 실패', error);
     throw error;
@@ -46,6 +62,11 @@ export const fetchUserQuest = async (): Promise<Quest[]> => {
 
 // 유저 보유 아이템 불러오기
 export const fetchUserItem = async () => {
+  // 로그인 상태 확인
+  // 로그인 상태가 아닐 경우, 포인트 정보 저장하지 않음
+  const { isLoggedIn } = useUserStore.getState();
+  if (!isLoggedIn) return;
+
   try {
     const response = await axiosInstance.get('/api/v1/members/items');
     console.log('보유아이템 불러오기 성공', response.data);
