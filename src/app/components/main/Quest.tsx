@@ -33,9 +33,9 @@ export default function QuestPage({
 
   const filteredQuest: (Quest | EventQuest)[] =
     selectedTab === '주간 퀘스트'
-      ? userQuest.weeklyQuests
+      ? userQuest.weeklyQuests.filter((quest) => !quest.isRewarded)
       : selectedTab === '이벤트 퀘스트'
-        ? userQuest.eventQuests
+        ? userQuest.eventQuests.filter((quest) => !quest.isRewarded)
         : allQuests;
 
   if (isLoading) {
