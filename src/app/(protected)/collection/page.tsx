@@ -7,58 +7,69 @@ import { BadgeRewardByKey, getBadges, equipBadge } from '@/api/badges';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
 import { ListFilter } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import CollectionItemCard from '@/app/components/collection/CollectionItem';
 import CollectionBottomSheet from '@/app/components/collection/CollectionBottomSheet';
 
-//const tabs = ['전체', '🏆', '🥇', '🥈', '🥉'];
-const tierEmojiMap: Record<Badge['tier'], string> = {
-  BRONZE: '🥉',
-  SILVER: '🥈',
-  GOLD: '🥇',
-  PLATINUM: '🏆',
-};
-
 export default function Page() {
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
+  const size = 6;
   const [isOpen, setIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [selectedTab, setSelectedTab] = useState('전체');
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [rewardInfo, setRewardInfo] = useState<{
     badgeName: string;
     pointAdded: number;
     message: string;
   } | null>(null);
-  const page = 1;
-  const size = 12; // 고정
+
+  const [selectedFilters, setSelectedFilters] = useState<{
+    tiers: string[];
+    categories: string[];
+  }>({ tiers: [], categories: [] });
 
   // 업적 목록 조회
   const {
-    data: badges = [],
+    data: badgesData,
     isLoading,
     isError,
     error,
-    refetch,
-  } = useQuery<Badge[], Error>({
-    queryKey: ['user-badges'],
+  } = useQuery<
+    { badges: Badge[]; totalPages: number },
+    Error,
+    { badges: Badge[]; totalPages: number },
+    [string, number]
+  >({
+    queryKey: ['user-badges', page],
     queryFn: () => getBadges(page, size),
     staleTime: 5 * 60 * 1000,
+    placeholderData: (prev) => prev, // 이전 데이터를 잠시 유지
   });
+
+  const badges = badgesData?.badges || [];
+  const totalPages = badgesData?.totalPages || 1;
+
+  // 페이지네이션 핸들러
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setPage(newPage);
+    }
+  };
 
   // 업적 보상 받기 mutation
   const rewardMutation = useMutation({
     mutationFn: BadgeRewardByKey,
     onSuccess: (data, badgeKey) => {
       // 캐시된 뱃지 데이터에서 badgeKey로 뱃지의 info 추출
-      const badge = badges.find((b) => b.badgeKey === badgeKey);
-      console.log('데이터 & 배지', data, badge)
+      const badge = badges.find((b: Badge) => b.badgeKey === badgeKey);
       setRewardInfo({
         badgeName: badge?.badgeName ?? '이름 없음',
         pointAdded: data.data.pointAdded ?? 0,
-        message: badge?.info ?? '설명 없음',
+        message: badge?.message ?? '설명 없음',
       });
       queryClient.invalidateQueries({ queryKey: ['user-badges'] });
     },
@@ -67,20 +78,41 @@ export default function Page() {
     },
   });
 
+  const equipBadgeMutation = useMutation({
+    mutationFn: equipBadge,
+    onSuccess: (_, badgeKey) => {
+      // 캐시 무효화하여 최신 장착 상태 반영
+      queryClient.invalidateQueries({ queryKey: ['user-badges'] });
+      // 장착/해제 토글
+      setSelectedItem((prev) => (prev === badgeKey ? null : badgeKey));
+    },
+    onError: () => {
+      alert('배지 장착/해제 실패');
+    },
+  });
+
   // 뱃지 장착 (하나만 선택 가능)
-  const handleSelect = async (badge: { key: string }) => {
-    await equipBadge(badge.key);
-    setSelectedItem((prev) => (prev === badge.key ? null : badge.key));
+  const handleSelect = (badge: { key: string }) => {
+    console.log('여기:', badge.key);
+    equipBadgeMutation.mutate(badge.key);
+    //setSelectedItem((prev) => (prev === badge.key ? null : badge.key));
   };
 
   useEffect(() => {
     console.log('장착한 뱃지:', selectedItem);
   }, [selectedItem]);
 
-  const filteredBadges =
-    selectedTab === '전체'
-      ? badges
-      : badges.filter((badge) => tierEmojiMap[badge.tier] === selectedTab);
+  const filteredBadges = badges.filter((badge: Badge) => {
+    const matchesTier =
+      selectedFilters.tiers.length === 0 ||
+      selectedFilters.tiers.includes(badge.tier);
+    const matchesCategory =
+      selectedFilters.categories.length === 0 ||
+      selectedFilters.categories.includes(badge.categoryName);
+    const matchesOwned = !isChecked || badge.status === 'OWNED';
+
+    return matchesTier && matchesCategory && matchesOwned;
+  });
 
   if (isLoading) {
     return (
@@ -92,12 +124,12 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex h-screen w-full justify-center pt-11">
+      <div className="h-1vh flex w-full justify-center pt-11">
         <div className="flex w-full min-w-[390px] flex-col items-center">
           <BackHeader title="도감" />
 
           {/* 콘텐츠 영역 */}
-          <div className="mt-[30px] w-full items-center px-6">
+          <div className="mt-[30px] min-h-[618px] w-full items-center px-6">
             {/* 상단 체크박스 & 필터 */}
             <div className="mb-[15px] flex w-full items-center justify-between">
               {/* 체크 박스 */}
@@ -130,7 +162,7 @@ export default function Page() {
             {/* 아이템 카드 리스트 */}
             <div className="w-full min-w-[342px]">
               <div className="relative grid w-full grid-cols-2 place-items-center gap-x-6 gap-y-5">
-                {filteredBadges.map((badge) => {
+                {filteredBadges.map((badge: Badge) => {
                   const tierEmojiMap: Record<Badge['tier'], string> = {
                     BRONZE: '🥉',
                     SILVER: '🥈',
@@ -144,6 +176,8 @@ export default function Page() {
                     name: badge.badgeName,
                     info: badge.info,
                     requirement: badge.requirement,
+                    currentProgress: badge.currentProgress,
+                    status: badge.status,
                     image: {
                       src: `/images/badges/${badge.badgeKey}.svg`,
                       width: 29,
@@ -190,11 +224,53 @@ export default function Page() {
               </div>
             </div>
           </div>
+
+          {/* 페이지네이션 */}
+          <div className="mt-7 flex cursor-pointer items-center justify-center gap-2">
+            {/* 이전 버튼 */}
+            <button
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 1}
+              className={`mr-1 h-6 w-6 text-sm ${page === 1 ? 'text-[#D9D9D9]' : 'text-[#222222]'}`}
+            >
+              <ChevronLeft />
+            </button>
+
+            {/* 페이지 번호 */}
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => handlePageChange(pageNum)}
+                  className={`h-7 w-7 rounded-[3px] text-sm ${
+                    pageNum === page
+                      ? 'bg-[#222222] font-semibold text-white'
+                      : 'text-[#222222]'
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              ),
+            )}
+
+            {/* 다음 버튼 */}
+            <button
+              onClick={() => handlePageChange(page + 1)}
+              disabled={page === totalPages}
+              className={`ml-1 h-6 w-6 text-sm ${page === totalPages ? 'text-[#D9D9D9]' : 'text-[#222222]'}`}
+            >
+              <ChevronRight />
+            </button>
+          </div>
         </div>
       </div>
 
       {isOpen && (
-        <CollectionBottomSheet isOpen={isOpen} setIsOpen={setIsOpen} />
+        <CollectionBottomSheet
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          onApply={(filters) => setSelectedFilters(filters)}
+        />
       )}
 
       {rewardInfo && (

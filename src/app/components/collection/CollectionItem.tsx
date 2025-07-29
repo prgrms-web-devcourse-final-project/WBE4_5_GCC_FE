@@ -9,6 +9,8 @@ interface CollectionItem {
   name: string;
   info: string;
   requirement: number;
+  currentProgress: number;
+  status: 'ACHIEVABLE' | 'OWNED' | 'LOCKED';
   image: {
     src: string;
     width: number;
@@ -31,21 +33,19 @@ export default function CollectionItemCard({
   onSelect,
   action,
 }: Props) {
-  const currentNum = 3;
-
   return (
     <div
       key={item.id}
       onClick={() => onSelect(item)}
       className={clsx(
-        'px-auto relative h-50 w-[160px] rounded-[5px] border text-center select-none',
+        'px-auto relative h-45 w-[160px] rounded-[5px] border text-center select-none',
         isSelected ? 'border-[3px] border-[#FFB84C]' : 'border-[#D9D9D9]',
       )}
       style={{
         boxShadow: '1px 2px 3px 0 rgba(0, 0, 0, 0.15)',
       }}
     >
-      <div className="flex h-[95px]">
+      <div className="flex h-21">
         <Image
           src={item.image.src}
           alt={item.name}
@@ -55,8 +55,8 @@ export default function CollectionItemCard({
           className="mx-auto my-auto h-auto w-11"
         />
       </div>
-      {/* 여기 !item.isLocked 느낌표 지워줘야 됨. 테스트 이후에 */}
-      {!item.isLocked && !action && (
+      {/* 여기 !item.status 느낌표 지워줘야 됨. 테스트 이후에 */}
+      {item.status === 'LOCKED' && !action && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-[5px] bg-[#222222]/85">
           <Image
             src="/images/lock.svg"
@@ -72,11 +72,13 @@ export default function CollectionItemCard({
             {/* 채워진 배경 */}
             <div
               className="absolute top-0 left-0 z-0 h-full bg-[#FFE29A]"
-              style={{ width: `${(currentNum / item.requirement) * 100}%` }}
+              style={{
+                width: `${(item.currentProgress / item.requirement) * 100}%`,
+              }}
             />
             {/* 텍스트 */}
             <span className="relative z-10">
-              {currentNum}/{item.requirement}
+              {item.currentProgress}/{item.requirement}
             </span>
           </button>
         </div>
@@ -86,7 +88,7 @@ export default function CollectionItemCard({
         <div
           className={`${item.isLocked ? 'border-black/20' : 'border-[#E0E0E0]'} flex flex-col border-t-[0.5px] border-[#E0E0E0] px-3 text-left`}
         >
-          <div className="text-[#222222 ] mt-4 mb-0.5 text-xs font-semibold">
+          <div className="text-[#222222 ] mt-3 text-xs font-semibold">
             {item.name}
           </div>
           <div

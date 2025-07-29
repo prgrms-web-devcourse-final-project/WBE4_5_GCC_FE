@@ -2,48 +2,79 @@
 
 import Button from '../common/ui/Button';
 import { useEffect, useState } from 'react';
+import { getCategories } from '@/api/categories';
 import SelectButton from '../common/SelectButton';
+import { CategoryItem } from '../../../../types/general';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '../common/ui/LoadingSpinner';
 
-const tier = ['🏆 플래티넘', '🥇 금', '🥈 은', '🥉 동'];
-const options = [
-  '🧹 청소 / 정리',
-  '💡 자기개발',
-  '🧳 외출',
-  '🧺 세탁 / 의류',
-  '🍳 요리',
-  '💸 소비',
-  '♻️ 쓰레기 / 환경',
-  '🏃🏻 건강',
-  '📄 행정',
-  '🗓️ 출석',
-];
+const tierLabelMap: Record<'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE', string> =
+  {
+    PLATINUM: '🏆 플래티넘',
+    GOLD: '🥇 금',
+    SILVER: '🥈 은',
+    BRONZE: '🥉 동',
+  };
 
 export default function CollectionBottomSheet({
   isOpen,
   setIsOpen,
+  onApply,
 }: {
   isOpen?: boolean;
   setIsOpen: (open: boolean) => void;
+  onApply: (filters: { tiers: string[]; categories: string[] }) => void;
 }) {
-  const [selectedIndex, setSelectedIndex] = useState<number[]>([]);
-  const toggleIndex = (idx: number) => {
-    setSelectedIndex((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
+  const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
+  const toggleTier = (tier: string) => {
+    setSelectedTiers((prev) =>
+      prev.includes(tier) ? prev.filter((t) => t !== tier) : [...prev, tier],
     );
   };
 
-  const [selectedTierIndex, setSelectedTierIndex] = useState<number[]>([]);
-  const toggleTierIndex = (index: number) => {
-    setSelectedTierIndex((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const toggleCategory = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category],
     );
   };
 
-  useEffect(() => {
-    console.log('선택됨:', selectedTierIndex, selectedIndex);
-  }, [selectedTierIndex, selectedIndex]);
+  const {
+    data: categories = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery<CategoryItem[], Error>({
+    queryKey: ['categories'],
+    queryFn: getCategories,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const handleApply = () => {
+    onApply({
+      tiers: selectedTiers,
+      categories: selectedCategories,
+    });
+    setIsOpen(false);
+  };
+
+  const handleReset = () => {
+    setSelectedTiers([]);
+    setSelectedCategories([]);
+    onApply({ tiers: [], categories: [] });
+  };
 
   if (!isOpen) return null;
+
+  if (isLoading) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div
@@ -51,7 +82,7 @@ export default function CollectionBottomSheet({
       onClick={() => setIsOpen(false)}
     >
       <div
-        className="relative min-h-[390px] w-full max-w-md rounded-t-3xl bg-white px-5 py-[34px]"
+        className="relative min-h-[390px] w-full min-w-[390px] rounded-t-3xl bg-white px-5 py-[34px]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-5 flex items-center justify-start">
@@ -61,14 +92,14 @@ export default function CollectionBottomSheet({
         {/* 티어 */}
         <div className="flex flex-col">
           <p className="text-md mb-4 font-semibold text-[#222222]">티어</p>
-          <div className="mb-11 flex flex-wrap gap-2.5 bg-amber-100">
-            {tier.map((tier, idx) => (
+          <div className="mb-11 flex flex-wrap gap-2.5">
+            {Object.entries(tierLabelMap).map(([tierKey, label]) => (
               <SelectButton
-                key={idx}
-                text={tier}
-                onClick={() => toggleTierIndex(idx)}
+                key={tierKey}
+                text={label}
+                onClick={() => toggleTier(tierKey)}
                 className={
-                  selectedTierIndex.includes(idx)
+                  selectedTiers.includes(tierKey)
                     ? 'bg-[#FFB84C] text-white'
                     : 'border-[#E0E0E0]'
                 }
@@ -80,14 +111,14 @@ export default function CollectionBottomSheet({
         {/* 카테고리 */}
         <div className="flex flex-col">
           <p className="text-md mb-4 font-semibold text-[#222222]">카테고리</p>
-          <div className="flex flex-wrap gap-2.5 bg-red-100">
-            {options.map((option, idx) => (
+          <div className="flex flex-wrap gap-2.5">
+            {categories.map((category) => (
               <SelectButton
-                key={idx}
-                text={option}
-                onClick={() => toggleIndex(idx)}
+                key={category.categoryId}
+                text={`${category.emoji} ${category.categoryName}`}
+                onClick={() => toggleCategory(category.categoryName)}
                 className={
-                  selectedIndex.includes(idx)
+                  selectedCategories.includes(category.categoryName)
                     ? 'bg-[#FFB84C] text-white'
                     : 'border-[#E0E0E0]'
                 }
@@ -98,14 +129,14 @@ export default function CollectionBottomSheet({
           <div className="flex gap-[14px]">
             <Button
               className="mt-[73px] mb-3 border border-[#E0E0E0] bg-white text-sm font-medium text-[#616161]"
-              //onClick={() => setIsOpen(false)}
+              onClick={handleReset}
             >
               초기화
             </Button>
 
             <Button
               className="mt-[73px] mb-3 text-sm font-medium"
-              onClick={() => setIsOpen(false)}
+              onClick={handleApply}
             >
               설정하기
             </Button>

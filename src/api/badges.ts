@@ -9,8 +9,12 @@ export const getBadges = async (page: number, size: number) => {
         size,
       },
     });
-    console.log('업적 불러오기 성공', response.data.data.content);
-    return response.data.data.content;
+    const data = response.data.data;
+    console.log('업적 불러오기 성공', data.content);
+    return {
+      badges: data.content,
+      totalPages: data.totalPages,
+    };
   } catch (error) {
     console.error('업적 불러오기 실패', error);
     throw error;
@@ -55,14 +59,19 @@ export const fetchUserBadge = async () => {
   }
 };
 
-// 업적 장착
-export const equipBadge = async (key: string) => {
+// 배지 장착/해제
+export const equipBadge = async (badgeKey: string) => {
   try {
-    const response = await axiosInstance.post(`/api/v1/members/badges/${key}`);
-    console.log('업적 장착 성공', response.data);
+    const response = await axiosInstance.patch(`/api/v1/badges`, null, {
+      params: {
+        badgeKey,
+      },
+    });
+
+    console.log('배지 장착 성공', response.data);
     return response.data;
   } catch (error) {
-    console.error('업적 장착 실패', error);
+    console.error('배지 장착 실패', error);
     throw error;
   }
 };

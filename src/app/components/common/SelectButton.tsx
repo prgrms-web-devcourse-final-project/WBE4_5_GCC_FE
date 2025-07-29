@@ -3,7 +3,7 @@ export default function SelectButton({
   className,
   text,
 }: {
-  key: number;
+  key: number | string;
   onClick: () => void;
   className?: string;
   text: string;
