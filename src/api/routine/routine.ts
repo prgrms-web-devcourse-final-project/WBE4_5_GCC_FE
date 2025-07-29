@@ -9,7 +9,6 @@ import { axiosInstance } from '../axiosInstance';
 
 // 오늘 루틴 불러오기
 export const fetchTodayRoutine = async (): Promise<DayRoutine[]> => {
-  // await new Promise((resolve) => seㅎtTimeout(resolve, 1000));
   const response = await axiosInstance.get('/api/v1/routines/today');
   console.log('오늘 루틴 로드:', response.data.data);
   return response.data.data;
@@ -19,7 +18,6 @@ export const fetchTodayRoutine = async (): Promise<DayRoutine[]> => {
 export const fetchWeekRoutine = async (
   date?: string,
 ): Promise<WeekRoutineMap> => {
-  // await new Promise((resolve) => setTimeout(resolve, 1000));
   const response = await axiosInstance.get('/api/v1/routines/weekly', {
     params: { date },
   });
@@ -31,7 +29,6 @@ export const aboutRoutine = async (id: string): Promise<AboutRoutine> => {
   try {
     const response = await axiosInstance.get(`/api/v1/routines/${id}`);
     console.log('상세조회 성공:', response.data);
-    // data.data로 해줘야 code,message 를 빼고 data만 반환한다. 그러면 AboutRoutine이랑 타입이 같아진다.
     return response.data.data;
   } catch (err) {
     console.error('루틴 상세조회 실패:', err);
@@ -46,7 +43,7 @@ export const routineHandler = async (id: number, isDone: boolean) => {
       `/api/v1/routines/schedules/${id}`,
       { isDone },
     );
-    console.log('루틴 완료처리에 전달되는 id:', id);
+    console.log('루틴 완료처리에 전달되는 스케쥴 id:', id);
     console.log('루틴 완료처리에 전달되는 isDone:', isDone);
     console.log('루틴 완료 또는 미완료 처리:', response.data);
   } catch (error) {

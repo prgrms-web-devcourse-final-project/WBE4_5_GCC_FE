@@ -42,7 +42,7 @@ export default function CalendarBar({
   });
 
   return (
-    <div className="mb-[30px] w-full max-w-md">
+    <div className="mb-[30px] w-full max-w-md select-none">
       <div className="mb-[27px] flex items-center justify-start gap-1.5">
         <span className="text-lg font-semibold">
           {year}년 {month + 1}월
