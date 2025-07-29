@@ -10,7 +10,7 @@ interface CollectionItem {
   info: string;
   requirement: number;
   currentProgress: number;
-  status: 'ACHIEVABLE' | 'OWNED' | 'LOCKED';
+  status: 'ACHIEVABLE' | 'OWNED' | 'LOCKED' | 'EQUIPPED';
   image: {
     src: string;
     width: number;
@@ -108,7 +108,7 @@ export default function CollectionItemCard({
                   onSelect(item);
                 }}
                 className={clsx(
-                  'h-7.5 min-w-34 rounded-[3px] border border-[#E0E0E0] text-sm',
+                  'h-7.5 min-w-34 cursor-pointer rounded-[3px] border border-[#E0E0E0] text-sm',
                   isSelected
                     ? 'border-[#FFB84C] bg-[#FFB84C] font-semibold text-white'
                     : 'border-[#E0E0E0] bg-white text-[#616161]',

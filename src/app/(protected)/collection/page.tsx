@@ -92,15 +92,17 @@ export default function Page() {
   });
 
   // 뱃지 장착 (하나만 선택 가능)
-  const handleSelect = (badge: { key: string }) => {
-    console.log('여기:', badge.key);
+  const handleSelect = (badge: { key: string; status: string }) => {
+    //console.log('선택한 배지:', badge.key);
+    if (badge.status !== 'OWNED') {
+      return; // 장착 불가
+    }
     equipBadgeMutation.mutate(badge.key);
-    //setSelectedItem((prev) => (prev === badge.key ? null : badge.key));
   };
 
-  useEffect(() => {
-    console.log('장착한 뱃지:', selectedItem);
-  }, [selectedItem]);
+  //useEffect(() => {
+  //  console.log('장착한 뱃지:', selectedItem);
+  //}, [selectedItem]);
 
   const filteredBadges = badges.filter((badge: Badge) => {
     const matchesTier =
@@ -139,7 +141,7 @@ export default function Page() {
                     type="checkbox"
                     checked={isChecked}
                     onChange={(e) => setIsChecked(e.target.checked)}
-                    className="h-[14px] w-[14px] rounded-none border border-[#D9D9D9] accent-black"
+                    className="h-[14px] w-[14px] cursor-pointer rounded-none border border-[#D9D9D9] accent-black"
                   />
                   <p className="text-sm font-medium text-black">
                     내가 보유한 뱃지만 보기
@@ -148,9 +150,9 @@ export default function Page() {
               </div>
 
               {/* 필터 */}
-              <div className="flex cursor-pointer items-center space-x-1.5">
+              <div className="flex items-center space-x-1.5">
                 <span
-                  className="text-xs font-medium text-[#616161]"
+                  className="cursor-pointer text-xs font-medium text-[#616161]"
                   onClick={() => setIsOpen(true)}
                 >
                   필터
@@ -192,7 +194,12 @@ export default function Page() {
                       key={item.id}
                       item={item}
                       isSelected={selectedItem === item.key}
-                      onSelect={handleSelect}
+                      onSelect={() =>
+                        handleSelect({
+                          key: badge.badgeKey,
+                          status: badge.status,
+                        })
+                      }
                       action={
                         badge.currentProgress >= badge.requirement && (
                           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-[5px] bg-[#222222]/85">
@@ -211,7 +218,7 @@ export default function Page() {
                                 e.stopPropagation();
                                 rewardMutation.mutate(badge.badgeKey);
                               }}
-                              className="mt-4 h-7.5 min-w-34 rounded-[3px] border border-[#FFB84C] bg-[#FFE29A] text-sm font-semibold text-[#A47148]"
+                              className="mt-4 h-7.5 min-w-34 cursor-pointer rounded-[3px] border border-[#FFB84C] bg-[#FFE29A] text-sm font-semibold text-[#A47148]"
                             >
                               보상받기
                             </button>
@@ -226,12 +233,12 @@ export default function Page() {
           </div>
 
           {/* 페이지네이션 */}
-          <div className="mt-7 flex cursor-pointer items-center justify-center gap-2">
+          <div className="mt-7 flex items-center justify-center gap-2">
             {/* 이전 버튼 */}
             <button
               onClick={() => handlePageChange(page - 1)}
               disabled={page === 1}
-              className={`mr-1 h-6 w-6 text-sm ${page === 1 ? 'text-[#D9D9D9]' : 'text-[#222222]'}`}
+              className={`mr-1 h-6 w-6 cursor-pointer text-sm ${page === 1 ? 'text-[#D9D9D9]' : 'text-[#222222]'}`}
             >
               <ChevronLeft />
             </button>
@@ -242,7 +249,7 @@ export default function Page() {
                 <button
                   key={pageNum}
                   onClick={() => handlePageChange(pageNum)}
-                  className={`h-7 w-7 rounded-[3px] text-sm ${
+                  className={`h-7 w-7 cursor-pointer rounded-[3px] text-sm ${
                     pageNum === page
                       ? 'bg-[#222222] font-semibold text-white'
                       : 'text-[#222222]'
@@ -257,7 +264,7 @@ export default function Page() {
             <button
               onClick={() => handlePageChange(page + 1)}
               disabled={page === totalPages}
-              className={`ml-1 h-6 w-6 text-sm ${page === totalPages ? 'text-[#D9D9D9]' : 'text-[#222222]'}`}
+              className={`ml-1 h-6 w-6 cursor-pointer text-sm ${page === totalPages ? 'text-[#D9D9D9]' : 'text-[#222222]'}`}
             >
               <ChevronRight />
             </button>
