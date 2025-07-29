@@ -20,6 +20,7 @@ export interface User {
 }
 
 export interface Item {
+  id: number;
   itemKey: string;
   itemName: string;
   itemDescription: string;
