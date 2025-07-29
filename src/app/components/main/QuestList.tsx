@@ -37,10 +37,10 @@ export default function QuestList({ quest }: QuestListProps) {
   return (
     <>
       <div
-        className="flex h-[70px] w-full min-w-[315px] justify-center gap-4 border-b border-dotted pb-[17px]"
+        className="flex h-[70px] w-full min-w-[315px] justify-between gap-4 border-b border-dotted pb-[17px]"
         key={quest.questKey}
       >
-        <div className="flex min-w-[238px] flex-col gap-[10px]">
+        <div className="flex min-w-[256px] flex-col gap-[10px]">
           <h1 className="text-[14px] font-semibold">{quest.questName}</h1>
           {/* 진행율 */}
           <div className="relative flex h-[22px] w-full items-center justify-center rounded-[20px] border-1 border-[#A47148] bg-[#FFF4D1]">
@@ -50,7 +50,7 @@ export default function QuestList({ quest }: QuestListProps) {
                 style={{ width: `${questProgress}%` }}
               />
             )}
-            <span className="z-100 flex text-[10px] font-medium">
+            <span className="z-1 flex text-[10px] font-medium">
               {quest.progress} / {quest.target}
             </span>
           </div>
