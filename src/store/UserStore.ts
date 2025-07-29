@@ -40,7 +40,15 @@ export const useUserStore = create<UserStore>()(
       },
       setIsLoggedIn: (value) => set({ isLoggedIn: value }),
       setMember: (member) =>
-        set((state) => ({ member: { ...state.member, ...member } })),
+        set((state) => ({
+          member: {
+            ...state.member,
+            ...member,
+            regionDept1: member.regionDept1 ?? '',
+            regionDept2: member.regionDept2 ?? '',
+            regionDept3: member.regionDept3 ?? '',
+          },
+        })),
       setPoints: (value) => set({ points: value }),
       setEquippedBadge: (value) => set({ equippedBadge: value }),
       resetUser: () =>
