@@ -6,10 +6,10 @@ import BackHeader from '@/app/components/common/ui/BackHeader';
 import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Button from '@/app/components/common/ui/Button';
-import { equipItem, fetchUserItem, unequipItem } from '@/api/member';
+import { equipItem, fetchUserItem } from '@/api/member';
 import { Item } from '../../../../../types/User';
 import { useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 
@@ -17,20 +17,21 @@ const tabs = ['전체', '상의', '하의', '액세서리'];
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [userItem, setUserItem] = useState<Item[]>([]);
   const [modalItem, setModalItem] = useState<Item | null>(null);
   const [selectedTab, setSelectedTab] = useState('전체');
   const [hasInitialized, setHasInitialized] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<
-    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
-  >({
+  type SelectedItemState = Record<'TOP' | 'BOTTOM' | 'ACCESSORY', Item | null>;
+
+  const [selectedItem, setSelectedItem] = useState<SelectedItemState>({
     TOP: null,
     BOTTOM: null,
     ACCESSORY: null,
   });
   const [equippedItem, setEquippedItem] = useState<
-    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
+    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', Item | null>
   >({
     TOP: null,
     BOTTOM: null,
@@ -50,16 +51,15 @@ export default function Page() {
     const allData = data;
     setUserItem(allData.data);
     // 로딩 시 장착된 아이템 초기화
-    const initSelected: Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null> =
-      {
-        TOP: null,
-        BOTTOM: null,
-        ACCESSORY: null,
-      };
+    const initSelected: Record<'TOP' | 'BOTTOM' | 'ACCESSORY', Item | null> = {
+      TOP: null,
+      BOTTOM: null,
+      ACCESSORY: null,
+    };
 
     allData.data.forEach((item: Item) => {
       if (item.isEquipped) {
-        initSelected[item.itemtype] = item.itemKey;
+        initSelected[item.itemtype] = item;
       }
     });
 
@@ -90,51 +90,117 @@ export default function Page() {
   const handleSelect = (item: Item) => {
     setSelectedItem((prev) => ({
       ...prev,
-      [item.itemtype]:
-        prev[item.itemtype] === item.itemKey ? null : item.itemKey,
+      [item.itemtype]: prev[item.itemtype]?.id === item.id ? null : item,
     }));
     setShowModal(false);
+  };
+
+  const { mutate: mutateEquipItem } = useMutation({
+    mutationFn: (itemId: number) => equipItem(itemId),
+
+    // 낙관적 업데이트
+    onMutate: async (newItemId: number) => {
+      await queryClient.cancelQueries({ queryKey: ['equipped-items'] });
+
+      const previousItems = queryClient.getQueryData(['equipped-items']);
+
+      // 임시 업데이트: 이전 데이터를 기반으로 새로운 상태 적용
+      queryClient.setQueryData(
+        ['equipped-items'],
+        (old: Record<string, Item | null>) => {
+          if (!old) return old;
+
+          // 어떤 카테고리인지 판단해서 해당 카테고리의 아이템을 바꿔야 함
+          // selectedItem을 통해 카테고리를 알 수 있다고 가정
+          const updated = { ...old };
+          for (const category of categories) {
+            if (selectedItem[category]?.id === newItemId) {
+              updated[category] = selectedItem[category];
+            }
+          }
+          return updated;
+        },
+      );
+
+      return { previousItems }; // 실패 시 rollback용
+    },
+
+    // 실패 시 rollback
+    onError: (err, _, context) => {
+      if (context?.previousItems) {
+        queryClient.setQueryData(['equipped-items'], context.previousItems);
+      }
+    },
+
+    // 성공 시 최신화
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['equipped-items'] });
+      queryClient.invalidateQueries({ queryKey: ['user-items'] });
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+    },
+  });
+
+  // 저장하기 버튼 누를 시
+  // 이미 입고있던 옷 유지 -> 호출 필요없음
+  // 다른옷으로 바꿨다면 -> equip만 호출 -> 기존옷은 자동으로 해제
+  // 테스트 시 상의로만 테스트 가능 -> top_item_01
+  const handleSubmit = async () => {
+    let equipKey: number | null = null;
+
+    categories.forEach((category) => {
+      const selected = selectedItem[category];
+      const equipped = equippedItem[category];
+
+      const isChanged = selected?.id !== equipped?.id;
+
+      if (isChanged) {
+        if (selected) {
+          equipKey = selected.id;
+        } else if (equipped) {
+          equipKey = equipped.id;
+        }
+      }
+    });
+
+    console.log('장착할 아이템:', equipKey);
+    if (equipKey !== null) {
+      mutateEquipItem(equipKey);
+    }
+    router.push('/mypage');
   };
 
   // 저장하기 버튼 누를 시
   // 이미 입고있던 옷 유지 -> 호출 필요없음
   // 다른옷으로 바꿨다면 -> equip만 호출 -> 기존옷은 자동으로 해제
-  // 옷 장착을 해제했다면 -> unequip만 호출
   // 테스트 시 상의로만 테스트 가능 -> top_item_01
-  const handleSubmit = async () => {
-    const unEquip: string[] = [];
-    const equip: string[] = [];
+  // const handleSubmit = async () => {
+  //   let equip;
 
-    categories.forEach((category) => {
-      const selectedKey = selectedItem[category];
-      const equippedKey = equippedItem[category];
+  //   categories.forEach((category) => {
+  //     const selectedKey = selectedItem[category];
+  //     const equippedKey = equippedItem[category];
 
-      // 저장하기 직전, 선택된 아이템과 화면 첫 로딩 시 기존 장착된 아이템 비교
-      if (selectedKey !== equippedKey) {
-        // 카테고리별 기존 장착된 아이템은 있었으나, 현재 선택된 아이템은 없을 때 -> 장착해제
-        if (selectedKey === null && equippedKey !== null) {
-          unEquip.push(equippedKey);
-        }
-        // 카테고리별 현재 선택된 아이템이 있을 때 -> 장착(기존 장착된 아이템이 있었어도 현재 선택된 아이템으로 교체됨)
-        else if (selectedKey !== null) {
-          equip.push(selectedKey);
-        }
-      }
-    });
+  //     // 저장하기 직전, 선택된 아이템과 화면 첫 로딩 시 기존 장착된 아이템 비교
+  //     if (selectedKey?.id !== equippedKey?.id) {
+  //       // 카테고리별 기존 장착된 아이템은 있었으나, 현재 선택된 아이템은 없을 때 -> 장착해제
+  //       // if (selectedKey === null && equippedKey !== null) {
+  //       //   // unEquip.push(equippedKey);
+  //       // }
+  //       // 카테고리별 현재 선택된 아이템이 있을 때 -> 장착(기존 장착된 아이템이 있었어도 현재 선택된 아이템으로 교체됨)
+  //       if (selectedKey !== null) {
+  //         equip = selectedKey.id;
+  //       }
+  //     }
+  //   });
 
-    const unEquipString = unEquip.join(',');
-    const equipString = equip.join(',');
+  //   // const equipString = equip.join(',');
 
-    if (unEquipString) {
-      await unequipItem(unEquipString);
-    }
-    if (equipString) {
-      await equipItem(equipString);
-    }
-    console.log('해제할 아이템:', unEquipString);
-    console.log('장착할 아이템:', equipString);
-    router.push('/mypage');
-  };
+  //   if (equip) {
+  //     await equipItem(equip);
+  //   }
+  //   console.log('장착할 아이템:', equip);
+  //   router.push('/mypage');
+  // };
 
   const filteredItem =
     selectedTab === '전체'
@@ -179,7 +245,7 @@ export default function Page() {
               onClick={() => {
                 if (selectedItem.ACCESSORY) {
                   const equippedKey = userItem.find(
-                    (item) => item.itemKey === selectedItem.ACCESSORY,
+                    (item) => item.itemKey === selectedItem.ACCESSORY?.itemKey,
                   );
                   if (equippedKey) {
                     handleModal(equippedKey);
@@ -189,7 +255,7 @@ export default function Page() {
             >
               {selectedItem.ACCESSORY && (
                 <Image
-                  src={`/images/items/thumbs/${selectedItem.ACCESSORY}.png`}
+                  src={`/images/items/thumbs/${selectedItem.ACCESSORY?.itemKey}.png`}
                   alt="액세서리"
                   width={53}
                   height={53}
@@ -203,7 +269,7 @@ export default function Page() {
               onClick={() => {
                 if (selectedItem.TOP) {
                   const equippedKey = userItem.find(
-                    (item) => item.itemKey === selectedItem.TOP,
+                    (item) => item.itemKey === selectedItem.TOP?.itemKey,
                   );
                   if (equippedKey) {
                     handleModal(equippedKey);
@@ -213,7 +279,7 @@ export default function Page() {
             >
               {selectedItem.TOP && (
                 <Image
-                  src={`/images/items/thumbs/${selectedItem.TOP}.png`}
+                  src={`/images/items/thumbs/${selectedItem.TOP?.itemKey}.png`}
                   alt="상의"
                   width={53}
                   height={53}
@@ -227,7 +293,7 @@ export default function Page() {
               onClick={() => {
                 if (selectedItem.BOTTOM) {
                   const equippedKey = userItem.find(
-                    (item) => item.itemKey === selectedItem.BOTTOM,
+                    (item) => item.itemKey === selectedItem.BOTTOM?.itemKey,
                   );
                   if (equippedKey) {
                     handleModal(equippedKey);
@@ -237,7 +303,7 @@ export default function Page() {
             >
               {selectedItem.BOTTOM && (
                 <Image
-                  src={`/images/items/thumbs/${selectedItem.BOTTOM}.png`}
+                  src={`/images/items/thumbs/${selectedItem.BOTTOM.itemKey}.png`}
                   alt="하의"
                   width={53}
                   height={53}
@@ -261,18 +327,18 @@ export default function Page() {
             {/* 상의 아이템 */}
             {selectedItem.TOP && (
               <Image
-                src={`/images/items/${selectedItem.TOP}.png`}
+                src={`/images/items/${selectedItem.TOP.itemKey}.png`}
                 alt="상의"
                 width={130}
                 height={130}
                 priority
-                className="absolute inset-0 top-[4px] z-10"
+                className="absolute inset-0 z-10"
               />
             )}
             {/* 하의 아이템 */}
             {selectedItem.BOTTOM && (
               <Image
-                src={`/images/items/${selectedItem.BOTTOM}.png`}
+                src={`/images/items/${selectedItem.BOTTOM.itemKey}.png`}
                 alt="하의"
                 width={130}
                 height={130}
@@ -283,7 +349,7 @@ export default function Page() {
             {/* 악세사리 아이템 */}
             {selectedItem.ACCESSORY && (
               <Image
-                src={`/images/items/${selectedItem.ACCESSORY}.png`}
+                src={`/images/items/${selectedItem.ACCESSORY.itemKey}.png`}
                 alt="액세서리"
                 width={130}
                 height={130}
@@ -319,7 +385,8 @@ export default function Page() {
             style={{ columnGap: 'clamp(8px, 4vw, 21px)' }}
           >
             {filteredItem.map((item) => {
-              const isSelected = selectedItem[item.itemtype] === item.itemKey;
+              const isSelected =
+                selectedItem[item.itemtype]?.itemKey === item.itemKey;
 
               return (
                 <div
@@ -393,7 +460,7 @@ export default function Page() {
           isOpen={true}
           type="none"
           title={
-            selectedItem[modalItem.itemtype] === modalItem.itemKey ? (
+            selectedItem[modalItem.itemtype]?.itemKey === modalItem.itemKey ? (
               <>
                 {modalItem.itemName}를<br />
                 장착 해제하시겠습니까?
@@ -406,7 +473,7 @@ export default function Page() {
             )
           }
           confirmText={
-            selectedItem[modalItem.itemtype] === modalItem.itemKey
+            selectedItem[modalItem.itemtype]?.itemKey === modalItem.itemKey
               ? '장착 해제'
               : '장착'
           }

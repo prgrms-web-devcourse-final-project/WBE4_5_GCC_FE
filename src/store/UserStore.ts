@@ -11,21 +11,15 @@ interface MemberInfo {
   regionDept3: string;
 }
 
-interface BadgeInfo {
-  badgeKey: string;
-  badgeName: string;
-  badgeTier: string;
-}
-
 interface UserStore {
   isLoggedIn: boolean;
   points: number;
+  equippedBadge: string;
   member: MemberInfo;
-  badge: BadgeInfo;
   setIsLoggedIn: (value: boolean) => void;
   setPoints: (value: number) => void;
+  setEquippedBadge: (value: string) => void;
   setMember: (member: Partial<MemberInfo>) => void;
-  setBadge: (badge: Partial<BadgeInfo>) => void;
   resetUser: () => void;
 }
 
@@ -34,6 +28,7 @@ export const useUserStore = create<UserStore>()(
     (set) => ({
       isLoggedIn: false,
       points: 0,
+      equippedBadge: '',
       member: {
         email: '',
         name: '',
@@ -43,17 +38,11 @@ export const useUserStore = create<UserStore>()(
         regionDept2: '',
         regionDept3: '',
       },
-      badge: {
-        badgeKey: '',
-        badgeName: '',
-        badgeTier: '',
-      },
       setIsLoggedIn: (value) => set({ isLoggedIn: value }),
       setMember: (member) =>
         set((state) => ({ member: { ...state.member, ...member } })),
-      setBadge: (badge) =>
-        set((state) => ({ badge: { ...state.badge, ...badge } })),
       setPoints: (value) => set({ points: value }),
+      setEquippedBadge: (value) => set({ equippedBadge: value }),
       resetUser: () =>
         set({
           isLoggedIn: false,
@@ -67,11 +56,7 @@ export const useUserStore = create<UserStore>()(
             regionDept2: '',
             regionDept3: '',
           },
-          badge: {
-            badgeKey: '',
-            badgeName: '',
-            badgeTier: '',
-          },
+          equippedBadge: '',
         }),
     }),
     {
