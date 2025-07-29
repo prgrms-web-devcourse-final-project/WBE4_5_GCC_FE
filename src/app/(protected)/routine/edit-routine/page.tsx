@@ -23,13 +23,30 @@ export default function Page() {
     routineId,
     name,
     triggerTime,
+    categoryId,
     majorCategory,
     subCategory,
     isImportant,
-    startRoutineDate,
+    initDate,
     repeatType,
     repeatValue,
   } = useRoutineStore();
+
+  const router = useRouter();
+  const [routineName, setRoutineName] = useState(name);
+  const [startDate, setStartDate] = useState(initDate);
+  const [doWhen, setDoWhen] = useState(triggerTime);
+  const [notification, setNotification] = useState(false);
+  const [importance, setImportance] = useState(isImportant);
+  const [showCatModal, setShowCatModal] = useState(false);
+  const [isCycleOpen, setIsCycleOpen] = useState(false);
+  const [isWhenDoOpen, setIsWhenDoOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [cycleText, setCycleText] = useState('');
+
+  const [newRepeatType, setNewRepeatType] = useState(repeatType);
+  const [newRepeatValue, setNewRepeatValue] = useState(repeatValue);
+  const [repeatTerm, setRepeatTerm] = useState('');
 
   useEffect(() => {
     if (repeatType === 'DAILY') {
@@ -40,17 +57,6 @@ export default function Page() {
       setCycle({ month: repeatValue });
     }
   }, [repeatType, repeatValue]);
-
-  const router = useRouter();
-  const [routineName, setRoutineName] = useState(name);
-  const [startDate, setStartDate] = useState(startRoutineDate);
-  const [doWhen, setDoWhen] = useState(triggerTime);
-  const [notification, setNotification] = useState(false);
-  const [importance, setImportance] = useState(isImportant);
-  const [showCatModal, setShowCatModal] = useState(false);
-  const [isCycleOpen, setIsCycleOpen] = useState(false);
-  const [isWhenDoOpen, setIsWhenDoOpen] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
 
   // ✅ 카테고리 초기값 세팅
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem>({
@@ -88,19 +94,65 @@ export default function Page() {
     console.log('폼 상태 변경됨:', {
       selectedCategory,
       routineName,
-      startDate,
+      initDate,
       cycle,
       doWhen,
       importance,
+      newRepeatType,
+      newRepeatValue,
+      repeatTerm,
     });
-  }, [selectedCategory, routineName, startDate, cycle, doWhen, importance]);
+  }, [
+    selectedCategory,
+    routineName,
+    initDate,
+    cycle,
+    doWhen,
+    importance,
+    newRepeatType,
+    newRepeatValue,
+    repeatTerm,
+  ]);
 
   useEffect(() => {
     setRoutineName(name);
     setDoWhen(triggerTime);
     setImportance(isImportant);
-    setStartDate(startRoutineDate);
-  }, [name, triggerTime, isImportant, startRoutineDate]);
+    setStartDate(initDate);
+  }, [name, triggerTime, isImportant, initDate]);
+
+  useEffect(() => {
+    if (!cycle) {
+      setCycleText('');
+      return;
+    }
+
+    switch (true) {
+      case !!cycle.daily:
+        setCycleText(`매 ${cycle.daily}일 마다`);
+        setNewRepeatType('DAILY');
+        setRepeatTerm(cycle.daily!);
+        break;
+      case !!cycle.week:
+        setCycleText(
+          `${cycle.days} / ${
+            cycle.week === '1' ? '매주' : `${cycle.week}주마다`
+          }`,
+        );
+        setNewRepeatType('WEEKLY');
+        setNewRepeatValue(cycle.days!);
+        setRepeatTerm(cycle.week);
+        break;
+      case !!cycle.month:
+        setCycleText(`매월 ${cycle.month}일 마다`);
+        setNewRepeatType('MONTHLY');
+        setRepeatTerm('1');
+        setNewRepeatValue(cycle.month!);
+        break;
+      default:
+        setCycleText('');
+    }
+  }, [cycle]);
 
   return (
     <>
@@ -132,15 +184,7 @@ export default function Page() {
             <ListSelector
               icon="♾️"
               label="반복주기"
-              value={
-                cycle?.daily
-                  ? `매 ${cycle.daily}일 마다`
-                  : cycle?.week
-                    ? `${cycle.days} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`
-                    : cycle?.month
-                      ? `매월 ${cycle.month}일 마다`
-                      : ''
-              }
+              value={cycleText}
               placeholder="매일 / 매주"
               onClick={() => setIsCycleOpen(true)}
             />
@@ -181,14 +225,13 @@ export default function Page() {
                 routineId: routineId,
                 editData: {
                   name: routineName,
-                  majorCategory: selectedCategory!.categoryName,
-                  subCategory: selectedCategory!.subCategoryName,
-                  InitDate: startDate,
+                  categoryId: categoryId,
+                  initDate: startDate,
                   triggerTime: doWhen,
                   isImportant: importance,
-                  repeatType: repeatType,
-                  repeatValue: repeatValue,
-                  repeatTerm: Number(1),
+                  repeatType: newRepeatType,
+                  repeatValue: newRepeatValue,
+                  repeatTerm: Number(repeatTerm),
                 },
               });
               setIsEditing(true);
