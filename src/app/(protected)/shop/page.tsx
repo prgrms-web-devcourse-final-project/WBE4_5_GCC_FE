@@ -99,7 +99,7 @@ export default function Shop() {
                 onClick={() => {
                   if (ownedItemKeys.includes(item.itemKey)) return; // 이미 보유한 아이템일 경우 클릭 막음
                   setSelectedItem(item);
-                  setSelectedPrice(item.itemPoint);
+                  setSelectedPrice(item.itemPoint ?? null);
                   setShowPModal(true);
                 }}
                 isOwned={ownedItemKeys.includes(item.itemKey)} // 보유 중 아이템
@@ -134,11 +134,11 @@ export default function Shop() {
           item={{
             image: item1,
             name: selectedItem.itemName,
-            price: selectedItem.itemPoint,
+            price: selectedItem.itemPoint!,
           }}
           onConfirm={async () => {
-            const canBuy = points >= selectedItem.itemPoint;
-            const remainingPoints = points - selectedItem.itemPoint;
+            const canBuy = points >= selectedItem.itemPoint!;
+            const remainingPoints = points - selectedItem.itemPoint!;
 
             if (!canBuy) {
               setAlertType('failed');

@@ -17,6 +17,7 @@ import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import CategorySelector from '@/app/components/routine/category/CategorySelector';
 import { useRoutinePreset } from '@/api/routine/getRoutinePreset';
 import { useRouter } from 'next/navigation';
+// import { format, startOfWeek } from 'date-fns';
 
 export default function Page() {
   const router = useRouter();
@@ -41,6 +42,9 @@ export default function Page() {
   const [repeatType, setRepeatType] = useState('');
   const [repeatValue, setRepeatValue] = useState('');
   const [repeatTerm, setRepeatTerm] = useState('');
+
+  // const monday = startOfWeek(initDate, { weekStartsOn: 1 });
+  // const mondayStr = format(monday, 'yyyy-MM-dd');
 
   const isSubmitEnabled =
     selectedCategory !== null &&
@@ -77,10 +81,6 @@ export default function Page() {
 
   useEffect(() => {
     if (isSuccess) {
-      // queryClient.invalidateQueries({
-      //   queryKey: ['routine-week'],
-      //   exact: false,
-      // });
       router.push('/routine');
     }
   }, [isSuccess, router]);

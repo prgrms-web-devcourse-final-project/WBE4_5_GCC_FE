@@ -6,6 +6,7 @@ import {
   routineHandler,
 } from './routine';
 import { AddRoutine, EditRoutine } from '../../../types/routine';
+import { WeekRoutineResponse } from './getWeekRoutine';
 
 // 루틴 추가
 export function useAddRoutine() {
@@ -22,7 +23,7 @@ export function useAddRoutine() {
 }
 
 // 루틴 완료 처리
-export function useHandleRoutine() {
+export function useHandleRoutine(mondayStr: string, dateStr: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
@@ -32,60 +33,27 @@ export function useHandleRoutine() {
       scheduleId: number;
       isDone: boolean;
     }) => routineHandler(scheduleId, isDone),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['week-routine'],
-        exact: false,
-      });
+    onSuccess: (_data, variables) => {
+      const { scheduleId, isDone } = variables;
+      queryClient.setQueryData<WeekRoutineResponse>(
+        ['routine-week', mondayStr],
+        (oldData) => {
+          if (!oldData) return oldData;
+          if (!oldData.routines[dateStr]) return oldData;
+          return {
+            ...oldData,
+            routines: {
+              ...oldData.routines,
+              [dateStr]: oldData.routines[dateStr].map((r) =>
+                r.scheduleId === scheduleId ? { ...r, isDone } : r,
+              ),
+            },
+          };
+        },
+      );
     },
   });
 }
-//   return useMutation({
-//     mutationFn: ({
-//       scheduleId,
-//       isDone,
-//     }: {
-//       scheduleId: number;
-//       isDone: boolean;
-//     }) => routineHandler(scheduleId, isDone),
-
-//     // ✅ 낙관적 업데이트
-//     onMutate: async ({ scheduleId, isDone }) => {
-//       // 1️⃣ 기존 데이터 백업
-//       await queryClient.cancelQueries({ queryKey: ['routine-week'] });
-//       const previousData = queryClient.getQueryData<WeekRoutineResponse>([
-//         'routine-week',
-//       ]);
-//       // 2️⃣ 낙관적으로 해당 루틴의 isDone 업데이트
-//       queryClient.setQueryData(
-//         ['routine-week'],
-//         (oldData: WeekRoutineResponse) => {
-//           if (!oldData) return oldData;
-//           return {
-//             ...oldData,
-//             routines: {
-//               ...oldData.routines,
-//               [dateStr!]: oldData.routines[dateStr!].map((r: DayRoutine) =>
-//                 r.scheduleId === scheduleId ? { ...r, isDone } : r,
-//               ),
-//             },
-//           };
-//         },
-//       );
-//       return { previousData };
-//     },
-//     // ❌ 에러 시 롤백
-//     onError: (_err, _variables, context) => {
-//       if (context?.previousData) {
-//         queryClient.setQueryData(['routine-week'], context.previousData);
-//       }
-//     },
-//     // ✅ 서버와 최종 동기화
-//     onSettled: () => {
-//       queryClient.invalidateQueries({ queryKey: ['routine-week'] });
-//     },
-//   });
-// }
 
 // 루틴 삭제
 export function useDeleteRoutine() {
