@@ -16,7 +16,7 @@ export default function ThreeToggle({
   setSelectedIdx: (idx: number) => void;
 }) {
   return (
-    <div className="flex w-full max-w-sm rounded-full bg-[#FFF4D1] p-1">
+    <div className="flex w-full rounded-full bg-[#FFF4D1] p-1">
       {toggleList.map(({ id, label, locked }, idx) => {
         const isSelected = selectedIdx === idx;
         return (

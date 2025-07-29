@@ -1,9 +1,34 @@
-export default function MonthSummary() {
+'use client';
+
+import { ReportData } from "../../../../types/report";
+
+type Props = {
+  reportData: ReportData;
+};
+
+export default function MonthSummary({ reportData }: Props) {
+  const { completedCount, totalCount } = reportData.routineCount;
   const summaryData = [
-    { label: '루틴 완료율', value: '84%', color: '#FFB84C' },
-    { label: '총 루틴 수', value: '50개', color: '#222222' },
-    { label: '가장 많이 수행', value: '건강 🏃🏻', color: '#222222' },
-    { label: '누적 포인트', value: '2,150P', color: '#FFB84C' },
+    {
+      label: '루틴 완료율',
+      value: `${Math.round((completedCount / (totalCount || 1)) * 100)}%`,
+      color: '#FFB84C',
+    },
+    {
+      label: '총 루틴 수',
+      value: `${totalCount}개`,
+      color: '#222222',
+    },
+    {
+      label: '가장 많이 수행',
+      value: reportData.top5?.[0]?.categoryName,
+      color: '#222222',
+    },
+    {
+      label: '누적 포인트',
+      value: `${reportData.totalPoint}P`,
+      color: '#FFB84C',
+    },
   ];
 
   return (
@@ -18,10 +43,7 @@ export default function MonthSummary() {
             className="relative bg-[#FFF4D1] rounded-lg shadow-[0_1px_2px_rgba(0,0,0,0.05)] w-full min-h-[80px] px-4 py-3 flex justify-between items-start"
           >
             <p className="text-sm text-[#616161]">{item.label}</p>
-            <p
-              className="text-[20px] font-semibold self-end"
-              style={{ color: item.color }}
-            >
+            <p className="text-[20px] font-semibold self-end" style={{ color: item.color }}>
               {item.value}
             </p>
           </div>
