@@ -8,15 +8,15 @@ const topRoutines = [
 
 export default function TopRoutineRanking() {
   return (
-    <div className="bg-[#fbfbfb] p-4 rounded-xl mb-8">
+    <div className="bg-white px-5 py-7 mb-3">
       <h3 className="text-lg font-semibold text-[#222222] mb-4">
-        🏅 TOP 5 루틴 랭킹
+        루틴 클리어 랭킹 Top 5
       </h3>
       <ul className="space-y-2">
         {topRoutines.map((routine, i) => (
           <li
             key={routine.name}
-            className="flex justify-between text-sm text-[#616161]"
+            className="flex justify-between text-[14px] text-[#616161]"
           >
             <span>
               {i + 1}. {routine.name}
