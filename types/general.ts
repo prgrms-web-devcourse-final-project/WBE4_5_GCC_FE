@@ -26,13 +26,19 @@ export interface Badge {
   badgeId: number;
   badgeKey: string;
   badgeName: string;
-  categoryName: string;
-  how: string;
+  tier: 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
   info: string;
-  isReceived: boolean;
-  receivedDate: string;
+  message: string;
+  categoryName: string;
   requirement: number;
-  tier: 'BRONZE' | 'SILVER' | 'GOLD' | 'TROPHY';
+  status: 'ACHIEVABLE' | 'OWNED' | 'LOCKED';
+  currentProgress: number;
+  receivedDate: string | null;
+  isEquipped: boolean;
+  // 보상 수령
+  pointAdded?: number;
+  totalPoint?: number;
+  receivedAt?: string;
 }
 
 export interface Quest {
