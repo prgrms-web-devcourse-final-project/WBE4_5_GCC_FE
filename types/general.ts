@@ -42,6 +42,7 @@ export interface Quest {
   questKey: string;
   questName: string;
   target: number;
+  points: number;
   progress: number;
 }
 

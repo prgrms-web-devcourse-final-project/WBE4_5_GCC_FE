@@ -65,14 +65,14 @@ export default function QuestList({ quest }: QuestListProps) {
             <div className="absolute inset-0 z-50 w-full cursor-auto rounded-[6px] bg-black/50"></div>
           )}
           <Image src={coin} alt="coin" className="h-5 w-5" />
-          <h1 className="text-[10px]">+ 100p</h1>
+          <h1 className="text-[10px]">+ {quest.points}p</h1>
         </button>
       </div>
       {isOpen && (
         <AlertModal
           isOpen={true}
           type="success"
-          title={`${quest.questName} 보상으로 100 포인트 획득!`}
+          title={`${quest.questName} 보상으로 ${quest.points} 포인트 획득!`}
           confirmText="확인"
           onConfirm={() => setIsOpen(false)} // 모달 닫기
         />
