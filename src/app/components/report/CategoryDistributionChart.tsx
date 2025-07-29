@@ -35,9 +35,9 @@ const COLORS = [
 
 export default function CategoryDistributionChart() {
   return (
-    <div className="bg-[#fbfbfb] p-4 rounded-xl mb-8">
+    <div className="bg-white px-5 pt-7 mb-5">
       <h3 className="text-lg font-semibold text-[#222222] mb-4">
-        📊 카테고리 점유율
+        카테고리 점유율
       </h3>
       <ResponsiveContainer width="100%" height={320}>
         <PieChart>
@@ -55,7 +55,9 @@ export default function CategoryDistributionChart() {
             ))}
           </Pie>
           <Tooltip />
-          <Legend />
+          <Legend
+            wrapperStyle={{ fontSize: 14 }}
+          />
         </PieChart>
       </ResponsiveContainer>
     </div>

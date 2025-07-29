@@ -19,15 +19,6 @@ export interface User {
   isActive: boolean;
 }
 
-export interface Quest {
-  questKey: string;
-  questName: string;
-  questReward: number;
-  questInfo: string;
-  isDone: boolean;
-  questProgress: number;
-}
-
 export interface Item {
   itemKey: string;
   itemName: string;
