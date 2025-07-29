@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Badge } from '../../../../types/general';
 import { BadgeRewardByKey, getBadges, equipBadge } from '@/api/badges';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
@@ -33,12 +33,7 @@ export default function Page() {
   }>({ tiers: [], categories: [] });
 
   // 업적 목록 조회
-  const {
-    data: badgesData,
-    isLoading,
-    isError,
-    error,
-  } = useQuery<
+  const { data: badgesData, isLoading } = useQuery<
     { badges: Badge[]; totalPages: number },
     Error,
     { badges: Badge[]; totalPages: number },
@@ -275,8 +270,8 @@ export default function Page() {
       {isOpen && (
         <CollectionBottomSheet
           isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          onApply={(filters) => setSelectedFilters(filters)}
+          setIsOpenAction={setIsOpen}
+          onApplyAction={(filters) => setSelectedFilters(filters)}
         />
       )}
 

@@ -1,7 +1,7 @@
 'use client';
 
 import Button from '../common/ui/Button';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getCategories } from '@/api/categories';
 import SelectButton from '../common/SelectButton';
 import { CategoryItem } from '../../../../types/general';
@@ -18,12 +18,12 @@ const tierLabelMap: Record<'PLATINUM' | 'GOLD' | 'SILVER' | 'BRONZE', string> =
 
 export default function CollectionBottomSheet({
   isOpen,
-  setIsOpen,
-  onApply,
+  setIsOpenAction,
+  onApplyAction,
 }: {
   isOpen?: boolean;
-  setIsOpen: (open: boolean) => void;
-  onApply: (filters: { tiers: string[]; categories: string[] }) => void;
+  setIsOpenAction: (open: boolean) => void;
+  onApplyAction: (filters: { tiers: string[]; categories: string[] }) => void;
 }) {
   const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
   const toggleTier = (tier: string) => {
@@ -41,29 +41,24 @@ export default function CollectionBottomSheet({
     );
   };
 
-  const {
-    data: categories = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery<CategoryItem[], Error>({
+  const { data: categories = [], isLoading } = useQuery<CategoryItem[], Error>({
     queryKey: ['categories'],
     queryFn: getCategories,
     staleTime: 5 * 60 * 1000,
   });
 
   const handleApply = () => {
-    onApply({
+    onApplyAction({
       tiers: selectedTiers,
       categories: selectedCategories,
     });
-    setIsOpen(false);
+    setIsOpenAction(false);
   };
 
   const handleReset = () => {
     setSelectedTiers([]);
     setSelectedCategories([]);
-    onApply({ tiers: [], categories: [] });
+    onApplyAction({ tiers: [], categories: [] });
   };
 
   if (!isOpen) return null;
@@ -79,7 +74,7 @@ export default function CollectionBottomSheet({
   return (
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50 select-none"
-      onClick={() => setIsOpen(false)}
+      onClick={() => setIsOpenAction(false)}
     >
       <div
         className="relative min-h-[390px] w-full min-w-[390px] rounded-t-3xl bg-white px-5 py-[34px]"

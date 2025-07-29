@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import backGround from '/public/profileBackGround.svg';
-import character from '/public/images/character.png';
+// import character from '/public/images/character.png';
 import coin from '/public/coin.svg';
 // import { useEffect, useState } from 'react';
 import { fetchProfile, fetchUserItem, fetchUserPoint } from '@/api/member';

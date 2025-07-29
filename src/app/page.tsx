@@ -1,15 +1,15 @@
 'use client';
 import Profile from './components/main/Profile';
 import Routine from './components/routine/Routine';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import quest from '/public/quest.svg';
-import acheivement from '/public/acheivement.svg';
+// import quest from '/public/quest.svg';
+// import acheivement from '/public/acheivement.svg';
 import FloatingButton from './components/common/FloatingButton';
 import Donut from './components/common/ui/Donut';
 import { useRouter } from 'next/navigation';
 import Quest from './components/main/Quest';
-import { fetchWeekRoutine, routineHandler } from '@/api/routine/routine';
+import { routineHandler } from '@/api/routine/routine';
 import { DayRoutine } from '../../types/routine';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import LoadingSpinner from './components/common/ui/LoadingSpinner';
@@ -19,6 +19,9 @@ import { format } from 'date-fns';
 import { useRoutineStore } from '@/store/RoutineStore';
 
 export default function Main() {
+  const quest = '/quest.svg';
+  const acheivement = '/acheivement.svg';
+
   const queryClient = useQueryClient();
   const [openQuest, setOpenQuest] = useState(false);
   const [checkDelete, setCheckDelete] = useState(false);
@@ -57,10 +60,6 @@ export default function Main() {
     router.push('/collection');
   };
 
-  useEffect(() => {
-    fetchWeekRoutine('2025-07-31');
-  }, []);
-
   return (
     <>
       <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col items-center bg-white select-none">
@@ -72,6 +71,8 @@ export default function Main() {
             textSize="12px"
             className="mb-3"
             onClick={() => setOpenQuest(true)}
+            imgWidth={26}
+            imgHeight={21}
           />
           <FloatingButton
             src={acheivement}
@@ -79,6 +80,8 @@ export default function Main() {
             text="도감"
             textSize="12px"
             onClick={goToCollection}
+            imgWidth={26}
+            imgHeight={21}
           />
         </div>
 

@@ -28,6 +28,7 @@ export default function Shop() {
   const [points, setPoints] = useState(currentPoint); // 500 포인트
   const [currentPage, setCurrentPage] = useState(1);
   const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
+  console.log(setCurrentPage);
 
   const tabMap: Record<string, ShopItem['itemType']> = {
     상의: 'TOP',
