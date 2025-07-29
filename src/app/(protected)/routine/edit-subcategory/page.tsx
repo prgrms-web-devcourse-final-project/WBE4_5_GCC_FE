@@ -30,7 +30,9 @@ export default function Page() {
 
   const [label, setLabel] = useState('');
   const [subCategories, setSubCategories] = useState<CategoryItem[]>([]);
-  const [categoryType, setCategoryType] = useState<'MAJOR' | 'SUB'>();
+  const [categoryType, setCategoryType] = useState<
+    'MAJOR' | 'SUB' | 'DEFAULT'
+  >();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
   const queryClient = useQueryClient();
