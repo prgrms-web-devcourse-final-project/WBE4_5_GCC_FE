@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Badge } from '../../../../types/general';
 import { BadgeRewardByKey, getBadges, equipBadge } from '@/api/badges';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
@@ -85,6 +85,16 @@ export default function Page() {
       alert('배지 장착/해제 실패');
     },
   });
+
+  // 이미 장착된 배지를 selectedItem으로 설정
+  useEffect(() => {
+    if (badges.length > 0) {
+      const equippedBadge = badges.find((badge) => badge.isEquipped === true);
+      if (equippedBadge) {
+        setSelectedItem(equippedBadge.badgeKey);
+      }
+    }
+  }, [badges]);
 
   // 뱃지 장착 (하나만 선택 가능)
   const handleSelect = (badge: { key: string; status: string }) => {
