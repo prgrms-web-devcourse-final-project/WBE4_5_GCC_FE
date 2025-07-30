@@ -22,7 +22,7 @@ export default function ItemCard({
   return (
     <>
       <div
-        className="relative flex aspect-[92/128] h-[140px] min-w-[92px] flex-col rounded-[5px] border-1 border-[#d9d9d9] shadow-[1px_2px_4px_rgba(0,0,0,0.1)]"
+        className="relative flex aspect-[92/128] h-[140px] min-w-[92px] cursor-pointer flex-col rounded-[5px] border-1 border-[#d9d9d9] shadow-[1px_2px_4px_rgba(0,0,0,0.1)]"
         onClick={onClick}
       >
         {isDeleteMode && (
@@ -36,8 +36,19 @@ export default function ItemCard({
             <X className="h-auto w-[10px] text-[#616161]" strokeWidth={2} />
           </button>
         )}
-        <div className="px-5 py-3">
-          <Image src={item1} alt="item" width={50} height={44} />
+        <div className="flex h-[65px] place-items-center pr-5 py-3 pl-6">
+          {item.itemKey && (
+            <Image
+              src={
+                item.itemKey
+                  ? `/images/items/thumbs/${item.itemKey}.png`
+                  : item1
+              }
+              alt={item.itemName}
+              width={50}
+              height={44}
+            />
+          )}
         </div>
         <div className="border-t-[0.5px] border-[#E0E0E0] px-[9px] py-[6px] text-left">
           <div className="text-[8px] font-medium">{item.itemName}</div>
