@@ -85,61 +85,76 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
 }
 
 // 루틴 삭제
-// export function useDeleteRoutine(mondayStr: string, dateStr: string) {
-//   const queryClient = useQueryClient();
+export function useDeleteRoutine(mondayStr: string, dateStr: string) {
+  const queryClient = useQueryClient();
 
+  return useMutation({
+    mutationFn: ({ routineId }: { routineId: number }) =>
+      deleteRoutine(routineId),
+
+    onMutate: async ({ routineId }) => {
+      await queryClient.cancelQueries({
+        queryKey: ['routine-week', mondayStr],
+      });
+
+      const previousData = queryClient.getQueryData<WeekRoutineResponse>([
+        'routine-week',
+        mondayStr,
+      ]);
+
+      queryClient.setQueryData<WeekRoutineResponse>(
+        ['routine-week', mondayStr],
+        (oldData) => {
+          if (!oldData) return oldData;
+          if (!oldData.routines[dateStr]) return oldData;
+
+          return {
+            ...oldData,
+            routines: {
+              ...oldData.routines,
+              [dateStr]: oldData.routines[dateStr].filter(
+                (r) => r.routineId !== routineId, // ✅ 해당 routineId 제외
+              ),
+            },
+          };
+        },
+      );
+      return { previousData };
+    },
+
+    onError: (_error, _variables, context) => {
+      // 🔥 실패 시 롤백
+      if (context?.previousData) {
+        queryClient.setQueryData(
+          ['routine-week', mondayStr],
+          context.previousData,
+        );
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['routine-week', mondayStr],
+      });
+    },
+
+    retry: 0,
+  });
+}
+// export function useDeleteRoutine() {
+//   const queryClient = useQueryClient();
 //   return useMutation({
 //     mutationFn: ({ routineId }: { routineId: number }) =>
 //       deleteRoutine(routineId),
-
-//     onMutate: async({routineId}) => {
-//       await queryClient.cancelQueries({
-//         queryKey: ['routine-week', mondayStr],
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({
+//         queryKey: ['week-routine'],
+//         exact: false,
 //       });
-
-//       const previousData = queryClient.getQueryData<WeekRoutineResponse>([
-//         'routine-week',
-//         mondayStr,
-//       ]);
-
-//       queryClient.setQueryData<WeekRoutineResponse>(
-//         ['routine-week', mondayStr],
-//         (oldData) => {
-//           if (!oldData) return oldData;
-//           if (!oldData.routines[dateStr]) return oldData;
-//           return {
-//             ...oldData,
-//             routines:{
-//               ...oldData,
-//               routines:{
-//                 ...oldData.routines,
-//                 [dateStr]: oldData.routines[dateStr].filter((r)=>
-//                   r.routineId === routineId ? {...r}
-//                 )
-//               }
-//             }
-//           }
-//         },
-//       );
-//       return {previousData}
 //     },
 //     retry: 0,
 //   });
 // }
-export function useDeleteRoutine() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ routineId }: { routineId: number }) =>
-      deleteRoutine(routineId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['week-routine'],
-        exact: false,
-      });
-    },
-    retry: 0,
-  });
-}
 
 // 루틴 수정
 export function useEditRoutine() {

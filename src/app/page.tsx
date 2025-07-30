@@ -12,7 +12,6 @@ import Quest from './components/main/Quest';
 import { routineHandler } from '@/api/routine/routine';
 import { DayRoutine } from '../../types/routine';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import LoadingSpinner from './components/common/ui/LoadingSpinner';
 import AlertModal from './components/common/alert/AlertModal';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
 import { format } from 'date-fns';
@@ -28,17 +27,15 @@ export default function Main() {
   const router = useRouter();
 
   const { data: weekData, isPending: weekLoading } = useWeekRoutine();
-  console.log('weekData:', weekData);
 
   const today = format(new Date(), 'yyyy-MM-dd');
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[today] ?? [];
   const total = filteredRoutines.length;
   const done = filteredRoutines.filter((r) => r.isDone).length;
   const successRate = total ? Math.round((done / total) * 100) : 0;
-  console.log(filteredRoutines);
 
-  const dateStr: string = format(new Date(), 'yyyy-MM-dd');
-  console.log(dateStr);
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
 
   const { mutate } = useMutation({
     mutationFn: ({
@@ -91,17 +88,23 @@ export default function Main() {
           <Profile />
         </div>
         {weekLoading && (
-          <div className="mt-[50px] flex flex-col items-center justify-center gap-6">
-            <LoadingSpinner />
-            <p className="text-[20px] font-semibold">
-              루틴을 불러오는 중입니다.
-            </p>
+          <div className="flex w-full flex-col gap-3 border-t-10 border-t-[#FBFBFB] px-5 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-3">
+                <div className="h-[27px] w-[100px] animate-pulse rounded-[10px] bg-gray-200"></div>
+                <div className="h-[27px] w-[146px] animate-pulse rounded-[10px] bg-gray-200"></div>
+              </div>
+              <div className="h-[54px] w-[54px] animate-pulse rounded-full bg-gray-200"></div>
+            </div>
+            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
           </div>
         )}
         {!weekLoading && (
           <div className="flex w-full flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 py-4">
             <div className="mb-6 flex w-full flex-col justify-start">
-              <span className="text-xs font-semibold">2025년 7월 9일</span>
+              <span className="text-xs font-semibold">{todayStr}</span>
               <div className="flex items-center gap-1 text-[22px] font-bold">
                 <div>
                   <span>

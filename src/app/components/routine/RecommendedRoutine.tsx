@@ -1,24 +1,34 @@
 import '../../styles/recommended-routine.css';
 
 interface Preset {
-  presetId: number;
   categoryId: number;
-  content: string;
+  emoji: string;
+  isImportant: boolean;
+  majorCategory: string;
+  name: string;
+  presetId: number;
+  repeatType: string;
+  repeatValue: string;
+  triggerTime: string;
 }
 
 interface RecommendedRoutineProps {
   routines: Preset[];
-  onSelect: (name: string) => void;
-  onSelectTime: (triggerTime: string) => void;
+  onNameSelect: (name: string) => void;
   isLoading: boolean;
+  onRepeatTypeSelect: (type: string) => void;
+  onRepeatValueSelect: (value: string) => void;
+  onTriggerTimeSelect: (triggerTime: string) => void;
 }
 
 export default function RecommendedRoutine({
   routines,
-  onSelect,
+  onNameSelect,
+  onRepeatTypeSelect,
+  onRepeatValueSelect,
+  onTriggerTimeSelect,
   isLoading,
 }: RecommendedRoutineProps) {
-  console.log('프리셋 루틴:', routines);
   return (
     <div className="flex w-full flex-col gap-2 rounded-lg border border-[#E0E0E0] bg-white px-4 py-4">
       <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
@@ -37,11 +47,14 @@ export default function RecommendedRoutine({
             <button
               key={index}
               onClick={() => {
-                onSelect(routine.content);
+                onNameSelect(routine.name);
+                onRepeatTypeSelect(routine.repeatType);
+                onRepeatValueSelect(routine.repeatValue);
+                onTriggerTimeSelect(routine.triggerTime);
               }}
               className="font-regular shrink-0 rounded-lg border border-[#e0e0e0] px-4 py-2 text-xs whitespace-nowrap text-[#616161]"
             >
-              {routine.content}
+              {routine.name}
             </button>
           ))}
         </div>
