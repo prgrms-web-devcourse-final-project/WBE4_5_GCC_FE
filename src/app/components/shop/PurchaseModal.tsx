@@ -6,7 +6,7 @@ import PointBox from './PointBox';
 type PurchaseModalProps = {
   isOpen: boolean;
   item: {
-    image: StaticImageData;
+    image: StaticImageData | string;
     name: string;
     price: number;
   } | null;
@@ -36,7 +36,10 @@ export default function PurchaseModal({
           <Image
             src={item.image}
             alt={item.name}
+            width={50}
+            height={44}
             className="h-[44px] w-[50px]"
+            priority
           />
           <PointBox
             width={64}
