@@ -5,7 +5,7 @@ interface CategoryPayload {
   categoryName: string;
   categoryType: string;
   emoji: string | null;
-  parentName: string | null;
+  parentId: number | null;
 }
 
 // 카테고리 조회
@@ -63,7 +63,7 @@ export const EditCategoryById = async (
   }
 };
 
-// 카테고리 삭제 
+// 카테고리 삭제
 export const DeleteCategoryById = async (id: number) => {
   try {
     const response = await axiosInstance.delete(`/api/v1/categories/${id}`);

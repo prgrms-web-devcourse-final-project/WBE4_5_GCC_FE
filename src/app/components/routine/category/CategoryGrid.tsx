@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { CircleX } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import '../../../styles/recommended-routine.css';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 //import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
-import { DeleteCategoryById } from '@/api/categories';
+import { DeleteCategoryById, getCategories } from '@/api/categories';
 import { useEditMode } from '../EditModeContext';
 import { CategoryItem } from '../../../../../types/general';
 
@@ -14,6 +15,7 @@ interface CategoryGridProps {
   onSelectCategory: (label: string) => void;
   isCustom?: boolean;
   isManage?: boolean;
+  maxHeight?: string;
 }
 
 export default function CategoryGrid({
@@ -22,6 +24,7 @@ export default function CategoryGrid({
   onSelectCategory,
   isCustom = false,
   isManage = false,
+  maxHeight,
 }: CategoryGridProps) {
   console.log('categoreis:', categories);
   const { isEditMode } = useEditMode();
@@ -31,21 +34,13 @@ export default function CategoryGrid({
   );
   const queryClient = useQueryClient();
 
-  //const { mutate: deleteCategory } = useMutation({
-  //  mutationFn: (id: number) => DeleteAdminCategoryById(id),
-  //  onSuccess: () => {
-  //    queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); // 카테고리 목록 갱신
-  //  },
-  //  onError: (error) => {
-  //    console.error('카테고리 삭제 실패:', error);
-  //    alert('카테고리 삭제 중 오류 발생');
-  //  },
-  //});
-
+  // 카테고리 삭제
   const { mutate: deleteCategory } = useMutation({
     mutationFn: (id: number) => DeleteCategoryById(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['edit-categories'] }); // 카테고리 목록 갱신
+    onSuccess: async () => {
+      // 캐시를 무효화하여 stale 상태로 만들고 → 강제로 다시 fetch
+      await queryClient.invalidateQueries({ queryKey: ['user-categories'] });
+      await queryClient.refetchQueries({ queryKey: ['user-categories'] });
     },
     onError: (error) => {
       console.error('카테고리 삭제 실패:', error);
@@ -60,7 +55,10 @@ export default function CategoryGrid({
   };
 
   return (
-    <div className="grid w-full grid-cols-3 place-items-center gap-x-8 gap-y-3">
+    <div
+      style={{ maxHeight: maxHeight ?? 'h-full' }}
+      className="routine-scroll grid w-full grid-cols-3 place-items-center gap-x-8 gap-y-3 overflow-y-auto"
+    >
       {categories.map((cat, idx) => {
         const isSelected = selected === cat.categoryName;
 

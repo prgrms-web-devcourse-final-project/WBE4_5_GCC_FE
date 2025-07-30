@@ -14,13 +14,14 @@ export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem>();
 
   const { data: categories = [], isLoading } = useQuery<CategoryItem[], Error>({
-    queryKey: ['edit-categories'],
+    queryKey: ['user-categories'],
     queryFn: getCategories,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
   });
 
   const majorCategories = categories.filter(
-    (cat) => cat.categoryType === 'DEFAULT' || 'MAJOR',
+    //(cat) => cat.categoryType === 'DEFAULT' || 'MAJOR',
+    (cat) => cat.categoryType === 'DEFAULT' || cat.categoryType === 'MAJOR',
   );
 
   const handleSelect = (label: string) => {
