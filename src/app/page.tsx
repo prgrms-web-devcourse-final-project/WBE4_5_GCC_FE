@@ -105,44 +105,48 @@ export default function Main() {
             </div>
 
             <div className="flex w-full flex-col space-y-3">
-              {filteredRoutines.map((routine: DayRoutine) => (
-                <Routine
-                  key={`${routine.routineId}-${routine.scheduleId}`}
-                  scheduleId={routine.scheduleId}
-                  title={routine.name}
-                  category={routine.majorCategory}
-                  time={routine.triggerTime}
-                  isImportant={routine.isImportant}
-                  isCompleted={routine.isDone}
-                  onClick={() =>
-                    mutate({
-                      scheduleId: routine.scheduleId,
-                      isDone: !routine.isDone,
-                    })
-                  }
-                  onEditClick={() => {
-                    useRoutineStore.getState().setRoutine({
-                      routineId: routine.routineId,
-                      scheduleId: routine.scheduleId,
-                      categoryId: routine.categoryId,
-                      majorCategory: routine.majorCategory,
-                      subCategory: routine.subCategory,
-                      name: routine.name,
-                      triggerTime: routine.triggerTime,
-                      isDone: routine.isDone,
-                      isImportant: routine.isImportant,
-                      date: routine.date,
-                      initDate: routine.initDate,
-                      repeatType: routine.repeatType,
-                      repeatValue: routine.repeatValue!,
-                    });
-                  }}
-                  onDeleteClick={() => {
-                    setCheckDelete(true);
-                    setDeleteTargetId(routine.routineId);
-                  }}
-                />
-              ))}
+              {filteredRoutines.length > 0 &&
+                filteredRoutines.map((routine: DayRoutine) => (
+                  <Routine
+                    key={`${routine.routineId}-${routine.scheduleId}`}
+                    scheduleId={routine.scheduleId}
+                    title={routine.name}
+                    category={routine.majorCategory}
+                    time={routine.triggerTime}
+                    isImportant={routine.isImportant}
+                    isCompleted={routine.isDone}
+                    onClick={() =>
+                      mutate({
+                        scheduleId: routine.scheduleId,
+                        isDone: !routine.isDone,
+                      })
+                    }
+                    onEditClick={() => {
+                      useRoutineStore.getState().setRoutine({
+                        routineId: routine.routineId,
+                        scheduleId: routine.scheduleId,
+                        categoryId: routine.categoryId,
+                        majorCategory: routine.majorCategory,
+                        subCategory: routine.subCategory,
+                        name: routine.name,
+                        triggerTime: routine.triggerTime,
+                        isDone: routine.isDone,
+                        isImportant: routine.isImportant,
+                        date: routine.date,
+                        initDate: routine.initDate,
+                        repeatType: routine.repeatType,
+                        repeatValue: routine.repeatValue!,
+                      });
+                    }}
+                    onDeleteClick={() => {
+                      setCheckDelete(true);
+                      setDeleteTargetId(routine.routineId);
+                    }}
+                  />
+                ))}
+              {filteredRoutines.length === 0 && (
+                <div className="flex justify-center">루틴이 없습니다</div>
+              )}
             </div>
           </div>
         )}

@@ -1,5 +1,3 @@
-import LoadingSpinner from '../../common/ui/LoadingSpinner';
-
 interface Preset {
   presetId: number;
   categoryId: number;
@@ -23,12 +21,17 @@ export default function PresetList({
 }: AdmitPresetProps) {
   return (
     <>
-      {/* {isLoading && (
-        <div className="mt-30 flex flex-col items-center justify-center gap-8">
-          <LoadingSpinner />
-          <span className="text-[16px] font-semibold">
-            루틴 프리셋을 불러오는 중입니다...
-          </span>
+      {isLoading && (
+        <div className="mt-7 flex flex-col items-center justify-center gap-5">
+          <div className="h-11 w-full animate-pulse rounded-[8px] bg-gray-300"></div>
+          <div className="h-11 w-full animate-pulse rounded-[8px] bg-gray-300"></div>
+          <div className="h-11 w-full animate-pulse rounded-[8px] bg-gray-300"></div>
+          <div className="h-11 w-full animate-pulse rounded-[8px] bg-gray-300"></div>
+          <div className="h-11 w-full animate-pulse rounded-[8px] bg-gray-300"></div>
+          <div className="h-11 w-full animate-pulse rounded-[8px] bg-gray-300"></div>
+          <div className="h-11 w-full animate-pulse rounded-[8px] bg-gray-300"></div>
+          <div className="h-11 w-full animate-pulse rounded-[8px] bg-gray-300"></div>
+          <div className="h-11 w-full animate-pulse rounded-[8px] bg-gray-300"></div>
         </div>
       )}
       {!isLoading && (
@@ -43,7 +46,7 @@ export default function PresetList({
             </div>
           ))}
         </div>
-      )} */}
+      )}
     </>
   );
 }

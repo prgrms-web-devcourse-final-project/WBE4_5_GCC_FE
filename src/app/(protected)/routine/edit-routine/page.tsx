@@ -51,6 +51,12 @@ export default function Page() {
   const today = format(new Date(), 'yyyy-MM-dd');
   const monday = startOfWeek(today, { weekStartsOn: 1 });
   const mondayStr = format(monday, 'yyyy-MM-dd');
+  const [cycle, setCycle] = useState<{
+    daily?: string;
+    days?: string;
+    week?: string;
+    month?: string;
+  } | null>(null);
 
   useEffect(() => {
     if (repeatType === 'DAILY') {
@@ -66,17 +72,9 @@ export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem>({
     categoryName: majorCategory,
     subCategoryName: subCategory ?? undefined,
-    categoryId: 0,
+    categoryId: categoryId,
     categoryType: 'MAJOR',
   });
-
-  // ✅ cycle 초기값 세팅
-  const [cycle, setCycle] = useState<{
-    daily?: string;
-    days?: string;
-    week?: string;
-    month?: string;
-  } | null>(null);
 
   const isSubmitEnabled =
     selectedCategory !== null &&
