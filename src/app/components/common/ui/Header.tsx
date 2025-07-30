@@ -15,6 +15,22 @@ import {
 import type { Noti } from '../../../../../types/notifications';
 import useNotificationWebSocket from '@/hooks/useNotifications';
 
+const formatTimeAgo = (date: string) => {
+  const notificationDate = new Date(date);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - notificationDate.getTime()) / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  const diffInHours = Math.floor(diffInSeconds / 3600);
+
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}분 전`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours}시간 전`;
+  } else {
+    return notificationDate.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  }
+};
+
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
@@ -147,7 +163,10 @@ export default function Header() {
 
       {openNoti && (
         <Notification
-          noti={notiList}
+          noti={notiList.map((item) => ({
+            ...item,
+            date: formatTimeAgo(item.date),
+          }))}
           setOpenNoti={setOpenNoti}
           onClickNotification={handleNotificationClick}
           onClickAllRead={handleAllRead}
