@@ -14,6 +14,7 @@ import AlertMessage from '@/app/components/common/alert/AlertMessage';
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useUserEditStore } from '@/store/UserEditStore';
+import { ProfileData } from '../../../../../../types/User';
 
 export default function Page() {
   const router = useRouter();
@@ -52,10 +53,8 @@ export default function Page() {
 
   // 닉네임 초기 세팅
   useEffect(() => {
-    if (!nickname) {
-      setNickname(userNickname);
-    }
-  }, [userNickname, nickname, setNickname]);
+    setNickname(userNickname);
+  }, []);
 
   // 자취경력 초기 세팅
   const experience =
@@ -162,6 +161,39 @@ export default function Page() {
         params.regionDept2,
         params.regionDept3,
       ),
+
+    onMutate: async (params) => {
+      await queryClient.cancelQueries({ queryKey: ['user-profile'] });
+
+      const previousProfile = queryClient.getQueryData(['user-profile']);
+
+      // 캐시에 낙관적으로 업데이트
+      queryClient.setQueryData(['user-profile'], (old: ProfileData) => {
+        if (!old) return old;
+        return {
+          ...old,
+          member: {
+            ...old.member,
+            nickname: params.nickname,
+            residenceExperience: params.residenceExperience,
+            regionDept1: params.regionDept1,
+            regionDept2: params.regionDept2,
+            regionDept3: params.regionDept3,
+          },
+        };
+      });
+      return { previousProfile };
+    },
+
+    onError: (err, _newData, context) => {
+      if (context?.previousProfile) {
+        queryClient.setQueryData(['user-profile'], context.previousProfile);
+      }
+      console.error('회원정보 변경 실패', err);
+      setErrors('회원정보 변경에 실패했습니다. 다시 시도해주세요.');
+      setShowAlert(true);
+    },
+
     onSuccess: () => {
       const prevMember = useUserStore.getState().member;
       useUserStore.getState().setMember({
@@ -174,11 +206,6 @@ export default function Page() {
       });
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       router.push('/mypage');
-    },
-    onError: (error) => {
-      console.error('회원정보 변경 실패', error);
-      setErrors('회원정보 변경에 실패했습니다. 다시 시도해주세요.');
-      setShowAlert(true);
     },
   });
 

@@ -245,7 +245,6 @@ export default function Page() {
           <CategoryBottomSheetContainer
             onClose={() => setShowCatModal(false)}
             onSelectCategory={(value) => {
-              console.log('선택된 카테고리:', value);
               setSelectedCategory(value);
               setShowCatModal(false);
             }}

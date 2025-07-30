@@ -3,7 +3,11 @@
 import { useEffect, useState } from 'react';
 import SettingsItem from '@/app/components/mypage/SettingsItem';
 import BackHeader from '@/app/components/common/ui/BackHeader';
-import { NotificationSettings, getNotificationSettings, updateNotificationSettings } from '@/api/notifications';
+import {
+  getNotificationSettings,
+  updateNotificationSettings,
+} from '@/api/notifications';
+import { NotificationSettings } from '../../../../../types/notifications';
 
 export default function Page() {
   const [settings, setSettings] = useState<NotificationSettings>({

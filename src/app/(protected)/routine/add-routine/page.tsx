@@ -99,7 +99,8 @@ export default function Page() {
         break;
       case !!cycle.week:
         setCycleText(
-          `${cycle.days} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`
+          `${cycle.days} / ${
+            cycle.week === '1' ? '매주' : `${cycle.week}주마다`
           }`,
         );
         setRepeatType('WEEKLY');
@@ -119,18 +120,11 @@ export default function Page() {
 
   const categoryId = Number(selectedCategory?.categoryId);
   const { data: presetData, isLoading } = useRoutinePreset(categoryId);
-  console.log(presetData);
-
-  useEffect(() => {
-    console.log('카테고리id 선택됨:', categoryId);
-  });
 
   return (
     <>
       <div className="h-1vh flex flex-col px-5 py-7">
-        {/* 버튼 제외 콘텐츠 */}
         <div className="flex flex-col gap-6">
-          {/* section 1 */}
           <div className="flex flex-col">
             <CategorySelector
               icon="🏷️"
@@ -149,11 +143,12 @@ export default function Page() {
           </div>
           <RecommendedRoutine
             routines={presetData}
-            onSelect={setRoutineName}
-            onSelectTime={setDoWhen}
+            onNameSelect={setRoutineName}
+            onTriggerTimeSelect={setDoWhen}
+            onRepeatTypeSelect={setRepeatType}
+            onRepeatValueSelect={setRepeatValue}
             isLoading={isLoading}
           />
-          {/* section 2 */}
           <div>
             <ListSelector
               icon="🗓️"
@@ -178,15 +173,7 @@ export default function Page() {
               className="rounded-b-lg"
             />
           </div>
-          {/* section 3 */}
           <div>
-            {/* <ToggleSwitch
-              icon="🔔"
-              label="알림"
-              checked={notification}
-              onToggle={setNotification}
-              className="rounded-t-lg"
-            /> */}
             <ToggleSwitch
               icon="⭐"
               label="중요도"
@@ -224,7 +211,6 @@ export default function Page() {
           <CategoryBottomSheetContainer
             onClose={() => setShowCatModal(false)}
             onSelectCategory={(value) => {
-              console.log('선택된 카테고리:', value);
               setSelectedCategory(value);
               setShowCatModal(false);
             }}

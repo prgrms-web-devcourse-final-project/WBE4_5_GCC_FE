@@ -21,7 +21,6 @@ export default function Page() {
   const [userItem, setUserItem] = useState<Item[]>([]);
   const [modalItem, setModalItem] = useState<Item | null>(null);
   const [selectedTab, setSelectedTab] = useState('전체');
-  const [hasInitialized, setHasInitialized] = useState(false);
   const [showModal, setShowModal] = useState(false);
   type SelectedItemState = Record<'TOP' | 'BOTTOM' | 'ACCESSORY', Item | null>;
 
@@ -67,7 +66,7 @@ export default function Page() {
     // api 호출 시 아이템 비교용
     setEquippedItem(initSelected); // 로딩 시 장작된 아이템 저장하기
     setSelectedItem(initSelected); // 착용중, 착용해제 할 아이템 저장하기
-    setHasInitialized(true);
+    // setHasInitialized(true);
   }, [data]);
 
   // useEffect(() => {
@@ -99,45 +98,46 @@ export default function Page() {
   const { mutate: mutateEquipItem } = useMutation({
     mutationFn: (itemId: number) => equipItem(itemId),
 
-    // 낙관적 업데이트
-    onMutate: async (newItemId: number) => {
-      await queryClient.cancelQueries({ queryKey: ['equipped-items'] });
+    onMutate: async (itemId: number) => {
+      await queryClient.cancelQueries({ queryKey: ['user-items'] });
 
-      const previousItems = queryClient.getQueryData(['equipped-items']);
+      // 현재 장착 아이템 상태 백업
+      const previousUserItems = queryClient.getQueryData<{ data: Item[] }>([
+        'user-items',
+      ]);
 
-      // 임시 업데이트: 이전 데이터를 기반으로 새로운 상태 적용
-      queryClient.setQueryData(
-        ['equipped-items'],
-        (old: Record<string, Item | null>) => {
-          if (!old) return old;
-
-          // 어떤 카테고리인지 판단해서 해당 카테고리의 아이템을 바꿔야 함
-          // selectedItem을 통해 카테고리를 알 수 있다고 가정
-          const updated = { ...old };
-          for (const category of categories) {
-            if (selectedItem[category]?.id === newItemId) {
-              updated[category] = selectedItem[category];
+      if (previousUserItems) {
+        const newData = {
+          data: previousUserItems.data.map((item) => {
+            if (item.id === itemId) {
+              return { ...item, isEquipped: true };
             }
-          }
-          return updated;
-        },
-      );
+            // 장착된 같은 타입 아이템은 해제 처리 (isEquipped = false)
+            if (
+              item.isEquipped &&
+              item.itemtype ===
+                previousUserItems.data.find((i) => i.id === itemId)?.itemtype &&
+              item.id !== itemId
+            ) {
+              return { ...item, isEquipped: false };
+            }
+            return item;
+          }),
+        };
+        queryClient.setQueryData(['user-items'], newData);
+      }
 
-      return { previousItems }; // 실패 시 rollback용
+      return { previousUserItems };
     },
 
-    // 실패 시 rollback
-    onError: (err, _, context) => {
-      if (context?.previousItems) {
-        queryClient.setQueryData(['equipped-items'], context.previousItems);
+    onError: (err, itemId, context) => {
+      if (context?.previousUserItems) {
+        queryClient.setQueryData(['user-items'], context.previousUserItems);
       }
     },
 
-    // 성공 시 최신화
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['equipped-items'] });
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['user-items'] });
-      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
     },
   });
 
@@ -171,7 +171,7 @@ export default function Page() {
     }
 
     try {
-      await Promise.all(changedItems.map((id) => mutateEquipItem(id)));
+      changedItems.forEach((id) => mutateEquipItem(id));
       router.push('/mypage');
     } catch (error) {
       console.error('아이템 장착 실패', error);
