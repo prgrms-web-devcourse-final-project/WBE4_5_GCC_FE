@@ -90,6 +90,22 @@ export default function Page() {
       setCycleText('');
       return;
     }
+    const convertNumbersToDays = (numbers: string) => {
+      const numMap: Record<string, string> = {
+        '1': '월',
+        '2': '화',
+        '3': '수',
+        '4': '목',
+        '5': '금',
+        '6': '토',
+        '7': '일',
+      };
+      return numbers
+        .split(',')
+        .map((num) => numMap[num.trim()])
+        .filter(Boolean)
+        .join(' ');
+    };
 
     switch (true) {
       case !!cycle.daily:
@@ -98,10 +114,9 @@ export default function Page() {
         setRepeatTerm(cycle.daily!);
         break;
       case !!cycle.week:
+        const dayText = convertNumbersToDays(cycle.days!);
         setCycleText(
-          `${cycle.days} / ${
-            cycle.week === '1' ? '매주' : `${cycle.week}주마다`
-          }`,
+          `${dayText} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`,
         );
         setRepeatType('WEEKLY');
         setRepeatValue(cycle.days!);
@@ -145,8 +160,9 @@ export default function Page() {
             routines={presetData}
             onNameSelect={setRoutineName}
             onTriggerTimeSelect={setDoWhen}
-            onRepeatTypeSelect={setRepeatType}
-            onRepeatValueSelect={setRepeatValue}
+            onCycleSelect={setCycle}
+            // onRepeatTypeSelect={setRepeatType}
+            // onRepeatValueSelect={setRepeatValue}
             isLoading={isLoading}
           />
           <div>
