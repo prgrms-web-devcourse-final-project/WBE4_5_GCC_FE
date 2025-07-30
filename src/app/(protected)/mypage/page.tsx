@@ -7,6 +7,7 @@ import SettingsItem from '@/app/components/mypage/SettingsItem';
 import Profile from '@/app/components/main/Profile';
 import Button from '@/app/components/common/ui/Button';
 import LogoutModal from '@/app/components/common/LogoutModal';
+import { useUserStore } from '@/store/UserStore';
 
 export default function Page() {
   const router = useRouter();
@@ -71,10 +72,12 @@ export default function Page() {
           onClose={() => setShowLogoutModal(false)}
           onConfirm={async () => {
             try {
-              await logout(router);
+              await logout();
             } catch (error) {
-              console.error('로그아웃 중 에러 발생:', error);
+              console.warn('이미 로그아웃 상태거나 에러 발생:', error);
             } finally {
+              useUserStore.getState().resetUser();
+              router.replace('/login');
               setShowLogoutModal(false);
             }
           }}
