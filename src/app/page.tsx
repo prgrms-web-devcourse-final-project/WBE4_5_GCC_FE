@@ -3,25 +3,22 @@ import Profile from './components/main/Profile';
 import Routine from './components/routine/Routine';
 import { useState } from 'react';
 
-// import quest from '/public/quest.svg';
-// import acheivement from '/public/acheivement.svg';
+import quest from '/public/quest.svg';
+import acheivement from '/public/acheivement.svg';
 import FloatingButton from './components/common/FloatingButton';
 import Donut from './components/common/ui/Donut';
 import { useRouter } from 'next/navigation';
 import Quest from './components/main/Quest';
-import { routineHandler } from '@/api/routine/routine';
 import { DayRoutine } from '../../types/routine';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import AlertModal from './components/common/alert/AlertModal';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
-import { format } from 'date-fns';
+import { format, startOfWeek } from 'date-fns';
 import { useRoutineStore } from '@/store/RoutineStore';
+import { useHandleRoutine } from '@/api/routine/handleRoutine';
 
 export default function Main() {
-  const quest = '/quest.svg';
-  const acheivement = '/acheivement.svg';
-
-  const queryClient = useQueryClient();
+  // const quest = '/quest.svg';
+  // const acheivement = '/acheivement.svg';
   const [openQuest, setOpenQuest] = useState(false);
   const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
@@ -33,25 +30,12 @@ export default function Main() {
   const total = filteredRoutines.length;
   const done = filteredRoutines.filter((r) => r.isDone).length;
   const successRate = total ? Math.round((done / total) * 100) : 0;
-
   const now = new Date();
   const todayStr = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
+  const monday = startOfWeek(today, { weekStartsOn: 1 });
+  const mondayStr = format(monday, 'yyyy-MM-dd');
 
-  const { mutate } = useMutation({
-    mutationFn: ({
-      scheduleId,
-      isDone,
-    }: {
-      scheduleId: number;
-      isDone: boolean;
-    }) => routineHandler(scheduleId, isDone),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['routine-week'],
-        exact: false,
-      });
-    },
-  });
+  const { mutate } = useHandleRoutine(mondayStr, today);
 
   const goToCollection = () => {
     router.push('/collection');
@@ -68,8 +52,8 @@ export default function Main() {
             textSize="12px"
             className="mb-3"
             onClick={() => setOpenQuest(true)}
-            imgWidth={26}
-            imgHeight={21}
+            // imgWidth={26}
+            // imgHeight={21}
           />
           <FloatingButton
             src={acheivement}
@@ -77,8 +61,8 @@ export default function Main() {
             text="도감"
             textSize="12px"
             onClick={goToCollection}
-            imgWidth={26}
-            imgHeight={21}
+            // imgWidth={26}
+            // imgHeight={21}
           />
         </div>
 

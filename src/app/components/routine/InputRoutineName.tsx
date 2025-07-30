@@ -32,8 +32,8 @@ export default function InputRoutineName({
           placeholder={placeholder}
           style={{
             width: `${value.length === 0 ? placeholder.length : value.length}ch`,
-            minWidth: '200px',
-            maxWidth: '400px',
+            minWidth: '120px',
+            maxWidth: '200px',
           }}
         />
       </div>

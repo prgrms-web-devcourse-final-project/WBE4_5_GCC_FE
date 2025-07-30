@@ -16,19 +16,41 @@ interface RecommendedRoutineProps {
   routines: Preset[];
   onNameSelect: (name: string) => void;
   isLoading: boolean;
-  onRepeatTypeSelect: (type: string) => void;
-  onRepeatValueSelect: (value: string) => void;
+  onCycleSelect: (cycle: {
+    daily?: string;
+    days?: string;
+    week?: string;
+    month?: string;
+  }) => void;
+  // onRepeatTypeSelect: (type: string) => void;
+  // onRepeatValueSelect: (value: string) => void;
   onTriggerTimeSelect: (triggerTime: string) => void;
 }
 
 export default function RecommendedRoutine({
   routines,
   onNameSelect,
-  onRepeatTypeSelect,
-  onRepeatValueSelect,
   onTriggerTimeSelect,
+  onCycleSelect,
   isLoading,
 }: RecommendedRoutineProps) {
+  const convertDaysToNumbers = (days: string) => {
+    const dayMap: Record<string, string> = {
+      월: '1',
+      화: '2',
+      수: '3',
+      목: '4',
+      금: '5',
+      토: '6',
+      일: '7',
+    };
+    return days
+      .split(', ')
+      .map((day) => dayMap[day])
+      .filter(Boolean) // 혹시 모를 undefined 제거
+      .join(',');
+  };
+
   return (
     <div className="flex w-full flex-col gap-2 rounded-lg border border-[#E0E0E0] bg-white px-4 py-4">
       <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
@@ -48,9 +70,21 @@ export default function RecommendedRoutine({
               key={index}
               onClick={() => {
                 onNameSelect(routine.name);
-                onRepeatTypeSelect(routine.repeatType);
-                onRepeatValueSelect(routine.repeatValue);
                 onTriggerTimeSelect(routine.triggerTime);
+
+                if (routine.repeatType === 'DAILY') {
+                  onCycleSelect({ daily: routine.repeatValue });
+                } else if (routine.repeatType === 'WEEKLY') {
+                  const daysString = routine.repeatValue.includes(',')
+                    ? routine.repeatValue.split(',').join(',') // ["1","3","5"] → "1,3,5"
+                    : routine.repeatValue;
+                  onCycleSelect({
+                    days: daysString,
+                    week: '1',
+                  });
+                } else if (routine.repeatType === 'MONTHLY') {
+                  onCycleSelect({ month: routine.repeatValue });
+                }
               }}
               className="font-regular shrink-0 rounded-lg border border-[#e0e0e0] px-4 py-2 text-xs whitespace-nowrap text-[#616161]"
             >

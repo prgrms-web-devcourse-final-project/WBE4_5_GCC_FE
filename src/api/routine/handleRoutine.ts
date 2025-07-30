@@ -7,6 +7,7 @@ import {
 } from './routine';
 import { AddRoutine, EditRoutine } from '../../../types/routine';
 import { WeekRoutineResponse } from './getWeekRoutine';
+import { format } from 'date-fns';
 
 // 루틴 추가
 export function useAddRoutine() {
@@ -36,6 +37,12 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
     }) => routineHandler(scheduleId, isDone),
     // ✅ 요청 직전에 UI 먼저 업데이트
     onMutate: async ({ scheduleId, isDone }) => {
+      const today = format(new Date(), 'yyyy-MM-dd');
+      if (dateStr > today) {
+        console.log('미래날짜는 완료 불가');
+        return;
+      }
+
       await queryClient.cancelQueries({
         queryKey: ['routine-week', mondayStr],
       });
