@@ -36,7 +36,9 @@ export default function FloatingButton({
             // height={imgHeight}
           />
         </div>
-        <span className={`font-semibold text-[${textSize}]`}>{text}</span>
+        <span className={`font-semibold text-white text-[${textSize}]`}>
+          {text}
+        </span>
       </div>
     </>
   );

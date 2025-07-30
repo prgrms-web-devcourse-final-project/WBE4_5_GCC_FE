@@ -15,7 +15,9 @@ export default function Page() {
   const [emailInput, setEmailInput] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {},
+  );
   const router = useRouter();
 
   const { setEmail } = useUserStore();
@@ -79,8 +81,8 @@ export default function Page() {
         <form className="mt-[35px] space-y-4" onSubmit={handleSubmit}>
           <Input
             placeholder="이메일을 입력해 주세요"
-            value={emailInput}  // input에서 사용되는 이메일
-            onChange={(e) => setEmailInput(e.target.value)}  // 이메일 변경
+            value={emailInput}
+            onChange={(e) => setEmailInput(e.target.value)}
             error={errors.email}
           />
           <div className="relative">
@@ -95,7 +97,7 @@ export default function Page() {
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-5 top-3.5 cursor-pointer"
+              className="absolute top-3.5 right-5 cursor-pointer"
               aria-label={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
             >
               {showPassword ? (
