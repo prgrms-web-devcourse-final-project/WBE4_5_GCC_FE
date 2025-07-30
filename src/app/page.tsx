@@ -135,7 +135,9 @@ export default function Main() {
                         date: routine.date,
                         initDate: routine.initDate,
                         repeatType: routine.repeatType,
-                        repeatValue: routine.repeatValue!,
+                        repeatValue: routine.repeatValue
+                          ? routine.repeatValue
+                          : '1',
                       });
                     }}
                     onDeleteClick={() => {
