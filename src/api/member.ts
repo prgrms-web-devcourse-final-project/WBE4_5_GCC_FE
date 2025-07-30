@@ -11,7 +11,6 @@ export const fetchProfile = async () => {
 
   try {
     const response = await axiosInstance.get('/api/v1/members');
-    console.log('회원정보 불러오기 성공', response.data);
     // 유저 정보와 배지 정보 저장
     const { setMember, setEquippedBadge } = useUserStore.getState();
     setMember(response.data.data.member);
@@ -32,7 +31,6 @@ export const fetchUserPoint = async () => {
 
   try {
     const response = await axiosInstance.get('/api/v1/members/points');
-    console.log('보유포인트 불러오기 성공', response.data);
     // 유저 포인트 정보 저장
     const { setPoints } = useUserStore.getState();
     setPoints(response.data.data.points);
@@ -68,7 +66,6 @@ export const fetchUserItem = async () => {
 
   try {
     const response = await axiosInstance.get('/api/v1/members/items');
-    console.log('보유아이템 불러오기 성공', response.data);
     return response.data;
   } catch (error) {
     console.error('보유아이템 불러오기 실패', error);
@@ -82,7 +79,6 @@ export const equipItem = async (id: number) => {
     const response = await axiosInstance.patch(
       `/api/v1/members/items?id=${id}`,
     );
-    console.log('아이템 장착 성공', response.data);
     return response.data;
   } catch (error) {
     throw error;
@@ -95,7 +91,6 @@ export const handleConfirmPassword = async (password: string) => {
     await axiosInstance.post('/api/v1/members/password', null, {
       params: { password },
     });
-    console.log('비밀번호 확인 성공');
     return true;
   } catch (error) {
     throw error;
@@ -105,10 +100,9 @@ export const handleConfirmPassword = async (password: string) => {
 // 비밀번호 변경
 export const handleChangePassword = async (newPassword: string) => {
   try {
-    const response = await axiosInstance.patch('/api/v1/members/password', {
+    await axiosInstance.patch('/api/v1/members/password', {
       newPassword,
     });
-    console.log('비밀번호 변경 성공', response.data);
   } catch (error) {
     console.error('비밀번호 변경 실패', error);
     throw error;

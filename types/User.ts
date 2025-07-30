@@ -42,7 +42,7 @@ export interface ProfileData {
     regionDept2: string;
     regionDept3: string;
   };
-  badge: {
+  equippedBadge: {
     badgeKey: string;
     badgeName: string;
     badgeTier: string;

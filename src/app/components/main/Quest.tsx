@@ -24,6 +24,7 @@ export default function QuestPage({
     queryKey: ['user-quests'],
     queryFn: fetchUserQuest,
     staleTime: 5 * 60 * 1000, // 5분 캐싱
+    retry: 0,
   });
 
   const allQuests: (Quest | EventQuest)[] = [
