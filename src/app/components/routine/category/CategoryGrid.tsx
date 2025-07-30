@@ -3,15 +3,15 @@ import { CircleX } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 
 import '../../../styles/recommended-routine.css';
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 //import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
-import { DeleteCategoryById, getCategories } from '@/api/categories';
+import { DeleteCategoryById } from '@/api/categories';
 import { useEditMode } from '../EditModeContext';
 import { CategoryItem } from '../../../../../types/general';
 
 interface CategoryGridProps {
   categories: CategoryItem[];
-  selected: string | null;
+  selected: string | number | null;
   onSelectCategory: (label: string) => void;
   isCustom?: boolean;
   isManage?: boolean;
@@ -22,8 +22,8 @@ export default function CategoryGrid({
   categories,
   selected,
   onSelectCategory,
-  isCustom = false,
-  isManage = false,
+  // isCustom = false,
+  // isManage = false,
   maxHeight,
 }: CategoryGridProps) {
   console.log('categoreis:', categories);
@@ -60,7 +60,7 @@ export default function CategoryGrid({
       className="routine-scroll grid w-full grid-cols-3 place-items-center gap-x-8 gap-y-3 overflow-y-auto"
     >
       {categories.map((cat, idx) => {
-        const isSelected = selected === cat.categoryName;
+        const isSelected = selected === cat.categoryId;
 
         return (
           <div key={idx} className="flex w-full justify-center">

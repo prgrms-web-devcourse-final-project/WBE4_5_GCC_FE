@@ -17,6 +17,7 @@ import { useEditRoutine } from '@/api/routine/handleRoutine';
 import LoadingModal from '@/app/components/common/alert/LoadingModal';
 import { CategoryItem } from '../../../../../types/general';
 import CategorySelector from '@/app/components/routine/category/CategorySelector';
+import { format, startOfWeek } from 'date-fns';
 
 export default function Page() {
   const {
@@ -36,7 +37,6 @@ export default function Page() {
   const [routineName, setRoutineName] = useState(name);
   const [startDate, setStartDate] = useState(initDate);
   const [doWhen, setDoWhen] = useState(triggerTime);
-  const [notification, setNotification] = useState(false);
   const [importance, setImportance] = useState(isImportant);
   const [showCatModal, setShowCatModal] = useState(false);
   const [isCycleOpen, setIsCycleOpen] = useState(false);
@@ -47,6 +47,16 @@ export default function Page() {
   const [newRepeatType, setNewRepeatType] = useState(repeatType);
   const [newRepeatValue, setNewRepeatValue] = useState(repeatValue);
   const [repeatTerm, setRepeatTerm] = useState('');
+
+  const today = format(new Date(), 'yyyy-MM-dd');
+  const monday = startOfWeek(today, { weekStartsOn: 1 });
+  const mondayStr = format(monday, 'yyyy-MM-dd');
+  const [cycle, setCycle] = useState<{
+    daily?: string;
+    days?: string;
+    week?: string;
+    month?: string;
+  } | null>(null);
 
   useEffect(() => {
     if (repeatType === 'DAILY') {
@@ -62,17 +72,9 @@ export default function Page() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem>({
     categoryName: majorCategory,
     subCategoryName: subCategory ?? undefined,
-    categoryId: 0,
+    categoryId: categoryId,
     categoryType: 'MAJOR',
   });
-
-  // ✅ cycle 초기값 세팅
-  const [cycle, setCycle] = useState<{
-    daily?: string;
-    days?: string;
-    week?: string;
-    month?: string;
-  } | null>(null);
 
   const isSubmitEnabled =
     selectedCategory !== null &&
@@ -82,7 +84,7 @@ export default function Page() {
     doWhen !== '';
 
   // 수정 처리
-  const { mutate, isSuccess } = useEditRoutine();
+  const { mutate, isSuccess } = useEditRoutine(mondayStr, today);
 
   useEffect(() => {
     if (isSuccess) {
@@ -126,6 +128,22 @@ export default function Page() {
       setCycleText('');
       return;
     }
+    const convertNumbersToDays = (numbers: string) => {
+      const numMap: Record<string, string> = {
+        '1': '월',
+        '2': '화',
+        '3': '수',
+        '4': '목',
+        '5': '금',
+        '6': '토',
+        '7': '일',
+      };
+      return numbers
+        .split(',')
+        .map((num) => numMap[num.trim()])
+        .filter(Boolean)
+        .join(' ');
+    };
 
     switch (true) {
       case !!cycle.daily:
@@ -134,10 +152,9 @@ export default function Page() {
         setRepeatTerm(cycle.daily!);
         break;
       case !!cycle.week:
+        const dayText = convertNumbersToDays(cycle.days!);
         setCycleText(
-          `${cycle.days} / ${
-            cycle.week === '1' ? '매주' : `${cycle.week}주마다`
-          }`,
+          `${dayText} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`,
         );
         setNewRepeatType('WEEKLY');
         setNewRepeatValue(cycle.days!);
@@ -153,7 +170,6 @@ export default function Page() {
         setCycleText('');
     }
   }, [cycle]);
-
   return (
     <>
       <div className="h-1vh flex flex-col px-5 py-7">
@@ -199,13 +215,6 @@ export default function Page() {
           </div>
           <div>
             <ToggleSwitch
-              icon="🔔"
-              label="알림"
-              checked={notification}
-              onToggle={setNotification}
-              className="rounded-t-lg"
-            />
-            <ToggleSwitch
               icon="⭐"
               label="중요도"
               checked={importance}
@@ -245,7 +254,6 @@ export default function Page() {
           <CategoryBottomSheetContainer
             onClose={() => setShowCatModal(false)}
             onSelectCategory={(value) => {
-              console.log('선택된 카테고리:', value);
               setSelectedCategory(value);
               setShowCatModal(false);
             }}
