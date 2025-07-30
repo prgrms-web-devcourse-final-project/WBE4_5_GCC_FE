@@ -53,10 +53,8 @@ export default function Page() {
 
   // 닉네임 초기 세팅
   useEffect(() => {
-    if (!nickname) {
-      setNickname(userNickname);
-    }
-  }, [userNickname, nickname, setNickname]);
+    setNickname(userNickname);
+  }, []);
 
   // 자취경력 초기 세팅
   const experience =
