@@ -20,24 +20,17 @@ export default function Page() {
   });
 
   const majorCategories = categories.filter(
-    //(cat) => cat.categoryType === 'DEFAULT' || 'MAJOR',
     (cat) => cat.categoryType === 'DEFAULT' || cat.categoryType === 'MAJOR',
   );
 
-  const handleSelect = (label: string) => {
-    const category = [...majorCategories].find(
-      (cat) => cat.categoryName === label,
+  const handleSelect = (categoryId: number) => {
+    const category = majorCategories.find(
+      (cat) => cat.categoryId === categoryId,
     );
     if (category) {
       setSelectedCategory(category);
-      // edit-subcategory 이동 시 label과 icon 전달,
-      //router.push(
-      //  `/routine/edit-subcategory?label=${encodeURIComponent(
-      //    category.categoryName,
-      //  )}&icon=${encodeURIComponent(category?.emoji || '❓')}`,
-      //);
       router.push(
-        `/routine/edit-subcategory?categoryId=${category.categoryId}&label=${category.categoryName}&icon=${category.emoji}`
+        `/routine/edit-subcategory?categoryId=${category.categoryId}&label=${category.categoryName}&icon=${category.emoji}`,
       );
     }
   };
@@ -55,7 +48,7 @@ export default function Page() {
       <CategoryGrid
         categories={majorCategories}
         selected={selectedCategory?.categoryId || null}
-        onSelectCategory={handleSelect}
+        onSelectCategory={(id) => handleSelect(id)}
         //isManage={true} // 관리자 페이지일 때 사용
       />
     </div>

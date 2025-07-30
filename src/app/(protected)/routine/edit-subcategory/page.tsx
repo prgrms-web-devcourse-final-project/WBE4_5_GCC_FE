@@ -107,7 +107,7 @@ export default function Page() {
   });
 
   const originalParent = categories.find(
-    (cat) => cat.categoryName === labelFromParams,
+    (cat) => String(cat.categoryId) === categoryIdFromParams
   );
 
   console.log('원본 부모:', originalParent);

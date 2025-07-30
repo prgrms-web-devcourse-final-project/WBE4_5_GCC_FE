@@ -12,7 +12,7 @@ import { CategoryItem } from '../../../../../types/general';
 interface CategoryGridProps {
   categories: CategoryItem[];
   selected: string | number | null;
-  onSelectCategory: (label: string) => void;
+  onSelectCategory: (id: number) => void;
   isCustom?: boolean;
   isManage?: boolean;
   maxHeight?: string;
@@ -65,7 +65,7 @@ export default function CategoryGrid({
         return (
           <div key={idx} className="flex w-full justify-center">
             <button
-              onClick={() => onSelectCategory?.(cat.categoryName)}
+              onClick={() => onSelectCategory?.(cat.categoryId)}
               className={`relative flex w-full max-w-[92px] flex-col items-center gap-1 py-2.5 text-sm text-[#222222] ${
                 isSelected ? 'bg-gray-200' : 'bg-transparent'
               } rounded-[5px] transition`}

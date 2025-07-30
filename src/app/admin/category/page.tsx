@@ -41,7 +41,7 @@ export default function Page() {
           <div className="flex flex-col gap-2 px-4 py-10">
             <CategoryGrid
               categories={categories}
-              selected={selectedCategory?.categoryName || null}
+              selected={selectedCategory?.categoryId || null}
               onSelectCategory={(label) => {
                 const category = categories.find(
                   (cat: CategoryItem) => cat.categoryName === label,
