@@ -1,7 +1,7 @@
+import clsx from 'clsx';
 import Image from 'next/image';
 import { X } from 'lucide-react';
 import coin from '/public/coin.svg';
-import item1 from '@/app/assets/images/item1.png';
 import { ShopItem } from '../../../../types/general';
 
 interface ItemCardProps {
@@ -22,7 +22,10 @@ export default function ItemCard({
   return (
     <>
       <div
-        className="relative flex aspect-[92/128] h-[140px] min-w-[92px] flex-col rounded-[5px] border-1 border-[#d9d9d9] shadow-[1px_2px_4px_rgba(0,0,0,0.1)]"
+        className={clsx(
+          'relative flex aspect-[92/128] h-[140px] min-w-[92px] flex-col rounded-[5px] border-1 border-[#d9d9d9] shadow-[1px_2px_4px_rgba(0,0,0,0.1)]',
+          isOwned ? 'cursor-default' : 'cursor-pointer',
+        )}
         onClick={onClick}
       >
         {isDeleteMode && (
@@ -36,8 +39,17 @@ export default function ItemCard({
             <X className="h-auto w-[10px] text-[#616161]" strokeWidth={2} />
           </button>
         )}
-        <div className="px-5 py-3">
-          <Image src={item1} alt="item" width={50} height={44} />
+        <div className="flex h-[65px] place-items-center py-3 pr-5 pl-6">
+          {item.itemKey && (
+            <Image
+              src={`/images/items/thumbs/${item.itemKey}.png`}
+              alt={item.itemName}
+              width={50}
+              height={44}
+              className="h-[44px] w-[50px]"
+              priority
+            />
+          )}
         </div>
         <div className="border-t-[0.5px] border-[#E0E0E0] px-[9px] py-[6px] text-left">
           <div className="text-[8px] font-medium">{item.itemName}</div>
@@ -46,7 +58,7 @@ export default function ItemCard({
           </div>
           {/* 포인트 박스 / 보유 중 */}
           {isOwned ? (
-            <div className="mt-[5px] flex h-5 w-full items-center justify-center rounded-[6px] border-1 border-[#FFB84C] bg-[#FFB84C] py-[2px] text-[8px] font-semibold text-white">
+            <div className="mt-[5px] flex h-5 w-full cursor-default items-center justify-center rounded-[6px] border-1 border-[#FFB84C] bg-[#FFB84C] py-[2px] text-[8px] font-semibold text-white">
               보유 중
             </div>
           ) : (

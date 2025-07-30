@@ -7,8 +7,8 @@ export default function FloatingButton({
   text,
   onClick,
   textSize,
-  imgWidth,
-  imgHeight,
+  // imgWidth,
+  // imgHeight,
 }: {
   src: string;
   alt: string;
@@ -16,8 +16,8 @@ export default function FloatingButton({
   text: string;
   onClick?: () => void;
   textSize: string;
-  imgWidth: number;
-  imgHeight: number;
+  // imgWidth: number;
+  // imgHeight: number;
 }) {
   return (
     <>
@@ -32,8 +32,8 @@ export default function FloatingButton({
             src={src}
             alt={alt}
             className="block translate-y-[3px] cursor-pointer"
-            width={imgWidth}
-            height={imgHeight}
+            // width={imgWidth}
+            // height={imgHeight}
           />
         </div>
         <span className={`font-semibold text-[${textSize}]`}>{text}</span>

@@ -86,10 +86,8 @@ export default function CategoryBottomSheetContainer({
           categories={allCategories}
           maxHeight="412px"
           selected={selectedMainCategory?.categoryName || null}
-          onSelectCategory={(label) => {
-            const major = allCategories.find(
-              (cat) => cat.categoryName === label,
-            );
+          onSelectCategory={(id) => {
+            const major = allCategories.find((cat) => cat.categoryId === id);
             if (major) {
               setSelectedMainCategory(major);
               setShowSubCategory(true);
