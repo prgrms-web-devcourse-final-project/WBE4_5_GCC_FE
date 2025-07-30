@@ -10,7 +10,7 @@ export default function SubCategoryGrid({
   onSelect,
 }: SubCategoryGridProps) {
   return (
-    <div className="w-full border-t border-[#E0E0E0]">
+    <div className="w-full min-h-[476px] border-t border-[#E0E0E0]">
       <button
         onClick={() => onSelect('')}
         className="h-[54px] w-full border-b border-[#E0E0E0] text-sm font-semibold text-[#616161]"
