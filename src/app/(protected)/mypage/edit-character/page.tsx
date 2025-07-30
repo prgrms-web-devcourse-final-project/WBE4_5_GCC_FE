@@ -43,6 +43,7 @@ export default function Page() {
     queryKey: ['user-items'],
     queryFn: fetchUserItem,
     staleTime: 5 * 60 * 1000,
+    retry: 0,
   });
 
   useEffect(() => {

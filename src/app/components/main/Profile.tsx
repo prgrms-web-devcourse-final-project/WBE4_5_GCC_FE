@@ -22,6 +22,7 @@ export default function Profile() {
     queryKey: ['user-profile'],
     queryFn: fetchProfile,
     staleTime: 5 * 60 * 1000,
+    retry: 0,
   });
 
   const { data: userPointData, isLoading: pointLoading } = useQuery<
@@ -31,6 +32,7 @@ export default function Profile() {
     queryKey: ['user-point'],
     queryFn: fetchUserPoint,
     staleTime: 5 * 60 * 1000,
+    retry: 0,
   });
 
   // 보유아이템 목록 불러오기
@@ -41,6 +43,7 @@ export default function Profile() {
     queryKey: ['user-items'],
     queryFn: fetchUserItem,
     staleTime: 5 * 60 * 1000,
+    retry: 0,
   });
 
   useEffect(() => {
