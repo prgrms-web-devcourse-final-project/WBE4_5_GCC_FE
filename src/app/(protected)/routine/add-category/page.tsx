@@ -29,11 +29,6 @@ export default function Page() {
     setIsPickerOpen(false);
   };
 
-  // 서브 카테고리 삭제
-  const handleRemoveSub = (index: number) => {
-    setSubCategories((prev) => prev.filter((_, i) => i !== index));
-  };
-
   // 이모지 피커 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -74,6 +69,8 @@ export default function Page() {
 
   // 헤더 완료 버튼 클릭 시 카테고리 생성 API 호출
   const handleComplete = async () => {
+    if (createCategoryMutation.isPending) return; // 중복 클릭 방지
+
     if (!mainCategoryName || !selectedEmoji) {
       alert('대분류 이름과 이모지를 입력해주세요');
       return;
@@ -86,18 +83,6 @@ export default function Page() {
         emoji: selectedEmoji,
         parentId: null,
       });
-
-      //await Promise.all(
-      //  subCategories.map((subName) =>
-      //    createCategoryMutation.mutateAsync({
-      //      categoryName: subName,
-      //      categoryType: 'SUB',
-      //      emoji: null,
-      //      parentId: mainCategoryName,
-      //    }),
-      //  ),
-      //);
-
       //alert('카테고리 생성 완료!');
       router.push('/routine/edit-category');
     } catch (err) {
@@ -107,7 +92,10 @@ export default function Page() {
 
   return (
     <>
-      <AddCategoryLayout onComplete={handleComplete}>
+      <AddCategoryLayout
+        onComplete={handleComplete}
+        isLoading={createCategoryMutation.isPending}
+      >
         <div className="flex flex-col gap-7 px-5 py-7">
           <div className="relative flex items-center gap-3">
             {/* 좌측 아이콘 영역 */}
@@ -140,33 +128,6 @@ export default function Page() {
               />
             </div>
           </div>
-          {/*
-          <button
-            onClick={() => {
-              setMode('SUB');
-              setIsBottomSheetOpen(true);
-            }}
-            className="flex gap-2"
-          >
-            <CirclePlus className="h-auto w-5 fill-[#388E3C] text-white" />
-            <p className="text-medium text-base text-[#388E3C]">
-              세부 카테고리
-            </p>
-          </button>*/}
-
-          {/* 소분류 (서브 카테고리) 영역 */}
-          {/*<div className="flex flex-col gap-5">
-            {subCategories.map((name, index) => (
-              <div key={index} className="flex gap-2.5">
-                <button onClick={() => handleRemoveSub(index)}>
-                  <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white" />
-                </button>
-                <p className="w-[307pxp] flex-auto border border-transparent border-b-[#E0E0E0] text-sm text-black">
-                  {name}
-                </p>
-              </div>
-            ))}
-          </div>*/}
         </div>
 
         {isBottomSheetOpen && (

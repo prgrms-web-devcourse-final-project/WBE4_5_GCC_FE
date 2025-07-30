@@ -6,9 +6,11 @@ import { ChevronLeft } from 'lucide-react';
 export default function AddCategoryLayout({
   children,
   onComplete,
+  isLoading = false,
 }: {
   children: React.ReactNode;
   onComplete: () => void;
+  isLoading?: boolean;
 }) {
   const router = useRouter();
 
@@ -29,7 +31,11 @@ export default function AddCategoryLayout({
           </div>
 
           <div className="text-medium flex gap-[7px] text-sm text-[#616161]">
-            <button onClick={onComplete} className="cursor-pointer">
+            <button
+              onClick={onComplete}
+              disabled={isLoading}
+              className={`cursor-pointer ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
+            >
               완료
             </button>
           </div>
