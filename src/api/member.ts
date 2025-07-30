@@ -4,19 +4,17 @@ import { QuestResponse } from '../../types/general';
 
 // 유저정보 불러오기
 export const fetchProfile = async () => {
+  // 로그인 상태 확인
+  // 로그인 상태가 아닐 경우, 유저 정보 저장하지 않음
+  const { isLoggedIn } = useUserStore.getState();
+  if (!isLoggedIn) return;
+
   try {
     const response = await axiosInstance.get('/api/v1/members');
-    console.log('회원정보 불러오기 성공', response.data);
-
-    // 로그인 상태 확인
-    // 로그인 상태가 아닐 경우, 유저 정보 저장하지 않음
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return;
-
     // 유저 정보와 배지 정보 저장
-    const { setMember, setBadge } = useUserStore.getState();
+    const { setMember, setEquippedBadge } = useUserStore.getState();
     setMember(response.data.data.member);
-    setBadge(response.data.data.badge);
+    setEquippedBadge(response.data.data.equippedBadge);
     return response.data.data;
   } catch (error) {
     console.error('회원정보 불러오기 실패', error);
@@ -26,15 +24,13 @@ export const fetchProfile = async () => {
 
 // 유저 보유 포인트 불러오기
 export const fetchUserPoint = async () => {
+  // 로그인 상태 확인
+  // 로그인 상태가 아닐 경우, 포인트 정보 저장하지 않음
+  const { isLoggedIn } = useUserStore.getState();
+  if (!isLoggedIn) return;
+
   try {
     const response = await axiosInstance.get('/api/v1/members/points');
-    console.log('보유포인트 불러오기 성공', response.data);
-
-    // 로그인 상태 확인
-    // 로그인 상태가 아닐 경우, 포인트 정보 저장하지 않음
-    const { isLoggedIn } = useUserStore.getState();
-    if (!isLoggedIn) return;
-
     // 유저 포인트 정보 저장
     const { setPoints } = useUserStore.getState();
     setPoints(response.data.data.points);
@@ -54,7 +50,6 @@ export const fetchUserQuest = async (): Promise<QuestResponse> => {
 
   try {
     const response = await axiosInstance.get('/api/v1/members/quests');
-    console.log('보유퀘스트 불러오기 성공', response.data);
     return response.data.data as QuestResponse;
   } catch (error) {
     console.error('보유퀘스트 불러오기 실패', error);
@@ -64,9 +59,13 @@ export const fetchUserQuest = async (): Promise<QuestResponse> => {
 
 // 유저 보유 아이템 불러오기
 export const fetchUserItem = async () => {
+  // 로그인 상태 확인
+  // 로그인 상태가 아닐 경우, 포인트 정보 저장하지 않음
+  const { isLoggedIn } = useUserStore.getState();
+  if (!isLoggedIn) return;
+
   try {
     const response = await axiosInstance.get('/api/v1/members/items');
-    console.log('보유아이템 불러오기 성공', response.data);
     return response.data;
   } catch (error) {
     console.error('보유아이템 불러오기 실패', error);
@@ -75,33 +74,11 @@ export const fetchUserItem = async () => {
 };
 
 // 아이템 장착하기
-export const equipItem = async (itemKey: string) => {
+export const equipItem = async (id: number) => {
   try {
     const response = await axiosInstance.patch(
-      '/api/v1/members/items/equip',
-      null,
-      {
-        params: { itemKey },
-      },
+      `/api/v1/members/items?id=${id}`,
     );
-    console.log('아이템 장착 성공', response.data);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-// 아이템 장착해제
-export const unequipItem = async (itemKey: string) => {
-  try {
-    const response = await axiosInstance.patch(
-      '/api/v1/members/items/unequip',
-      null,
-      {
-        params: { itemKey },
-      },
-    );
-    console.log('아이템 장착해제 성공', response.data);
     return response.data;
   } catch (error) {
     throw error;
@@ -114,7 +91,6 @@ export const handleConfirmPassword = async (password: string) => {
     await axiosInstance.post('/api/v1/members/password', null, {
       params: { password },
     });
-    console.log('비밀번호 확인 성공');
     return true;
   } catch (error) {
     throw error;
@@ -124,10 +100,9 @@ export const handleConfirmPassword = async (password: string) => {
 // 비밀번호 변경
 export const handleChangePassword = async (newPassword: string) => {
   try {
-    const response = await axiosInstance.patch('/api/v1/members/password', {
+    await axiosInstance.patch('/api/v1/members/password', {
       newPassword,
     });
-    console.log('비밀번호 변경 성공', response.data);
   } catch (error) {
     console.error('비밀번호 변경 실패', error);
     throw error;

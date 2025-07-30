@@ -13,18 +13,22 @@ import { handleChangeProfile } from '@/api/member';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
 import BackHeader from '@/app/components/common/ui/BackHeader';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useUserEditStore } from '@/store/UserEditStore';
 
 export default function Page() {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const yearOptions = ['1년 미만', '1~3년', '3~5년', '5~10년', '10년 이상'];
+  const searchParams = useSearchParams();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [checkNickName, setCheckNickName] = useState<true | false | null>(null);
   const [errors, setErrors] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const [regionDept1, setRegionDept1] = useState('');
+  const [regionDept2, setRegionDept2] = useState('');
+  const [regionDept3, setRegionDept3] = useState('');
+  const yearOptions = ['1년 미만', '1~3년', '3~5년', '5~10년', '10년 이상'];
 
-  // zustand에서 프로필정보 불러오기
+  // Zustand에서 유저 정보 불러오기
   const userNickname = useUserStore((state) => state.member.nickname);
   const name = useUserStore((state) => state.member.name);
   const residenceExperience = useUserStore(
@@ -35,6 +39,25 @@ export default function Page() {
       `${state.member.regionDept1} ${state.member.regionDept2} ${state.member.regionDept3}`,
   );
 
+  const [address, setAddress] = useState(region);
+
+  const {
+    nickname,
+    setNickname,
+    nicknameChecked,
+    setNicknameChecked,
+    nicknameCheckStatus,
+    setNicknameCheckStatus,
+  } = useUserEditStore();
+
+  // 닉네임 초기 세팅
+  useEffect(() => {
+    if (!nickname) {
+      setNickname(userNickname);
+    }
+  }, [userNickname, nickname, setNickname]);
+
+  // 자취경력 초기 세팅
   const experience =
     residenceExperience === 'UNDER_1Y'
       ? '1년 미만'
@@ -46,69 +69,83 @@ export default function Page() {
             ? '5~10년'
             : '10년 이상';
 
-  const [nickname, setNickname] = useState(userNickname);
-  const [address, setAddress] = useState(region);
   const [selected, setSelected] = useState(experience);
 
-  const searchParams = useSearchParams();
-  const searchedAddress = searchParams.get('address');
+  // 주소 쿼리 파라미터 반영
+  useEffect(() => {
+    const dept1 = searchParams.get('region1') ?? '';
+    const dept2 = searchParams.get('region2') ?? '';
+    const dept3 = searchParams.get('region3') ?? '';
 
+    setRegionDept1(dept1);
+    setRegionDept2(dept2);
+    setRegionDept3(dept3);
+
+    const full = `${dept1} ${dept2} ${dept3}`.trim();
+    if (full) setAddress(full);
+  }, [searchParams]);
+
+  // 주소 검색 버튼
   const handleSearch = () => {
     router.push('/mypage/change-userinfo/userinfo/address');
   };
 
-  useEffect(() => {
-    if (searchedAddress) {
-      setAddress(searchedAddress);
-    }
-  }, [searchedAddress]);
-
-  const [regionDept1 = '', regionDept2 = '', regionDept3 = ''] =
-    address.split(' ');
-
-  // 닉네임 중복확인 조건
+  // 닉네임 중복확인 로직
   const trimNickname = nickname.trim();
-
   const isSameAsOriginal = trimNickname === userNickname;
   const isNicknameChanged = !isSameAsOriginal;
-
   const confirmNickname = isSameAsOriginal || trimNickname.length === 0;
 
   const canSave =
-    (isSameAsOriginal && trimNickname.length > 0) || // 닉네임 안 바뀌었으면 저장 가능
-    (isNicknameChanged && checkNickName === true); // 바뀌었으면 중복확인 통과해야 저장 가능
+    (isSameAsOriginal && trimNickname.length > 0) ||
+    (isNicknameChanged && nicknameCheckStatus === true);
 
-  // 닉네임 중복확인
   const checkHandler = async () => {
     if (trimNickname.length < 2 || trimNickname.length > 15) {
-      setError('2글자 이상 입력해주세요');
-      setCheckNickName(false);
+      setError('2글자 이상 15글자 이하로 입력해주세요');
+      setNicknameCheckStatus(false);
       return;
     }
     try {
-      await checkNickname(nickname);
-      setError('');
-      setSuccess('사용 가능한 닉네임입니다.');
-      setCheckNickName(true);
+      const isDuplicated = await checkNickname(trimNickname);
+      if (isDuplicated) {
+        setNicknameCheckStatus(false);
+        setError('이미 사용 중인 닉네임입니다.');
+        setSuccess('');
+      } else {
+        setError('');
+        setSuccess('사용 가능한 닉네임입니다.');
+        setNicknameCheckStatus(true);
+        setNicknameChecked(true);
+      }
     } catch (error) {
-      setCheckNickName(false);
-      setError('이미 사용 중인 닉네임입니다.');
-      setSuccess('');
-      console.error('닉네임 중복:', error);
+      console.error('닉네임 중복 확인 실패:', error);
     }
   };
 
-  // 알림창 시간
+  // residenceExperience 코드 변환
+  const experienceCode =
+    selected === '1년 미만'
+      ? 'UNDER_1Y'
+      : selected === '1~3년'
+        ? 'Y1_TO_3'
+        : selected === '3~5년'
+          ? 'Y3_TO_5'
+          : selected === '5~10년'
+            ? 'Y5_TO_10'
+            : 'OVER_10Y';
+
+  // 알림창 타이머
   useEffect(() => {
     if (showAlert) {
       const timer = setTimeout(() => {
         setShowAlert(false);
       }, 2000);
-
       return () => clearTimeout(timer);
     }
   }, [showAlert]);
 
+  // 회원정보 변경 요청
   const userInfoMutation = useMutation({
     mutationFn: (params: {
       nickname: string;
@@ -126,13 +163,17 @@ export default function Page() {
         params.regionDept3,
       ),
     onSuccess: () => {
-      console.log('회원정보 변경 성공');
       const prevMember = useUserStore.getState().member;
-      useUserStore
-        .getState()
-        .setMember({ ...prevMember, nickname: trimNickname });
+      useUserStore.getState().setMember({
+        ...prevMember,
+        nickname: trimNickname,
+        residenceExperience: experienceCode,
+        regionDept1,
+        regionDept2,
+        regionDept3,
+      });
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
-      router.push('/mypage'); // 회원정보 변경 후 마이페이지로 이동
+      router.push('/mypage');
     },
     onError: (error) => {
       console.error('회원정보 변경 실패', error);
@@ -141,14 +182,14 @@ export default function Page() {
     },
   });
 
-  // 저장버튼 누를 때
+  // 저장 핸들러
   const handleSubmit = () => {
     if (trimNickname.length === 0) {
       setErrors('닉네임을 입력해주세요.');
       setShowAlert(true);
       return;
     }
-    if (isNicknameChanged && checkNickName === null) {
+    if (isNicknameChanged && !nicknameChecked) {
       setErrors('닉네임 중복확인 버튼을 눌러주세요.');
       setShowAlert(true);
       return;
@@ -156,7 +197,7 @@ export default function Page() {
     if (canSave) {
       userInfoMutation.mutate({
         nickname: trimNickname,
-        residenceExperience,
+        residenceExperience: experienceCode,
         regionDept1,
         regionDept2,
         regionDept3,
@@ -178,6 +219,13 @@ export default function Page() {
               onChange={(e) => {
                 const value = e.target.value.replace(/\s/g, '');
                 setNickname(value);
+
+                if (value !== userNickname) {
+                  setNicknameChecked(false);
+                  setNicknameCheckStatus(null);
+                  setSuccess('');
+                  setError('');
+                }
               }}
               placeholder="2~15자 이내로 입력해 주세요"
               maxLength={15}
@@ -232,7 +280,7 @@ export default function Page() {
               <AlertMessage type="error" message={errors} className="mb-10" />
             )}
           </div>
-          <Button type="submit" onClick={handleSubmit}>
+          <Button type="submit" onClick={handleSubmit} disabled={!canSave}>
             저장하기
           </Button>
         </div>

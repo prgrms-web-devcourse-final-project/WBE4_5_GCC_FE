@@ -1,27 +1,40 @@
-type Noti = {
-  title: string;
-  date: string;
-  new: boolean;
-};
+import { Noti } from '../../../../types/notifications';
 
-export default function NotiContent({ noti }: { noti: Noti[] }) {
+export default function NotiContent({
+  noti,
+  onClickNotification,
+}: {
+  noti: Noti[];
+  onClickNotification?: (item: Noti) => void;
+}) {
   return (
     <>
-      {noti.map((item, idx) => (
+      {noti.map((item) => (
         <div
-          key={idx}
-          className="relative cursor-pointer border-b border-dotted border-[#a47148] pb-[16px]"
-          onClick={() => {
-            // 클릭 시 처리 로직
+          key={item.id}
+          className="relative cursor-pointer border-b-2 border-dotted border-[#A47148] pt-[8px] pb-[14px]"
+          onClick={() => onClickNotification?.(item)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              onClickNotification?.(item);
+            }
           }}
+          aria-label={`알림: ${item.title}, 날짜: ${item.date}`}
         >
-          {item.new && (
-            <div className="absolute top-[6px] left-[-10px] h-[6px] w-[6px] rounded-full bg-[#d32f2f]" />
-          )}
-          <h1 className="text-[12px] font-medium">{item.title}</h1>
-          <h2 className="text-[10px] font-medium text-[#9e9e9e]">
-            {item.date}
-          </h2>
+          <div className="flex items-start gap-[10px]">
+            <div
+              className={`mt-1.5 h-[8px] w-[8px] rounded-full bg-[#d32f2f] ${item.new ? 'visible' : 'invisible'
+                }`}
+            />
+            <div className="flex-1">
+              <h1 className="text-[14px] font-medium text-[#222] mb-[2px]">
+                {item.title}
+              </h1>
+              <h2 className="text-[12px] text-[#9e9e9e]">{item.date}</h2>
+            </div>
+          </div>
         </div>
       ))}
     </>

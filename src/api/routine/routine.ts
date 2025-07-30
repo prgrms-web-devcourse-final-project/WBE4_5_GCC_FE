@@ -38,17 +38,13 @@ export const aboutRoutine = async (id: string): Promise<AboutRoutine> => {
 
 // 루틴 완료 또는 미완료 처리
 export const routineHandler = async (id: number, isDone: boolean) => {
-  try {
-    const response = await axiosInstance.patch(
-      `/api/v1/routines/schedules/${id}`,
-      { isDone },
-    );
-    console.log('루틴 완료처리에 전달되는 스케쥴 id:', id);
-    console.log('루틴 완료처리에 전달되는 isDone:', isDone);
-    console.log('루틴 완료 또는 미완료 처리:', response.data);
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await axiosInstance.patch(
+    `/api/v1/routines/schedules/${id}`,
+    { isDone },
+  );
+  console.log('루틴 완료처리에 전달되는 스케쥴 id:', id);
+  console.log('루틴 완료처리에 전달되는 isDone:', isDone);
+  console.log('루틴 완료 또는 미완료 처리:', response.data);
 };
 
 // 루틴 추가하기

@@ -30,6 +30,7 @@ export default function Shop() {
   const [points, setPoints] = useState(currentPoint);
   const [currentPage, setCurrentPage] = useState(1);
   const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
+  console.log(setCurrentPage);
 
   const [selectedTryItem, setSelectedTryItem] = useState<
     Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
@@ -250,7 +251,11 @@ export default function Shop() {
                 onClick={() => {
                   if (ownedItemKeys.includes(item.itemKey)) return; // 이미 보유한 아이템일 경우 클릭 막음
                   setSelectedItem(item);
+<<<<<<< HEAD
                   setSelectedPrice(item.itemPrice!);
+=======
+                  setSelectedPrice(item.itemPoint ?? null);
+>>>>>>> dev
                   setShowPModal(true);
                 }}
                 isOwned={ownedItemKeys.includes(item.itemKey)} // 보유 중 아이템
@@ -285,11 +290,19 @@ export default function Shop() {
           item={{
             image: item1,
             name: selectedItem.itemName,
+<<<<<<< HEAD
             price: selectedItem.itemPrice!,
           }}
           onConfirm={async () => {
             const canBuy = points >= selectedItem.itemPrice!;
             const remainingPoints = points - selectedItem.itemPrice!;
+=======
+            price: selectedItem.itemPoint!,
+          }}
+          onConfirm={async () => {
+            const canBuy = points >= selectedItem.itemPoint!;
+            const remainingPoints = points - selectedItem.itemPoint!;
+>>>>>>> dev
 
             if (!canBuy) {
               setAlertType('failed');

@@ -1,6 +1,6 @@
-import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store/UserStore';
 import { axiosInstance } from './axiosInstance';
+import axios from 'axios';
 
 // signup - 회원가입
 export const signUp = async (email: string, password: string, name: string) => {
@@ -25,27 +25,28 @@ export const signIn = async (email: string, password: string) => {
 };
 
 // logout - 로그아웃
-export const logout = async (router: ReturnType<typeof useRouter>) => {
-  const resetUser = useUserStore.getState().resetUser;
-  await axiosInstance.post('/api/v1/logout');
-  resetUser();
-  router.replace('/login');
+export const logout = async () => {
+  try {
+    await axiosInstance.post('/api/v1/logout');
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      console.log('이미 로그아웃된 상태입니다.');
+    } else {
+      throw error;
+    }
+  }
 };
 
 // check - 중복 검사 (이메일)
-export const checkEmail = async (email: string) => {
-  const response = await axiosInstance.post('/api/v1/check', {
-    email,
-  });
-  return response.data;
+export const checkEmail = async (email: string): Promise<boolean> => {
+  const response = await axiosInstance.post('/api/v1/check', { email });
+  return response.data?.data?.isDuplicated ?? true; // true = 이미 사용 중
 };
 
 // check - 중복 검사 (닉네임)
-export const checkNickname = async (nickname: string) => {
-  const response = await axiosInstance.post('/api/v1/check', {
-    nickname,
-  });
-  return response.data;
+export const checkNickname = async (nickname: string): Promise<boolean> => {
+  const response = await axiosInstance.post('/api/v1/check', { nickname });
+  return response.data?.data?.isDuplicated ?? true;
 };
 
 // auth/email - 인증번호 발송

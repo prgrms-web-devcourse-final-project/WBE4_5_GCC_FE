@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store/UserStore';
 
@@ -9,20 +9,29 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const hydrated = useUserStore.persist.hasHydrated();
+  // const hydrated = useUserStore.persist.hasHydrated();
+  const [hydrated, setHydrated] = useState(false);
   const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const router = useRouter();
 
   useEffect(() => {
+    // 클라이언트 환경에서만 실행됨
+    if (useUserStore.persist?.hasHydrated) {
+      const hasHydrated = useUserStore.persist.hasHydrated();
+      setHydrated(hasHydrated);
+    } else {
+      // persist가 없으면 기본 true (hydrate 필요 없으면)
+      setHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
     if (hydrated && isLoggedIn) {
-      // 이미 로그인된 상태면 메인 페이지 등으로 보냄
       router.replace('/');
     }
   }, [hydrated, isLoggedIn, router]);
 
   if (!hydrated) return null;
-
-  // 로그인되어있으면 children 보여주지 않음 (리다이렉트 중이므로)
   if (isLoggedIn) return null;
 
   return <>{children}</>;

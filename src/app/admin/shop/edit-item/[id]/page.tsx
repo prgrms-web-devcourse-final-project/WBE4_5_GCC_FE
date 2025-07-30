@@ -43,12 +43,7 @@ export default function EditItem({
   } | null>(null);
 
   // 전체 아이템 조회 후 해당 아이템 찾기
-  const {
-    data: items = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data: items = [] } = useQuery({
     queryKey: ['admin-items'],
     queryFn: AdminItems,
     select: (res) => res.data,

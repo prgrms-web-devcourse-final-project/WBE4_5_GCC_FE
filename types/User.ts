@@ -20,6 +20,7 @@ export interface User {
 }
 
 export interface Item {
+  id: number;
   itemKey: string;
   itemName: string;
   itemDescription: string;
@@ -41,7 +42,7 @@ export interface ProfileData {
     regionDept2: string;
     regionDept3: string;
   };
-  badge: {
+  equippedBadge: {
     badgeKey: string;
     badgeName: string;
     badgeTier: string;

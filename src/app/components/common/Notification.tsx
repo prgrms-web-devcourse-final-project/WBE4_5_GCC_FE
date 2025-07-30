@@ -1,37 +1,48 @@
 import NotiContent from './Noti';
-
-type Noti = {
-  title: string;
-  date: string;
-  new: boolean;
-};
+import { Noti } from '../../../../types/notifications';
 
 export default function Notification({
   setOpenNoti,
-  className,
+  className = '',
   noti,
+  onClickNotification,
+  onClickAllRead,
 }: {
   setOpenNoti: (value: boolean) => void;
   className?: string;
   noti: Noti[];
+  onClickNotification?: (item: Noti) => void;
+  onClickAllRead?: () => void;
 }) {
+  const handleAllReadClick = () => {
+    onClickAllRead?.();
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 px-4"
       onClick={() => setOpenNoti(false)}
     >
-      <div
-        className="absolute z-100 flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="w-full max-w-[360px]" onClick={(e) => e.stopPropagation()}>
         <div
-          className={`mx-auto flex h-[569px] w-full min-w-[350px] flex-col gap-4 overflow-scroll rounded-[8px] border-3 border-[#A47148] bg-white px-4 py-[18px] ${className}`}
+          className={`flex flex-col max-h-[50vh] rounded-[8px] border-[3px] border-[#A47148] bg-white shadow-xl ${className}`}
         >
-          <div className="mb-[14px] border-b border-[#a47148] pb-[14px]">
-            🔔 알림
+          <div className="flex items-center justify-between border-b-2 border-[#d3bba7] px-5 pt-5 pb-4 text-[15px] font-bold text-[#222]">
+            <span>
+              <span className="mr-1">🔔</span> 알림
+            </span>
+            <button
+              className="mr-2 text-[12px] font-medium text-[#616161] cursor-pointer"
+              onClick={handleAllReadClick}
+              aria-label="모든 알림 읽음 처리"
+            >
+              모두 읽기
+            </button>
           </div>
-          <div className="flex flex-col gap-[18px] pr-[18px] pl-[27px]">
-            <NotiContent noti={noti} />
+          <div className="flex-1 overflow-y-auto px-5 py-3 mb-5 space-y-2">
+            <NotiContent noti={noti} onClickNotification={onClickNotification} />
           </div>
         </div>
       </div>

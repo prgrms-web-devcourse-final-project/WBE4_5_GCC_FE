@@ -17,6 +17,7 @@ import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import CategorySelector from '@/app/components/routine/category/CategorySelector';
 import { useRoutinePreset } from '@/api/routine/getRoutinePreset';
 import { useRouter } from 'next/navigation';
+// import { format, startOfWeek } from 'date-fns';
 
 export default function Page() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function Page() {
     month?: string;
   } | null>(null);
   const [doWhen, setDoWhen] = useState('');
-  const [notification, setNotification] = useState(false);
+  // const [notification, setNotification] = useState(false);
   const [importance, setImportance] = useState(false);
   const [showCatModal, setShowCatModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(
@@ -41,6 +42,9 @@ export default function Page() {
   const [repeatType, setRepeatType] = useState('');
   const [repeatValue, setRepeatValue] = useState('');
   const [repeatTerm, setRepeatTerm] = useState('');
+
+  // const monday = startOfWeek(initDate, { weekStartsOn: 1 });
+  // const mondayStr = format(monday, 'yyyy-MM-dd');
 
   const isSubmitEnabled =
     selectedCategory !== null &&
@@ -77,10 +81,6 @@ export default function Page() {
 
   useEffect(() => {
     if (isSuccess) {
-      // queryClient.invalidateQueries({
-      //   queryKey: ['routine-week'],
-      //   exact: false,
-      // });
       router.push('/routine');
     }
   }, [isSuccess, router]);
@@ -99,8 +99,7 @@ export default function Page() {
         break;
       case !!cycle.week:
         setCycleText(
-          `${cycle.days} / ${
-            cycle.week === '1' ? '매주' : `${cycle.week}주마다`
+          `${cycle.days} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`
           }`,
         );
         setRepeatType('WEEKLY');
@@ -181,13 +180,13 @@ export default function Page() {
           </div>
           {/* section 3 */}
           <div>
-            <ToggleSwitch
+            {/* <ToggleSwitch
               icon="🔔"
               label="알림"
               checked={notification}
               onToggle={setNotification}
               className="rounded-t-lg"
-            />
+            /> */}
             <ToggleSwitch
               icon="⭐"
               label="중요도"

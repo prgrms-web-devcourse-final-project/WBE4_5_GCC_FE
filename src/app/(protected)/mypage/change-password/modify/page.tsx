@@ -91,7 +91,6 @@ export default function Page() {
   const newPasswordMutation = useMutation({
     mutationFn: (newPassword: string) => handleChangePassword(newPassword),
     onSuccess: () => {
-      console.log('비밀번호 변경 성공');
       router.push('/mypage');
     },
     onError: (error) => {

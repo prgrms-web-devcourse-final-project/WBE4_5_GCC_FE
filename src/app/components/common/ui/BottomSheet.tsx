@@ -15,7 +15,9 @@ export default function BottomSheet({
   children,
   className,
 }: BottomSheetProps) {
-  const setIsBottomSheetOpen = useUIStore((state) => state.setIsBottomSheetOpen);
+  const setIsBottomSheetOpen = useUIStore(
+    (state) => state.setIsBottomSheetOpen,
+  );
 
   useEffect(() => {
     setIsBottomSheetOpen(!!isOpen);
@@ -31,7 +33,7 @@ export default function BottomSheet({
     >
       <div
         className={twMerge(
-          'relative w-full max-w-md rounded-t-3xl bg-white px-[20px] py-[34px]',
+          'relative mx-auto w-full min-w-[390px] rounded-t-3xl bg-white px-[20px] py-[34px]',
           className,
         )}
         onClick={(e) => e.stopPropagation()}
