@@ -26,6 +26,7 @@ interface UserStore {
   setPoints: (value: number) => void;
   setEquippedBadge: (badge: Partial<BadgeInfo>) => void;
   setMember: (member: Partial<MemberInfo>) => void;
+  setEmail: (email: string) => void;
   resetUser: () => void;
 }
 
@@ -57,6 +58,13 @@ export const useUserStore = create<UserStore>()(
             regionDept1: member.regionDept1 ?? '',
             regionDept2: member.regionDept2 ?? '',
             regionDept3: member.regionDept3 ?? '',
+          },
+        })),
+      setEmail: (email) =>
+        set((state) => ({
+          member: {
+            ...state.member,
+            email,
           },
         })),
       setPoints: (value) => set({ points: value }),

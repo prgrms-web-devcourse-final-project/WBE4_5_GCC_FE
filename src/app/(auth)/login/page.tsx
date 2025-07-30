@@ -8,20 +8,25 @@ import Button from '@/app/components/common/ui/Button';
 import { useRouter } from 'next/navigation';
 import { useSignUpStore } from '@/store/SignupStore';
 import { signIn } from '@/api/auth';
+import { useUserStore } from '@/store/UserStore';
 import kakao from '/public/kakao.svg';
 
 export default function Page() {
-  const [email, setEmail] = useState('');
+  const [emailInput, setEmailInput] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {},
-  );
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const router = useRouter();
 
+  const { setEmail } = useUserStore();
+
+  // 로그인 핸들러
   const logInHandler = async () => {
     try {
-      await signIn(email, password);
-      if (email === 'admin@test.com') {
+      await signIn(emailInput, password);
+      setEmail(emailInput);
+
+      if (emailInput === 'admin@test.com') {
         router.push('/admin');
       } else {
         router.push('/');
@@ -34,14 +39,13 @@ export default function Page() {
     }
   };
 
-  const router = useRouter();
   // 이메일과 비밀번호 유효성 검사
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { email?: string; password?: string } = {};
-    if (!email) {
+    if (!emailInput) {
       newErrors.email = '이메일을 입력해 주세요.';
-    } else if (!email.includes('@')) {
+    } else if (!emailInput.includes('@')) {
       newErrors.email = '잘못된 형식의 이메일 주소입니다.';
     }
 
@@ -75,8 +79,8 @@ export default function Page() {
         <form className="mt-[35px] space-y-4" onSubmit={handleSubmit}>
           <Input
             placeholder="이메일을 입력해 주세요"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={emailInput}  // input에서 사용되는 이메일
+            onChange={(e) => setEmailInput(e.target.value)}  // 이메일 변경
             error={errors.email}
           />
           <div className="relative">
