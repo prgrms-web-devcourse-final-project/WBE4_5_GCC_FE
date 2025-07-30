@@ -78,19 +78,19 @@ export default function Page() {
   const confirmNickname = isSameAsOriginal || trimNickname.length === 0;
 
   const canSave =
-    (isSameAsOriginal && trimNickname.length > 0) || // 닉네임 안 바뀌었으면 저장 가능
-    (isNicknameChanged && checkNickName === true); // 바뀌었으면 중복확인 통과해야 저장 가능
+    ((isSameAsOriginal && trimNickname.length > 0) || // 닉네임 안 바뀌었으면 저장 가능
+      (isNicknameChanged && checkNickName === true)) &&  // 바뀌었으면 중복확인 통과해야 저장 가능
+    checkNickName !== false; // 중복일 때는 저장 못 하게
 
   // 닉네임 중복확인
   const checkHandler = async () => {
     if (trimNickname.length < 2 || trimNickname.length > 15) {
-      setError('2글자 이상 입력해주세요');
+      setError('2글자 이상 15글자 이하로 입력해주세요');
       setCheckNickName(false);
       return;
     }
     try {
-      const res = await checkNickname(trimNickname);
-      const isDuplicated = res.data.isDuplicated;
+      const isDuplicated = await checkNickname(trimNickname);
       if (isDuplicated) {
         setCheckNickName(false);
         setError('이미 사용 중인 닉네임입니다.');
@@ -254,7 +254,7 @@ export default function Page() {
               <AlertMessage type="error" message={errors} className="mb-10" />
             )}
           </div>
-          <Button type="submit" onClick={handleSubmit}>
+          <Button type="submit" onClick={handleSubmit} disabled={!canSave}>
             저장하기
           </Button>
         </div>

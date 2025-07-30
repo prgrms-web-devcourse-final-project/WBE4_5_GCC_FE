@@ -31,11 +31,11 @@ export default function UserInfo({ onValidChange }: { onValidChange?: (valid: bo
     if (!emailRegex.test(email)) return;
 
     try {
-      await checkEmail(email);
-      setEmailStatus('valid');
+      const isDuplicated = await checkEmail(email);
+      setEmailStatus(isDuplicated ? 'invalid' : 'valid');
     } catch (error) {
+      console.error('❌ 이메일 중복 검사 실패:', error);
       setEmailStatus('invalid');
-      console.error('❌ 이메일 중복:', error);
     }
   };
 

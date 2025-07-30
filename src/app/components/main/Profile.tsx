@@ -22,6 +22,7 @@ export default function Profile() {
     queryKey: ['user-profile'],
     queryFn: fetchProfile,
     staleTime: 5 * 60 * 1000,
+    retry: 0,
   });
 
   const { data: userPointData, isLoading: pointLoading } = useQuery<
@@ -31,6 +32,7 @@ export default function Profile() {
     queryKey: ['user-point'],
     queryFn: fetchUserPoint,
     staleTime: 5 * 60 * 1000,
+    retry: 0,
   });
 
   // 보유아이템 목록 불러오기
@@ -41,6 +43,7 @@ export default function Profile() {
     queryKey: ['user-items'],
     queryFn: fetchUserItem,
     staleTime: 5 * 60 * 1000,
+    retry: 0,
   });
 
   useEffect(() => {
@@ -66,8 +69,8 @@ export default function Profile() {
   }, [data]);
 
   const nickname = profileData?.member?.nickname ?? '익명';
-  const badgeKey = profileData?.badge?.badgeKey ?? 'clean_bronze';
-  const badgeName = profileData?.badge?.badgeName ?? '배지 없음';
+  const badgeKey = profileData?.equippedBadge?.badgeKey ?? 'clean_bronze';
+  const badgeName = profileData?.equippedBadge?.badgeName ?? '배지 없음';
   const point = userPointData?.points ?? 0;
 
   if (profileLoading || pointLoading || characterLoading) {

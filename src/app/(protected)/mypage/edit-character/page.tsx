@@ -43,6 +43,7 @@ export default function Page() {
     queryKey: ['user-items'],
     queryFn: fetchUserItem,
     staleTime: 5 * 60 * 1000,
+    retry: 0,
   });
 
   useEffect(() => {
@@ -69,11 +70,11 @@ export default function Page() {
     setHasInitialized(true);
   }, [data]);
 
-  useEffect(() => {
-    if (hasInitialized) {
-      console.log('선택된 아이템:', selectedItem);
-    }
-  }, [selectedItem, hasInitialized]);
+  // useEffect(() => {
+  //   if (hasInitialized) {
+  //     console.log('선택된 아이템:', selectedItem);
+  //   }
+  // }, [selectedItem, hasInitialized]);
 
   const categories: ('TOP' | 'BOTTOM' | 'ACCESSORY')[] = [
     'TOP',
@@ -145,7 +146,7 @@ export default function Page() {
   // 다른옷으로 바꿨다면 -> equip만 호출 -> 기존옷은 자동으로 해제
   // 테스트 시 상의로만 테스트 가능 -> top_item_01
   const handleSubmit = async () => {
-    let equipKey: number | null = null;
+    const changedItems: number[] = [];
 
     categories.forEach((category) => {
       const selected = selectedItem[category];
@@ -154,53 +155,28 @@ export default function Page() {
       const isChanged = selected?.id !== equipped?.id;
 
       if (isChanged) {
+        // 장착하려는 아이템이 있다면 → 그 ID 전송
+        // 해제만 하고 싶다면 → equipped의 ID 다시 전송
         if (selected) {
-          equipKey = selected.id;
+          changedItems.push(selected.id);
         } else if (equipped) {
-          equipKey = equipped.id;
+          changedItems.push(equipped.id);
         }
       }
     });
 
-    console.log('장착할 아이템:', equipKey);
-    if (equipKey !== null) {
-      mutateEquipItem(equipKey);
+    if (changedItems.length === 0) {
+      router.push('/mypage');
+      return;
     }
-    router.push('/mypage');
+
+    try {
+      await Promise.all(changedItems.map((id) => mutateEquipItem(id)));
+      router.push('/mypage');
+    } catch (error) {
+      console.error('아이템 장착 실패', error);
+    }
   };
-
-  // 저장하기 버튼 누를 시
-  // 이미 입고있던 옷 유지 -> 호출 필요없음
-  // 다른옷으로 바꿨다면 -> equip만 호출 -> 기존옷은 자동으로 해제
-  // 테스트 시 상의로만 테스트 가능 -> top_item_01
-  // const handleSubmit = async () => {
-  //   let equip;
-
-  //   categories.forEach((category) => {
-  //     const selectedKey = selectedItem[category];
-  //     const equippedKey = equippedItem[category];
-
-  //     // 저장하기 직전, 선택된 아이템과 화면 첫 로딩 시 기존 장착된 아이템 비교
-  //     if (selectedKey?.id !== equippedKey?.id) {
-  //       // 카테고리별 기존 장착된 아이템은 있었으나, 현재 선택된 아이템은 없을 때 -> 장착해제
-  //       // if (selectedKey === null && equippedKey !== null) {
-  //       //   // unEquip.push(equippedKey);
-  //       // }
-  //       // 카테고리별 현재 선택된 아이템이 있을 때 -> 장착(기존 장착된 아이템이 있었어도 현재 선택된 아이템으로 교체됨)
-  //       if (selectedKey !== null) {
-  //         equip = selectedKey.id;
-  //       }
-  //     }
-  //   });
-
-  //   // const equipString = equip.join(',');
-
-  //   if (equip) {
-  //     await equipItem(equip);
-  //   }
-  //   console.log('장착할 아이템:', equip);
-  //   router.push('/mypage');
-  // };
 
   const filteredItem =
     selectedTab === '전체'
