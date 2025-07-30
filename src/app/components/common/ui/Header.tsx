@@ -155,7 +155,7 @@ export default function Header() {
               onClick={handleOpenNoti}
             />
             {notiList.some((n) => n.new) && (
-              <span className="absolute top-[-5px] right-[-5px] h-3 w-3 rounded-full bg-[#D32F2F]" />
+              <span className="absolute top-[-3px] right-[-3px] h-1.5 w-1.5 rounded-full bg-[#D32F2F]" />
             )}
           </div>
         )}

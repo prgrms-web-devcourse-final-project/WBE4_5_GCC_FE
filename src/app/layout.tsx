@@ -4,6 +4,8 @@ import LayoutWrapper from './components/common/LayoutWrapper';
 
 import type { Metadata } from 'next';
 import Providers from './providers';
+import { Suspense } from 'react';
+import LoadingSpinner from './components/common/ui/LoadingSpinner';
 
 export const metadata: Metadata = {
   title: '혼라이프',
@@ -25,7 +27,15 @@ export default function RootLayout({
       </head>
       <body className="pb-[110px]">
         <Providers>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <Suspense
+            fallback={
+              <div>
+                <LoadingSpinner />
+              </div>
+            }
+          >
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </Suspense>
         </Providers>
       </body>
     </html>
