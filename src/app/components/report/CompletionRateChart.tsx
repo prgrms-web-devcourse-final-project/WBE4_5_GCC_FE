@@ -12,7 +12,7 @@ export default function CompletionRateChart({ dayRoutineCount }: Props) {
     const date = new Date(item.date);
     return {
       date: `${date.getMonth() + 1}/${date.getDate()}`,
-      percent: Math.round(item.completionRate * 100),
+      percent: Math.round(item.completionRate / 100),
     };
   });
 
@@ -28,7 +28,7 @@ export default function CompletionRateChart({ dayRoutineCount }: Props) {
         >
           <XAxis dataKey="date" tick={{ fontSize: 12 }} />
           <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
-          <Tooltip />
+          <Tooltip formatter={(value) => `${value}%`} />
           <Bar
             dataKey="percent"
             fill="#FFB84C"
