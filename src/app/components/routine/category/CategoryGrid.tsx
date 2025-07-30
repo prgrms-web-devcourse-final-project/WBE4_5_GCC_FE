@@ -3,15 +3,15 @@ import { CircleX } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 
 import '../../../styles/recommended-routine.css';
-import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 //import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
-import { DeleteCategoryById, getCategories } from '@/api/categories';
+import { DeleteCategoryById } from '@/api/categories';
 import { useEditMode } from '../EditModeContext';
 import { CategoryItem } from '../../../../../types/general';
 
 interface CategoryGridProps {
   categories: CategoryItem[];
-  selected: number | null;
+  selected: string | number | null;
   onSelectCategory: (label: string) => void;
   isCustom?: boolean;
   isManage?: boolean;
@@ -22,8 +22,8 @@ export default function CategoryGrid({
   categories,
   selected,
   onSelectCategory,
-  isCustom = false,
-  isManage = false,
+  // isCustom = false,
+  // isManage = false,
   maxHeight,
 }: CategoryGridProps) {
   console.log('categoreis:', categories);
