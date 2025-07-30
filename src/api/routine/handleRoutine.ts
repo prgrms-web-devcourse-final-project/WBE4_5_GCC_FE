@@ -37,6 +37,19 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
     }) => routineHandler(scheduleId, isDone),
     // ✅ 요청 직전에 UI 먼저 업데이트
     onMutate: async ({ scheduleId, isDone }) => {
+      await queryClient.cancelQueries({ queryKey: ['user-point'] });
+      const previousPoints = queryClient.getQueryData<{ points: number }>([
+        'user-point',
+      ]);
+
+      queryClient.setQueryData(['user-point'], (old: { points: number }) => {
+        if (!old) return old;
+        return {
+          ...old,
+          points: old.points + 50, // 완료 시 50점 추가
+        };
+      });
+
       const today = format(new Date(), 'yyyy-MM-dd');
       if (dateStr > today) {
         console.log('미래날짜는 완료 불가');
@@ -69,7 +82,7 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
         },
       );
       // context에 이전 상태 저장 → 실패 시 롤백
-      return { previousData };
+      return { previousData, previousPoints };
     },
 
     // ✅ 실패 시 롤백
@@ -80,6 +93,9 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
           context.previousData,
         );
       }
+      if (context?.previousPoints) {
+        queryClient.setQueryData(['user-point'], context.previousPoints);
+      }
     },
 
     // ✅ 성공/실패와 관계없이 서버 상태 동기화
@@ -87,6 +103,7 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
       queryClient.invalidateQueries({
         queryKey: ['routine-week', mondayStr],
       });
+      queryClient.invalidateQueries({ queryKey: ['user-point'] });
     },
   });
 }
