@@ -42,7 +42,7 @@ export default function ItemCard({
         <div className="border-t-[0.5px] border-[#E0E0E0] px-[9px] py-[6px] text-left">
           <div className="text-[8px] font-medium">{item.itemName}</div>
           <div className="h-[21px] text-[7px] font-medium text-[#616161]">
-            {item.itemDescription || ''}
+            {item.itemDescription || '아이템 설명이 없어요'}
           </div>
           {/* 포인트 박스 / 보유 중 */}
           {isOwned ? (

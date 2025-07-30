@@ -64,7 +64,7 @@ export default function Page() {
       parentName: string | null;
     }) => CreateCategory(category),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['add-category'] });
+      queryClient.invalidateQueries({ queryKey: ['edit-categories'] });
     },
     onError: (error) => {
       console.log('카테고리 생성 실패', error);

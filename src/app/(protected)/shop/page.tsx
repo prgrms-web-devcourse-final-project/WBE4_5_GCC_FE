@@ -14,6 +14,8 @@ import ItemCard from '@/app/components/shop/ItemCard';
 import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
 import PurchaseModal from '@/app/components/shop/PurchaseModal';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
+import clsx from 'clsx';
+import Image from 'next/image';
 
 export default function Shop() {
   const tabList = ['전체', '상의', '하의', '액세서리'];
@@ -25,11 +27,27 @@ export default function Shop() {
   const [showPAlert, setShowPAlert] = useState(false);
 
   const currentPoint = useUserStore((state) => state.points);
-  const [points, setPoints] = useState(currentPoint); // 500 포인트
+  const [points, setPoints] = useState(currentPoint);
   const [currentPage, setCurrentPage] = useState(1);
   const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
 
-  const tabMap: Record<string, ShopItem['itemType']> = {
+  const [selectedTryItem, setSelectedTryItem] = useState<
+    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
+  >({
+    TOP: null,
+    BOTTOM: null,
+    ACCESSORY: null,
+  });
+  const [equippedItem, setEquippedItem] = useState<
+    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
+  >({
+    TOP: null,
+    BOTTOM: null,
+    ACCESSORY: null,
+  });
+
+  const tabMap: Record<string, ShopItem['itemType'] | 'ALL'> = {
+    전체: 'ALL',
     상의: 'TOP',
     하의: 'BOTTOM',
     액세서리: 'ACCESSORY',
@@ -42,9 +60,14 @@ export default function Shop() {
     staleTime: 5 * 60 * 1000,
   });
 
+  const filteredItems = data?.items.filter((item) => {
+    if (tabMap[selectedTab] === 'ALL') return true;
+    return item.itemType === tabMap[selectedTab];
+  });
+
   // 아이템 구매
   const purchaseMutation = useMutation({
-    mutationFn: (key: string) => ItemPurchaseByKey(key),
+    mutationFn: (id: number) => ItemPurchaseByKey(id),
     onSuccess: () => {
       console.log('아이템 구매 성공');
       setAlertType('success');
@@ -59,13 +82,6 @@ export default function Shop() {
     },
   });
 
-  const filteredItem =
-    selectedTab === '전체'
-      ? data?.items || []
-      : (data?.items || []).filter(
-          (item) => item.itemType === tabMap[selectedTab],
-        );
-
   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
@@ -77,6 +93,141 @@ export default function Shop() {
   return (
     <>
       <div className="mx-auto flex min-h-screen w-full max-w-screen-sm flex-col overflow-y-auto px-5">
+        <div className="flex flex-col">
+          <div className="relative mt-[27px] mb-[29px] flex h-[198px] w-full items-center justify-center overflow-hidden rounded-lg">
+            {/* 배경 이미지 */}
+            <Image
+              src="/images/itemBackGround.svg"
+              alt="bg"
+              fill
+              priority
+              className="object-cover"
+            />
+            {/* 아이템박스 */}
+            <div className="absolute left-[33px] z-0 space-y-[9px]">
+              <div
+                className="relative h-[52px] w-[52px] rounded-[4px] border border-[#FFB84C] bg-white"
+                onClick={() => {
+                  if (selectedTryItem.ACCESSORY) {
+                    const equippedKey = data?.items.find(
+                      (item: ShopItem) =>
+                        item.itemKey === selectedTryItem.ACCESSORY,
+                    );
+                    //if (equippedKey) {
+                    //  handleModal(equippedKey);
+                    //}
+                  }
+                }}
+              >
+                {selectedTryItem.ACCESSORY && (
+                  <Image
+                    src={`/images/items/thumbs/${selectedTryItem.ACCESSORY}.png`}
+                    alt="액세서리"
+                    width={53}
+                    height={53}
+                    priority
+                    className="cursor-pointer object-contain p-[4px]"
+                  />
+                )}
+              </div>
+              <div
+                className="relative h-[52px] w-[52px] rounded-[4px] border border-[#FFB84C] bg-white"
+                onClick={() => {
+                  if (selectedTryItem.TOP) {
+                    const equippedKey = data?.items.find(
+                      (item: ShopItem) => item.itemKey === selectedTryItem.TOP,
+                    );
+                    //if (equippedKey) {
+                    //  handleModal(equippedKey);
+                    //}
+                  }
+                }}
+              >
+                {selectedTryItem.TOP && (
+                  <Image
+                    src={`/images/items/thumbs/${selectedTryItem.TOP}.png`}
+                    alt="상의"
+                    width={53}
+                    height={53}
+                    priority
+                    className="cursor-pointer object-contain p-[4px]"
+                  />
+                )}
+              </div>
+              <div
+                className="relative h-[52px] w-[52px] rounded-[4px] border border-[#FFB84C] bg-white"
+                onClick={() => {
+                  if (selectedTryItem.BOTTOM) {
+                    const equippedKey = data?.items.find(
+                      (item: ShopItem) =>
+                        item.itemKey === selectedTryItem.BOTTOM,
+                    );
+                    //if (equippedKey) {
+                    //  handleModal(equippedKey);
+                    //}
+                  }
+                }}
+              >
+                {selectedTryItem.BOTTOM && (
+                  <Image
+                    src={`/images/items/thumbs/${selectedTryItem.BOTTOM}.png`}
+                    alt="하의"
+                    width={53}
+                    height={53}
+                    priority
+                    className="cursor-pointer object-contain p-[4px]"
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* 기본 캐릭터 (맨 아래) */}
+            <div className="relative flex h-[130px] w-[130px] flex-shrink-0 items-center justify-center overflow-hidden">
+              <Image
+                src="/images/mainCharacter.png"
+                alt="기본 캐릭터"
+                width={130}
+                height={130}
+                priority
+                className="absolute inset-0 z-0"
+              />
+              {/* 상의 아이템 */}
+              {selectedTryItem.TOP && (
+                <Image
+                  src={`/images/items/${selectedTryItem.TOP}.png`}
+                  alt="상의"
+                  width={130}
+                  height={130}
+                  priority
+                  className="absolute inset-0 top-[4px] z-10"
+                />
+              )}
+              {/* 하의 아이템 */}
+              {selectedTryItem.BOTTOM && (
+                <Image
+                  src={`/images/items/${selectedTryItem.BOTTOM}.png`}
+                  alt="하의"
+                  width={130}
+                  height={130}
+                  priority
+                  className="absolute inset-0 z-20"
+                />
+              )}
+              {/* 악세사리 아이템 */}
+              {selectedTryItem.ACCESSORY && (
+                <Image
+                  src={`/images/items/${selectedTryItem.ACCESSORY}.png`}
+                  alt="액세서리"
+                  width={130}
+                  height={130}
+                  priority
+                  className="absolute inset-0 z-30"
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}
@@ -85,7 +236,7 @@ export default function Shop() {
 
         <div className="min-h-[250px] w-full min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
           <div className="grid min-h-[140px] w-full grid-cols-3 place-items-center gap-5">
-            {filteredItem.map((item) => (
+            {filteredItems?.map((item: ShopItem) => (
               <ItemCard
                 key={item.itemId}
                 item={{
@@ -94,12 +245,12 @@ export default function Shop() {
                   itemId: item.itemId,
                   itemName: item.itemName,
                   itemDescription: item.itemDescription,
-                  itemPoint: item.itemPoint,
+                  itemPoint: item.itemPrice,
                 }}
                 onClick={() => {
                   if (ownedItemKeys.includes(item.itemKey)) return; // 이미 보유한 아이템일 경우 클릭 막음
                   setSelectedItem(item);
-                  setSelectedPrice(item.itemPoint);
+                  setSelectedPrice(item.itemPrice!);
                   setShowPModal(true);
                 }}
                 isOwned={ownedItemKeys.includes(item.itemKey)} // 보유 중 아이템
@@ -134,11 +285,11 @@ export default function Shop() {
           item={{
             image: item1,
             name: selectedItem.itemName,
-            price: selectedItem.itemPoint,
+            price: selectedItem.itemPrice!,
           }}
           onConfirm={async () => {
-            const canBuy = points >= selectedItem.itemPoint;
-            const remainingPoints = points - selectedItem.itemPoint;
+            const canBuy = points >= selectedItem.itemPrice!;
+            const remainingPoints = points - selectedItem.itemPrice!;
 
             if (!canBuy) {
               setAlertType('failed');
@@ -150,7 +301,7 @@ export default function Shop() {
             try {
               if (!selectedItem) return;
               // 서버에 구매 요청 (포인트 차감)
-              await purchaseMutation.mutateAsync(selectedItem.itemKey);
+              await purchaseMutation.mutateAsync(selectedItem.itemId);
               setPoints(remainingPoints); // 성공 시 포인트 차감
               setOwnedItemKeys((prev) => [...prev, selectedItem.itemKey]); // 보유 중인 아이템으로 상태 업데이트
             } catch (error) {

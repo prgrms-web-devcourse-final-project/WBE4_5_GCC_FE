@@ -3,7 +3,8 @@ import { CircleX } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
+//import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
+import { DeleteCategoryById } from '@/api/categories';
 import { useEditMode } from '../EditModeContext';
 import { CategoryItem } from '../../../../../types/general';
 
@@ -30,10 +31,21 @@ export default function CategoryGrid({
   );
   const queryClient = useQueryClient();
 
+  //const { mutate: deleteCategory } = useMutation({
+  //  mutationFn: (id: number) => DeleteAdminCategoryById(id),
+  //  onSuccess: () => {
+  //    queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); // 카테고리 목록 갱신
+  //  },
+  //  onError: (error) => {
+  //    console.error('카테고리 삭제 실패:', error);
+  //    alert('카테고리 삭제 중 오류 발생');
+  //  },
+  //});
+
   const { mutate: deleteCategory } = useMutation({
-    mutationFn: (id: number) => DeleteAdminCategoryById(id),
+    mutationFn: (id: number) => DeleteCategoryById(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); // 카테고리 목록 갱신
+      queryClient.invalidateQueries({ queryKey: ['edit-categories'] }); // 카테고리 목록 갱신
     },
     onError: (error) => {
       console.error('카테고리 삭제 실패:', error);
@@ -61,7 +73,7 @@ export default function CategoryGrid({
               } rounded-[5px] transition`}
             >
               {/* 커스텀 카테고리 삭제 */}
-              {isEditMode && (isCustom || isManage) && (
+              {isEditMode && cat.categoryType === 'MAJOR' && (
                 <div className="absolute top-1 right-4 z-20 p-1">
                   <CircleX
                     className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]"

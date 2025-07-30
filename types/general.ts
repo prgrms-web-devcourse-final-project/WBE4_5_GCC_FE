@@ -5,6 +5,7 @@ export interface CategoryItem {
   categoryType: 'MAJOR' | 'SUB' | 'DEFAULT';
   parentId?: number | null;
   children?: CategoryItem[] | null; // MAJOR에만 사용
+  parentName?: string;
   createTime?: string;
   updateTime?: string | null;
   subCategoryName?: string | null;
@@ -14,12 +15,15 @@ export interface ShopItem {
   itemId: number;
   itemType: 'TOP' | 'BOTTOM' | 'ACCESSORY';
   itemDescription: string;
-  itemKey: string;
   itemName: string;
+  isListed?: boolean; // 관리자
+  isOwned?: boolean;
+  itemKey: string;
   itemPoint?: number;
   itemPrice?: number;
   createTime?: string;
   updateTime?: string;
+  isActive?: boolean; // 관리자
 }
 
 export interface Badge {

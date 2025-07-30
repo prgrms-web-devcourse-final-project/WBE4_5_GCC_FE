@@ -2,6 +2,7 @@
 
 import { CirclePlus } from 'lucide-react';
 import { CircleMinus } from 'lucide-react';
+import { axiosInstance } from '@/api/axiosInstance';
 
 import EditSubcategoryLayout from './EditSubcategoryLayout';
 import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
@@ -30,7 +31,9 @@ export default function Page() {
 
   const [label, setLabel] = useState('');
   const [subCategories, setSubCategories] = useState<CategoryItem[]>([]);
-  const [categoryType, setCategoryType] = useState<'MAJOR' | 'SUB'>();
+  const [categoryType, setCategoryType] = useState<
+    'MAJOR' | 'SUB' | 'DEFAULT'
+  >();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
   const queryClient = useQueryClient();
@@ -40,6 +43,48 @@ export default function Page() {
   const handleEmojiSelect = (emojiData: EmojiClickData) => {
     setSelectedEmoji(emojiData.emoji);
     setIsPickerOpen(false);
+  };
+
+  const editCategoryAndSubs = async (subCategories: CategoryItem[]) => {
+    const results = [];
+
+    // 메인 카테고리 이름 찾아서 저장
+    const mainCategory = categories.find(
+      (cat) =>
+        (cat.categoryName === label && cat.categoryType === 'MAJOR') ||
+        'DEFAULT',
+    );
+
+    if (!mainCategory) {
+      throw new Error('메인 카테고리를 찾을 수 없습니다.');
+    }
+
+    // 메인 카테고리 수정 요청
+    const mainUpdate = await EditCategoryById(mainCategory.categoryId, {
+      categoryName: label,
+      categoryType: 'MAJOR',
+      parentName: null,
+      emoji: selectedEmoji ?? icon ?? null,
+    });
+    results.push(mainUpdate);
+
+    // 그 다음 서브 카테고리 생성/수정
+    const subUpdates = await Promise.all(
+      subCategories.map((sub) => {
+        const payload = {
+          categoryName: sub.categoryName,
+          categoryType: 'SUB' as const,
+          parentName: mainCategory.categoryName,
+          emoji: null,
+        };
+
+        return sub.categoryId > 0
+          ? EditCategoryById(sub.categoryId, payload)
+          : createCategory(payload);
+      }),
+    );
+
+    return [...results, ...subUpdates];
   };
 
   useEffect(() => {
@@ -73,24 +118,20 @@ export default function Page() {
     staleTime: 5 * 60 * 1000,
   });
 
-  const editSubCategories = async (subCategories: CategoryItem[]) => {
-    return await Promise.all(
-      subCategories.map((sub) =>
-        EditCategoryById(sub.categoryId, {
-          categoryName: sub.categoryName,
-          categoryType: 'SUB',
-          parentName: label,
-          emoji: null,
-        }),
-      ),
-    );
+  const createCategory = async (payload: {
+    categoryName: string;
+    categoryType: 'SUB' | 'MAJOR';
+    parentName: string;
+    emoji: string | null;
+  }) => {
+    return await axiosInstance.post('/api/v1/categories', payload);
   };
 
   const editCategoryMutation = useMutation({
-    mutationFn: editSubCategories,
+    mutationFn: editCategoryAndSubs,
     onSuccess: () => {
-      alert('카테고리 수정 완료!');
-      queryClient.invalidateQueries({ queryKey: ['edit-subcategory'] });
+      //alert('카테고리 수정 완료!');
+      queryClient.invalidateQueries({ queryKey: ['edit-categories'] });
       router.push('/routine/edit-category');
     },
     onError: (error) => {
@@ -131,7 +172,9 @@ export default function Page() {
     if (!categories || !label) return;
 
     const major = categories.find(
-      (cat) => cat.categoryName === label && cat.categoryType === 'MAJOR',
+      (cat) =>
+        cat.categoryName === label &&
+        (cat.categoryType === 'DEFAULT' || cat.categoryType === 'MAJOR'),
     );
 
     const newSubCategories = major?.children ?? [];
@@ -155,11 +198,12 @@ export default function Page() {
     editCategoryMutation.mutate(subCategories);
   };
 
+  // 서브 카테고리 추가
   const handleAddSubCategory = (newSubName: string) => {
     setSubCategories((prev) => [
       ...prev,
       {
-        categoryId: 1,
+        categoryId: Date.now() * -1, // 음수 값으로 새로 추가 되는 서브 카테고리 ID
         categoryName: newSubName,
         categoryType: 'SUB',
         parentName: label,
@@ -181,8 +225,12 @@ export default function Page() {
         <div className="flex flex-col gap-7 px-5 py-7">
           <div className="flex items-center gap-3">
             <div
-              onClick={() => setIsPickerOpen(true)}
-              className="flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0]"
+              onClick={() => {
+                if (categoryType !== 'DEFAULT') {
+                  setIsPickerOpen(true);
+                }
+              }}
+              className={`flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0] ${categoryType === 'DEFAULT' ? 'cursor-default' : 'cursor-pointer'} `}
             >
               {selectedEmoji ? (
                 <span className="text-2xl">{selectedEmoji}</span>
@@ -198,7 +246,7 @@ export default function Page() {
                 placeholder="카테고리 이름 입력"
                 onChange={(e) => setLabel(e.target.value)}
                 className="focus:border-transparent focus:ring-0 focus:outline-none"
-                disabled={categoryType === 'MAJOR'}
+                disabled={categoryType === 'DEFAULT'}
               />
             </div>
           </div>
@@ -248,7 +296,17 @@ export default function Page() {
             }}
             onConfirm={() => {
               if (deleteTargetId !== null) {
-                deleteCategoryMutation.mutate(deleteTargetId);
+                const isExistingCategory = deleteTargetId > 0;
+                if (isExistingCategory) {
+                  deleteCategoryMutation.mutate(deleteTargetId);
+                } else {
+                  // 저장되지 않은 세부 카테고리 → 직접 삭제만 수행
+                  setSubCategories((prev) =>
+                    prev.filter((cat) => cat.categoryId !== deleteTargetId),
+                  );
+                  setIsModalOpen(false);
+                  setDeleteTargetId(null);
+                }
               }
             }}
           />

@@ -20,7 +20,7 @@ export default function Page() {
   });
 
   const majorCategories = categories.filter(
-    (cat) => cat.categoryType === 'MAJOR',
+    (cat) => cat.categoryType === 'DEFAULT' || 'MAJOR',
   );
 
   const handleSelect = (label: string) => {

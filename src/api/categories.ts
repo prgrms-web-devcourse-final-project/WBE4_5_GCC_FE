@@ -3,12 +3,12 @@ import { axiosInstance } from './axiosInstance';
 
 interface CategoryPayload {
   categoryName: string;
-  categoryType: 'MAJOR' | 'SUB';
+  categoryType: string;
   emoji: string | null;
   parentName: string | null;
 }
 
-// 카테고리 조회 - 사용 ㅇ
+// 카테고리 조회
 export const getCategories = async (): Promise<CategoryItem[]> => {
   try {
     const response = await axiosInstance.get('/api/v1/categories');
@@ -33,7 +33,7 @@ export const CategoryById = async (id: number) => {
   }
 };
 
-// 카테고리 생성 - 사용 ㅇ
+// 카테고리 생성
 export const CreateCategory = async (payload: CategoryPayload) => {
   try {
     const response = await axiosInstance.post('/api/v1/categories', payload);
@@ -45,8 +45,7 @@ export const CreateCategory = async (payload: CategoryPayload) => {
   }
 };
 
-// 카테고리 수정 - 사용 ㅇ
-
+// 카테고리 수정
 export const EditCategoryById = async (
   id: number,
   payload: CategoryPayload,
@@ -64,8 +63,8 @@ export const EditCategoryById = async (
   }
 };
 
-// 카테고리 삭제 - 사용 ㅇ
-export const DeleteCategoryById = async (id: number | null) => {
+// 카테고리 삭제 
+export const DeleteCategoryById = async (id: number) => {
   try {
     const response = await axiosInstance.delete(`/api/v1/categories/${id}`);
     console.log('카테고리 삭제 성공', response.data);

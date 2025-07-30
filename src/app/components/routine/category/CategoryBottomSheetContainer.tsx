@@ -77,7 +77,7 @@ export default function CategoryBottomSheetContainer({
       onClick={handleOutsideClick}
     >
       <div
-        className="min-h-[490px] w-full rounded-t-[24px] bg-white px-4 py-8"
+        className="min-h-[490px] w-full rounded-t-[24px] bg-white px-4 pt-8 pb-16"
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
         {/* 헤더 */}
@@ -105,11 +105,11 @@ export default function CategoryBottomSheetContainer({
           selectedMainCategory &&
           selectedMainCategory.children !== undefined && (
             <div
-              className="animate-slide-in fixed inset-0 z-50 flex justify-center bg-transparent"
+              className="animate-slide-in fixed inset-0 z-50 flex justify-center bg-transparent "
               onClick={handleOutsideClick}
             >
               <div
-                className="fixed bottom-0 min-h-[443px] w-full rounded-t-[24px] bg-white px-4 py-8"
+                className="fixed bottom-0 w-full rounded-t-[24px] px-4 pt-8 bg-white"
                 onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
               >
                 <div className="mb-[18px] flex items-center justify-between">
