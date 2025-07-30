@@ -1,19 +1,27 @@
-type Noti = {
-  title: string;
-  date: string;
-  new: boolean;
-};
+import { Noti } from '../../../../types/notifications';
 
-export default function NotiContent({ noti }: { noti: Noti[] }) {
+export default function NotiContent({
+  noti,
+  onClickNotification,
+}: {
+  noti: Noti[];
+  onClickNotification?: (item: Noti) => void;
+}) {
   return (
     <>
-      {noti.map((item, idx) => (
+      {noti.map((item) => (
         <div
-          key={idx}
+          key={item.id}
           className="relative cursor-pointer border-b-2 border-dotted border-[#A47148] pt-[8px] pb-[14px]"
-          onClick={() => {
-            // 클릭 시 처리 로직
+          onClick={() => onClickNotification?.(item)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              onClickNotification?.(item);
+            }
           }}
+          aria-label={`알림: ${item.title}, 날짜: ${item.date}`}
         >
           <div className="flex items-start gap-[10px]">
             <div

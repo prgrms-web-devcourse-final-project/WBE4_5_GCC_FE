@@ -6,7 +6,7 @@ export default function useNotificationWebSocket(
   onMessage: (msg: string) => void,
 ) {
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8083/ws/connect');
+    const socket = new SockJS('https://littlestep-gcc-final.vercel.app/');
 
     const stompClient = new Client({
       webSocketFactory: () => socket,
@@ -15,14 +15,6 @@ export default function useNotificationWebSocket(
         console.log(str);
       },
     });
-
-    stompClient.onConnect = () => {
-      stompClient.subscribe('/topic/notify', (message) => {
-        if (message.body) {
-          onMessage(message.body);
-        }
-      });
-    };
 
     stompClient.activate();
 
