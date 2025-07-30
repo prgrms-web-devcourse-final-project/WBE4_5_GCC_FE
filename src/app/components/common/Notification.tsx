@@ -1,22 +1,27 @@
 import NotiContent from './Noti';
-
-type Noti = {
-  title: string;
-  date: string;
-  new: boolean;
-};
+import { Noti } from '../../../../types/notifications';
 
 export default function Notification({
   setOpenNoti,
-  className,
+  className = '',
   noti,
+  onClickNotification,
+  onClickAllRead,
 }: {
   setOpenNoti: (value: boolean) => void;
   className?: string;
   noti: Noti[];
+  onClickNotification?: (item: Noti) => void;
+  onClickAllRead?: () => void;
 }) {
+  const handleAllReadClick = () => {
+    onClickAllRead?.();
+  };
+
   return (
     <div
+      role="dialog"
+      aria-modal="true"
       className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 px-4"
       onClick={() => setOpenNoti(false)}
     >
@@ -28,12 +33,16 @@ export default function Notification({
             <span>
               <span className="mr-1">🔔</span> 알림
             </span>
-            <button className="mr-2 text-[12px] font-medium text-[#616161] cursor-pointer">
+            <button
+              className="mr-2 text-[12px] font-medium text-[#616161] cursor-pointer"
+              onClick={handleAllReadClick}
+              aria-label="모든 알림 읽음 처리"
+            >
               모두 읽기
             </button>
           </div>
           <div className="flex-1 overflow-y-auto px-5 py-3 mb-5 space-y-2">
-            <NotiContent noti={noti} />
+            <NotiContent noti={noti} onClickNotification={onClickNotification} />
           </div>
         </div>
       </div>

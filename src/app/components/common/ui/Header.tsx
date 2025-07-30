@@ -8,44 +8,85 @@ import logo from '/public/Logo.svg';
 import coin from '/public/coin.svg';
 import { useUserStore } from '@/store/UserStore';
 import Notification from '../Notification';
-import useNotificationWebSocket from '@/hooks/useNotifications';
-
-type Noti = {
-  title: string;
-  date: string;
-  new: boolean;
-};
+import QuestPage from '../../main/Quest';
+import {
+  getNotificationList,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+} from '@/api/notifications';
+import type { NotificationListItem, Noti } from '../../../../../types/notifications';
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const [openNoti, setOpenNoti] = useState(false);
-  const [notiList, setNotiList] = useState<Noti[]>([
-    {
-      title: '아직 끝내지 않은 루틴이 있어요. 힘내서 마무리해 볼까요?',
-      date: '2025.07.29',
-      new: true,
-    },
-    {
-      title: '축하해요! 퀘스트 보상이 준비되었어요. 멋지게 받아가세요!',
-      date: '2025.07.28',
-      new: false,
-    },
-  ]);
-
+  const [notiList, setNotiList] = useState<Noti[]>([]);
+  const [openQuest, setOpenQuest] = useState(false);
   const currentPoint = useUserStore((state) => state.points);
 
-  useNotificationWebSocket((msg) => {
+  const convertToNoti = (list: NotificationListItem[]): Noti[] =>
+    list.map((item) => ({
+      id: item.id,
+      title: item.name,
+      date: item.createdAt,
+      type: item.type,
+      new: true,
+    }));
+
+  const handleOpenNoti = async () => {
     try {
-      const data = JSON.parse(msg);
-      setNotiList((prev) => [
-        { title: data.title, date: data.date, new: true },
-        ...prev,
-      ]);
+      const list = await getNotificationList();
+      const newNotis = convertToNoti(list);
+
+      setNotiList((prev) => {
+        const existingIds = new Set(prev.map((n) => n.id));
+        const combined = [...prev, ...newNotis.filter((n) => !existingIds.has(n.id))];
+        return combined;
+      });
+
+      setOpenNoti(true);
     } catch (error) {
-      console.error('웹소켓 메시지 파싱 실패', error);
+      console.error('알림 목록 조회 실패', error);
     }
-  });
+  };
+
+  const handleNotificationClick = async (noti: Noti) => {
+    try {
+      await markNotificationAsRead(noti.id);
+      setNotiList((prev) =>
+        prev.map((item) =>
+          item.id === noti.id ? { ...item, new: false } : item,
+        ),
+      );
+    } catch (err) {
+      console.error(`알림 읽음 처리 실패 (id: ${noti.id})`, err);
+    }
+
+    setOpenNoti(false);
+
+    switch (noti.type) {
+      case 'ROUTINE':
+        router.push('/routine');
+        break;
+      case 'QUEST':
+        setOpenQuest(true);
+        break;
+      case 'BADGE':
+        router.push('/collection');
+        break;
+      default:
+        router.push('/');
+    }
+  };
+
+  const handleAllRead = async () => {
+    try {
+      await markAllNotificationsAsRead();
+      setNotiList((prev) => prev.map((item) => ({ ...item, new: false })));
+    } catch (err) {
+      console.error('모두 읽음 처리 실패', err);
+    }
+  };
 
   const isHome = pathname === '/';
   const isAdmin = pathname === '/admin';
@@ -74,7 +115,6 @@ export default function Header() {
             width={116}
             onClick={() => router.push('/')}
             className="h-auto cursor-pointer"
-            style={{ height: 'auto' }}
           />
         ) : (
           <div className="text-xl font-semibold">{title}</div>
@@ -87,20 +127,31 @@ export default function Header() {
             </span>
           </div>
         ) : (
-          <Bell
-            className="cursor-pointer text-[#222222]"
-            size={20}
-            onClick={() => setOpenNoti(true)}
-          />
+          <div className="relative">
+            <Bell
+              className="cursor-pointer text-[#222222]"
+              size={20}
+              onClick={handleOpenNoti}
+            />
+            {notiList.some((n) => n.new) && (
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-[#d32f2f]" />
+            )}
+          </div>
         )}
       </div>
 
-      {openNoti && <Notification noti={notiList} setOpenNoti={setOpenNoti} />}
+      {openNoti && (
+        <Notification
+          noti={notiList}
+          setOpenNoti={setOpenNoti}
+          onClickNotification={handleNotificationClick}
+          onClickAllRead={handleAllRead}
+        />
+      )}
 
-      <div
-        className="mb-[96px]"
-        style={{ marginTop: 'env(safe-area-inset-top)' }}
-      />
+      {openQuest && <QuestPage setOpenQuest={setOpenQuest} />}
+
+      <div className="mb-[96px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
     </>
   );
 }

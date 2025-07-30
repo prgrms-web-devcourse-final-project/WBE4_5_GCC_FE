@@ -7,7 +7,7 @@ type AddressData = {
   sido: string;
   sigungu: string;
   bname: string;
-}
+};
 
 export default function AddressSearch() {
   const router = useRouter();
@@ -19,16 +19,18 @@ export default function AddressSearch() {
       alert('주소 정보를 가져오지 못했습니다.');
       return;
     }
-    // 마포구 연남동, 해남군 북일면 
-    const combinedAddress = `${sigungu} ${bname}`;
+    // 마포구 연남동, 해남군 북일면
+    // const combinedAddress = `${sido} ${sigungu} ${bname}`;
 
-    console.log('전달할 주소:', combinedAddress);
+    // console.log('전달할 주소:', combinedAddress);
     // 쿼리스트링으로 주소 전달
-    router.push(`/mypage/change-userinfo/userinfo?address=${encodeURIComponent(combinedAddress)}`);
+    router.push(
+      `/mypage/change-userinfo/userinfo?region1=${encodeURIComponent(sido)}&region2=${encodeURIComponent(sigungu)}&region3=${encodeURIComponent(bname)}`,
+    );
   };
 
   return (
-    <div className="w-full h-screen px-5 py-7">
+    <div className="h-screen w-full px-5 py-7">
       <DaumPostcodeEmbed
         onComplete={handleComplete}
         autoClose={false}
