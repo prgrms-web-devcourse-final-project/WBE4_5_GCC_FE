@@ -78,6 +78,7 @@ export default function Page() {
     onSuccess: (_, badgeKey) => {
       // 캐시 무효화하여 최신 장착 상태 반영
       queryClient.invalidateQueries({ queryKey: ['user-badges'] });
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       // 장착/해제 토글
       setSelectedItem((prev) => (prev === badgeKey ? null : badgeKey));
     },
