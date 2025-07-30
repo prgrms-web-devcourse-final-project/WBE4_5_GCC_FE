@@ -5,9 +5,9 @@ import { CategoryItem } from '../../../types/general';
 // 카테고리 목록 조회
 export const AdminCategories = async (): Promise<CategoryItem[]> => {
   try {
-    const response = await axiosInstance.get('/api/v1/categories');
-    console.log('카테고리 목록 불러오기 성공', response.data.data.categories);
-    return response.data.data.categories;
+    const response = await axiosInstance.get('/api/v1/admin/categories');
+    console.log('카테고리 목록 불러오기 성공', response.data.data);
+    return response.data.data;
   } catch (error) {
     console.error('카테고리 목록 불러오기 실패', error);
     throw error;
@@ -16,7 +16,7 @@ export const AdminCategories = async (): Promise<CategoryItem[]> => {
 
 export function UseAdminCategory() {
   return useQuery({
-    queryKey: ['admin-category'],
+    queryKey: ['admin-categories'],
     queryFn: AdminCategories,
   });
 }

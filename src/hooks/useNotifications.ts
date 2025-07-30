@@ -10,14 +10,7 @@ export default function useNotificationWebSocket(
   const email = member.email;
 
   useEffect(() => {
-    if (!isLoggedIn || !email) {
-      console.log(
-        '이메일이 없거나 로그인되지 않았습니다. 알림을 수신할 수 없습니다.',
-      );
-      return;
-    }
-
-    console.log('회원 이메일:', email);
+    if (!isLoggedIn || !email) return;
 
     const socketUrl = 'https://honlife.kro.kr/ws/connect';
     const socket = new SockJS(socketUrl);
@@ -25,21 +18,34 @@ export default function useNotificationWebSocket(
     const stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
-      debug: (str) => {
-        console.error(str);
-      },
+      debug: () => {},
     });
 
+    let pingInterval: NodeJS.Timeout;
+
     stompClient.onConnect = () => {
+      console.log(`웹소켓 연결됨: /topic/notify/${email}`);
+
       stompClient.subscribe(`/topic/notify/${email}`, () => {
         onNewNotification();
       });
+
+      // 🟡 60초마다 Ping 전송
+      pingInterval = setInterval(() => {
+        if (stompClient.connected) {
+          stompClient.publish({
+            destination: `/ping`,
+            body: 'ping',
+          });
+        }
+      }, 60000);
     };
 
     stompClient.activate();
 
     return () => {
       stompClient.deactivate();
+      clearInterval(pingInterval);
     };
-  }, [onNewNotification, isLoggedIn, email]);
+  }, [isLoggedIn, email, onNewNotification]);
 }
