@@ -21,12 +21,12 @@ export default function MonthSummary({ reportData }: Props) {
     },
     {
       label: '가장 많이 수행',
-      value: reportData.top5?.[0]?.categoryName,
+      value: reportData.top5?.[0]?.categoryName ?? '--',
       color: '#222222',
     },
     {
       label: '누적 포인트',
-      value: `${reportData.totalPoint}P`,
+      value: `${reportData.totalPoint ?? 0}P`,
       color: '#FFB84C',
     },
   ];
