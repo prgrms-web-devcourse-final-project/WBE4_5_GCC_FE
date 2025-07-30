@@ -67,6 +67,7 @@ export function useDeleteRoutine() {
         exact: false,
       });
     },
+    retry: 0,
   });
 }
 
@@ -87,5 +88,6 @@ export function useEditRoutine() {
         exact: false,
       });
     },
+    retry: 0,
   });
 }
