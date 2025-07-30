@@ -36,7 +36,7 @@ export default function Profile() {
   });
 
   // 보유아이템 목록 불러오기
-  const { data, isLoading: characterLoading } = useQuery<
+  const { data: itemData, isLoading: characterLoading } = useQuery<
     { data: Item[] },
     Error
   >({
@@ -47,9 +47,8 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    if (!data) return;
+    if (!itemData) return;
 
-    const allData = data;
     // 로딩 시 장착된 아이템 초기화
     const initSelected: Record<'TOP' | 'BOTTOM' | 'ACCESSORY', Item | null> = {
       TOP: null,
@@ -57,7 +56,7 @@ export default function Profile() {
       ACCESSORY: null,
     };
 
-    allData.data.forEach((item: Item) => {
+    itemData.data.forEach((item: Item) => {
       if (item.isEquipped) {
         initSelected[item.itemtype] = item;
       }
@@ -66,7 +65,7 @@ export default function Profile() {
     // api 호출 시 아이템 비교용
     setEquippedItem(initSelected);
     // 로딩 시 장작된 아이템 저장하기
-  }, [data]);
+  }, [itemData]);
 
   const nickname = profileData?.member?.nickname ?? '익명';
   const badgeKey = profileData?.equippedBadge?.badgeKey ?? 'clean_bronze';
