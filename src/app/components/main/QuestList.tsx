@@ -4,7 +4,7 @@ import { acceptQuest } from '@/api/quests';
 import AlertModal from '../common/alert/AlertModal';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { EventQuest, Quest } from '../../../../types/general';
+import { EventQuest, Quest, QuestResponse } from '../../../../types/general';
 
 interface QuestListProps {
   quest: Quest | EventQuest;
@@ -16,22 +16,81 @@ export default function QuestList({ quest, type }: QuestListProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const acceptQuestMutation = useMutation({
-    mutationFn: ({ type, id }: { type: string; id: number }) =>
-      acceptQuest(type, id),
-    onSuccess: () => {
-      setIsOpen(true);
+    mutationFn: ({
+      type,
+      id,
+    }: {
+      type: string;
+      id: number;
+      rewardPoint?: number;
+    }) => acceptQuest(type, id),
+    onMutate: async ({ rewardPoint, id }) => {
+      // 프로필에 들어가는 포인트 낙관적 업데이트
+      await queryClient.cancelQueries({ queryKey: ['user-point'] });
+      const previousPoints = queryClient.getQueryData<{ points: number }>([
+        'user-point',
+      ]);
 
+      // 퀘스트 목록 낙관적 업데이트
+      await queryClient.cancelQueries({ queryKey: ['user-quests'] });
+      const previousQuests = queryClient.getQueryData<QuestResponse>([
+        'user-quests',
+      ]);
+
+      queryClient.setQueryData(['user-point'], (old: { points: number }) => {
+        if (!old) return old;
+        return {
+          ...old,
+          points: old.points + (rewardPoint ?? 0),
+        };
+      });
+
+      queryClient.setQueryData(
+        ['user-quests'],
+        (old: QuestResponse | undefined) => {
+          if (!old) return old;
+
+          const updatedWeekly = old.weeklyQuests.filter(
+            (q) => q.progressId !== id,
+          );
+          const updatedEvent = old.eventQuests.filter(
+            (q) => q.progressId !== id,
+          );
+
+          return {
+            ...old,
+            weeklyQuests: updatedWeekly,
+            eventQuests: updatedEvent,
+          };
+        },
+      );
+
+      return { previousPoints, previousQuests };
+    },
+    onError: (err, _variables, context) => {
+      if (context?.previousPoints) {
+        queryClient.setQueryData(['user-point'], context.previousPoints);
+      }
+      if (context?.previousQuests) {
+        queryClient.setQueryData(['user-quests'], context.previousQuests);
+      }
+      console.error('퀘스트 보상받기 실패', err);
+    },
+
+    onSuccess: () => {
       // 보상받기 후 퀘스트 목록, 유저 포인트 최신화
       queryClient.invalidateQueries({ queryKey: ['user-quests'] });
       queryClient.invalidateQueries({ queryKey: ['user-point'] });
     },
-    onError: (error) => {
-      console.error('퀘스트 보상받기 실패', error);
-    },
   });
 
   const handleClick = () => {
+    setIsOpen(true);
+  };
+
+  const handleQuest = () => {
     acceptQuestMutation.mutate({ type, id: quest.progressId });
+    setIsOpen(false);
   };
 
   const questProgress = Math.floor((quest.progress / quest.target) * 100);
@@ -76,7 +135,7 @@ export default function QuestList({ quest, type }: QuestListProps) {
           type="success"
           title={`${quest.questName} 보상으로 ${quest.points} 포인트 획득!`}
           confirmText="확인"
-          onConfirm={() => setIsOpen(false)} // 모달 닫기
+          onConfirm={handleQuest} // 모달 닫기
         />
       )}
     </>
