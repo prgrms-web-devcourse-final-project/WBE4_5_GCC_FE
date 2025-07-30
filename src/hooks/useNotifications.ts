@@ -7,12 +7,19 @@ export default function useNotificationWebSocket(
   onNewNotification: () => void,
 ) {
   const { member, isLoggedIn } = useUserStore();
+  const email = member.email;
 
   useEffect(() => {
-    if (!isLoggedIn || !member.email) return;
+    if (!isLoggedIn || !email) {
+      console.log(
+        '이메일이 없거나 로그인되지 않았습니다. 알림을 수신할 수 없습니다.',
+      );
+      return;
+    }
+
+    console.log('회원 이메일:', email);
 
     const socketUrl = 'https://honlife.kro.kr/ws/connect';
-
     const socket = new SockJS(socketUrl);
 
     const stompClient = new Client({
@@ -24,7 +31,7 @@ export default function useNotificationWebSocket(
     });
 
     stompClient.onConnect = () => {
-      stompClient.subscribe(`/topic/notify/${member.email}`, () => {
+      stompClient.subscribe(`/topic/notify/${email}`, () => {
         onNewNotification();
       });
     };
@@ -34,5 +41,5 @@ export default function useNotificationWebSocket(
     return () => {
       stompClient.deactivate();
     };
-  }, [onNewNotification, isLoggedIn, member.email]);
+  }, [onNewNotification, isLoggedIn, email]);
 }
