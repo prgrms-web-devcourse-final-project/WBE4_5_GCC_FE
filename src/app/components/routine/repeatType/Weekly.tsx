@@ -62,7 +62,7 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
         {/* 요일 선택 */}
         <div className="my-[27px] flex flex-col">
           <span className="text-sm font-semibold">요일 선택</span>
-          <div className="mt-[18px] mr-2 mb-[22px] ml-[18px] flex justify-between">
+          <div className="mx-auto mt-[18px] mr-2 mb-[22px] ml-[18px] flex justify-between">
             {options.map((option, idx) => (
               <button
                 key={idx}
@@ -94,17 +94,16 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
                     : '요일 미선택'}{' '}
                 / {selectedWeek === '1' ? '매주' : `${selectedWeek}주마다`}
               </span>
-              {/* <ChevronDown className="h-3.5 w-3.5 cursor-pointer text-[#616161]" /> */}
             </div>
           </div>
           {/* 주 반복 설정 */}
           <div className="inline-flex w-fit items-center gap-2 self-center">
-            <div className="w-[150px]">
+            <div className="relative w-[150px]">
               <WeekPicker onChange={setSelectedWeek} />
+              <span className="pointer-events-none absolute right-[60px] bottom-[87px] translate-x-[60px] -translate-y-1/2 text-sm">
+                주마다
+              </span>
             </div>
-            <span className="pointer-events-none absolute bottom-42 left-2/5 translate-x-[60px] -translate-y-1/2 text-sm">
-              주마다
-            </span>
           </div>
           {/* 확인 버튼 */}
           <button

@@ -33,7 +33,7 @@ export default function BottomSheet({
     >
       <div
         className={twMerge(
-          'relative w-full min-w-[390px] rounded-t-3xl bg-white px-[20px] py-[34px]',
+          'relative mx-auto w-full min-w-[390px] rounded-t-3xl bg-white px-[20px] py-[34px]',
           className,
         )}
         onClick={(e) => e.stopPropagation()}

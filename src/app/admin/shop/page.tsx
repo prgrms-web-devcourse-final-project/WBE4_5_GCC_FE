@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ShopItem } from '../../../../types/general';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -36,12 +36,7 @@ export default function AdminShop() {
   };
 
   // 아이템 목록 조회
-  const {
-    data: items = [],
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
+  const { data: items = [], isLoading } = useQuery({
     queryKey: ['admin-items'],
     queryFn: AdminItems,
     staleTime: 5 * 60 * 1000,
@@ -67,7 +62,7 @@ export default function AdminShop() {
 
   if (isLoading) {
     return (
-      <div className="h-screen flex w-full items-center justify-center">
+      <div className="flex h-screen w-full items-center justify-center">
         <LoadingSpinner />
       </div>
     );

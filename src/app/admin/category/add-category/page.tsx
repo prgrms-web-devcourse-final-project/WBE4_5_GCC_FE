@@ -15,7 +15,7 @@ export default function EditSubcategoryPage() {
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
 
   const [categoryName, setCategoryName] = useState('');
-  const { emoji, setEmoji, name, setName } = useCategoryForm();
+  const { setEmoji, setName } = useCategoryForm();
 
   // 이모지 클릭 핸들러
   const handleEmojiSelect = (emojiData: EmojiClickData) => {

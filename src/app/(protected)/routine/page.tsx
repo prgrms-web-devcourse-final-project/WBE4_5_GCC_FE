@@ -1,5 +1,5 @@
 'use client';
-
+export const dynamic = 'force-dynamic';
 import { useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -11,7 +11,7 @@ import { DayRoutine } from '../../../../types/routine';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import AlertModal from '@/app/components/common/alert/AlertModal';
-import { format } from 'date-fns';
+import { format, startOfWeek } from 'date-fns';
 import {
   useDeleteRoutine,
   useHandleRoutine,
@@ -28,13 +28,16 @@ export default function Page() {
     console.log(deleteTargetId);
   }, [deleteTargetId]);
   const dateStr: string = format(selectedDate, 'yyyy-MM-dd');
+  const date = dateStr ? new Date(dateStr) : new Date();
+  const monday = startOfWeek(date, { weekStartsOn: 1 });
+  const mondayStr = format(monday, 'yyyy-MM-dd');
   const { data: weekData, isPending } = useWeekRoutine(dateStr);
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[dateStr] ?? [];
   const total = filteredRoutines.length;
   const done = filteredRoutines.filter((r) => r.isDone).length;
   const percent = total ? Math.round((done / total) * 100) : 0;
 
-  const { mutate } = useHandleRoutine();
+  const { mutate } = useHandleRoutine(mondayStr, dateStr);
 
   const {
     mutate: handleDelete,
@@ -61,7 +64,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col items-center bg-white px-5">
+      <div className="mt-25 flex min-h-screen flex-col items-center bg-white px-5">
         <CalendarBar
           setIsOpen={setIsOpen}
           selectedDate={selectedDate}

@@ -3,8 +3,9 @@
 import { UseAdminPreset } from '@/api/admin/adminRoutinePreset';
 import PresetList from '@/app/components/admin/routine/PresetList';
 import RoutineSelector from '@/app/components/admin/routine/routineSelector';
+import { Suspense } from 'react';
 
-export default function routineManager() {
+function RoutinePageContent() {
   const { data: presets, isLoading } = UseAdminPreset();
   return (
     <>
@@ -15,5 +16,13 @@ export default function routineManager() {
         isLoading={isLoading}
       />
     </>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RoutinePageContent />
+    </Suspense>
   );
 }
