@@ -16,8 +16,55 @@ export default function QuestList({ quest, type }: QuestListProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const acceptQuestMutation = useMutation({
-    mutationFn: ({ type, id }: { type: string; id: number }) =>
-      acceptQuest(type, id),
+    mutationFn: ({
+      type,
+      id,
+    }: {
+      type: string;
+      id: number;
+      rewardPoint?: number;
+    }) => acceptQuest(type, id),
+
+    onMutate: async ({ rewardPoint, id }) => {
+      // 프로필에 들어가는 포인트 낙관적 업데이트
+      await queryClient.cancelQueries({ queryKey: ['user-point'] });
+      const previousPoints = queryClient.getQueryData<{ points: number }>([
+        'user-point',
+      ]);
+
+      // 퀘스트 목록 낙관적 업데이트
+      await queryClient.cancelQueries({ queryKey: ['user-quests'] });
+      const previousQuests = queryClient.getQueryData<Quest[]>(['user-quests']);
+
+      // quest 객체 안에 point 있음 → 낙관적으로 증가시킴
+      queryClient.setQueryData(['user-point'], (old: { points: number }) => {
+        if (!old) return old;
+        return {
+          ...old,
+          points: old.points + (rewardPoint ?? 0),
+        };
+      });
+
+      queryClient.setQueryData(
+        ['user-quests'],
+        (old: (Quest | EventQuest)[]) => {
+          if (!old) return old;
+          return old.filter((quest) => quest.progressId !== id);
+        },
+      );
+
+      return { previousPoints, previousQuests };
+    },
+    onError: (err, _variables, context) => {
+      if (context?.previousPoints) {
+        queryClient.setQueryData(['user-point'], context.previousPoints);
+      }
+      if (context?.previousQuests) {
+        queryClient.setQueryData(['user-quests'], context.previousQuests);
+      }
+      console.error('퀘스트 보상받기 실패', err);
+    },
+
     onSuccess: () => {
       setIsOpen(true);
 
@@ -25,13 +72,14 @@ export default function QuestList({ quest, type }: QuestListProps) {
       queryClient.invalidateQueries({ queryKey: ['user-quests'] });
       queryClient.invalidateQueries({ queryKey: ['user-point'] });
     },
-    onError: (error) => {
-      console.error('퀘스트 보상받기 실패', error);
-    },
   });
 
   const handleClick = () => {
-    acceptQuestMutation.mutate({ type, id: quest.progressId });
+    acceptQuestMutation.mutate({
+      type,
+      id: quest.progressId,
+      rewardPoint: quest.points,
+    });
   };
 
   const questProgress = Math.floor((quest.progress / quest.target) * 100);

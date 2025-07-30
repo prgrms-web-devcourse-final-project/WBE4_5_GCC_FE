@@ -13,6 +13,12 @@ import AlertModal from '@/app/components/common/alert/AlertModal';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import CollectionItemCard from '@/app/components/collection/CollectionItem';
 import CollectionBottomSheet from '@/app/components/collection/CollectionBottomSheet';
+import { ProfileData } from '../../../../types/User';
+
+type EquipBadgeVariables = {
+  badgeKey: string;
+  badgeName: string;
+};
 
 export default function Page() {
   const queryClient = useQueryClient();
@@ -74,15 +80,42 @@ export default function Page() {
   });
 
   const equipBadgeMutation = useMutation({
-    mutationFn: equipBadge,
-    onSuccess: (_, badgeKey) => {
+    mutationFn: ({ badgeKey }: EquipBadgeVariables) => equipBadge(badgeKey),
+    onMutate: async ({ badgeKey, badgeName }: EquipBadgeVariables) => {
+      // 프로필에 들어가는 뱃지 낙관적 업데이트
+      await queryClient.cancelQueries({ queryKey: ['user-profile'] });
+      const previousProfile = queryClient.getQueryData(['user-profile']);
+
+      // 캐시에 낙관적으로 업데이트
+      queryClient.setQueryData(['user-profile'], (old: ProfileData) => {
+        if (!old) return old;
+        const isSameBadge = old.equippedBadge?.badgeKey === badgeKey;
+        return {
+          ...old,
+          equippedBadge: isSameBadge
+            ? null
+            : {
+                badgeKey,
+                badgeName,
+                badgeTier: 'BRONZE',
+              },
+        };
+      });
+      return { previousProfile };
+    },
+    onSuccess: (_data, variables) => {
       // 캐시 무효화하여 최신 장착 상태 반영
       queryClient.invalidateQueries({ queryKey: ['user-badges'] });
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       // 장착/해제 토글
-      setSelectedItem((prev) => (prev === badgeKey ? null : badgeKey));
+      setSelectedItem((prev) =>
+        prev === variables.badgeKey ? null : variables.badgeKey,
+      );
     },
-    onError: () => {
+    onError: (_err, _variables, context) => {
+      if (context?.previousProfile) {
+        queryClient.setQueryData(['user-profile'], context.previousProfile);
+      }
       alert('배지 장착/해제 실패');
     },
   });
@@ -98,12 +131,19 @@ export default function Page() {
   }, [badges]);
 
   // 뱃지 장착 (하나만 선택 가능)
-  const handleSelect = (badge: { key: string; status: string }) => {
+  const handleSelect = (badge: {
+    key: string;
+    status: string;
+    name: string;
+  }) => {
     //console.log('선택한 배지:', badge.key);
     if (badge.status !== 'OWNED') {
       return; // 장착 불가
     }
-    equipBadgeMutation.mutate(badge.key);
+    equipBadgeMutation.mutate({
+      badgeKey: badge.key,
+      badgeName: badge.name,
+    });
   };
 
   //useEffect(() => {
@@ -204,6 +244,7 @@ export default function Page() {
                         handleSelect({
                           key: badge.badgeKey,
                           status: badge.status,
+                          name: badge.badgeName,
                         })
                       }
                       action={
