@@ -109,18 +109,23 @@ export default function Page() {
       if (previousUserItems) {
         const newData = {
           data: previousUserItems.data.map((item) => {
+            const targetItem = previousUserItems.data.find(
+              (i) => i.id === itemId,
+            );
+            const targetType = targetItem?.itemtype;
+
+            if (!targetType) return item;
+
+            // 클릭한 아이템은 토글
             if (item.id === itemId) {
-              return { ...item, isEquipped: true };
+              return { ...item, isEquipped: !item.isEquipped };
             }
-            // 장착된 같은 타입 아이템은 해제 처리 (isEquipped = false)
-            if (
-              item.isEquipped &&
-              item.itemtype ===
-                previousUserItems.data.find((i) => i.id === itemId)?.itemtype &&
-              item.id !== itemId
-            ) {
+
+            // 같은 타입의 다른 아이템은 해제
+            if (item.itemtype === targetType) {
               return { ...item, isEquipped: false };
             }
+
             return item;
           }),
         };

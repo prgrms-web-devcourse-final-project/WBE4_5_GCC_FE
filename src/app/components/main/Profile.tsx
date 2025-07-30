@@ -121,7 +121,7 @@ export default function Profile() {
               width={130}
               height={130}
               priority
-              className="absolute object-contain"
+              className="absolute top-[0px] object-contain"
             />
           )}
           {equippedItem.ACCESSORY && (
