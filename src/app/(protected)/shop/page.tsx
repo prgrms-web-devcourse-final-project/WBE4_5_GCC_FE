@@ -92,142 +92,7 @@ export default function Shop() {
 
   return (
     <>
-      <div className="mx-auto flex min-h-screen w-full max-w-screen-sm flex-col overflow-y-auto px-5">
-        <div className="flex flex-col">
-          <div className="relative mt-[27px] mb-[29px] flex h-[198px] w-full items-center justify-center overflow-hidden rounded-lg">
-            {/* 배경 이미지 */}
-            <Image
-              src="/images/itemBackGround.svg"
-              alt="bg"
-              fill
-              priority
-              className="object-cover"
-            />
-            {/* 아이템박스 */}
-            <div className="absolute left-[33px] z-0 space-y-[9px]">
-              <div
-                className="relative h-[52px] w-[52px] rounded-[4px] border border-[#FFB84C] bg-white"
-                onClick={() => {
-                  if (selectedTryItem.ACCESSORY) {
-                    const equippedKey = data?.items.find(
-                      (item: ShopItem) =>
-                        item.itemKey === selectedTryItem.ACCESSORY,
-                    );
-                    //if (equippedKey) {
-                    //  handleModal(equippedKey);
-                    //}
-                  }
-                }}
-              >
-                {selectedTryItem.ACCESSORY && (
-                  <Image
-                    src={`/images/items/thumbs/${selectedTryItem.ACCESSORY}.png`}
-                    alt="액세서리"
-                    width={53}
-                    height={53}
-                    priority
-                    className="cursor-pointer object-contain p-[4px]"
-                  />
-                )}
-              </div>
-              <div
-                className="relative h-[52px] w-[52px] rounded-[4px] border border-[#FFB84C] bg-white"
-                onClick={() => {
-                  if (selectedTryItem.TOP) {
-                    const equippedKey = data?.items.find(
-                      (item: ShopItem) => item.itemKey === selectedTryItem.TOP,
-                    );
-                    //if (equippedKey) {
-                    //  handleModal(equippedKey);
-                    //}
-                  }
-                }}
-              >
-                {selectedTryItem.TOP && (
-                  <Image
-                    src={`/images/items/thumbs/${selectedTryItem.TOP}.png`}
-                    alt="상의"
-                    width={53}
-                    height={53}
-                    priority
-                    className="cursor-pointer object-contain p-[4px]"
-                  />
-                )}
-              </div>
-              <div
-                className="relative h-[52px] w-[52px] rounded-[4px] border border-[#FFB84C] bg-white"
-                onClick={() => {
-                  if (selectedTryItem.BOTTOM) {
-                    const equippedKey = data?.items.find(
-                      (item: ShopItem) =>
-                        item.itemKey === selectedTryItem.BOTTOM,
-                    );
-                    //if (equippedKey) {
-                    //  handleModal(equippedKey);
-                    //}
-                  }
-                }}
-              >
-                {selectedTryItem.BOTTOM && (
-                  <Image
-                    src={`/images/items/thumbs/${selectedTryItem.BOTTOM}.png`}
-                    alt="하의"
-                    width={53}
-                    height={53}
-                    priority
-                    className="cursor-pointer object-contain p-[4px]"
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* 기본 캐릭터 (맨 아래) */}
-            <div className="relative flex h-[130px] w-[130px] flex-shrink-0 items-center justify-center overflow-hidden">
-              <Image
-                src="/images/mainCharacter.png"
-                alt="기본 캐릭터"
-                width={130}
-                height={130}
-                priority
-                className="absolute inset-0 z-0"
-              />
-              {/* 상의 아이템 */}
-              {selectedTryItem.TOP && (
-                <Image
-                  src={`/images/items/${selectedTryItem.TOP}.png`}
-                  alt="상의"
-                  width={130}
-                  height={130}
-                  priority
-                  className="absolute inset-0 top-[4px] z-10"
-                />
-              )}
-              {/* 하의 아이템 */}
-              {selectedTryItem.BOTTOM && (
-                <Image
-                  src={`/images/items/${selectedTryItem.BOTTOM}.png`}
-                  alt="하의"
-                  width={130}
-                  height={130}
-                  priority
-                  className="absolute inset-0 z-20"
-                />
-              )}
-              {/* 악세사리 아이템 */}
-              {selectedTryItem.ACCESSORY && (
-                <Image
-                  src={`/images/items/${selectedTryItem.ACCESSORY}.png`}
-                  alt="액세서리"
-                  width={130}
-                  height={130}
-                  priority
-                  className="absolute inset-0 z-30"
-                />
-              )}
-            </div>
-          </div>
-        </div>
-
+      <div className="h-1vh mx-auto flex w-full max-w-screen-sm flex-col overflow-y-auto px-5">
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}
@@ -248,18 +113,18 @@ export default function Shop() {
                   itemPoint: item.itemPrice,
                 }}
                 onClick={() => {
-                  if (ownedItemKeys.includes(item.itemKey)) return; // 이미 보유한 아이템일 경우 클릭 막음
+                  if (item.isOwned) return; // 이미 보유한 아이템일 경우 클릭 막음
                   setSelectedItem(item);
                   setSelectedPrice(item.itemPrice!);
                   setShowPModal(true);
                 }}
-                isOwned={ownedItemKeys.includes(item.itemKey)} // 보유 중 아이템
+                isOwned={item.isOwned} // 보유 중 아이템
               />
             ))}
           </div>
 
           {/* 페이지네이션 */}
-          <div className="mt-[41px] flex items-center justify-center space-x-[11px]">
+          {/*<div className="mt-[41px] flex items-center justify-center space-x-[11px]">
             <button className="text-[#222222]">
               <ChevronLeft className="h-3 w-auto" />
             </button>
@@ -271,7 +136,7 @@ export default function Shop() {
             <button className="text-[#D9D9D9]">
               <ChevronRight className="h-3 w-auto" />
             </button>
-          </div>
+          </div>*/}
         </div>
       </div>
 
