@@ -61,10 +61,10 @@ export default function Page() {
       categoryName: string;
       categoryType: 'MAJOR' | 'SUB';
       emoji: string | null;
-      parentName: string | null;
+      parentId: number | null;
     }) => CreateCategory(category),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['add-category'] });
+      queryClient.invalidateQueries({ queryKey: ['user-categories'] });
     },
     onError: (error) => {
       console.log('카테고리 생성 실패', error);
@@ -84,21 +84,21 @@ export default function Page() {
         categoryName: mainCategoryName,
         categoryType: 'MAJOR',
         emoji: selectedEmoji,
-        parentName: null,
+        parentId: null,
       });
 
-      await Promise.all(
-        subCategories.map((subName) =>
-          createCategoryMutation.mutateAsync({
-            categoryName: subName,
-            categoryType: 'SUB',
-            emoji: null,
-            parentName: mainCategoryName,
-          }),
-        ),
-      );
+      //await Promise.all(
+      //  subCategories.map((subName) =>
+      //    createCategoryMutation.mutateAsync({
+      //      categoryName: subName,
+      //      categoryType: 'SUB',
+      //      emoji: null,
+      //      parentId: mainCategoryName,
+      //    }),
+      //  ),
+      //);
 
-      alert('카테고리 생성 완료!');
+      //alert('카테고리 생성 완료!');
       router.push('/routine/edit-category');
     } catch (err) {
       console.error('카테고리 생성 실패', err);
@@ -140,7 +140,7 @@ export default function Page() {
               />
             </div>
           </div>
-
+          {/*
           <button
             onClick={() => {
               setMode('SUB');
@@ -152,10 +152,10 @@ export default function Page() {
             <p className="text-medium text-base text-[#388E3C]">
               세부 카테고리
             </p>
-          </button>
+          </button>*/}
 
           {/* 소분류 (서브 카테고리) 영역 */}
-          <div className="flex flex-col gap-5">
+          {/*<div className="flex flex-col gap-5">
             {subCategories.map((name, index) => (
               <div key={index} className="flex gap-2.5">
                 <button onClick={() => handleRemoveSub(index)}>
@@ -166,7 +166,7 @@ export default function Page() {
                 </p>
               </div>
             ))}
-          </div>
+          </div>*/}
         </div>
 
         {isBottomSheetOpen && (
