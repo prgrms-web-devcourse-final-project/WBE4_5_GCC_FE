@@ -7,16 +7,18 @@ interface BackHeaderProps {
   title: string;
   useStep?: boolean; // 회원가입처럼 step 로직을 쓸지
   defaultBackPath?: string; // step === 1 이면 갈 경로
+  step?: number; // 현재 step 값 (optional)
 }
 
 export default function BackHeader({
   title,
   useStep = false,
   defaultBackPath = '/',
+  step,
 }: BackHeaderProps) {
   const router = useRouter();
   const params = useSearchParams();
-  const step = useSignUpStore((state) => state.step);
+  const currentStep = useSignUpStore((state) => state.step);
   const setStep = useSignUpStore((state) => state.setStep);
   const isSocial = params.get('social') === 'true';
 
@@ -27,22 +29,27 @@ export default function BackHeader({
     }
 
     if (useStep) {
-      if (step === 1) {
+      const activeStep = step ?? currentStep;
+      if (activeStep === 1) {
         router.push(defaultBackPath);
       } else {
-        setStep(step - 1);
+        setStep(activeStep - 1);
       }
     } else {
-      router.back(); // 일반적인 라우팅 환경에서는 뒤로 가기
+      router.back();
     }
   };
 
+  const activeStep = step ?? currentStep;
+
   return (
     <div className="relative flex h-[56px] w-full items-center justify-center">
-      <ChevronLeft
-        className="absolute left-3 h-6 w-6 cursor-pointer"
-        onClick={goBack}
-      />
+      {activeStep !== 3 && activeStep !== 4 && (
+        <ChevronLeft
+          className="absolute left-3 h-6 w-6 cursor-pointer"
+          onClick={goBack}
+        />
+      )}
       <p className="text-lg font-semibold">{title}</p>
     </div>
   );

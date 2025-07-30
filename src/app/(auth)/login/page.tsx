@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { ChevronRight, Eye, EyeClosed } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
 import { useRouter } from 'next/navigation';
@@ -17,11 +17,14 @@ export default function Page() {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const router = useRouter();
-
   const { setEmail } = useUserStore();
 
-  // 로그인 핸들러
+  const isSubmittingRef = useRef(false);
+
   const logInHandler = async () => {
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
+
     try {
       await signIn(emailInput, password);
       setEmail(emailInput);
@@ -36,13 +39,19 @@ export default function Page() {
         password: '이메일 또는 비밀번호를 다시 확인하세요.',
       });
       console.error(err);
+    } finally {
+      setTimeout(() => {
+        isSubmittingRef.current = false;
+      }, 1000);
     }
   };
 
-  // 이메일과 비밀번호 유효성 검사
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmittingRef.current) return;
+
     const newErrors: { email?: string; password?: string } = {};
+
     if (!emailInput) {
       newErrors.email = '이메일을 입력해 주세요.';
     } else if (!emailInput.includes('@')) {
@@ -56,7 +65,6 @@ export default function Page() {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       logInHandler();
-      return;
     }
   };
 
@@ -66,9 +74,14 @@ export default function Page() {
   }, [reset]);
 
   const handleKakaoLogin = () => {
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     window.location.href = 'https://honlife.kro.kr/oauth2/authorization/kakao';
   };
+
   const handleGoogleLogin = () => {
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
     window.location.href = 'https://honlife.kro.kr/oauth2/authorization/google';
   };
 
@@ -79,8 +92,8 @@ export default function Page() {
         <form className="mt-[35px] space-y-4" onSubmit={handleSubmit}>
           <Input
             placeholder="이메일을 입력해 주세요"
-            value={emailInput}  // input에서 사용되는 이메일
-            onChange={(e) => setEmailInput(e.target.value)}  // 이메일 변경
+            value={emailInput}
+            onChange={(e) => setEmailInput(e.target.value)}
             error={errors.email}
           />
           <div className="relative">
@@ -113,11 +126,13 @@ export default function Page() {
             >
               로그인
             </Button>
+
             <div className="flex items-center gap-10 text-sm text-gray-400">
               <hr className="flex-1 border-gray-300" />
               <span>또는</span>
               <hr className="flex-1 border-gray-300" />
             </div>
+
             <div className="flex flex-col gap-3">
               <Button
                 type="button"
@@ -143,6 +158,7 @@ export default function Page() {
             </div>
           </div>
         </form>
+
         <div className="flex justify-center gap-6 text-sm text-[#909090]">
           <a
             onClick={() => router.push('/signup')}
