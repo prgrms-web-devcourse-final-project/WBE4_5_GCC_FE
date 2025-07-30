@@ -34,23 +34,6 @@ export default function RecommendedRoutine({
   onCycleSelect,
   isLoading,
 }: RecommendedRoutineProps) {
-  const convertDaysToNumbers = (days: string) => {
-    const dayMap: Record<string, string> = {
-      월: '1',
-      화: '2',
-      수: '3',
-      목: '4',
-      금: '5',
-      토: '6',
-      일: '7',
-    };
-    return days
-      .split(', ')
-      .map((day) => dayMap[day])
-      .filter(Boolean) // 혹시 모를 undefined 제거
-      .join(',');
-  };
-
   return (
     <div className="flex w-full flex-col gap-2 rounded-lg border border-[#E0E0E0] bg-white px-4 py-4">
       <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">

@@ -148,23 +148,9 @@ export function useDeleteRoutine(mondayStr: string, dateStr: string) {
     retry: 0,
   });
 }
-// export function useDeleteRoutine() {
-//   const queryClient = useQueryClient();
-//   return useMutation({
-//     mutationFn: ({ routineId }: { routineId: number }) =>
-//       deleteRoutine(routineId),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({
-//         queryKey: ['week-routine'],
-//         exact: false,
-//       });
-//     },
-//     retry: 0,
-//   });
-// }
 
 // 루틴 수정
-export function useEditRoutine() {
+export function useEditRoutine(mondayStr: string, dateStr: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
@@ -174,12 +160,33 @@ export function useEditRoutine() {
       routineId: number;
       editData: EditRoutine;
     }) => editRoutine(routineId, editData),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['week-routine'],
-        exact: false,
+    onMutate: () => {
+      queryClient.cancelQueries({
+        queryKey: ['routine-week', mondayStr],
       });
+      const previousData = queryClient.getQueryData<WeekRoutineResponse>([
+        'routine-week',
+        mondayStr,
+      ]);
     },
-    retry: 0,
   });
 }
+// export function useEditRoutine() {
+//   const queryClient = useQueryClient();
+//   return useMutation({
+//     mutationFn: ({
+//       routineId,
+//       editData,
+//     }: {
+//       routineId: number;
+//       editData: EditRoutine;
+//     }) => editRoutine(routineId, editData),
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({
+//         queryKey: ['week-routine'],
+//         exact: false,
+//       });
+//     },
+//     retry: 0,
+//   });
+// }

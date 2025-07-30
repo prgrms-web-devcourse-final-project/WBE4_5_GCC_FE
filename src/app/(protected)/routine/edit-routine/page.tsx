@@ -36,7 +36,6 @@ export default function Page() {
   const [routineName, setRoutineName] = useState(name);
   const [startDate, setStartDate] = useState(initDate);
   const [doWhen, setDoWhen] = useState(triggerTime);
-  const [notification, setNotification] = useState(false);
   const [importance, setImportance] = useState(isImportant);
   const [showCatModal, setShowCatModal] = useState(false);
   const [isCycleOpen, setIsCycleOpen] = useState(false);
@@ -126,6 +125,22 @@ export default function Page() {
       setCycleText('');
       return;
     }
+    const convertNumbersToDays = (numbers: string) => {
+      const numMap: Record<string, string> = {
+        '1': '월',
+        '2': '화',
+        '3': '수',
+        '4': '목',
+        '5': '금',
+        '6': '토',
+        '7': '일',
+      };
+      return numbers
+        .split(',')
+        .map((num) => numMap[num.trim()])
+        .filter(Boolean)
+        .join(' ');
+    };
 
     switch (true) {
       case !!cycle.daily:
@@ -134,10 +149,9 @@ export default function Page() {
         setRepeatTerm(cycle.daily!);
         break;
       case !!cycle.week:
+        const dayText = convertNumbersToDays(cycle.days!);
         setCycleText(
-          `${cycle.days} / ${
-            cycle.week === '1' ? '매주' : `${cycle.week}주마다`
-          }`,
+          `${dayText} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`,
         );
         setNewRepeatType('WEEKLY');
         setNewRepeatValue(cycle.days!);
@@ -153,7 +167,6 @@ export default function Page() {
         setCycleText('');
     }
   }, [cycle]);
-
   return (
     <>
       <div className="h-1vh flex flex-col px-5 py-7">
@@ -198,13 +211,6 @@ export default function Page() {
             />
           </div>
           <div>
-            <ToggleSwitch
-              icon="🔔"
-              label="알림"
-              checked={notification}
-              onToggle={setNotification}
-              className="rounded-t-lg"
-            />
             <ToggleSwitch
               icon="⭐"
               label="중요도"

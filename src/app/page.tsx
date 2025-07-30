@@ -22,9 +22,7 @@ export default function Main() {
   const [openQuest, setOpenQuest] = useState(false);
   const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
-
   const { data: weekData, isPending: weekLoading } = useWeekRoutine();
-
   const today = format(new Date(), 'yyyy-MM-dd');
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[today] ?? [];
   const total = filteredRoutines.length;
@@ -34,7 +32,6 @@ export default function Main() {
   const todayStr = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
   const monday = startOfWeek(today, { weekStartsOn: 1 });
   const mondayStr = format(monday, 'yyyy-MM-dd');
-
   const { mutate } = useHandleRoutine(mondayStr, today);
 
   const goToCollection = () => {
@@ -52,8 +49,6 @@ export default function Main() {
             textSize="12px"
             className="mb-3"
             onClick={() => setOpenQuest(true)}
-            // imgWidth={26}
-            // imgHeight={21}
           />
           <FloatingButton
             src={acheivement}
@@ -61,8 +56,6 @@ export default function Main() {
             text="도감"
             textSize="12px"
             onClick={goToCollection}
-            // imgWidth={26}
-            // imgHeight={21}
           />
         </div>
 
