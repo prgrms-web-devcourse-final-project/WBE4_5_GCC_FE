@@ -7,7 +7,7 @@ export default function useNotificationWebSocket(
 ) {
   useEffect(() => {
     const socket = new SockJS(
-      'wss://littlestep-gcc-final.vercel.app/ws/connect',
+      'https://littlestep-gcc-final.vercel.app/ws/connect',
     );
 
     const stompClient = new Client({

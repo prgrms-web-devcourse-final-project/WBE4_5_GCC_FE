@@ -71,11 +71,7 @@ export default function CategoryBottomSheetContainer({
       onClick={handleOutsideClick}
     >
       <div
-<<<<<<< HEAD
         className="min-h-[490px] w-full rounded-t-[24px] bg-white px-4 pt-8 pb-16"
-=======
-        className="min-h-[480px] w-full rounded-t-[24px] bg-white px-4 py-8"
->>>>>>> dev
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
         {/* 헤더 */}
@@ -110,11 +106,7 @@ export default function CategoryBottomSheetContainer({
               onClick={handleOutsideClick}
             >
               <div
-<<<<<<< HEAD
                 className="fixed bottom-0 w-full rounded-t-[24px] bg-white px-4 pt-8"
-=======
-                className="fixed bottom-0 min-h-[480px] w-full rounded-t-[24px] bg-white px-4 py-8"
->>>>>>> dev
                 onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
               >
                 <div className="mb-[18px] flex items-center justify-between">

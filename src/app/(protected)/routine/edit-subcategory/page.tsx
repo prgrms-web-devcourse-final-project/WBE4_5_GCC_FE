@@ -31,16 +31,11 @@ export default function Page() {
   >();
   const [selectedEmoji, setSelectedEmoji] = useState<string | null>(null);
   const [subCategories, setSubCategories] = useState<CategoryItem[]>([]);
-<<<<<<< HEAD
 
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-=======
-  const [categoryType, setCategoryType] = useState<
-    'MAJOR' | 'SUB' | 'DEFAULT'
-  >();
->>>>>>> dev
+
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
 
   const pickerRef = useRef<HTMLDivElement>(null);
