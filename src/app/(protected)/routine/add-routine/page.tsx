@@ -195,7 +195,7 @@ export default function Page() {
               label="중요도"
               checked={importance}
               onToggle={setImportance}
-              className="rounded-b-lg"
+              className="rounded-lg"
             />
           </div>
         </div>
