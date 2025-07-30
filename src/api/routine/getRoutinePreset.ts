@@ -6,5 +6,6 @@ export function useRoutinePreset(categoryId: number) {
     queryKey: ['routine-preset', categoryId],
     queryFn: () => getPreset(categoryId),
     enabled: !!categoryId,
+    retry: false,
   });
 }
