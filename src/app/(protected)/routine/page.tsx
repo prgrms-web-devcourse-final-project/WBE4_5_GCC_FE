@@ -34,7 +34,6 @@ export default function Page() {
   const percent = total ? Math.round((done / total) * 100) : 0;
 
   const { mutate } = useHandleRoutine(mondayStr, dateStr);
-
   const { mutate: handleDelete } = useDeleteRoutine(mondayStr, dateStr);
 
   const handleAddRoutine = () => {

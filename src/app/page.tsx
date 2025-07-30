@@ -14,14 +14,16 @@ import AlertModal from './components/common/alert/AlertModal';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
 import { format, startOfWeek } from 'date-fns';
 import { useRoutineStore } from '@/store/RoutineStore';
-import { useHandleRoutine } from '@/api/routine/handleRoutine';
+import {
+  useDeleteRoutine,
+  useHandleRoutine,
+} from '@/api/routine/handleRoutine';
 
 export default function Main() {
-  // const quest = '/quest.svg';
-  // const acheivement = '/acheivement.svg';
   const [openQuest, setOpenQuest] = useState(false);
   const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
   const { data: weekData, isPending: weekLoading } = useWeekRoutine();
   const today = format(new Date(), 'yyyy-MM-dd');
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[today] ?? [];
@@ -32,7 +34,9 @@ export default function Main() {
   const todayStr = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
   const monday = startOfWeek(today, { weekStartsOn: 1 });
   const mondayStr = format(monday, 'yyyy-MM-dd');
+
   const { mutate } = useHandleRoutine(mondayStr, today);
+  const { mutate: handleDelete } = useDeleteRoutine(mondayStr, today);
 
   const goToCollection = () => {
     router.push('/collection');
@@ -133,7 +137,10 @@ export default function Main() {
                       repeatValue: routine.repeatValue!,
                     });
                   }}
-                  onDeleteClick={() => setCheckDelete(true)}
+                  onDeleteClick={() => {
+                    setCheckDelete(true);
+                    setDeleteTargetId(routine.routineId);
+                  }}
                 />
               ))}
             </div>
@@ -144,7 +151,13 @@ export default function Main() {
         <AlertModal
           type="delete"
           title="루틴을 삭제하시겠어요?"
-          onConfirm={() => console.log('삭제완료')}
+          onConfirm={() => {
+            if (deleteTargetId) {
+              handleDelete({ routineId: deleteTargetId });
+              setDeleteTargetId(null);
+              setCheckDelete(false);
+            }
+          }}
           cancelText="취소"
           onCancel={() => setCheckDelete(false)}
           isOpen={checkDelete}

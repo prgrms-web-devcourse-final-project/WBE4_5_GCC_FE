@@ -17,6 +17,7 @@ import { useEditRoutine } from '@/api/routine/handleRoutine';
 import LoadingModal from '@/app/components/common/alert/LoadingModal';
 import { CategoryItem } from '../../../../../types/general';
 import CategorySelector from '@/app/components/routine/category/CategorySelector';
+import { format, startOfWeek } from 'date-fns';
 
 export default function Page() {
   const {
@@ -46,6 +47,10 @@ export default function Page() {
   const [newRepeatType, setNewRepeatType] = useState(repeatType);
   const [newRepeatValue, setNewRepeatValue] = useState(repeatValue);
   const [repeatTerm, setRepeatTerm] = useState('');
+
+  const today = format(new Date(), 'yyyy-MM-dd');
+  const monday = startOfWeek(today, { weekStartsOn: 1 });
+  const mondayStr = format(monday, 'yyyy-MM-dd');
 
   useEffect(() => {
     if (repeatType === 'DAILY') {
@@ -81,7 +86,7 @@ export default function Page() {
     doWhen !== '';
 
   // 수정 처리
-  const { mutate, isSuccess } = useEditRoutine();
+  const { mutate, isSuccess } = useEditRoutine(mondayStr, today);
 
   useEffect(() => {
     if (isSuccess) {
