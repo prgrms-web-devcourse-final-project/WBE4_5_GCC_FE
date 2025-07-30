@@ -11,7 +11,7 @@ import { CategoryItem } from '../../../../../types/general';
 
 interface CategoryGridProps {
   categories: CategoryItem[];
-  selected: string | null;
+  selected: number | null;
   onSelectCategory: (label: string) => void;
   isCustom?: boolean;
   isManage?: boolean;
@@ -60,7 +60,7 @@ export default function CategoryGrid({
       className="routine-scroll grid w-full grid-cols-3 place-items-center gap-x-8 gap-y-3 overflow-y-auto"
     >
       {categories.map((cat, idx) => {
-        const isSelected = selected === cat.categoryName;
+        const isSelected = selected === cat.categoryId;
 
         return (
           <div key={idx} className="flex w-full justify-center">

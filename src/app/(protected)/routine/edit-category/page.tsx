@@ -31,10 +31,13 @@ export default function Page() {
     if (category) {
       setSelectedCategory(category);
       // edit-subcategory 이동 시 label과 icon 전달,
+      //router.push(
+      //  `/routine/edit-subcategory?label=${encodeURIComponent(
+      //    category.categoryName,
+      //  )}&icon=${encodeURIComponent(category?.emoji || '❓')}`,
+      //);
       router.push(
-        `/routine/edit-subcategory?label=${encodeURIComponent(
-          category.categoryName,
-        )}&icon=${encodeURIComponent(category?.emoji || '❓')}`,
+        `/routine/edit-subcategory?categoryId=${category.categoryId}&label=${category.categoryName}&icon=${category.emoji}`
       );
     }
   };
@@ -51,7 +54,7 @@ export default function Page() {
     <div className="flex flex-col gap-3 px-4 py-10">
       <CategoryGrid
         categories={majorCategories}
-        selected={selectedCategory?.categoryName || null}
+        selected={selectedCategory?.categoryId || null}
         onSelectCategory={handleSelect}
         //isManage={true} // 관리자 페이지일 때 사용
       />
