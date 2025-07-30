@@ -32,7 +32,7 @@ export default function QuestList({ quest, type }: QuestListProps) {
       ]);
 
       // 퀘스트 목록 낙관적 업데이트
-      await queryClient.cancelQueries({ queryKey: ['user-quests'] })
+      await queryClient.cancelQueries({ queryKey: ['user-quests'] });
       const previousQuests = queryClient.getQueryData<QuestResponse>([
         'user-quests',
       ]);
@@ -50,12 +50,13 @@ export default function QuestList({ quest, type }: QuestListProps) {
         (old: QuestResponse | undefined) => {
           if (!old) return old;
 
-          const updatedWeekly = old.weeklyQuests.filter(
-            (q) => q.progressId !== id,
-          );
-          const updatedEvent = old.eventQuests.filter(
-            (q) => q.progressId !== id,
-          );
+          const updatedWeekly = Array.isArray(old.weeklyQuests)
+            ? old.weeklyQuests.filter((q) => q.progressId !== id)
+            : [];
+
+          const updatedEvent = Array.isArray(old.eventQuests)
+            ? old.eventQuests.filter((q) => q.progressId !== id)
+            : [];
 
           return {
             ...old,
