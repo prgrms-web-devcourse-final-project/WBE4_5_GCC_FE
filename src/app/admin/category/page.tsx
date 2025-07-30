@@ -42,16 +42,17 @@ export default function Page() {
             <CategoryGrid
               categories={categories}
               selected={selectedCategory?.categoryId || null}
-              onSelectCategory={(label) => {
+              onSelectCategory={(id) => {
                 const category = categories.find(
-                  (cat: CategoryItem) => cat.categoryName === label,
+                  (cat: CategoryItem) => cat.categoryId === id,
                 );
                 if (!category) return;
 
                 setSelectedCategory(category);
                 setIsOpen(true);
               }}
-              isCustom={true}
+              //isCustom={true}
+              isManage={true} // 관리자 모드
             />
           </div>
           {selectedCategory && (

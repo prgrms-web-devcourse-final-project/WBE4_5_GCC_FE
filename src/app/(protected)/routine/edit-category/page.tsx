@@ -49,7 +49,7 @@ export default function Page() {
         categories={majorCategories}
         selected={selectedCategory?.categoryId || null}
         onSelectCategory={(id) => handleSelect(id)}
-        //isManage={true} // 관리자 페이지일 때 사용
+        //isManage={} // 관리자 페이지일 때 사용 default 값이 false라서 유저 쪽에서는 안 넘겨줘도 됨
       />
     </div>
   );
