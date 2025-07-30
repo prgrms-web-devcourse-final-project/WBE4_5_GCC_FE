@@ -7,8 +7,7 @@ export default function useNotificationWebSocket(
   onNewNotification: () => void,
 ) {
   const { member, isLoggedIn } = useUserStore();
-  // const email = member.email;
-  const email = encodeURIComponent(member.email);
+  const email = member.email;
 
   useEffect(() => {
     if (!isLoggedIn || !email) {
