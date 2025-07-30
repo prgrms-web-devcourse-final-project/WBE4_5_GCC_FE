@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { CircleX } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
+import '../../../styles/recommended-routine.css';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+//import { DeleteAdminCategoryById } from '@/api/admin/adminCategories';
+import { DeleteCategoryById, getCategories } from '@/api/categories';
 import { useEditMode } from '../EditModeContext';
 import { CategoryItem } from '../../../../../types/general';
 
@@ -13,6 +15,7 @@ interface CategoryGridProps {
   onSelectCategory: (label: string) => void;
   isCustom?: boolean;
   isManage?: boolean;
+  maxHeight?: string;
 }
 
 export default function CategoryGrid({
@@ -21,6 +24,7 @@ export default function CategoryGrid({
   onSelectCategory,
   isCustom = false,
   isManage = false,
+  maxHeight,
 }: CategoryGridProps) {
   console.log('categoreis:', categories);
   const { isEditMode } = useEditMode();
@@ -30,10 +34,13 @@ export default function CategoryGrid({
   );
   const queryClient = useQueryClient();
 
+  // 카테고리 삭제
   const { mutate: deleteCategory } = useMutation({
-    mutationFn: (id: number) => DeleteAdminCategoryById(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-categories'] }); // 카테고리 목록 갱신
+    mutationFn: (id: number) => DeleteCategoryById(id),
+    onSuccess: async () => {
+      // 캐시를 무효화하여 stale 상태로 만들고 → 강제로 다시 fetch
+      await queryClient.invalidateQueries({ queryKey: ['user-categories'] });
+      await queryClient.refetchQueries({ queryKey: ['user-categories'] });
     },
     onError: (error) => {
       console.error('카테고리 삭제 실패:', error);
@@ -48,7 +55,10 @@ export default function CategoryGrid({
   };
 
   return (
-    <div className="grid w-full grid-cols-3 place-items-center gap-x-8 gap-y-3">
+    <div
+      style={{ maxHeight: maxHeight ?? 'h-full' }}
+      className="routine-scroll grid w-full grid-cols-3 place-items-center gap-x-8 gap-y-3 overflow-y-auto"
+    >
       {categories.map((cat, idx) => {
         const isSelected = selected === cat.categoryName;
 
@@ -61,7 +71,7 @@ export default function CategoryGrid({
               } rounded-[5px] transition`}
             >
               {/* 커스텀 카테고리 삭제 */}
-              {isEditMode && (isCustom || isManage) && (
+              {isEditMode && cat.categoryType === 'MAJOR' && (
                 <div className="absolute top-1 right-4 z-20 p-1">
                   <CircleX
                     className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]"

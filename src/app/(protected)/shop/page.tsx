@@ -14,6 +14,8 @@ import ItemCard from '@/app/components/shop/ItemCard';
 import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
 import PurchaseModal from '@/app/components/shop/PurchaseModal';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
+import clsx from 'clsx';
+import Image from 'next/image';
 
 export default function Shop() {
   const tabList = ['전체', '상의', '하의', '액세서리'];
@@ -25,11 +27,27 @@ export default function Shop() {
   const [showPAlert, setShowPAlert] = useState(false);
 
   const currentPoint = useUserStore((state) => state.points);
-  const [points, setPoints] = useState(currentPoint); // 500 포인트
+  const [points, setPoints] = useState(currentPoint);
   const [currentPage, setCurrentPage] = useState(1);
   const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
 
-  const tabMap: Record<string, ShopItem['itemType']> = {
+  const [selectedTryItem, setSelectedTryItem] = useState<
+    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
+  >({
+    TOP: null,
+    BOTTOM: null,
+    ACCESSORY: null,
+  });
+  const [equippedItem, setEquippedItem] = useState<
+    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
+  >({
+    TOP: null,
+    BOTTOM: null,
+    ACCESSORY: null,
+  });
+
+  const tabMap: Record<string, ShopItem['itemType'] | 'ALL'> = {
+    전체: 'ALL',
     상의: 'TOP',
     하의: 'BOTTOM',
     액세서리: 'ACCESSORY',
@@ -42,9 +60,14 @@ export default function Shop() {
     staleTime: 5 * 60 * 1000,
   });
 
+  const filteredItems = data?.items.filter((item) => {
+    if (tabMap[selectedTab] === 'ALL') return true;
+    return item.itemType === tabMap[selectedTab];
+  });
+
   // 아이템 구매
   const purchaseMutation = useMutation({
-    mutationFn: (key: string) => ItemPurchaseByKey(key),
+    mutationFn: (id: number) => ItemPurchaseByKey(id),
     onSuccess: () => {
       console.log('아이템 구매 성공');
       setAlertType('success');
@@ -59,13 +82,6 @@ export default function Shop() {
     },
   });
 
-  const filteredItem =
-    selectedTab === '전체'
-      ? data?.items || []
-      : (data?.items || []).filter(
-          (item) => item.itemType === tabMap[selectedTab],
-        );
-
   if (isLoading) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
@@ -76,7 +92,7 @@ export default function Shop() {
 
   return (
     <>
-      <div className="mx-auto flex min-h-screen w-full max-w-screen-sm flex-col overflow-y-auto px-5">
+      <div className="h-1vh mx-auto flex w-full max-w-screen-sm flex-col overflow-y-auto px-5">
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}
@@ -85,7 +101,7 @@ export default function Shop() {
 
         <div className="min-h-[250px] w-full min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
           <div className="grid min-h-[140px] w-full grid-cols-3 place-items-center gap-5">
-            {filteredItem.map((item) => (
+            {filteredItems?.map((item: ShopItem) => (
               <ItemCard
                 key={item.itemId}
                 item={{
@@ -94,21 +110,21 @@ export default function Shop() {
                   itemId: item.itemId,
                   itemName: item.itemName,
                   itemDescription: item.itemDescription,
-                  itemPoint: item.itemPoint,
+                  itemPoint: item.itemPrice,
                 }}
                 onClick={() => {
-                  if (ownedItemKeys.includes(item.itemKey)) return; // 이미 보유한 아이템일 경우 클릭 막음
+                  if (item.isOwned) return; // 이미 보유한 아이템일 경우 클릭 막음
                   setSelectedItem(item);
-                  setSelectedPrice(item.itemPoint);
+                  setSelectedPrice(item.itemPrice!);
                   setShowPModal(true);
                 }}
-                isOwned={ownedItemKeys.includes(item.itemKey)} // 보유 중 아이템
+                isOwned={item.isOwned} // 보유 중 아이템
               />
             ))}
           </div>
 
           {/* 페이지네이션 */}
-          <div className="mt-[41px] flex items-center justify-center space-x-[11px]">
+          {/*<div className="mt-[41px] flex items-center justify-center space-x-[11px]">
             <button className="text-[#222222]">
               <ChevronLeft className="h-3 w-auto" />
             </button>
@@ -120,7 +136,7 @@ export default function Shop() {
             <button className="text-[#D9D9D9]">
               <ChevronRight className="h-3 w-auto" />
             </button>
-          </div>
+          </div>*/}
         </div>
       </div>
 
@@ -134,11 +150,11 @@ export default function Shop() {
           item={{
             image: item1,
             name: selectedItem.itemName,
-            price: selectedItem.itemPoint,
+            price: selectedItem.itemPrice!,
           }}
           onConfirm={async () => {
-            const canBuy = points >= selectedItem.itemPoint;
-            const remainingPoints = points - selectedItem.itemPoint;
+            const canBuy = points >= selectedItem.itemPrice!;
+            const remainingPoints = points - selectedItem.itemPrice!;
 
             if (!canBuy) {
               setAlertType('failed');
@@ -150,7 +166,7 @@ export default function Shop() {
             try {
               if (!selectedItem) return;
               // 서버에 구매 요청 (포인트 차감)
-              await purchaseMutation.mutateAsync(selectedItem.itemKey);
+              await purchaseMutation.mutateAsync(selectedItem.itemId);
               setPoints(remainingPoints); // 성공 시 포인트 차감
               setOwnedItemKeys((prev) => [...prev, selectedItem.itemKey]); // 보유 중인 아이템으로 상태 업데이트
             } catch (error) {

@@ -1,6 +1,6 @@
 'use client';
-
-import { useEffect, useState } from 'react';
+export const dynamic = 'force-dynamic';
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import CalendarBar from '@/app/components/routine/CalendarBar';
@@ -9,9 +9,8 @@ import Routine from '@/app/components/routine/Routine';
 import CalendarBottomSheet from '@/app/components/routine/CalendarBottomSheet';
 import { DayRoutine } from '../../../../types/routine';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
-import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 import AlertModal from '@/app/components/common/alert/AlertModal';
-import { format } from 'date-fns';
+import { format, startOfWeek } from 'date-fns';
 import {
   useDeleteRoutine,
   useHandleRoutine,
@@ -24,29 +23,19 @@ export default function Page() {
   const [checkDelete, setCheckDelete] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
-  useEffect(() => {
-    console.log(deleteTargetId);
-  }, [deleteTargetId]);
   const dateStr: string = format(selectedDate, 'yyyy-MM-dd');
+  const date = dateStr ? new Date(dateStr) : new Date();
+  const monday = startOfWeek(date, { weekStartsOn: 1 });
+  const mondayStr = format(monday, 'yyyy-MM-dd');
   const { data: weekData, isPending } = useWeekRoutine(dateStr);
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[dateStr] ?? [];
   const total = filteredRoutines.length;
   const done = filteredRoutines.filter((r) => r.isDone).length;
   const percent = total ? Math.round((done / total) * 100) : 0;
 
-  const { mutate } = useHandleRoutine();
+  const { mutate } = useHandleRoutine(mondayStr, dateStr);
 
-  const {
-    mutate: handleDelete,
-    isPending: deleting,
-    isSuccess,
-  } = useDeleteRoutine();
-
-  useEffect(() => {
-    if (isSuccess) {
-      setCheckDelete(false);
-    }
-  }, [isSuccess]);
+  const { mutate: handleDelete } = useDeleteRoutine(mondayStr, dateStr);
 
   const handleAddRoutine = () => {
     router.push('/routine/add-routine');
@@ -61,18 +50,21 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col items-center bg-white px-5">
+      <div className="mt-25 flex min-h-screen flex-col items-center bg-white px-5">
         <CalendarBar
           setIsOpen={setIsOpen}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
         />
         {isPending && (
-          <div className="mt-[50px] flex flex-col items-center justify-center gap-6 select-none">
-            <LoadingSpinner />
-            <p className="text-[20px] font-semibold">
-              루틴을 불러오는 중입니다.
-            </p>
+          <div className="flex w-full max-w-md flex-col gap-4 border-t-10 border-t-[#FBFBFB] px-5 pb-11">
+            <div className="h-[27px] w-[146px] animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="h-[24px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
           </div>
         )}
         {!isPending && (
@@ -175,12 +167,12 @@ export default function Page() {
             if (deleteTargetId) {
               handleDelete({ routineId: deleteTargetId });
               setDeleteTargetId(null);
+              setCheckDelete(false);
             }
           }}
           cancelText="취소"
           onCancel={() => setCheckDelete(false)}
           isOpen={checkDelete}
-          isLoading={deleting}
         />
       )}
     </>

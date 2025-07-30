@@ -32,7 +32,7 @@ export default function QuestList({ quest, type }: QuestListProps) {
       ]);
 
       // 퀘스트 목록 낙관적 업데이트
-      await queryClient.cancelQueries({ queryKey: ['user-quests'] });
+      await queryClient.cancelQueries({ queryKey: ['user-quests'] })
       const previousQuests = queryClient.getQueryData<QuestResponse>([
         'user-quests',
       ]);

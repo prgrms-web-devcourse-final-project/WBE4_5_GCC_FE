@@ -20,12 +20,13 @@ interface BadgeInfo {
 interface UserStore {
   isLoggedIn: boolean;
   points: number;
+  equippedBadge: BadgeInfo;
   member: MemberInfo;
-  badge: BadgeInfo;
   setIsLoggedIn: (value: boolean) => void;
   setPoints: (value: number) => void;
+  setEquippedBadge: (badge: Partial<BadgeInfo>) => void;
   setMember: (member: Partial<MemberInfo>) => void;
-  setBadge: (badge: Partial<BadgeInfo>) => void;
+  setEmail: (email: string) => void;
   resetUser: () => void;
 }
 
@@ -34,6 +35,11 @@ export const useUserStore = create<UserStore>()(
     (set) => ({
       isLoggedIn: false,
       points: 0,
+      equippedBadge: {
+        badgeKey: '',
+        badgeName: '',
+        badgeTier: '',
+      },
       member: {
         email: '',
         name: '',
@@ -43,17 +49,29 @@ export const useUserStore = create<UserStore>()(
         regionDept2: '',
         regionDept3: '',
       },
-      badge: {
-        badgeKey: '',
-        badgeName: '',
-        badgeTier: '',
-      },
       setIsLoggedIn: (value) => set({ isLoggedIn: value }),
       setMember: (member) =>
-        set((state) => ({ member: { ...state.member, ...member } })),
-      setBadge: (badge) =>
-        set((state) => ({ badge: { ...state.badge, ...badge } })),
+        set((state) => ({
+          member: {
+            ...state.member,
+            ...member,
+            regionDept1: member.regionDept1 ?? '',
+            regionDept2: member.regionDept2 ?? '',
+            regionDept3: member.regionDept3 ?? '',
+          },
+        })),
+      setEmail: (email) =>
+        set((state) => ({
+          member: {
+            ...state.member,
+            email,
+          },
+        })),
       setPoints: (value) => set({ points: value }),
+      setEquippedBadge: (badge) =>
+        set((state) => ({
+          equippedBadge: { ...state.equippedBadge, ...badge },
+        })),
       resetUser: () =>
         set({
           isLoggedIn: false,
@@ -67,7 +85,7 @@ export const useUserStore = create<UserStore>()(
             regionDept2: '',
             regionDept3: '',
           },
-          badge: {
+          equippedBadge: {
             badgeKey: '',
             badgeName: '',
             badgeTier: '',

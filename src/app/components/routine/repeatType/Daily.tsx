@@ -6,12 +6,7 @@ interface DailyProps {
   onSubmit: (cycle: { daily: string }) => void;
 }
 
-export default function Daily({
-  onSubmit,
-  onClose,
-  // setRepeatType,
-  // setRepeatValue,
-}: DailyProps) {
+export default function Daily({ onSubmit, onClose }: DailyProps) {
   const [selectedDay, setSelectedDay] = useState('1');
 
   const handleSubmit = () => {
@@ -24,15 +19,15 @@ export default function Daily({
 
   return (
     <>
-      <div className="relative mx-[5px] my-[27px] flex min-h-[588px] flex-col">
+      <div className="mx-[5px] my-[27px] flex min-h-[588px] flex-col">
         <span className="text-sm font-semibold">n일 마다</span>
         <div className="flex justify-center">
-          <div className="w-[150px]">
+          <div className="relative w-[150px]">
             <DayPicker onChange={setSelectedDay} />
+            <span className="pointer-events-none absolute top-[108px] right-[60px] translate-x-[60px] -translate-y-1/2 text-sm">
+              일마다
+            </span>
           </div>
-          <span className="left-2.5/5 pointer-events-none absolute top-[130px] translate-x-[60px] -translate-y-1/2 text-sm">
-            일마다
-          </span>
         </div>
         {/* 확인 버튼 */}
         <button

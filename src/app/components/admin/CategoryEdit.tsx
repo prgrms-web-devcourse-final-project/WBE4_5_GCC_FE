@@ -35,7 +35,7 @@ export default function CategoryEdit({
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
       return await EditAdminCategoryById(String(categoryId), {
-        name: value,
+        categoryName: value,
         emoji: selectedEmoji ?? '',
       });
     },

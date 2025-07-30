@@ -1,31 +1,21 @@
 'use client';
 
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { DayRoutineCount } from '../../../../types/report';
 
-const today = new Date();
-const day = today.getDay();
-const mondayOffset = day === 0 ? -6 : 1 - day; // 월요일 기준 offset
-const monday = new Date(today);
-monday.setDate(today.getDate() + mondayOffset);
+type Props = {
+  dayRoutineCount: DayRoutineCount[];
+};
 
-const recent7DaysData = Array.from({ length: 7 }, (_, i) => {
-  const date = new Date(monday);
-  date.setDate(monday.getDate() + i);
-  const label = `${date.getMonth() + 1}/${date.getDate()}`;
-  return {
-    date: label,
-    percent: Math.floor(Math.random() * 100),
-  };
-});
+export default function CompletionRateChart({ dayRoutineCount }: Props) {
+  const data = dayRoutineCount.map((item) => {
+    const date = new Date(item.date);
+    return {
+      date: `${date.getMonth() + 1}/${date.getDate()}`,
+      percent: Math.round(item.completionRate * 100),
+    };
+  });
 
-export default function CompletionRateChart() {
   return (
     <div className="bg-white px-5 py-7 mb-3">
       <h3 className="mb-4 text-lg font-semibold text-[#222222]">
@@ -33,13 +23,10 @@ export default function CompletionRateChart() {
       </h3>
       <ResponsiveContainer width="100%" height={230}>
         <BarChart
-          data={recent7DaysData}
+          data={data}
           margin={{ top: 10, right: 0, left: -33, bottom: 0 }}
         >
-          <XAxis
-            dataKey="date"
-            tick={{ fontSize: 12 }}
-          />
+          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
           <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
           <Tooltip />
           <Bar

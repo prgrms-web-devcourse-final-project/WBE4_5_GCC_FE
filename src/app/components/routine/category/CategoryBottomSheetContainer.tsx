@@ -26,7 +26,6 @@ export default function CategoryBottomSheetContainer({
 }: Props) {
   const router = useRouter();
   const [showSubCategory, setShowSubCategory] = useState(false);
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [selectedMainCategory, setSelectedMainCategory] =
     useState<CategoryItem>();
 
@@ -44,19 +43,14 @@ export default function CategoryBottomSheetContainer({
     }
   };
 
-  const { data, isLoading } = useQuery<CategoryItem[]>({
+  const { data = [], isLoading } = useQuery<CategoryItem[]>({
     queryKey: ['user-categories'],
     queryFn: getCategories,
-    staleTime: 5 * 60 * 1000,
   });
 
-  // 데이터 세팅
-  useEffect(() => {
-    if (!data) return;
-
-    const majors = data.filter((cat) => cat.categoryType === 'DEFAULT');
-    setCategories(majors);
-  }, [data]);
+  const allCategories = data.filter(
+    (cat) => cat.categoryType === 'DEFAULT' || 'MAJOR',
+  );
 
   if (isLoading) {
     return (
@@ -77,7 +71,7 @@ export default function CategoryBottomSheetContainer({
       onClick={handleOutsideClick}
     >
       <div
-        className="min-h-[490px] w-full rounded-t-[24px] bg-white px-4 py-8"
+        className="min-h-[490px] w-full rounded-t-[24px] bg-white px-4 pt-8 pb-16"
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
         {/* 헤더 */}
@@ -89,10 +83,13 @@ export default function CategoryBottomSheetContainer({
 
         {/* MAJOR 카테고리 선택 바텀시트 */}
         <CategoryGrid
-          categories={categories}
+          categories={allCategories}
+          maxHeight="412px"
           selected={selectedMainCategory?.categoryName || null}
           onSelectCategory={(label) => {
-            const major = categories.find((cat) => cat.categoryName === label);
+            const major = allCategories.find(
+              (cat) => cat.categoryName === label,
+            );
             if (major) {
               setSelectedMainCategory(major);
               setShowSubCategory(true);
@@ -109,7 +106,7 @@ export default function CategoryBottomSheetContainer({
               onClick={handleOutsideClick}
             >
               <div
-                className="fixed bottom-0 min-h-[443px] w-full rounded-t-[24px] bg-white px-4 py-8"
+                className="fixed bottom-0 w-full rounded-t-[24px] bg-white px-4 pt-8"
                 onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
               >
                 <div className="mb-[18px] flex items-center justify-between">

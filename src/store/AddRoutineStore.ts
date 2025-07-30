@@ -18,6 +18,8 @@ export const useAddRoutineStore = create<AddDataStore>()(
       repeatType: 'DAILY',
       repeatValue: '',
       repeatInterval: 1,
+      categoryId: 1,
+      initDate: '',
       setData: (routine: AddRoutine) => set(() => ({ ...routine })),
       resetData: () =>
         set(() => ({
@@ -30,6 +32,8 @@ export const useAddRoutineStore = create<AddDataStore>()(
           repeatType: 'DAILY',
           repeatValue: '',
           repeatInterval: 1,
+          categoryId: 0,
+          initDate: '',
         })),
     }),
     {
