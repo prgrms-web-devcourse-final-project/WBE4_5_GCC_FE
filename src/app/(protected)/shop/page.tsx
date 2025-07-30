@@ -1,8 +1,5 @@
 'use client';
 
-import item1 from '@/app/assets/images/item1.png';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-
 import { useState } from 'react';
 import { useUserStore } from '@/store/UserStore';
 import { ShopItem } from '../../../../types/general';
@@ -14,8 +11,6 @@ import ItemCard from '@/app/components/shop/ItemCard';
 import PurchaseAlert from '@/app/components/shop/PurchaseAlert';
 import PurchaseModal from '@/app/components/shop/PurchaseModal';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
-import clsx from 'clsx';
-import Image from 'next/image';
 
 export default function Shop() {
   const tabList = ['전체', '상의', '하의', '액세서리'];
@@ -30,21 +25,7 @@ export default function Shop() {
   const [points, setPoints] = useState(currentPoint);
   const [currentPage, setCurrentPage] = useState(1);
   const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
-
-  const [selectedTryItem, setSelectedTryItem] = useState<
-    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
-  >({
-    TOP: null,
-    BOTTOM: null,
-    ACCESSORY: null,
-  });
-  const [equippedItem, setEquippedItem] = useState<
-    Record<'TOP' | 'BOTTOM' | 'ACCESSORY', string | null>
-  >({
-    TOP: null,
-    BOTTOM: null,
-    ACCESSORY: null,
-  });
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
   const tabMap: Record<string, ShopItem['itemType'] | 'ALL'> = {
     전체: 'ALL',
@@ -148,11 +129,14 @@ export default function Shop() {
           confirmText="구매"
           cancelText="취소"
           item={{
-            image: item1,
+            image: `/images/items/thumbs/${selectedItem.itemKey}.png`,
             name: selectedItem.itemName,
             price: selectedItem.itemPrice!,
           }}
           onConfirm={async () => {
+            if (isPurchasing) return; // 아이템 구매 시 카드 중복 클릭 방지
+            setIsPurchasing(true);
+
             const canBuy = points >= selectedItem.itemPrice!;
             const remainingPoints = points - selectedItem.itemPrice!;
 
@@ -160,6 +144,7 @@ export default function Shop() {
               setAlertType('failed');
               setShowPAlert(true);
               setShowPModal(false);
+              setIsPurchasing(false);
               return;
             }
 
@@ -171,6 +156,10 @@ export default function Shop() {
               setOwnedItemKeys((prev) => [...prev, selectedItem.itemKey]); // 보유 중인 아이템으로 상태 업데이트
             } catch (error) {
               console.log('상점 아이템 구매 에러 발생:', error);
+            } finally {
+              setShowPAlert(false);
+              setShowPAlert(true);
+              setIsPurchasing(false);
             }
           }}
           onCancel={() => setShowPModal(false)}
