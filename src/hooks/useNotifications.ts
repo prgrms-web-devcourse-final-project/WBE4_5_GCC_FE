@@ -3,23 +3,31 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 
 export default function useNotificationWebSocket(
-  onMessage: (msg: string) => void,
+  onNewNotification: () => void,
 ) {
   useEffect(() => {
-    const socket = new SockJS('https://littlestep-gcc-final.vercel.app/');
+    const socket = new SockJS(
+      'wss://littlestep-gcc-final.vercel.app/ws/connect',
+    );
 
     const stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
       debug: (str) => {
-        console.log(str);
+        console.error(str);
       },
     });
+
+    stompClient.onConnect = () => {
+      stompClient.subscribe('/topic/notify', () => {
+        onNewNotification();
+      });
+    };
 
     stompClient.activate();
 
     return () => {
       stompClient.deactivate();
     };
-  }, [onMessage]);
+  }, [onNewNotification]);
 }

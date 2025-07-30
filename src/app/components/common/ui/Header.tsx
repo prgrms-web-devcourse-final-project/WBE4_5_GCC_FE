@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import { Bell } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
@@ -14,7 +12,8 @@ import {
   markNotificationAsRead,
   markAllNotificationsAsRead,
 } from '@/api/notifications';
-import type { NotificationListItem, Noti } from '../../../../../types/notifications';
+import type { Noti } from '../../../../../types/notifications';
+import useNotificationWebSocket from '@/hooks/useNotifications';
 
 export default function Header() {
   const pathname = usePathname();
@@ -24,26 +23,32 @@ export default function Header() {
   const [openQuest, setOpenQuest] = useState(false);
   const currentPoint = useUserStore((state) => state.points);
 
-  const convertToNoti = (list: NotificationListItem[]): Noti[] =>
-    list.map((item) => ({
-      id: item.id,
-      title: item.name,
-      date: item.createdAt,
-      type: item.type,
+  const handleNewNotification = () => {
+    const newNoti: Noti = {
+      id: Date.now(),
+      title: '새로운 알림이 도착했습니다.',
+      date: new Date().toISOString(),
       new: true,
-    }));
+      type: 'ROUTINE',
+    };
+
+    setNotiList((prev) => [newNoti, ...prev]);
+  };
+
+  useNotificationWebSocket(handleNewNotification);
 
   const handleOpenNoti = async () => {
     try {
       const list = await getNotificationList();
-      const newNotis = convertToNoti(list);
+      const newNotis = list.map((item) => ({
+        id: item.id,
+        title: item.name,
+        date: item.createdAt,
+        type: item.type,
+        new: true,
+      }));
 
-      setNotiList((prev) => {
-        const existingIds = new Set(prev.map((n) => n.id));
-        const combined = [...prev, ...newNotis.filter((n) => !existingIds.has(n.id))];
-        return combined;
-      });
-
+      setNotiList((prev) => [...newNotis, ...prev]);
       setOpenNoti(true);
     } catch (error) {
       console.error('알림 목록 조회 실패', error);
@@ -134,7 +139,7 @@ export default function Header() {
               onClick={handleOpenNoti}
             />
             {notiList.some((n) => n.new) && (
-              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-[#d32f2f]" />
+              <span className="absolute top-[-5px] right-[-5px] h-3 w-3 rounded-full bg-[#D32F2F]" />
             )}
           </div>
         )}
