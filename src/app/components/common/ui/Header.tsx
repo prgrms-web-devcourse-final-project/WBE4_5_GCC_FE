@@ -1,3 +1,4 @@
+import logo from '/public/logo.png';
 import Image from 'next/image';
 import { Bell } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
@@ -17,7 +18,9 @@ import useNotificationWebSocket from '@/hooks/useNotifications';
 const formatTimeAgo = (date: string) => {
   const notificationDate = new Date(date);
   const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - notificationDate.getTime()) / 1000);
+  const diffInSeconds = Math.floor(
+    (now.getTime() - notificationDate.getTime()) / 1000,
+  );
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInSeconds / 3600);
 
@@ -26,7 +29,11 @@ const formatTimeAgo = (date: string) => {
   } else if (diffInHours < 24) {
     return `${diffInHours}시간 전`;
   } else {
-    return notificationDate.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    return notificationDate.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
   }
 };
 
@@ -127,14 +134,10 @@ export default function Header() {
 
   return (
     <>
-      <div
-        className="fixed top-0 z-50 flex h-[56px] w-full max-w-[480px] sm:max-w-[540px] md:max-w-[600px]
-             left-1/2 -translate-x-1/2 items-center justify-between
-             bg-white px-5 py-[20px] border-b border-gray-200"
-      >
+      <div className="fixed top-0 left-1/2 z-50 flex h-[56px] w-full max-w-[480px] -translate-x-1/2 items-center justify-between border-b border-gray-200 bg-white px-5 py-[20px] sm:max-w-[540px] md:max-w-[600px]">
         {isHome || isAdmin ? (
           <Image
-            src="/images/logo.svg"
+            src={logo}
             alt="logo"
             width={90}
             height={60}
@@ -179,7 +182,10 @@ export default function Header() {
 
       {openQuest && <QuestPage setOpenQuest={setOpenQuest} />}
 
-      <div className="mb-[96px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
+      <div
+        className="mb-[96px]"
+        style={{ marginTop: 'env(safe-area-inset-top)' }}
+      />
     </>
   );
 }

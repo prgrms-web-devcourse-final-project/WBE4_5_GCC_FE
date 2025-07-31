@@ -10,6 +10,7 @@ import { useSignUpStore } from '@/store/SignupStore';
 import { signIn } from '@/api/auth';
 import { useUserStore } from '@/store/UserStore';
 import kakao from '/public/kakao.svg';
+import logo from '/public/logo.png';
 
 export default function Page() {
   const [emailInput, setEmailInput] = useState('');
@@ -92,7 +93,7 @@ export default function Page() {
       <div className="w-full max-w-md">
         <div className="flex justify-center">
           <Image
-            src="/images/logo.svg"
+            src={logo}
             alt="Loutie Logo"
             width={240}
             height={120}
