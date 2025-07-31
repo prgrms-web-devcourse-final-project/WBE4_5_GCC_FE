@@ -117,7 +117,7 @@ export default function AdminShop() {
           </div>
 
           {/* 페이지네이션 */}
-          <div className="mt-[41px] flex items-center justify-center space-x-[11px]">
+          {/*<div className="mt-[41px] flex items-center justify-center space-x-[11px]">
             <button className="text-[#222222]">
               <ChevronLeft className="h-3 w-auto" />
             </button>
@@ -129,7 +129,7 @@ export default function AdminShop() {
             <button className="text-[#D9D9D9]">
               <ChevronRight className="h-3 w-auto" />
             </button>
-          </div>
+          </div>*/}
         </div>
 
         {deleteModal.isOpen && deleteModal.item && (

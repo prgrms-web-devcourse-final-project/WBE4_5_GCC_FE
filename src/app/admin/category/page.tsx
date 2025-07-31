@@ -41,17 +41,18 @@ export default function Page() {
           <div className="flex flex-col gap-2 px-4 py-10">
             <CategoryGrid
               categories={categories}
-              selected={selectedCategory?.categoryName || null}
-              onSelectCategory={(label) => {
+              selected={selectedCategory?.categoryId || null}
+              onSelectCategory={(id) => {
                 const category = categories.find(
-                  (cat: CategoryItem) => cat.categoryName === label,
+                  (cat: CategoryItem) => cat.categoryId === id,
                 );
                 if (!category) return;
 
                 setSelectedCategory(category);
                 setIsOpen(true);
               }}
-              isCustom={true}
+              //isCustom={true}
+              isManage={true} // 관리자 모드
             />
           </div>
           {selectedCategory && (

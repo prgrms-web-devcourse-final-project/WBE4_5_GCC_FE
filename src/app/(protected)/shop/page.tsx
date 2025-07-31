@@ -24,7 +24,7 @@ export default function Shop() {
   const currentPoint = useUserStore((state) => state.points);
   const [points, setPoints] = useState(currentPoint);
   const [currentPage, setCurrentPage] = useState(1);
-  const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
+  //const [ownedItemKeys, setOwnedItemKeys] = useState<string[]>([]);
   const [isPurchasing, setIsPurchasing] = useState(false);
 
   const tabMap: Record<string, ShopItem['itemType'] | 'ALL'> = {
@@ -35,7 +35,7 @@ export default function Shop() {
   };
 
   // 아이템 목록 불러오기
-  const { data, isLoading } = useQuery<{ items: ShopItem[] }, Error>({
+  const { data, isLoading, refetch } = useQuery<{ items: ShopItem[] }, Error>({
     queryKey: ['shop-items', currentPage],
     queryFn: fetchItems,
     staleTime: 5 * 60 * 1000,
@@ -152,8 +152,9 @@ export default function Shop() {
               if (!selectedItem) return;
               // 서버에 구매 요청 (포인트 차감)
               await purchaseMutation.mutateAsync(selectedItem.itemId);
+              await refetch(); // 아이템 목록 갱신
               setPoints(remainingPoints); // 성공 시 포인트 차감
-              setOwnedItemKeys((prev) => [...prev, selectedItem.itemKey]); // 보유 중인 아이템으로 상태 업데이트
+              //setOwnedItemKeys((prev) => [...prev, selectedItem.itemKey]); // 보유 중인 아이템으로 상태 업데이트
             } catch (error) {
               console.log('상점 아이템 구매 에러 발생:', error);
             } finally {

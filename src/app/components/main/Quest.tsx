@@ -78,13 +78,19 @@ export default function QuestPage({
           <div
             className={`mx-auto flex h-[569px] w-full min-w-[360px] flex-col items-center gap-4 overflow-y-scroll rounded-[8px] rounded-tl-none border-3 border-[#A47148] bg-white px-4 py-[18px] ${className}`}
           >
-            {filteredQuest.map((quest) => (
-              <QuestList
-                key={quest.questKey}
-                quest={quest}
-                type={selectedTab === '이벤트 퀘스트' ? 'EVENT' : 'WEEKLY'}
-              />
-            ))}
+            {filteredQuest.length > 0 &&
+              filteredQuest.map((quest) => (
+                <QuestList
+                  key={quest.questKey}
+                  quest={quest}
+                  type={selectedTab === '이벤트 퀘스트' ? 'EVENT' : 'WEEKLY'}
+                />
+              ))}
+            {filteredQuest.length === 0 && (
+              <div className="mt-55 flex justify-center">
+                <span className="text-[20px]">퀘스트가 없습니다.</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
