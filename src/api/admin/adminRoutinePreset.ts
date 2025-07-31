@@ -15,3 +15,37 @@ export function UseAdminPreset() {
     queryFn: loadPreset,
   });
 }
+
+// 관리자 루틴 프리셋 삭제
+export const deletePreset = async (presetId: number) => {
+  const response = await axiosInstance.delete(
+    `/api/v1/admin/routines/presets/${presetId}`,
+  );
+  return response.data;
+};
+
+// 추천 루틴 프리셋 수정
+export const editPreset = async (presetId: number) => {
+  const response = await axiosInstance.patch(
+    `/api/v1/admin/routines/presets/${presetId}`,
+  );
+  return response.data;
+};
+
+// 추천 루틴 프리셋 추가
+interface Preset {
+  categoryId: number;
+  triggerTime: string;
+  isImportant: boolean;
+  repeatType: string;
+  repeatValue: string;
+  name: string;
+  repeatTerm: number;
+}
+export const addPreset = async (addPresetData: Preset) => {
+  const response = await axiosInstance.post(
+    `/api/v1/admin/routines/presets`,
+    addPresetData,
+  );
+  return response.data;
+};

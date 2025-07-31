@@ -1,6 +1,6 @@
 import '../../styles/recommended-routine.css';
 
-interface Preset {
+export interface Preset {
   categoryId: number;
   emoji: string;
   isImportant: boolean;
