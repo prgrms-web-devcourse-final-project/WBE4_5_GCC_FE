@@ -6,12 +6,7 @@ interface DailyProps {
   onSubmit: (cycle: { daily: string }) => void;
 }
 
-export default function Daily({
-  onSubmit,
-  onClose,
-  // setRepeatType,
-  // setRepeatValue,
-}: DailyProps) {
+export default function Daily({ onSubmit, onClose }: DailyProps) {
   const [selectedDay, setSelectedDay] = useState('1');
 
   const handleSubmit = () => {

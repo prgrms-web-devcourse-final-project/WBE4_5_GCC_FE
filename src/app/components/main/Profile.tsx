@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import backGround from '/public/profileBackGround.svg';
+import profileBg from '/public/profileBg.png';
+import profileBg2 from '/public/profileBg2.png';
 import coin from '/public/coin.svg';
 import { fetchProfile, fetchUserItem, fetchUserPoint } from '@/api/member';
 import { Item, ProfileData } from '../../../../types/User';
@@ -68,7 +70,7 @@ export default function Profile() {
   }, [itemData]);
 
   const nickname = profileData?.member?.nickname ?? '익명';
-  const badgeKey = profileData?.equippedBadge?.badgeKey ?? 'clean_bronze';
+  const badgeKey = profileData?.equippedBadge?.badgeKey ?? 'CLEAN_BRONZE';
   const badgeName = profileData?.equippedBadge?.badgeName ?? '배지 없음';
   const point = userPointData?.points ?? 0;
 
@@ -82,19 +84,17 @@ export default function Profile() {
 
   return (
     <div className="relative z-0 flex h-[167px] w-full overflow-hidden rounded-[10px]">
-      <div className="absolute inset-0 z-5 bg-[#e5e5e5]/30"></div>
+      <div className="absolute inset-0 z-10 rounded-[10px] bg-[#1E1E1E]/40" />
 
-      {/* 배경 이미지 */}
       <Image
-        src={backGround}
+        src={profileBg2}
         alt="bg"
         fill
         priority
-        className="object-cover brightness-90"
+        className="object-fill brightness-90"
       />
 
-      {/* 캐릭터 이미지 */}
-      <div className="relative z-10 flex items-center">
+      <div className="relative z-20 flex items-center px-3">
         <div className="relative h-[130px] w-[130px] flex-shrink-0">
           <Image
             src="/images/mainCharacter.png"
@@ -110,48 +110,33 @@ export default function Profile() {
               alt="상의"
               width={130}
               height={130}
-              priority
-              className="absolute top-[0px] object-contain"
-            />
-          )}
-          {equippedItem.BOTTOM && (
-            <Image
-              src={`/images/items/${equippedItem.BOTTOM.itemKey}.png`}
-              alt="하의"
-              width={130}
-              height={130}
-              priority
-              className="absolute object-contain"
-            />
-          )}
-          {equippedItem.ACCESSORY && (
-            <Image
-              src={`/images/items/${equippedItem.ACCESSORY.itemKey}.png`}
-              alt="액세서리"
-              width={130}
-              height={130}
-              priority
-              className="absolute top-[0px] object-contain"
+              className="absolute top-0 object-contain"
             />
           )}
         </div>
-        <div className="flex flex-col justify-center">
-          <div className="z-20 mb-[7px] flex items-center gap-[5px]">
+
+        <div className="flex flex-col">
+          <div className="mb-[2px] flex items-center gap-[8px]">
             <Image
               src={`/images/badges/${badgeKey}.svg`}
-              alt="character"
-              width={10}
+              alt="badge"
+              width={12}
               height={15}
-              style={{ verticalAlign: 'middle' }}
             />
-            <span className="text-[10px] font-medium text-[#616161]">
+            <span className="text-[14px] font-semibold text-[#FFF8E7]">
               {badgeName}
             </span>
           </div>
-          <div className="mb-[14px] text-[18px] font-bold">{nickname}</div>
-          <div className="relative flex h-[21px] w-[80px] items-center gap-1 rounded-[6px] bg-[#222222]/50 px-2">
-            <Image src={coin} alt="coin" className="h-[11px] w-[11px]" />
-            <span className="ml-auto text-[12px] text-[#FFB84C]">{point}</span>
+
+          <div className="mb-[10px]">
+            <span className="text-[20px] font-bold text-[#FFF8E7] drop-shadow-[1px_1px_2px_rgba(0,0,0,0.6)]">
+              {nickname}
+            </span>
+          </div>
+
+          <div className="relative mt-3 flex h-[32px] w-[90px] items-center gap-1 rounded-[6px] bg-[#000000]/70 px-2">
+            <Image src={coin} alt="coin" className="h-[18px] w-[18px]" />
+            <span className="ml-auto text-[15px] text-[#FFB84C]">{point}</span>
           </div>
         </div>
       </div>
