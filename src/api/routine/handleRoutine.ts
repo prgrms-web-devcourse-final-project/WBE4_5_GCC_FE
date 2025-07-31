@@ -104,6 +104,7 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
         queryKey: ['routine-week', mondayStr],
       });
       queryClient.invalidateQueries({ queryKey: ['user-point'] });
+      queryClient.invalidateQueries({ queryKey: ['user-quest'] });
     },
   });
 }
