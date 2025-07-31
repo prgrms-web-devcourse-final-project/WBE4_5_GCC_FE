@@ -90,7 +90,15 @@ export default function Page() {
   return (
     <div className="mt-[150px] flex min-h-screen flex-col items-center bg-white px-5">
       <div className="w-full max-w-md">
-        <h1 className="text-center text-4xl font-bold">LOGO</h1>
+        <div className="flex justify-center">
+          <Image
+            src="/images/logo.png" // ✅ public/images/logo.png 기준으로 참조
+            alt="Loutie Logo"
+            width={240}
+            height={120}
+            priority
+          />
+        </div>
         <form className="mt-[35px] space-y-4" onSubmit={handleSubmit}>
           <Input
             placeholder="이메일을 입력해 주세요"
