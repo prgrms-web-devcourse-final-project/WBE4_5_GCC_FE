@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { Bell } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import logo from '/public/Logo.svg';
 import coin from '/public/coin.svg';
 import { useUserStore } from '@/store/UserStore';
 import Notification from '../Notification';
@@ -128,12 +127,17 @@ export default function Header() {
 
   return (
     <>
-      <div className="fixed top-0 z-50 flex h-[56px] w-full items-center justify-between bg-white px-5 py-[18px] shadow-sm select-none">
+      <div
+        className="fixed top-0 z-50 flex h-[56px] w-full max-w-[480px] sm:max-w-[540px] md:max-w-[600px]
+             left-1/2 -translate-x-1/2 items-center justify-between
+             bg-white px-5 py-[20px] border-b border-gray-200"
+      >
         {isHome || isAdmin ? (
           <Image
-            src={logo}
+            src="/images/logo.png"
             alt="logo"
-            width={116}
+            width={90}
+            height={60}
             onClick={() => router.push('/')}
             className="h-auto cursor-pointer"
           />
@@ -141,9 +145,9 @@ export default function Header() {
           <div className="text-xl font-semibold">{title}</div>
         )}
         {isShop ? (
-          <div className="flex items-center space-x-1">
-            <Image src={coin} alt="coin" width={14} height={14} />
-            <span className="text-[12px] font-semibold text-[#FFB84C]">
+          <div className="flex items-center">
+            <Image src={coin} alt="coin" width={16} height={16} />
+            <span className="text-[14px] font-semibold text-[#FFB84C]">
               {currentPoint}
             </span>
           </div>
@@ -151,7 +155,7 @@ export default function Header() {
           <div className="relative">
             <Bell
               className="cursor-pointer text-[#222222]"
-              size={20}
+              size={24}
               onClick={handleOpenNoti}
             />
             {notiList.some((n) => n.new) && (
