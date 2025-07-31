@@ -24,6 +24,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const icon = searchParams.get('icon');
   const labelFromParams = searchParams.get('label');
+  const categoryIdFromParams = searchParams.get('categoryId');
 
   const [label, setLabel] = useState('');
   const [categoryType, setCategoryType] = useState<
@@ -50,7 +51,7 @@ export default function Page() {
   useEffect(() => {
     if (!categories || !labelFromParams) return;
     const target = categories.find(
-      (cat) => cat.categoryName === labelFromParams,
+      (cat) => String(cat.categoryId) === categoryIdFromParams,
     );
     if (target) {
       setLabel(target.categoryName);
@@ -58,7 +59,7 @@ export default function Page() {
       setSelectedEmoji(target.emoji || icon || null);
       setSubCategories(target.children || []);
     }
-  }, [categories, labelFromParams, icon]);
+  }, [categories, categoryIdFromParams, icon]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -106,7 +107,7 @@ export default function Page() {
   });
 
   const originalParent = categories.find(
-    (cat) => cat.categoryName === labelFromParams,
+    (cat) => String(cat.categoryId) === categoryIdFromParams
   );
 
   console.log('원본 부모:', originalParent);

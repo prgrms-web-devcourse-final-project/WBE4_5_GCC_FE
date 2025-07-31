@@ -8,9 +8,11 @@ import Profile from '@/app/components/main/Profile';
 import Button from '@/app/components/common/ui/Button';
 import LogoutModal from '@/app/components/common/LogoutModal';
 import { useUserStore } from '@/store/UserStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [templateUse, setTemplateUse] = useState(false);
@@ -77,6 +79,7 @@ export default function Page() {
               console.warn('이미 로그아웃 상태거나 에러 발생:', error);
             } finally {
               useUserStore.getState().resetUser();
+              queryClient.clear();
               router.replace('/login');
               setShowLogoutModal(false);
             }
