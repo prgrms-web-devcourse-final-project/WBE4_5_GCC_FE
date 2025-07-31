@@ -134,7 +134,7 @@ export default function Header() {
       >
         {isHome || isAdmin ? (
           <Image
-            src="/images/logo.png"
+            src="/images/logo.svg"
             alt="logo"
             width={90}
             height={60}

@@ -92,7 +92,7 @@ export default function Page() {
       <div className="w-full max-w-md">
         <div className="flex justify-center">
           <Image
-            src="/images/logo.png" // ✅ public/images/logo.png 기준으로 참조
+            src="/images/logo.svg"
             alt="Loutie Logo"
             width={240}
             height={120}
