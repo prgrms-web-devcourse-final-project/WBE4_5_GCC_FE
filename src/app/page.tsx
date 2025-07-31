@@ -68,20 +68,20 @@ export default function Main() {
             src={quest}
             alt="quest"
             text="퀘스트"
-            textSize="12px"
+            textSize="14px"
             className="mb-3"
             onClick={() => setOpenQuest(true)}
-            imgWidth={26}
-            imgHeight={21}
+            imgWidth={90}
+            imgHeight={60}
           />
           <FloatingButton
             src={acheivement}
             alt="acheivement"
             text="도감"
-            textSize="12px"
+            textSize="14px"
             onClick={goToCollection}
-            imgWidth={26}
-            imgHeight={21}
+            imgWidth={90}
+            imgHeight={60}
           />
         </div>
 
