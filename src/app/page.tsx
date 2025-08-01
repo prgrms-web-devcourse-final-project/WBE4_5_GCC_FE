@@ -77,7 +77,7 @@ export default function Main() {
           <Profile />
         </div>
         {weekLoading && (
-          <div className="flex w-full flex-col gap-3 border-t-10 border-t-[#FBFBFB] px-5 py-4">
+          <div className="flex min-h-screen w-full flex-col gap-3 px-5 py-4">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-3">
                 <div className="h-[27px] w-[100px] animate-pulse rounded-[10px] bg-gray-200"></div>
@@ -143,6 +143,7 @@ export default function Main() {
                           initDate: routine.initDate,
                           repeatType: routine.repeatType,
                           repeatValue: routine.repeatValue,
+                          repeatTerm: routine.repeatTerm,
                         });
                       }}
                       onDeleteClick={() => {

@@ -89,7 +89,7 @@ export default function Page() {
   };
 
   return (
-    <div className="mt-[150px] flex min-h-screen flex-col items-center bg-white px-5">
+    <div className="flex min-h-screen flex-col items-center bg-white px-5 pt-20 select-none">
       <div className="w-full max-w-md">
         <div className="flex justify-center">
           <Image
