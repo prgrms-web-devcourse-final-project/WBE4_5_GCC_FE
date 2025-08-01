@@ -84,7 +84,7 @@ export default function EditItem({
       itemDescription: string;
       isListed: boolean;
     }) =>
-      EditAdminItemById(id, {
+      EditAdminItemById(Number(id), {
         itemType,
         itemName,
         price: itemPrice,
