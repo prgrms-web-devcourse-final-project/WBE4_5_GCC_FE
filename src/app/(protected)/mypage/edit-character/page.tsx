@@ -207,7 +207,7 @@ export default function Page() {
     );
   }
   return (
-    <div className="h-1vh mx-auto flex w-full max-w-5xl flex-col">
+    <div className="h-1vh mx-auto flex w-full max-w-md flex-col">
       <BackHeader title="캐릭터 꾸미기" />
       <div className="flex flex-col px-5">
         <div className="relative mt-[27px] mb-[29px] flex h-[198px] w-full items-center justify-center overflow-hidden rounded-lg">
@@ -362,7 +362,7 @@ export default function Page() {
 
           {/* 아이템 카드 리스트 */}
           <div
-            className="relative grid min-h-[340px] w-full grid-cols-3 gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[#D9D9D9] bg-white px-[15px] pt-[23px] pb-[54px]"
+            className="relative grid min-h-[320px] w-full grid-cols-3 place-items-center gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[#D9D9D9] bg-white px-[15px] pt-[23px] pb-[54px]"
             style={{ columnGap: 'clamp(8px, 4vw, 21px)' }}
           >
             {filteredItem.map((item) => {
@@ -404,7 +404,7 @@ export default function Page() {
               );
             })}
 
-            {/* 페이지네이션 */}
+            {/*페이지네이션
             <div className="absolute bottom-[13px] left-1/2 -translate-x-1/2">
               <div className="flex items-center justify-center space-x-[11px]">
                 <button className="text-[#222222]">
@@ -423,7 +423,7 @@ export default function Page() {
                   <ChevronRight className="h-3 w-auto" />
                 </button>
               </div>
-            </div>
+            </div>*/}
           </div>
         </div>
       </div>

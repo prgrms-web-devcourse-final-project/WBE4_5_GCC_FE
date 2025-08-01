@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 interface ToggleSwitchProps {
   icon: React.ReactNode;
@@ -8,17 +8,17 @@ interface ToggleSwitchProps {
   className?: string;
 }
 
-export default function ToggleSwitch ({
+export default function ToggleSwitch({
   icon,
   label,
   checked,
   onToggle,
-  className
-} : ToggleSwitchProps) {
-  
+  className,
+}: ToggleSwitchProps) {
   return (
-    <div className={`w-full h-12 border border-[#E0E0E0] px-4 py-4 flex justify-between items-center ${className ?? ''}`}>
-
+    <div
+      className={`flex h-12 w-full items-center justify-between border border-[#E0E0E0] bg-white px-4 py-4 ${className ?? ''}`}
+    >
       {/* 좌측 영역 */}
       <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
         <span>{icon}</span>

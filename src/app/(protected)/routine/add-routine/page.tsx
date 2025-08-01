@@ -43,9 +43,6 @@ export default function Page() {
   const [repeatValue, setRepeatValue] = useState('');
   const [repeatTerm, setRepeatTerm] = useState('');
 
-  // const monday = startOfWeek(initDate, { weekStartsOn: 1 });
-  // const mondayStr = format(monday, 'yyyy-MM-dd');
-
   const isSubmitEnabled =
     selectedCategory !== null &&
     routineName !== '' &&
@@ -138,7 +135,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-1vh flex flex-col px-5 py-7">
+      <div className="flex min-h-screen flex-col bg-[#F8F5F1] px-5 py-7 pt-4">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col">
             <CategorySelector
@@ -161,8 +158,6 @@ export default function Page() {
             onNameSelect={setRoutineName}
             onTriggerTimeSelect={setDoWhen}
             onCycleSelect={setCycle}
-            // onRepeatTypeSelect={setRepeatType}
-            // onRepeatValueSelect={setRepeatValue}
             isLoading={isLoading}
           />
           <div>
@@ -200,7 +195,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="fixed right-5 bottom-[120px] left-5">
+        <div className="fixed right-5 bottom-[120px] left-5 flex justify-center">
           <Button
             type="submit"
             disabled={!isSubmitEnabled}

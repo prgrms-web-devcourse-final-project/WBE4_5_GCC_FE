@@ -57,7 +57,7 @@ export default function ListSelector({
 
   return (
     <div
-      className={`relative w-full border border-[#E0E0E0] ${className ?? ''}`}
+      className={`relative w-full border border-[#E0E0E0] bg-white ${className ?? ''}`}
     >
       <div className="flex h-12 w-full items-center justify-between px-4 py-4">
         <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
@@ -76,7 +76,7 @@ export default function ListSelector({
           <button
             type="button"
             onClick={onClick}
-            className="flex items-center gap-1 text-xs text-[#9E9E9E]"
+            className="flex cursor-pointer items-center gap-1 rounded-xl px-2 py-1 text-xs text-[#9E9E9E] hover:shadow-sm"
           >
             <span className={value ? 'text-[#222222]' : 'text-[#9E9E9E]'}>
               {value || placeholder}

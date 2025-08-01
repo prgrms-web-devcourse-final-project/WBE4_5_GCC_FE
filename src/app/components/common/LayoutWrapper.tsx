@@ -41,9 +41,11 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
 
   return (
     <>
-      <Header />
-      <main>{children}</main>
-      {showBottomNav && <BottomNav />}
+      <div className="mx-auto max-w-[640px] border-x border-[#e0e0e0]">
+        <Header />
+        <main className="bg-[#F8F5F1]">{children}</main>
+        {showBottomNav && <BottomNav />}
+      </div>
     </>
   );
 }

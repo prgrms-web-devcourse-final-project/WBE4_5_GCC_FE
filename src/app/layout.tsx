@@ -25,7 +25,8 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </head>
-      <body className="pb-[110px]">
+      <body>
+        {/* className="bg-[#f1f1f1]" */}
         <Providers>
           <Suspense
             fallback={

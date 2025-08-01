@@ -1,16 +1,12 @@
 'use client';
-import Profile from './components/main/Profile';
-import Routine from './components/routine/Routine';
+
 import { useState } from 'react';
 
 import quest from '/public/quest.svg';
 import acheivement from '/public/acheivement.svg';
-import FloatingButton from './components/common/FloatingButton';
-import Donut from './components/common/ui/Donut';
+
 import { useRouter } from 'next/navigation';
-import Quest from './components/main/Quest';
-import { DayRoutine } from '../../types/routine';
-import AlertModal from './components/common/alert/AlertModal';
+import Quest from '../components/main/Quest';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
 import { format, startOfWeek } from 'date-fns';
 import { useRoutineStore } from '@/store/RoutineStore';
@@ -18,6 +14,12 @@ import {
   useDeleteRoutine,
   useHandleRoutine,
 } from '@/api/routine/handleRoutine';
+import { DayRoutine } from '../../../types/routine';
+import FloatingButton from '../components/common/FloatingButton';
+import Profile from '../components/main/Profile';
+import Donut from '../components/common/ui/Donut';
+import Routine from '../components/routine/Routine';
+import AlertModal from '../components/common/alert/AlertModal';
 
 export default function Main() {
   const [openQuest, setOpenQuest] = useState(false);
@@ -48,7 +50,7 @@ export default function Main() {
 
   return (
     <>
-      <div className="relative mx-auto flex h-auto max-w-md flex-col items-center pt-4 select-none">
+      <div className="relative mx-auto flex h-auto max-w-5xl flex-col items-center bg-[#f1f1f1] pt-4 select-none">
         <div className="absolute top-0 right-10 z-30 my-8">
           <FloatingButton
             src={quest}
