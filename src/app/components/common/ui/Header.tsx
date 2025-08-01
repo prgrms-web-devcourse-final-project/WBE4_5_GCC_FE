@@ -134,15 +134,13 @@ export default function Header() {
 
   return (
     <>
-      <div className="fixed top-0 left-1/2 z-50 flex h-[56px] w-full max-w-[480px] -translate-x-1/2 items-center justify-between border-b border-gray-200 bg-white px-5 py-[20px] sm:max-w-[540px] md:max-w-[600px]">
+      <div className="z-50 flex h-[56px] items-center justify-between border-b border-gray-200 bg-white px-5 py-[20px]">
         {isHome || isAdmin ? (
           <Image
             src={logo}
             alt="logo"
-            width={90}
-            height={60}
             onClick={() => router.push('/')}
-            className="h-auto cursor-pointer"
+            className="h-[40px] w-[60px] cursor-pointer"
           />
         ) : (
           <div className="text-xl font-semibold">{title}</div>
@@ -181,11 +179,6 @@ export default function Header() {
       )}
 
       {openQuest && <QuestPage setOpenQuest={setOpenQuest} />}
-
-      <div
-        className="mb-[96px]"
-        style={{ marginTop: 'env(safe-area-inset-top)' }}
-      />
     </>
   );
 }

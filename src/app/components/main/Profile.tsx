@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import backGround from '/public/profileBackGround.svg';
-import profileBg from '/public/profileBg.png';
 import profileBg2 from '/public/profileBg2.png';
 import coin from '/public/coin.svg';
 import { fetchProfile, fetchUserItem, fetchUserPoint } from '@/api/member';
@@ -83,7 +81,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="relative z-0 flex h-[167px] w-full overflow-hidden rounded-[10px]">
+    <div className="relative z-0 flex h-[186px] w-full overflow-hidden rounded-[10px]">
       <div className="absolute inset-0 z-10 rounded-[10px] bg-[#1E1E1E]/40" />
 
       <Image

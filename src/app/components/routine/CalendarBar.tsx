@@ -42,7 +42,7 @@ export default function CalendarBar({
   });
 
   return (
-    <div className="mb-[30px] w-full max-w-md select-none">
+    <div className="mb-[20px] w-full max-w-md rounded-[10px] bg-white p-4 select-none">
       <div className="mb-[27px] flex items-center justify-start gap-1.5">
         <span className="text-lg font-semibold">
           {year}년 {month + 1}월
@@ -64,7 +64,7 @@ export default function CalendarBar({
                 setSelectedDate(day.fullDate);
                 setIsOpen(false);
               }}
-              className={`flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full text-sm transition-colors ${day.isToday && !day.isSelected ? 'border-2 border-[#FFB84C] bg-white text-black' : ''} ${day.isSelected ? 'bg-[#FFB84C] text-white' : ''} ${!day.isToday && !day.isSelected ? 'bg-[#EEF0F2] text-black' : ''}`}
+              className={`flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full text-sm transition-colors hover:shadow-sm ${day.isToday && !day.isSelected ? 'border-2 border-[#FFB84C] bg-white text-black' : ''} ${day.isSelected ? 'bg-[#FFB84C] text-white' : ''} ${!day.isToday && !day.isSelected ? 'bg-[#EEF0F2] text-black' : ''}`}
             >
               {day.date}
             </div>

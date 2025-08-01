@@ -16,7 +16,7 @@ export default function InputRoutineName({
   onChange,
 }: RoutineNameProps) {
   return (
-    <div className="flex h-12 w-full items-center justify-between rounded-b-lg border border-[#E0E0E0] px-4 py-4">
+    <div className="flex h-12 w-full items-center justify-between rounded-b-lg border border-[#E0E0E0] bg-white px-4 py-4 select-none">
       {/* 좌측 영역 */}
       <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
         <span>{icon}</span>

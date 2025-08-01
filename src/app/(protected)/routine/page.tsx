@@ -1,5 +1,4 @@
 'use client';
-export const dynamic = 'force-dynamic';
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -49,7 +48,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="mt-25 flex min-h-screen flex-col items-center bg-white px-5">
+      <div className="flex min-h-screen flex-col items-center bg-[#F8F5F1] px-5 pt-4">
         <CalendarBar
           setIsOpen={setIsOpen}
           selectedDate={selectedDate}
@@ -67,7 +66,7 @@ export default function Page() {
           </div>
         )}
         {!isPending && (
-          <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 pb-11">
+          <div className="flex min-h-screen w-full max-w-md flex-col items-center rounded-[10px] bg-white p-4">
             <div className="mb-6 flex w-full flex-col justify-start space-y-4.5 select-none">
               <div className="flex items-center justify-between">
                 <span className="text-xl font-semibold">

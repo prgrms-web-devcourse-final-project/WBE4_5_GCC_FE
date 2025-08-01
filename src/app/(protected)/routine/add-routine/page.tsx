@@ -43,9 +43,6 @@ export default function Page() {
   const [repeatValue, setRepeatValue] = useState('');
   const [repeatTerm, setRepeatTerm] = useState('');
 
-  // const monday = startOfWeek(initDate, { weekStartsOn: 1 });
-  // const mondayStr = format(monday, 'yyyy-MM-dd');
-
   const isSubmitEnabled =
     selectedCategory !== null &&
     routineName !== '' &&
@@ -138,7 +135,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-1vh flex flex-col px-5 py-7">
+      <div className="flex min-h-screen flex-col bg-[#F8F5F1] px-5 py-7 pt-4">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col">
             <CategorySelector
