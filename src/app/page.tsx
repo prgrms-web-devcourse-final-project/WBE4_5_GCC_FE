@@ -25,6 +25,7 @@ export default function Main() {
   const router = useRouter();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
   const { data: weekData, isPending: weekLoading } = useWeekRoutine();
+
   const today = format(new Date(), 'yyyy-MM-dd');
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[today] ?? [];
   const total = filteredRoutines.length;
