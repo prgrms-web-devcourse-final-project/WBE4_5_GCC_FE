@@ -158,8 +158,6 @@ export default function Page() {
             onNameSelect={setRoutineName}
             onTriggerTimeSelect={setDoWhen}
             onCycleSelect={setCycle}
-            // onRepeatTypeSelect={setRepeatType}
-            // onRepeatValueSelect={setRepeatValue}
             isLoading={isLoading}
           />
           <div>
@@ -197,7 +195,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="fixed right-5 bottom-[120px] left-5">
+        <div className="fixed right-5 bottom-[120px] left-5 flex justify-center">
           <Button
             type="submit"
             disabled={!isSubmitEnabled}
