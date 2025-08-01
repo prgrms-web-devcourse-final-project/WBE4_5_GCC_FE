@@ -12,7 +12,7 @@ export const AdminItems = async () => {
   }
 };
 
-// 아이템 수정 
+// 아이템 수정
 interface AdminItemEditPayload {
   itemType: string;
   itemName: string;
