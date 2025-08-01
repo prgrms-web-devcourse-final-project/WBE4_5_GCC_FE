@@ -35,7 +35,7 @@ export interface Badge {
   message: string;
   categoryName: string;
   requirement: number;
-  status: 'ACHIEVABLE' | 'OWNED' | 'LOCKED';
+  status: 'ACHIEVABLE' | 'OWNED' | 'LOCKED' | 'EQUIPPED';
   currentProgress: number;
   receivedDate: string | null;
   isEquipped: boolean;
