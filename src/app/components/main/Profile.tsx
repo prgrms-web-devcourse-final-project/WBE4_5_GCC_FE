@@ -108,6 +108,27 @@ export default function Profile() {
               alt="상의"
               width={130}
               height={130}
+              priority
+              className="absolute top-0 object-contain"
+            />
+          )}
+          {equippedItem.BOTTOM && (
+            <Image
+              src={`/images/items/${equippedItem.BOTTOM.itemKey}.png`}
+              alt="하의"
+              width={130}
+              height={130}
+              priority
+              className="absolute top-0 object-contain"
+            />
+          )}
+          {equippedItem.ACCESSORY && (
+            <Image
+              src={`/images/items/${equippedItem.ACCESSORY.itemKey}.png`}
+              alt="액세서리"
+              width={130}
+              height={130}
+              priority
               className="absolute top-0 object-contain"
             />
           )}
@@ -120,7 +141,7 @@ export default function Profile() {
             {badgeKey ? (
               <Image
                 src={`/images/badges/${badgeKey}.svg`}
-                alt=""
+                alt="뱃지이미지"
                 width={12}
                 height={15}
               />
