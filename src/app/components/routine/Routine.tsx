@@ -65,7 +65,7 @@ export default function Routine({
 
   return (
     <div
-      className={`hover: flex w-full cursor-pointer items-center justify-between border px-3 py-4 ${isCompleted ? 'border-[#FFB84C]' : 'border-[#9E9E9E]'} rounded-[8px] bg-white`}
+      className={`flex w-full cursor-pointer items-center justify-between border px-3 py-4 hover:shadow-sm ${isCompleted ? 'border-[#FFB84C]' : 'border-[#9E9E9E]'} rounded-[8px] bg-white`}
       onClick={onClick}
     >
       {isCompleted ? (

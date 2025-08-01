@@ -1,7 +1,7 @@
 import { PencilLine } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getCategories } from '@/api/categories';
 import { CategoryItem } from '../../../../../types/general';
 
@@ -65,7 +65,6 @@ export default function CategoryBottomSheetContainer({
   };
 
   return (
-    // 창 닫기
     <div
       className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50"
       onClick={handleOutsideClick}
@@ -74,22 +73,18 @@ export default function CategoryBottomSheetContainer({
         className="min-h-[490px] w-full rounded-t-[24px] bg-white px-4 pt-8 pb-16"
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
-        {/* 헤더 */}
         <BottomSheetHeader
           emoji={selectedMainCategory?.emoji}
           title={selectedMainCategory?.categoryName || '카테고리 선택'}
           onEdit={handleEditClick}
         />
 
-        {/* MAJOR 카테고리 선택 바텀시트 */}
         <CategoryGrid
           categories={allCategories}
           maxHeight="412px"
           selected={selectedMainCategory?.categoryName || null}
-          onSelectCategory={(label) => {
-            const major = allCategories.find(
-              (cat) => cat.categoryName === label,
-            );
+          onSelectCategory={(id) => {
+            const major = allCategories.find((cat) => cat.categoryId === id);
             if (major) {
               setSelectedMainCategory(major);
               setShowSubCategory(true);
@@ -97,7 +92,6 @@ export default function CategoryBottomSheetContainer({
           }}
         />
 
-        {/* SUB 카테고리 선택 바텀시트 */}
         {showSubCategory &&
           selectedMainCategory &&
           selectedMainCategory.children !== undefined && (
@@ -107,7 +101,7 @@ export default function CategoryBottomSheetContainer({
             >
               <div
                 className="fixed bottom-0 w-full rounded-t-[24px] bg-white px-4 pt-8"
-                onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
+                onClick={(e) => e.stopPropagation()}
               >
                 <div className="mb-[18px] flex items-center justify-between">
                   <div className="flex items-center gap-2">

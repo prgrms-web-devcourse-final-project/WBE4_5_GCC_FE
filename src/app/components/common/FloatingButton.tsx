@@ -25,7 +25,7 @@ export default function FloatingButton({
         className={`flex flex-col items-center justify-center ${className ?? ''}`}
       >
         <div
-          className="mb-1 flex h-11 w-11 items-center justify-center rounded-full border-[0.5px] border-[#b3b3b3] bg-white"
+          className="mb-1 flex h-11 w-11 items-center justify-center rounded-full border-[0.5px] border-[#b3b3b3] bg-white hover:bg-[#ffb84c]"
           onClick={onClick}
         >
           <Image
@@ -36,7 +36,9 @@ export default function FloatingButton({
             height={imgHeight}
           />
         </div>
-        <span className={`font-semibold text-[${textSize}]`}>{text}</span>
+        <span className={`font-semibold text-white text-[${textSize}]`}>
+          {text}
+        </span>
       </div>
     </>
   );

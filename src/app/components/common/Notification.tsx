@@ -1,5 +1,6 @@
 import NotiContent from './Noti';
 import { Noti } from '../../../../types/notifications';
+import React from 'react';
 
 export default function Notification({
   setOpenNoti,
@@ -18,16 +19,35 @@ export default function Notification({
     onClickAllRead?.();
   };
 
+  const disableScroll = () => {
+    document.body.style.overflow = 'hidden';
+  };
+
+  const enableScroll = () => {
+    document.body.style.overflow = 'auto';
+  };
+
+  React.useEffect(() => {
+    disableScroll();
+    return () => enableScroll();
+  }, []);
+
   return (
     <div
       role="dialog"
       aria-modal="true"
       className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 px-4"
-      onClick={() => setOpenNoti(false)}
+      onClick={() => {
+        setOpenNoti(false);
+        enableScroll();
+      }}
     >
-      <div className="w-full max-w-[360px]" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="w-full max-w-[360px]"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div
-          className={`flex flex-col max-h-[50vh] rounded-[8px] border-[3px] border-[#A47148] bg-white shadow-xl ${className}`}
+          className={`flex flex-col h-[50vh] rounded-[8px] border-[3px] border-[#A47148] bg-white shadow-xl ${className}`}
         >
           <div className="flex items-center justify-between border-b-2 border-[#d3bba7] px-5 pt-5 pb-4 text-[15px] font-bold text-[#222]">
             <span>
@@ -41,7 +61,7 @@ export default function Notification({
               모두 읽기
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto px-5 py-3 mb-5 space-y-2">
+          <div className="flex-1 overflow-y-auto px-5 py-3 space-y-2">
             <NotiContent noti={noti} onClickNotification={onClickNotification} />
           </div>
         </div>

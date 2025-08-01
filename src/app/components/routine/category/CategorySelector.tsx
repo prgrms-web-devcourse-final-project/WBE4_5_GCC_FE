@@ -33,18 +33,15 @@ export default function CategorySelector({
   );
 
   return (
-    <div className="flex h-12 w-full items-center justify-between rounded-t-lg border border-[#E0E0E0] px-4 py-4">
-      {/* 좌측 영역 */}
+    <div className="flex h-12 w-full items-center justify-between rounded-t-lg border border-[#E0E0E0] bg-white px-4 py-4 select-none">
       <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
         <span>{icon}</span>
         <span>{label}</span>
       </div>
-
-      {/* 우측 영역 */}
       <button
         type="button"
         onClick={onClick}
-        className="flex items-center gap-2 text-xs text-[#9E9E9E]"
+        className="flex cursor-pointer items-center gap-2 px-1 py-2 text-xs text-[#9E9E9E] hover:shadow-sm"
       >
         <span
           className={`flex items-center gap-2 ${
