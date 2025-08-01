@@ -134,7 +134,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="z-50 flex h-[56px] items-center justify-between border-b border-gray-200 bg-white px-5 py-[20px]">
+      <div className="z-50 mx-auto flex h-[56px] max-w-md items-center justify-between bg-white px-5 py-[20px]">
         {isHome || isAdmin ? (
           <Image
             src={logo}

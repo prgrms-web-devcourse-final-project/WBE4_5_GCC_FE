@@ -31,6 +31,7 @@ export default function Page() {
     initDate,
     repeatType,
     repeatValue,
+    repeatTerm,
   } = useRoutineStore();
   const router = useRouter();
   const [routineName, setRoutineName] = useState(name);
@@ -45,7 +46,7 @@ export default function Page() {
 
   const [newRepeatType, setNewRepeatType] = useState(repeatType);
   const [newRepeatValue, setNewRepeatValue] = useState(repeatValue);
-  const [repeatTerm, setRepeatTerm] = useState('');
+  const [newRepeatTerm, setNewRepeatTerm] = useState(repeatTerm);
 
   const today = format(new Date(), 'yyyy-MM-dd');
   const monday = startOfWeek(today, { weekStartsOn: 1 });
@@ -97,15 +98,6 @@ export default function Page() {
       });
     }
   }, [repeatType, repeatValue]);
-  // useEffect(() => {
-  //   if (repeatType === 'DAILY') {
-  //     setCycle({ daily: repeatValue });
-  //   } else if (repeatType === 'WEEKLY') {
-  //     setCycle({ days: repeatValue, week: '1' });
-  //   } else if (repeatType === 'MONTHLY') {
-  //     setCycle({ month: repeatValue });
-  //   }
-  // }, [repeatType, repeatValue]);
 
   useEffect(() => {
     setRoutineName(name);
@@ -135,16 +127,11 @@ export default function Page() {
         .filter(Boolean)
         .join(' ');
     };
-    // if (cycle.daily) {
-    //   setCycleText(`매 ${cycle.daily}일 마다`);
-    //   setNewRepeatType('DAILY');
-    //   setRepeatTerm(cycle.daily || '1');
-    // } else if (cycle.week) {
     if (cycle.daily) {
       const daily = cycle.daily.trim() !== '' ? cycle.daily : '1';
       setCycleText(`매 ${daily}일 마다`);
       setNewRepeatType('DAILY');
-      setRepeatTerm(daily);
+      setNewRepeatTerm(Number(daily));
       setNewRepeatValue('');
     } else if (cycle.week) {
       const dayText = convertNumbersToDays(cycle.days!);
@@ -153,11 +140,11 @@ export default function Page() {
       );
       setNewRepeatType('WEEKLY');
       setNewRepeatValue(cycle.days || '1');
-      setRepeatTerm(cycle.week || '1');
+      setNewRepeatTerm(Number(cycle.week) || 1);
     } else if (cycle.month) {
       setCycleText(`매월 ${cycle.month}일 마다`);
       setNewRepeatType('MONTHLY');
-      setRepeatTerm('1');
+      setNewRepeatTerm(1);
       setNewRepeatValue(cycle.month || '1');
     }
   }, [cycle]);
@@ -187,7 +174,7 @@ export default function Page() {
   ]);
   return (
     <>
-      <div className="h-1vh flex flex-col px-5 py-7">
+      <div className="flex min-h-screen flex-col bg-[#F8F5F1] px-5 py-7 pt-4">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col">
             <CategorySelector
@@ -234,12 +221,12 @@ export default function Page() {
               label="중요도"
               checked={importance}
               onToggle={setImportance}
-              className="rounded-b-lg"
+              className="rounded-lg"
             />
           </div>
         </div>
 
-        <div className="fixed right-5 bottom-[120px] left-5">
+        <div className="fixed right-5 bottom-[120px] left-5 flex justify-center">
           <Button
             type="submit"
             className="bg-[#FFB84C]"
@@ -255,7 +242,7 @@ export default function Page() {
                   isImportant: importance,
                   repeatType: newRepeatType,
                   repeatValue: newRepeatValue,
-                  repeatTerm: Number(repeatTerm),
+                  repeatTerm: newRepeatTerm,
                 },
               });
               setIsEditing(true);
