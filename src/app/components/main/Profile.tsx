@@ -68,8 +68,8 @@ export default function Profile() {
   }, [itemData]);
 
   const nickname = profileData?.member?.nickname ?? '익명';
-  const badgeKey = profileData?.equippedBadge?.badgeKey ?? 'CLEAN_BRONZE';
-  const badgeName = profileData?.equippedBadge?.badgeName ?? '배지 없음';
+  const badgeKey = profileData?.equippedBadge?.badgeKey ?? '';
+  const badgeName = profileData?.equippedBadge?.badgeName ?? '배지 미착용';
   const point = userPointData?.points ?? 0;
 
   if (profileLoading || pointLoading || characterLoading) {
@@ -108,19 +108,46 @@ export default function Profile() {
               alt="상의"
               width={130}
               height={130}
+              priority
+              className="absolute top-0 object-contain"
+            />
+          )}
+          {equippedItem.BOTTOM && (
+            <Image
+              src={`/images/items/${equippedItem.BOTTOM.itemKey}.png`}
+              alt="하의"
+              width={130}
+              height={130}
+              priority
+              className="absolute top-0 object-contain"
+            />
+          )}
+          {equippedItem.ACCESSORY && (
+            <Image
+              src={`/images/items/${equippedItem.ACCESSORY.itemKey}.png`}
+              alt="액세서리"
+              width={130}
+              height={130}
+              priority
               className="absolute top-0 object-contain"
             />
           )}
         </div>
 
         <div className="flex flex-col">
-          <div className="mb-[2px] flex items-center gap-[8px]">
-            <Image
-              src={`/images/badges/${badgeKey}.svg`}
-              alt="badge"
-              width={12}
-              height={15}
-            />
+          <div
+            className={`mb-[2px] flex items-center ${badgeKey ? 'gap-[8px]' : ''}`}
+          >
+            {badgeKey ? (
+              <Image
+                src={`/images/badges/${badgeKey}.svg`}
+                alt="뱃지이미지"
+                width={12}
+                height={15}
+              />
+            ) : (
+              <div className="h-auto w-0 bg-blue-200" /> // 배지 이미지 없는 경우 자리 확보
+            )}
             <span className="text-[14px] font-semibold text-[#FFF8E7]">
               {badgeName}
             </span>
