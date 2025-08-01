@@ -1,7 +1,7 @@
 'use client';
 
 import { ImagePlus } from 'lucide-react';
-import item1 from '@/app/assets/images/item1.png';
+import { ChevronDown } from 'lucide-react';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -29,10 +29,12 @@ export default function EditItem({
   const [itemKey, setItemKey] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
+  const [isListed, setIsListed] = useState(true);
 
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(item1.src);
+  const [previewUrl, setPreviewUrl] = useState<string | null>('');
   const options = ['상의', '하의', '악세사리'];
+  const list = [true, false];
 
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
@@ -57,12 +59,13 @@ export default function EditItem({
     );
     if (!foundItem) return;
 
+    // 초기 값
     setItemTitle(foundItem.itemName);
     setItemDescription(foundItem.itemDescription ?? '');
     setItemPrice(String(foundItem.itemPrice));
     setSelected(foundItem.itemType);
     setItemKey(foundItem.itemKey);
-    // setPreviewUrl(foundItem.itemImageUrl ?? item1.src); // 어떻게 넘겨줄지..
+    setPreviewUrl(`/images/items/thumbs/${foundItem.itemKey}.png`);
   }, [id, items]);
 
   // 아이템 수정 API 호출
@@ -72,17 +75,20 @@ export default function EditItem({
       itemPrice,
       itemType,
       itemDescription,
+      isListed,
     }: {
       itemName: string;
       itemPrice: number;
       itemType: string;
       itemDescription: string;
+      isListed: boolean;
     }) =>
       EditAdminItemByKey(itemKey, {
         itemName,
-        price: itemPrice,
+        itemPrice: itemPrice,
         itemType,
         itemDescription,
+        isListed,
       }),
 
     onSuccess: () => {
@@ -116,6 +122,7 @@ export default function EditItem({
       itemPrice: Number(itemPrice),
       itemType: selected,
       itemDescription,
+      isListed,
     });
   };
 
@@ -215,6 +222,23 @@ export default function EditItem({
             onChange={(e) => {
               setItemPrice(e.target.value);
             }}
+          />
+        </div>
+      </div>
+      <div className="relative mb-4">
+        <div className="flex flex-col gap-[10px]">
+          <h1>리스트 여부</h1>
+          <select
+            value={isListed.toString()}
+            className="h-12 w-full appearance-none rounded-lg border border-[#E0E0E0] px-4 py-2 pr-10 text-sm focus:outline-none"
+            onChange={(e) => setIsListed(e.target.value === 'true')}
+          >
+            <option value="true">true</option>
+            <option value="false">false</option>
+          </select>
+          <ChevronDown
+            className="h-[18px] w-[18px] text-[#616161] cursor-pointer absolute right-4 bottom-1 -translate-y-1/2"
+            strokeWidth={2}
           />
         </div>
       </div>

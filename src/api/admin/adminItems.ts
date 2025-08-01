@@ -15,9 +15,10 @@ export const AdminItems = async () => {
 // 아이템 수정 - 사용 ㅇ
 interface AdminItemPayload {
   itemName: string;
-  price: number;
+  itemPrice: number;
   itemType: string;
   itemDescription: string;
+  isListed: boolean;
   itemKey?: string; // 아이템 추가 시 필요
 }
 
