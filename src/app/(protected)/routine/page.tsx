@@ -1,5 +1,4 @@
 'use client';
-export const dynamic = 'force-dynamic';
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -49,25 +48,40 @@ export default function Page() {
 
   return (
     <>
-      <div className="mt-25 flex min-h-screen flex-col items-center bg-white px-5">
-        <CalendarBar
-          setIsOpen={setIsOpen}
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-        />
+      <div className="flex min-h-screen flex-col items-center overflow-scroll px-5 pt-4 pb-60">
         {isPending && (
-          <div className="flex w-full max-w-md flex-col gap-4 border-t-10 border-t-[#FBFBFB] px-5 pb-11">
-            <div className="h-[27px] w-[146px] animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[24px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+          <div className="flex w-full max-w-md flex-col gap-6">
+            <div className="flex w-full max-w-md flex-col gap-5 rounded-[10px] bg-white px-5 py-4">
+              <div className="h-[28px] w-[110px] animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="flex justify-between">
+                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
+                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
+                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
+                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
+                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
+                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
+                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
+              </div>
+            </div>
+
+            <div className="flex w-full max-w-md flex-col gap-4 rounded-[10px] bg-white px-5 py-4 pb-11">
+              <div className="h-[27px] w-[146px] animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[24px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            </div>
           </div>
         )}
         {!isPending && (
-          <div className="flex w-full max-w-md flex-col items-center justify-center border-t-10 border-t-[#FBFBFB] px-5 pb-11">
+          <div className="flex min-h-screen w-full max-w-md flex-col items-center rounded-[10px] bg-white p-4">
+            <CalendarBar
+              setIsOpen={setIsOpen}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+            />
             <div className="mb-6 flex w-full flex-col justify-start space-y-4.5 select-none">
               <div className="flex items-center justify-between">
                 <span className="text-xl font-semibold">
@@ -124,6 +138,7 @@ export default function Page() {
                         initDate: routine.initDate,
                         repeatType: routine.repeatType,
                         repeatValue: routine.repeatValue,
+                        repeatTerm: routine.repeatTerm,
                       });
                     }}
                     onDeleteClick={() => {

@@ -92,7 +92,7 @@ export default function EditItem({
         itemDescription,
         isListed,
       }),
-      
+
     onSuccess: () => {
       setModalState({
         isOpen: true,
@@ -130,7 +130,7 @@ export default function EditItem({
   };
 
   const isDisabled =
-    !itemTitle || !itemDescription || !itemPrice || !selected || !previewUrl; 
+    !itemTitle || !itemDescription || !itemPrice || !selected || !previewUrl;
 
   return (
     <div className="h-1vh flex flex-col gap-6 px-5 py-7">
@@ -241,7 +241,7 @@ export default function EditItem({
             <option value="false">false</option>
           </select>
           <ChevronDown
-            className="h-[18px] w-[18px] text-[#616161] cursor-pointer absolute right-4 bottom-1 -translate-y-1/2"
+            className="absolute right-4 bottom-1 h-[18px] w-[18px] -translate-y-1/2 cursor-pointer text-[#616161]"
             strokeWidth={2}
           />
         </div>

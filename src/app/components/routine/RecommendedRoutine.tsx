@@ -69,7 +69,7 @@ export default function RecommendedRoutine({
                   onCycleSelect({ month: routine.repeatValue });
                 }
               }}
-              className="font-regular shrink-0 rounded-lg border border-[#e0e0e0] px-4 py-2 text-xs whitespace-nowrap text-[#616161]"
+              className="font-regular shrink-0 cursor-pointer rounded-lg border border-[#e0e0e0] px-4 py-2 text-xs whitespace-nowrap text-[#616161] hover:bg-[#FFB84C] hover:text-white"
             >
               {routine.name}
             </button>

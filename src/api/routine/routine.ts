@@ -17,6 +17,7 @@ export const fetchTodayRoutine = async (): Promise<DayRoutine[]> => {
 export const fetchWeekRoutine = async (
   date?: string,
 ): Promise<WeekRoutineMap> => {
+  // await new Promise((resolve) => setTimeout(resolve, 300000));
   const response = await axiosInstance.get('/api/v1/routines/weekly', {
     params: { date },
   });

@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import backGround from '/public/profileBackGround.svg';
-import profileBg from '/public/profileBg.png';
 import profileBg2 from '/public/profileBg2.png';
 import coin from '/public/coin.svg';
 import { fetchProfile, fetchUserItem, fetchUserPoint } from '@/api/member';
@@ -83,7 +81,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="relative z-0 flex h-[167px] w-full overflow-hidden rounded-[10px]">
+    <div className="relative z-0 flex h-[186px] w-full overflow-hidden rounded-[10px]">
       <div className="absolute inset-0 z-10 rounded-[10px] bg-[#1E1E1E]/40" />
 
       <Image
@@ -110,6 +108,27 @@ export default function Profile() {
               alt="상의"
               width={130}
               height={130}
+              priority
+              className="absolute top-0 object-contain"
+            />
+          )}
+          {equippedItem.BOTTOM && (
+            <Image
+              src={`/images/items/${equippedItem.BOTTOM.itemKey}.png`}
+              alt="하의"
+              width={130}
+              height={130}
+              priority
+              className="absolute top-0 object-contain"
+            />
+          )}
+          {equippedItem.ACCESSORY && (
+            <Image
+              src={`/images/items/${equippedItem.ACCESSORY.itemKey}.png`}
+              alt="액세서리"
+              width={130}
+              height={130}
+              priority
               className="absolute top-0 object-contain"
             />
           )}
@@ -122,7 +141,7 @@ export default function Profile() {
             {badgeKey ? (
               <Image
                 src={`/images/badges/${badgeKey}.svg`}
-                alt=""
+                alt="뱃지이미지"
                 width={12}
                 height={15}
               />
