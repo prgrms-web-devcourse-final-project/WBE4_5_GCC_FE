@@ -168,7 +168,6 @@ export function useDeleteRoutine(mondayStr: string, dateStr: string) {
 }
 
 // 루틴 수정
-
 export function useEditRoutine(mondayStr: string, dateStr: string) {
   const queryClient = useQueryClient();
 
@@ -211,7 +210,7 @@ export function useEditRoutine(mondayStr: string, dateStr: string) {
                       isImportant: editData.isImportant,
                       repeatType: editData.repeatType,
                       repeatValue: editData.repeatValue!,
-                      repeatTerm: editData.repeatTerm,
+                      repeatTerm: editData.repeatTerm ?? 1,
                     }
                   : routine,
               ),
