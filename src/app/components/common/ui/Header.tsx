@@ -1,8 +1,8 @@
+import logo from '/public/logo.png';
 import Image from 'next/image';
 import { Bell } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import logo from '/public/Logo.svg';
 import coin from '/public/coin.svg';
 import { useUserStore } from '@/store/UserStore';
 import Notification from '../Notification';
@@ -18,7 +18,9 @@ import useNotificationWebSocket from '@/hooks/useNotifications';
 const formatTimeAgo = (date: string) => {
   const notificationDate = new Date(date);
   const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - notificationDate.getTime()) / 1000);
+  const diffInSeconds = Math.floor(
+    (now.getTime() - notificationDate.getTime()) / 1000,
+  );
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInSeconds / 3600);
 
@@ -27,7 +29,11 @@ const formatTimeAgo = (date: string) => {
   } else if (diffInHours < 24) {
     return `${diffInHours}시간 전`;
   } else {
-    return notificationDate.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    return notificationDate.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
   }
 };
 
@@ -128,12 +134,13 @@ export default function Header() {
 
   return (
     <>
-      <div className="fixed top-0 z-50 flex h-[56px] w-full items-center justify-between bg-white px-5 py-[18px] shadow-sm select-none">
+      <div className="fixed top-0 left-1/2 z-50 flex h-[56px] w-full max-w-[480px] -translate-x-1/2 items-center justify-between border-b border-gray-200 bg-white px-5 py-[20px] sm:max-w-[540px] md:max-w-[600px]">
         {isHome || isAdmin ? (
           <Image
             src={logo}
             alt="logo"
-            width={116}
+            width={90}
+            height={60}
             onClick={() => router.push('/')}
             className="h-auto cursor-pointer"
           />
@@ -141,9 +148,9 @@ export default function Header() {
           <div className="text-xl font-semibold">{title}</div>
         )}
         {isShop ? (
-          <div className="flex items-center space-x-1">
-            <Image src={coin} alt="coin" width={14} height={14} />
-            <span className="text-[12px] font-semibold text-[#FFB84C]">
+          <div className="flex items-center">
+            <Image src={coin} alt="coin" width={16} height={16} />
+            <span className="text-[14px] font-semibold text-[#FFB84C]">
               {currentPoint}
             </span>
           </div>
@@ -151,7 +158,7 @@ export default function Header() {
           <div className="relative">
             <Bell
               className="cursor-pointer text-[#222222]"
-              size={20}
+              size={24}
               onClick={handleOpenNoti}
             />
             {notiList.some((n) => n.new) && (
@@ -175,7 +182,10 @@ export default function Header() {
 
       {openQuest && <QuestPage setOpenQuest={setOpenQuest} />}
 
-      <div className="mb-[96px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
+      <div
+        className="mb-[96px]"
+        style={{ marginTop: 'env(safe-area-inset-top)' }}
+      />
     </>
   );
 }

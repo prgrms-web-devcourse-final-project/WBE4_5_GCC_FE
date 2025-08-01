@@ -21,8 +21,8 @@ export default function AiAnalysis({ aiComment }: Props) {
       ) : (
         <>
           <Image src="/images/cheer.png" alt="분석 완료" width={100} height={100} />
-          <p className="font-semibold mt-3 text-[#222]">
-            이번 주, 정말 잘 해냈어요!<br />다음 주도 이 흐름을 이어가봐요 🙌
+          <p className="font-semibold mt-3 text-[#222] whitespace-pre-line">
+            {aiComment}
           </p>
         </>
       )}

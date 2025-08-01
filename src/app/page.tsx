@@ -42,6 +42,10 @@ export default function Main() {
     router.push('/collection');
   };
 
+  const handleAddRoutine = () => {
+    router.push('/routine/add-routine');
+  };
+
   return (
     <>
       <div className="relative mx-auto mt-25 flex min-h-screen max-w-5xl flex-col items-center bg-white select-none">
@@ -53,12 +57,16 @@ export default function Main() {
             textSize="12px"
             className="mb-3"
             onClick={() => setOpenQuest(true)}
+            imgWidth={90}
+            imgHeight={60}
           />
           <FloatingButton
             src={acheivement}
             alt="acheivement"
             text="도감"
             textSize="12px"
+            imgWidth={90}
+            imgHeight={60}
             onClick={goToCollection}
           />
         </div>
@@ -105,44 +113,63 @@ export default function Main() {
             </div>
 
             <div className="flex w-full flex-col space-y-3">
-              {filteredRoutines.map((routine: DayRoutine) => (
-                <Routine
-                  key={`${routine.routineId}-${routine.scheduleId}`}
-                  scheduleId={routine.scheduleId}
-                  title={routine.name}
-                  category={routine.majorCategory}
-                  time={routine.triggerTime}
-                  isImportant={routine.isImportant}
-                  isCompleted={routine.isDone}
-                  onClick={() =>
-                    mutate({
-                      scheduleId: routine.scheduleId,
-                      isDone: !routine.isDone,
-                    })
-                  }
-                  onEditClick={() => {
-                    useRoutineStore.getState().setRoutine({
-                      routineId: routine.routineId,
-                      scheduleId: routine.scheduleId,
-                      categoryId: routine.categoryId,
-                      majorCategory: routine.majorCategory,
-                      subCategory: routine.subCategory,
-                      name: routine.name,
-                      triggerTime: routine.triggerTime,
-                      isDone: routine.isDone,
-                      isImportant: routine.isImportant,
-                      date: routine.date,
-                      initDate: routine.initDate,
-                      repeatType: routine.repeatType,
-                      repeatValue: routine.repeatValue!,
-                    });
-                  }}
-                  onDeleteClick={() => {
-                    setCheckDelete(true);
-                    setDeleteTargetId(routine.routineId);
-                  }}
-                />
-              ))}
+              {filteredRoutines.length > 0 &&
+                filteredRoutines.map((routine: DayRoutine) => (
+                  <Routine
+                    key={`${routine.routineId}-${routine.scheduleId}`}
+                    scheduleId={routine.scheduleId}
+                    title={routine.name}
+                    category={routine.majorCategory}
+                    time={routine.triggerTime}
+                    isImportant={routine.isImportant}
+                    isCompleted={routine.isDone}
+                    onClick={() =>
+                      mutate({
+                        scheduleId: routine.scheduleId,
+                        isDone: !routine.isDone,
+                      })
+                    }
+                    onEditClick={() => {
+                      useRoutineStore.getState().setRoutine({
+                        routineId: routine.routineId,
+                        scheduleId: routine.scheduleId,
+                        categoryId: routine.categoryId,
+                        majorCategory: routine.majorCategory,
+                        subCategory: routine.subCategory,
+                        name: routine.name,
+                        triggerTime: routine.triggerTime,
+                        isDone: routine.isDone,
+                        isImportant: routine.isImportant,
+                        date: routine.date,
+                        initDate: routine.initDate,
+                        repeatType: routine.repeatType,
+                        repeatValue: routine.repeatValue,
+                      });
+                    }}
+                    onDeleteClick={() => {
+                      setCheckDelete(true);
+                      setDeleteTargetId(routine.routineId);
+                    }}
+                  />
+                ))}
+              {filteredRoutines.length === 0 && (
+                <div className="mt-20 flex items-center justify-center">
+                  <div className="flex w-[260px] flex-col items-center gap-1 rounded-[8px]">
+                    <span className="text-[16px] font-medium text-[#9e9e9e]">
+                      오늘은 도전할 루틴이 없어요 😇
+                    </span>
+                    <span className="mb-5 text-[16px] font-medium text-[#9e9e9e]">
+                      새로운 루틴을 추가해볼까요?
+                    </span>
+                    <button
+                      className="h-[40px] w-[180px] cursor-pointer rounded-xl bg-[#FFB84C] px-5 text-[15px] text-white hover:bg-[#E6A642] active:bg-[#CC9439]"
+                      onClick={handleAddRoutine}
+                    >
+                      루틴 추가하러 가기
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}

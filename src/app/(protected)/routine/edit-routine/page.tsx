@@ -32,7 +32,6 @@ export default function Page() {
     repeatType,
     repeatValue,
   } = useRoutineStore();
-
   const router = useRouter();
   const [routineName, setRoutineName] = useState(name);
   const [startDate, setStartDate] = useState(initDate);
@@ -51,32 +50,20 @@ export default function Page() {
   const today = format(new Date(), 'yyyy-MM-dd');
   const monday = startOfWeek(today, { weekStartsOn: 1 });
   const mondayStr = format(monday, 'yyyy-MM-dd');
-
-  useEffect(() => {
-    if (repeatType === 'DAILY') {
-      setCycle({ daily: repeatValue });
-    } else if (repeatType === 'WEEKLY') {
-      setCycle({ days: repeatValue, week: '1' });
-    } else if (repeatType === 'MONTHLY') {
-      setCycle({ month: repeatValue });
-    }
-  }, [repeatType, repeatValue]);
+  const [cycle, setCycle] = useState<{
+    daily?: string | null;
+    days?: string | null;
+    week?: string | null;
+    month?: string | null;
+  } | null>(null);
 
   // ✅ 카테고리 초기값 세팅
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem>({
     categoryName: majorCategory,
     subCategoryName: subCategory ?? undefined,
-    categoryId: 0,
+    categoryId: categoryId,
     categoryType: 'MAJOR',
   });
-
-  // ✅ cycle 초기값 세팅
-  const [cycle, setCycle] = useState<{
-    daily?: string;
-    days?: string;
-    week?: string;
-    month?: string;
-  } | null>(null);
 
   const isSubmitEnabled =
     selectedCategory !== null &&
@@ -95,28 +82,30 @@ export default function Page() {
   }, [isSuccess, router]);
 
   useEffect(() => {
-    console.log('폼 상태 변경됨:', {
-      selectedCategory,
-      routineName,
-      initDate,
-      cycle,
-      doWhen,
-      importance,
-      newRepeatType,
-      newRepeatValue,
-      repeatTerm,
-    });
-  }, [
-    selectedCategory,
-    routineName,
-    initDate,
-    cycle,
-    doWhen,
-    importance,
-    newRepeatType,
-    newRepeatValue,
-    repeatTerm,
-  ]);
+    if (repeatType === 'DAILY') {
+      setCycle({
+        daily: repeatValue && repeatValue.trim() !== '' ? repeatValue : '1',
+      });
+    } else if (repeatType === 'WEEKLY') {
+      setCycle({
+        days: repeatValue && repeatValue.trim() !== '' ? repeatValue : '1',
+        week: '1',
+      });
+    } else if (repeatType === 'MONTHLY') {
+      setCycle({
+        month: repeatValue && repeatValue.trim() !== '' ? repeatValue : '1',
+      });
+    }
+  }, [repeatType, repeatValue]);
+  // useEffect(() => {
+  //   if (repeatType === 'DAILY') {
+  //     setCycle({ daily: repeatValue });
+  //   } else if (repeatType === 'WEEKLY') {
+  //     setCycle({ days: repeatValue, week: '1' });
+  //   } else if (repeatType === 'MONTHLY') {
+  //     setCycle({ month: repeatValue });
+  //   }
+  // }, [repeatType, repeatValue]);
 
   useEffect(() => {
     setRoutineName(name);
@@ -146,32 +135,56 @@ export default function Page() {
         .filter(Boolean)
         .join(' ');
     };
-
-    switch (true) {
-      case !!cycle.daily:
-        setCycleText(`매 ${cycle.daily}일 마다`);
-        setNewRepeatType('DAILY');
-        setRepeatTerm(cycle.daily!);
-        break;
-      case !!cycle.week:
-        const dayText = convertNumbersToDays(cycle.days!);
-        setCycleText(
-          `${dayText} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`,
-        );
-        setNewRepeatType('WEEKLY');
-        setNewRepeatValue(cycle.days!);
-        setRepeatTerm(cycle.week);
-        break;
-      case !!cycle.month:
-        setCycleText(`매월 ${cycle.month}일 마다`);
-        setNewRepeatType('MONTHLY');
-        setRepeatTerm('1');
-        setNewRepeatValue(cycle.month!);
-        break;
-      default:
-        setCycleText('');
+    // if (cycle.daily) {
+    //   setCycleText(`매 ${cycle.daily}일 마다`);
+    //   setNewRepeatType('DAILY');
+    //   setRepeatTerm(cycle.daily || '1');
+    // } else if (cycle.week) {
+    if (cycle.daily) {
+      const daily = cycle.daily.trim() !== '' ? cycle.daily : '1';
+      setCycleText(`매 ${daily}일 마다`);
+      setNewRepeatType('DAILY');
+      setRepeatTerm(daily);
+      setNewRepeatValue('');
+    } else if (cycle.week) {
+      const dayText = convertNumbersToDays(cycle.days!);
+      setCycleText(
+        `${dayText} / ${cycle.week === '1' ? '매주' : `${cycle.week}주마다`}`,
+      );
+      setNewRepeatType('WEEKLY');
+      setNewRepeatValue(cycle.days || '1');
+      setRepeatTerm(cycle.week || '1');
+    } else if (cycle.month) {
+      setCycleText(`매월 ${cycle.month}일 마다`);
+      setNewRepeatType('MONTHLY');
+      setRepeatTerm('1');
+      setNewRepeatValue(cycle.month || '1');
     }
   }, [cycle]);
+
+  useEffect(() => {
+    console.log('폼 상태 변경됨:', {
+      selectedCategory,
+      routineName,
+      initDate,
+      cycle,
+      doWhen,
+      importance,
+      newRepeatType,
+      newRepeatValue,
+      repeatTerm,
+    });
+  }, [
+    selectedCategory,
+    routineName,
+    initDate,
+    cycle,
+    doWhen,
+    importance,
+    newRepeatType,
+    newRepeatValue,
+    repeatTerm,
+  ]);
   return (
     <>
       <div className="h-1vh flex flex-col px-5 py-7">
