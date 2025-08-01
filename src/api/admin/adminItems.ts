@@ -12,23 +12,23 @@ export const AdminItems = async () => {
   }
 };
 
-// 아이템 수정 - 사용 ㅇ
-interface AdminItemPayload {
-  itemName: string;
-  itemPrice: number;
+// 아이템 수정 
+interface AdminItemEditPayload {
   itemType: string;
+  itemName: string;
+  price: number;
+  key: string;
   itemDescription: string;
   isListed: boolean;
-  itemKey?: string; // 아이템 추가 시 필요
 }
 
-export const EditAdminItemByKey = async (
-  key: string,
-  payload: AdminItemPayload,
+export const EditAdminItemById = async (
+  id: number,
+  payload: AdminItemEditPayload,
 ) => {
   try {
     const response = await axiosInstance.patch(
-      `/api/v1/admin/items/${key}`,
+      `/api/v1/admin/items/${id}`,
       payload,
     );
     console.log('아이템 수정 성공', response.data);
@@ -39,8 +39,16 @@ export const EditAdminItemByKey = async (
   }
 };
 
-// 아이템 추가 - 사용 ㅇ
-export const AddAdminItems = async (payload: AdminItemPayload) => {
+// 아이템 생성
+interface AdminItemCreatePayload {
+  itemKey: string;
+  itemType: string;
+  itemName: string;
+  itemPrice: number;
+  isListed: boolean;
+  itemDescription: string;
+}
+export const AddAdminItems = async (payload: AdminItemCreatePayload) => {
   try {
     const response = await axiosInstance.post('/api/v1/admin/items', payload);
     console.log('아이템 추가 성공', response.data);
@@ -52,9 +60,9 @@ export const AddAdminItems = async (payload: AdminItemPayload) => {
 };
 
 // 아이템 삭제 - 사용 ㅇ
-export const DeleteAdminItemByKey = async (key: string) => {
+export const DeleteAdminItemById = async (id: number) => {
   try {
-    const response = await axiosInstance.delete(`/api/v1/admin/items/${key}`);
+    const response = await axiosInstance.delete(`/api/v1/admin/items/${id}`);
     console.log('아이템 삭제 성공', response.data);
     return response.data;
   } catch (error) {

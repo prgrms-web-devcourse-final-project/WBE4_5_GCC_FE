@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { use, useEffect, useState } from 'react';
 import { ShopItem } from '../../../../../../types/general';
-import { AdminItems, EditAdminItemByKey } from '@/api/admin/adminItems';
+import { AdminItems, EditAdminItemById } from '@/api/admin/adminItems';
 
 import Input from '@/app/components/common/ui/Input';
 import Button from '@/app/components/common/ui/Button';
@@ -34,7 +34,6 @@ export default function EditItem({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>('');
   const options = ['상의', '하의', '악세사리'];
-  const list = [true, false];
 
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
@@ -71,26 +70,29 @@ export default function EditItem({
   // 아이템 수정 API 호출
   const { mutate: editItemMutate, isPending } = useMutation({
     mutationFn: ({
+      itemType,
       itemName,
       itemPrice,
-      itemType,
+      itemKey,
       itemDescription,
       isListed,
     }: {
+      itemType: string;
       itemName: string;
       itemPrice: number;
-      itemType: string;
+      itemKey: string;
       itemDescription: string;
       isListed: boolean;
     }) =>
-      EditAdminItemByKey(itemKey, {
-        itemName,
-        itemPrice: itemPrice,
+      EditAdminItemById(id, {
         itemType,
+        itemName,
+        price: itemPrice,
+        key: itemKey,
         itemDescription,
         isListed,
       }),
-
+      
     onSuccess: () => {
       setModalState({
         isOpen: true,
@@ -116,18 +118,19 @@ export default function EditItem({
   });
 
   const handleSubmit = () => {
-    if (!itemKey) return;
+    if (!id) return;
     editItemMutate({
       itemName: itemTitle,
       itemPrice: Number(itemPrice),
       itemType: selected,
       itemDescription,
       isListed,
+      itemKey,
     });
   };
 
   const isDisabled =
-    !itemTitle || !itemDescription || !itemPrice || !selected || !previewUrl;
+    !itemTitle || !itemDescription || !itemPrice || !selected || !previewUrl; 
 
   return (
     <div className="h-1vh flex flex-col gap-6 px-5 py-7">
@@ -217,6 +220,7 @@ export default function EditItem({
           <h1>아이템 가격</h1>
           <Input
             type="number"
+            min={0}
             placeholder="ex) 500"
             value={itemPrice}
             onChange={(e) => {
