@@ -1,8 +1,7 @@
 'use client';
 import Profile from './components/main/Profile';
 import Routine from './components/routine/Routine';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import quest from '/public/quest.svg';
 import acheivement from '/public/acheivement.svg';
 import FloatingButton from './components/common/FloatingButton';
@@ -18,13 +17,23 @@ import {
   useDeleteRoutine,
   useHandleRoutine,
 } from '@/api/routine/handleRoutine';
+import { useQueryClient } from '@tanstack/react-query';
+import { getBadges } from '@/api/badges';
 
 export default function Main() {
   const [openQuest, setOpenQuest] = useState(false);
   const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+  const queryClient = useQueryClient();
   const { data: weekData, isPending: weekLoading } = useWeekRoutine();
+
+  // useEffect(()=>{
+  //   queryClient.prefetchQuery({
+  //     queryKey: ['user-badges',1],
+  //     queryFn: () => getBadges(1,6)
+  //   })
+  // },[queryClient])
 
   const today = format(new Date(), 'yyyy-MM-dd');
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[today] ?? [];

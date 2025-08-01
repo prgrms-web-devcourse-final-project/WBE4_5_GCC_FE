@@ -48,7 +48,6 @@ export default function Page() {
     queryKey: ['user-badges', page],
     queryFn: () => getBadges(page, size),
     staleTime: 5 * 60 * 1000,
-    placeholderData: (prev) => prev, // 이전 데이터를 잠시 유지
   });
 
   const badges = badgesData?.badges || [];
