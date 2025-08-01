@@ -41,7 +41,7 @@ export default function CategorySelector({
       <button
         type="button"
         onClick={onClick}
-        className="flex cursor-pointer items-center gap-2 px-1 py-2 text-xs text-[#9E9E9E] hover:shadow-sm"
+        className="flex cursor-pointer items-center gap-2 rounded-xl px-1 py-2 text-xs text-[#9E9E9E] hover:shadow-sm"
       >
         <span
           className={`flex items-center gap-2 ${

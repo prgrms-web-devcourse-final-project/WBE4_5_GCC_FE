@@ -66,11 +66,11 @@ export default function DatePicker({
     : '날짜 선택 필요';
 
   return (
-    <div className="relative w-[80px] text-xs" ref={ref}>
+    <div className="relative w-[100px] text-xs" ref={ref}>
       <input
         type="text"
         value={displayDate}
-        className={`focus-primary body1 w-full cursor-pointer rounded-[10px] text-center focus:border-transparent focus:ring-0 focus:outline-none ${hasUserSelected ? 'text-[#222222]' : 'text-[#9E9E9E]'}`}
+        className={`focus-primary body1 w-full cursor-pointer rounded-[10px] px-2 py-1 text-center hover:shadow-sm focus:border-transparent focus:ring-0 focus:outline-none ${hasUserSelected ? 'text-[#222222]' : 'text-[#9E9E9E]'}`}
         readOnly
         onClick={toggleDatePicker}
       />

@@ -48,7 +48,7 @@ export default function Main() {
 
   return (
     <>
-      <div className="relative mx-auto flex h-auto max-w-5xl flex-col items-center bg-[#F8F5F1] pt-4 select-none">
+      <div className="relative mx-auto flex h-auto max-w-md flex-col items-center pt-4 select-none">
         <div className="absolute top-0 right-10 z-30 my-8">
           <FloatingButton
             src={quest}

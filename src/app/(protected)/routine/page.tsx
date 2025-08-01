@@ -48,7 +48,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col items-center bg-[#F8F5F1] px-5 pt-4">
+      <div className="flex min-h-screen flex-col items-center px-5 pt-4">
         <CalendarBar
           setIsOpen={setIsOpen}
           selectedDate={selectedDate}
