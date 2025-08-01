@@ -172,8 +172,8 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-1vh flex w-full justify-center pt-11">
-        <div className="flex w-full min-w-[390px] flex-col items-center">
+      <div className="h-1vh flex w-full justify-center pt-11 bg-white">
+        <div className="flex w-full min-w-[390px] flex-col items-center bg-white">
           <BackHeader title="도감" />
 
           {/* 콘텐츠 영역 */}
