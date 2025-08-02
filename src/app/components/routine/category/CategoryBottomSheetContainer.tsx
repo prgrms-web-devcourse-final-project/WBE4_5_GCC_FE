@@ -70,7 +70,7 @@ export default function CategoryBottomSheetContainer({
       onClick={handleOutsideClick}
     >
       <div
-        className="min-h-[490px] w-full max-w-[614px] rounded-t-[24px] bg-white px-4 pt-8 pb-16"
+        className="min-h-[490px] w-full max-w-[614px] rounded-t-[24px] bg-white px-4 pt-8 pb-16 dark:bg-[var(--dark-bg-secondary)]"
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
         <BottomSheetHeader
@@ -100,7 +100,7 @@ export default function CategoryBottomSheetContainer({
               onClick={handleOutsideClick}
             >
               <div
-                className="fixed bottom-0 w-full max-w-[614px] rounded-t-[24px] bg-white px-4 pt-8"
+                className="fixed bottom-0 w-full max-w-[614px] rounded-t-[24px] bg-white px-4 pt-8 dark:bg-[var(--dark-bg-primary)]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="mb-[18px] flex items-center justify-between">
@@ -108,7 +108,7 @@ export default function CategoryBottomSheetContainer({
                     <span className="text-[18px]">
                       {selectedMainCategory?.emoji}
                     </span>
-                    <h2 className="text-base font-semibold text-black">
+                    <h2 className="text-base font-semibold text-black dark:text-[var(--dark-gray-700)]">
                       {selectedMainCategory?.categoryName}
                     </h2>
                   </div>

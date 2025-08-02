@@ -31,7 +31,7 @@ export default function RepeatSelector({
         isOpen={isOpen}
         className="max-h-[660px] max-w-[614px] w-full px-5 py-8"
       >
-        <div className="mb-6 flex items-center justify-start gap-3 text-xl font-semibold">
+        <div className="mb-6 flex items-center justify-start gap-3 text-xl font-semibold text-black dark:text-[var(--dark-gray-700)]">
           <h2>♾️</h2>
           <h2>반복주기</h2>
         </div>

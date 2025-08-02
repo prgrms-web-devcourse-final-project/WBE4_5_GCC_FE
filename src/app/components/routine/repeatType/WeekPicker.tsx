@@ -33,7 +33,7 @@ export default function WeekPicker({
             {weeks.map((week) => (
               <Picker.Item key={week} value={week}>
                 <span
-                  className={`inline-block w-full text-lg font-semibold transition-all duration-200 ${week === value.weeks ? 'text-black' : 'text-[#BDBDBD]'
+                  className={`inline-block w-full text-lg font-semibold transition-all duration-200 ${week === value.weeks ? 'dark:text-[var(--dark-gray-700)]' : 'text-[#BDBDBD] dark:text-[var(--dark-bg-tertiary)]'
                     }`}
                 >
                   {week}

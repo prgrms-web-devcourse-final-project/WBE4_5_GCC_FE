@@ -23,7 +23,7 @@ export default function CategorySelector({
       <span>{value.categoryName}</span>
       {value.subCategoryName && (
         <>
-          <ChevronRight className="h-auto w-[14px] text-[#222222]" />
+          <ChevronRight className="h-auto w-[14px] text-[#222222] dark:text-[var(--dark-gray-700)]" />
           <span>{value.subCategoryName}</span>
         </>
       )}
@@ -33,9 +33,9 @@ export default function CategorySelector({
   );
 
   return (
-    <div className="flex h-16 w-full max-w-[614px] items-center justify-between rounded-t-lg border border-[#E0E0E0] px-5 py-4">
+    <div className="flex h-16 w-full max-w-[614px] items-center justify-between rounded-t-lg border border-[#E0E0E0] px-5 py-4 dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)]">
       {/* 좌측 영역 */}
-      <div className="flex items-center gap-3 text-base font-semibold text-[#222222]">
+      <div className="flex items-center gap-3 text-base font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
         <span>{icon}</span>
         <span>{label}</span>
       </div>
@@ -47,7 +47,7 @@ export default function CategorySelector({
         className="flex items-center gap-2 text-sm text-[#9E9E9E] cursor-pointer"
       >
         <span
-          className={`flex items-center gap-2 ${value ? 'text-[#222222]' : 'text-[#c4c4c4]'
+          className={`flex items-center gap-2 ${value ? 'text-[#222222] dark:text-[var(--dark-gray-700)]' : 'text-[#c4c4c4]'
             }`}
         >
           <span className="text-base">{iconForValue || ''}</span>

@@ -73,20 +73,24 @@ export default function CollectionBottomSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50 select-none"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222] select-none dark:bg-[var(--dark-gray-200)]/50"
       onClick={() => setIsOpenAction(false)}
     >
       <div
-        className="relative min-h-[390px] w-full min-w-[390px] rounded-t-3xl bg-white px-5 py-[34px]"
+        className="relative min-h-[390px] w-full min-w-[390px] rounded-t-3xl bg-white px-5 py-[34px] dark:bg-[var(--dark-bg-primary)]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-5 flex items-center justify-start">
-          <h2 className="text-[20px] font-semibold text-[#222222]">필터</h2>
+          <h2 className="text-[20px] font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
+            필터
+          </h2>
         </div>
 
         {/* 티어 */}
         <div className="flex flex-col">
-          <p className="text-md mb-4 font-semibold text-[#222222]">티어</p>
+          <p className="text-md mb-4 font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
+            티어
+          </p>
           <div className="mb-11 flex flex-wrap gap-2.5">
             {Object.entries(tierLabelMap).map(([tierKey, label]) => (
               <SelectButton
@@ -95,8 +99,8 @@ export default function CollectionBottomSheet({
                 onClick={() => toggleTier(tierKey)}
                 className={
                   selectedTiers.includes(tierKey)
-                    ? 'bg-[#FFB84C] text-white'
-                    : 'border-[#E0E0E0]'
+                    ? 'bg-[#ffb84c] text-white dark:text-[var(--dark-bg-primary)]'
+                    : 'border-[#e0e0e0]'
                 }
               />
             ))}
@@ -105,7 +109,9 @@ export default function CollectionBottomSheet({
 
         {/* 카테고리 */}
         <div className="flex flex-col">
-          <p className="text-md mb-4 font-semibold text-[#222222]">카테고리</p>
+          <p className="text-md mb-4 font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
+            카테고리
+          </p>
           <div className="flex flex-wrap gap-2.5">
             {categories.map((category) => (
               <SelectButton
@@ -114,8 +120,8 @@ export default function CollectionBottomSheet({
                 onClick={() => toggleCategory(category.categoryName)}
                 className={
                   selectedCategories.includes(category.categoryName)
-                    ? 'bg-[#FFB84C] text-white'
-                    : 'border-[#E0E0E0]'
+                    ? 'bg-[#ffb84c] text-white dark:text-[var(--dark-bg-primary)]'
+                    : 'border-[#e0e0e0]'
                 }
               />
             ))}
@@ -123,7 +129,7 @@ export default function CollectionBottomSheet({
 
           <div className="flex gap-[14px]">
             <Button
-              className="mt-[73px] mb-3 border border-[#E0E0E0] bg-white text-sm font-medium text-[#616161]"
+              className="mt-[73px] mb-3 border border-[#e0e0e0] bg-white text-sm font-medium text-[#616161] dark:bg-[var(--dark-bg-primary)]"
               onClick={handleReset}
             >
               초기화

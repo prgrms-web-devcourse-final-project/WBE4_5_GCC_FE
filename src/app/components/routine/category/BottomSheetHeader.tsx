@@ -17,7 +17,7 @@ export default function BottomSheetHeader({
     >
       <div className="flex items-center gap-3 min-w-0">
         <span className="text-2xl flex-shrink-0">{emoji || '🏷️'}</span>
-        <h2 className="text-lg font-semibold text-black truncate">{title}</h2>
+        <h2 className="text-lg font-semibold text-black truncate dark:text-[var(--dark-gray-700)]">{title}</h2>
       </div>
 
       <button

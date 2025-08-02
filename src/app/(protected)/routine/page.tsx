@@ -72,7 +72,7 @@ export default function Page() {
           ) : (
             <>
               <div className="mt-8 mb-6 flex items-center justify-between">
-                <span className="text-2xl font-medium">
+                <span className="text-2xl font-medium dark:text-[var(--dark-gray-700)]">
                   {format(selectedDate, 'yyyy년 M월 d일')}
                 </span>
                 {/* {!isToday && (
@@ -135,9 +135,9 @@ export default function Page() {
         {!isPending && (
           <button
             onClick={handleAddRoutine}
-            className="fixed bottom-24 right-6 z-50 flex h-[64px] w-[64px] items-center justify-center rounded-full bg-[#222222] shadow-lg hover:bg-[#333333] transition"
+            className="fixed bottom-24 right-6 z-50 flex h-[64px] w-[64px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333] dark:bg-[var(--dark-gray-200)] hover:dark:bg-[var(--dark-bg-tertiary)]"
           >
-            <Plus className="h-7 w-7 text-white" />
+            <Plus className="h-7 w-7 text-white dark:text-[var(--dark-bg-primary)]" />
           </button>
         )}
       </div>

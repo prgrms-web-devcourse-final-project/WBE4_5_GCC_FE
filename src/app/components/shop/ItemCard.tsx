@@ -22,7 +22,7 @@ export default function ItemCard({
   return (
     <div
       className={clsx(
-        'relative flex h-[220px] w-[170px] flex-col rounded-xl border border-[#d9d9d9] bg-white shadow-sm',
+        'relative flex h-[220px] w-[170px] flex-col rounded-xl border border-[#d9d9d9] bg-white shadow-[1px_2px_4px_rgba(0,0,0,0.1)] dark:bg-[var(--dark-white)]/37',
         isOwned ? 'cursor-default' : 'cursor-pointer'
       )}
       onClick={onClick}
@@ -53,17 +53,17 @@ export default function ItemCard({
       </div>
 
       <div className="border-t border-[#E0E0E0] px-3 py-2 text-left">
-        <div className="mt-1 text-[14px] font-semibold leading-tight line-clamp-1">{item.itemName}</div>
-        <div className="mt-1 h-[30px] text-[12px] font-medium leading-snug text-[#616161] overflow-hidden text-ellipsis line-clamp-2">
+        <div className="mt-1 text-[14px] font-semibold leading-tight line-clamp-1 dark:text-[var(--dark-white)]">{item.itemName}</div>
+        <div className="mt-1 h-[30px] text-[12px] font-medium leading-snug text-[#616161] overflow-hidden text-ellipsis line-clamp-2 dark:text-[var(--dark-gray-300)]">
           {item.itemDescription || '아이템 설명이 없어요'}
         </div>
 
         {isOwned ? (
-          <div className="mt-4 flex h-7 w-full items-center justify-center rounded-md border border-[#FFB84C] bg-[#FFB84C] text-[12px] font-semibold text-white">
+          <div className="mt-4 flex h-7 w-full items-center justify-center rounded-md border border-[#FFB84C] bg-[#FFB84C] text-[12px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
             보유 중
           </div>
         ) : (
-          <div className="mt-4 flex h-7 w-full items-center justify-between rounded-md border border-[#cfcfcf] pr-3 pl-2">
+          <div className="mt-4 flex h-7 w-full items-center justify-between rounded-md border border-[#cfcfcf] pr-3 pl-2 dark:bg-[var(--dark-white)]">
             <Image src={coin} alt="coin" className="h-5 w-4" />
             <span className="text-[12px] font-semibold text-[#FFB84C]">
               {item.itemPoint != null ? `${item.itemPoint}` : `${item.itemPrice}`}

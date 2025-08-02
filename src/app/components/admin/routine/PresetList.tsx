@@ -61,7 +61,7 @@ export default function PresetList({
             }}
             className="absolute top-2 right-2 flex h-[24px] w-[24px] items-center justify-center rounded-full bg-gray-400 transition hover:bg-gray-500"
           >
-            <X className="h-[14px] w-[14px] text-white" />
+            <X className="h-[14px] w-[14px] text-white dark:text-[var(--dark-bg-primary)]" />
           </button>
         </div>
       ))}

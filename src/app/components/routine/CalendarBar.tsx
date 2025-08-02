@@ -42,7 +42,7 @@ export default function CalendarBar({
   });
 
   return (
-    <div className="w-full px-6 max-w-[614px] select-none mb-8">
+    <div className="w-full px-6 max-w-[614px] select-none mb-8 dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]">
       <div className="mb-6 flex items-center justify-start gap-1.5">
         <span className="text-xl font-semibold">
           {year}년 {month + 1}월
@@ -66,13 +66,8 @@ export default function CalendarBar({
                 setSelectedDate(day.fullDate);
                 setIsOpen(false);
               }}
-              className={`flex h-[48px] w-[48px] cursor-pointer items-center justify-center rounded-full text-base transition-all duration-150
-    ${day.isSelected
-                  ? 'bg-[#FFB84C] text-white font-semibold shadow-md'
-                  : day.isToday
-                    ? 'border-2 border-[#FFB84C] text-[#FFB84C] bg-white font-semibold'
-                    : 'bg-[#F5F5F5] text-[#616161]'
-                } hover:scale-105`}
+              className={`flex h-[48px] w-[48px] cursor-pointer items-center justify-center rounded-full text-base transition-colors hover:shadow-sm
+${day.isToday && !day.isSelected ? 'border-2 border-[#ffb84c] bg-white text-black dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]' : ''} ${day.isSelected ? 'bg-[#ffb84c] text-white dark:text-[var(--dark-bg-primary)]' : ''} ${!day.isToday && !day.isSelected ? 'bg-[#EEF0F2] text-black dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]' : ''}`}
             >
               {day.date}
             </div>

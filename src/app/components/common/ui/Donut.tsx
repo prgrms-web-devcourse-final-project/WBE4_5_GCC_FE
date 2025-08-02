@@ -19,7 +19,7 @@ export default function Donut({
       }}
     >
       <div
-        className="absolute flex items-center justify-center rounded-full bg-white text-[10px] font-semibold"
+        className="absolute flex items-center justify-center rounded-full bg-white text-[10px] font-semibold dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]"
         style={{
           top: '15%',
           left: '15%',

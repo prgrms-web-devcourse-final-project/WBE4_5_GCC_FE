@@ -78,7 +78,7 @@ export default function Month({
             className={`rounded-lg p-3 text-base ${isBefore(month, startOfMonth(today))
               ? 'opacity-15'
               : isSameMonth(viewDate, month)
-                ? 'cursor-pointer bg-[#FFB84C] text-white'
+                ? 'cursor-pointer bg-[#FFB84C] text-white dark:text-[var(--dark-bg-primary)]'
                 : 'cursor-pointer'
               }`}
             onClick={() => onChangeMonth(month)}

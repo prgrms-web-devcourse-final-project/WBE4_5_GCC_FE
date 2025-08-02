@@ -32,7 +32,7 @@ export default function DayPicker({
           {days.map((day) => (
             <Picker.Item key={day} value={day}>
               <span
-                className={`text-lg font-semibold transition-all duration-200 ${day === value.days ? 'text-black' : 'text-[#BDBDBD]'}`}
+                className={`text-lg font-semibold transition-all duration-200 ${day === value.days ? 'dark:text-[var(--dark-gray-700)]' : 'text-[#BDBDBD] dark:text-[var(--dark-bg-tertiary)]'}`}
               >
                 {day}
               </span>

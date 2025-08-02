@@ -73,7 +73,7 @@ export default function MultiLineChart({
       <div>
         <span className="text-sm font-semibold">기간 선택</span>
         <div className="mt-1.5 mb-5 flex items-center justify-center space-x-[15px]">
-          <div className="flex h-[30px] w-[122px] items-center justify-between rounded-[3px] border border-[#E0E0E0] p-2">
+          <div className="flex h-[30px] w-[122px] items-center justify-between rounded-[3px] border border-[#e0e0e0] p-2">
             <div className="">
               <DatePicker
                 selectedDate={selectedPreDate}
@@ -84,7 +84,7 @@ export default function MultiLineChart({
             <CalendarDays className="ml-auto h-3 w-3 cursor-pointer" />
           </div>
           <hr className="w-1.5 border" />
-          <div className="flex h-[30px] w-[122px] items-center justify-between rounded-[3px] border border-[#E0E0E0] p-2">
+          <div className="flex h-[30px] w-[122px] items-center justify-between rounded-[3px] border border-[#e0e0e0] p-2">
             <div className="">
               <DatePicker
                 selectedDate={selectedNextDate}

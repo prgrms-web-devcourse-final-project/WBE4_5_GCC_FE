@@ -56,13 +56,13 @@ export default function ListSelector({
 
   return (
     <div
-      className={`relative w-full border border-[#E0E0E0] bg-white ${className ?? ''}`}
+      className={`relative w-full border border-[#E0E0E0] bg-white dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)] ${className ?? ''}`}
     >
       <div
-        className={`flex h-[64px] w-full items-center justify-between px-5 border-t-0 border-[#E0E0E0] ${isNoBottomBorder ? '' : 'border-b'
+        className={`flex h-[64px] w-full items-center justify-between px-5 border-t-0 border-[#E0E0E0] bg-white dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)] ${isNoBottomBorder ? '' : 'border-b'
           }`}
       >
-        <div className="flex items-center gap-3 text-base font-semibold text-[#222222]">
+        <div className="flex items-center gap-3 text-base font-semibold text-[#222222 dark:text-[var(--dark-gray-700)]">
           <span>{icon}</span>
           <span>{label}</span>
         </div>
@@ -81,7 +81,7 @@ export default function ListSelector({
             className="flex items-center gap-1 text-base text-[#222222]"
           >
             <span
-              className={`${value ? 'text-[#222222]' : 'text-[#c4c4c4]'
+              className={`${value ? 'text-[#222222] dark:text-[var(--dark-gray-700)]' : 'text-[#c4c4c4]'
                 } text-base cursor-pointer`}
             >
               {value || placeholder}

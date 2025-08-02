@@ -59,15 +59,15 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
       <div className="mx-[5px] flex min-h-[588px] flex-col">
         {/* 요일 선택 */}
         <div className="my-[27px] flex flex-col">
-          <span className="text-lg font-semibold mt- mb-6">요일 선택</span>
+          <span className="text-lg font-semibold mt- mb-6 dark:text-[var(--dark-gray-700)]">요일 선택</span>
           <div className="mx-auto flex max-w-[614px] justify-between gap-8">
             {options.map((option, idx) => (
               <button
                 key={idx}
                 onClick={() => toggleIndex(idx)}
                 className={`inline-flex aspect-square cursor-pointer items-center justify-center rounded-full border-none text-base font-medium transition-colors ${selectedIndex.includes(idx)
-                  ? 'bg-[#FFB84C] text-white'
-                  : 'bg-[#F5F5F5] text-[#9E9E9E]'
+                  ? 'bg-[#FFB84C] text-white dark:text-[var(--dark-bg-primary)]'
+                  : 'bg-[#F5F5F5] text-[#9E9E9E] dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]'
                   }`}
                 style={{ width: '50px' }}
               >
@@ -81,9 +81,9 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
 
         <div className="flex flex-col">
           <div className="flex w-full">
-            <span className="text-lg font-semibold">반복주기</span>
+            <span className="text-lg font-semibold dark:text-[var(--dark-gray-700)]">반복주기</span>
             <div className="ml-auto flex items-center gap-1">
-              <span className="text-base text-[#616161]">
+              <span className="text-base text-[#616161] dark:text-[var(--dark-gray-700)]">
                 {selectedIndex.length === options.length
                   ? '매일'
                   : selectedIndex.length > 0
@@ -101,7 +101,7 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
           <div className="inline-flex w-fit items-center gap-2 self-center">
             <div className="relative w-[150px]">
               <WeekPicker onChange={setSelectedWeek} />
-              <span className="pointer-events-none absolute right-[0px] bottom-[131px] translate-x-[60px] -translate-y-1/2 text-base">
+              <span className="pointer-events-none absolute right-[0px] bottom-[131px] translate-x-[60px] -translate-y-1/2 text-base dark:text-[var(--dark-gray-700)]">
                 주마다
               </span>
             </div>
@@ -109,7 +109,7 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
 
           {/* 확인 버튼 */}
           <button
-            className={`-mt-5 rounded-lg py-4 text-lg font-semibold text-white transition-colors ${selectedIndex.length === 0
+            className={`-mt-5 rounded-lg py-4 text-lg font-semibold text-white transition-colors dark:text-[var(--dark-bg-primary)] ${selectedIndex.length === 0
               ? 'bg-[#E0E0E0]'
               : 'cursor-pointer bg-[#FFB84C]'
               }`}

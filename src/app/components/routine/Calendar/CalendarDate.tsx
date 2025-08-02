@@ -84,7 +84,7 @@ export default function CalendarDate({
               className={`flex h-9 w-9 items-center justify-center rounded-full ${isBefore(date, today)
                 ? 'cursor-auto opacity-15'
                 : isSameDay(selectedDate, date)
-                  ? 'cursor-pointer bg-[#FFB84C] text-white'
+                  ? 'cursor-pointer bg-[#FFB84C] text-white dark:text-[var(--dark-bg-primary)]'
                   : 'cursor-pointer'
                 }`}
               type="button"

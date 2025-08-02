@@ -44,11 +44,11 @@ export default function CalendarBottomSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/70"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222] dark:bg-[var(--dark-gray-200)]/50"
       onClick={() => setIsOpen(false)}
     >
       <div
-        className="relative h-[600px] w-full max-w-[614px] rounded-t-2xl bg-white px-6 py-6"
+        className="relative h-[600px] w-full max-w-[614px] rounded-t-2xl bg-white px-6 py-6 dark:bg-[var(--dark-bg-primary)]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mt-3 mb-11 flex w-full items-center justify-between">
@@ -85,7 +85,7 @@ export default function CalendarBottomSheet({
           prev2Label={null}
           next2Label={null}
           formatDay={(_, date) => String(date.getDate())}
-          className="custom-calendar text-[16px]"
+          className="custom-calendar text-[16px] dark:bg-[var(--dark-bg-primary)]"
         />
       </div>
     </div>

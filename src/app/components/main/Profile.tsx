@@ -74,7 +74,7 @@ export default function Profile() {
 
   if (profileLoading || pointLoading || characterLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-[var(--dark-bg-primary)]">
         <LoadingSpinner />
       </div>
     );

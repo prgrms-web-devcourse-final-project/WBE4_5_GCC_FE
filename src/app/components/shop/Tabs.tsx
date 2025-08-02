@@ -6,8 +6,8 @@ export default function Tabs({
   tabs,
   selectedTab,
   setSelectedTab,
-  activeTab = 'border-[1.5px] border-[#FFB84C] bg-[#FFB84C] text-white shadow-sm',
-  inactiveTab = 'border border-[#E0E0E0] bg-[#F9F9F9] text-[#AAAAAA]',
+  activeTab = 'border-[1.5px] border-[#FFB84C] bg-[#FFB84C] text-white shadow-sm dark:text-[var(--dark-bg-primary)]',
+  inactiveTab = 'border border-[#E0E0E0] bg-white dark:bg-[var(--dark-bg-primary)] text-[#AAAAAA]',
   className,
 }: {
   tabs: string[];

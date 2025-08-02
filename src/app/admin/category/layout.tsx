@@ -55,13 +55,13 @@ function Header() {
       : '카테고리 관리';
 
   return (
-    <header className="relative flex w-full items-center justify-between border-b border-[#CCCCCC] px-3 py-4">
+    <header className="relative flex w-full items-center justify-between border-b border-[#cccccc] px-3 py-4">
       <ChevronLeft
-        className="h-auto w-6 text-[#222222]"
+        className="h-auto w-6 text-[#222222] dark:text-[var(--dark-gray-700)]"
         strokeWidth={2}
         onClick={router.back}
       />
-      <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222]">
+      <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
         {pageTitle}
       </div>
       <div className="text-medium flex gap-[7px] text-sm text-[#616161]">
