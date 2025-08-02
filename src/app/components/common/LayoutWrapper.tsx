@@ -24,6 +24,9 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
     '/find-password/reset',
     '/collection',
     // '/admin',
+    '/routine/add-routine',
+    '/routine/edit-category',
+    '/routine/add-category',
   ];
 
   const isMypageSubRoute =
@@ -40,14 +43,10 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
     !isAdminSubRoute;
 
   return (
-    <>
-      <div className="mx-auto max-w-[640px] border-[#e0e0e0]">
-        <Header />
-        <main className="bg-[#F8F5F1] dark:bg-[var(--dark-bg-secondary)]">
-          {children}
-        </main>
-        {showBottomNav && <BottomNav />}
-      </div>
-    </>
+    <div className="w-full max-w-[614px] mx-auto bg-white min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-grow overflow-auto dark:bg-[var(--dark-bg-secondary)]">{children}</main>
+      {showBottomNav && <BottomNav />}
+    </div>
   );
 }

@@ -1,33 +1,38 @@
 'use client';
+export const dynamic = 'force-dynamic';
+
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { format, startOfWeek } from 'date-fns';
+
 import CalendarBar from '@/app/components/routine/CalendarBar';
 import ProgressBar from '@/app/components/common/ProgressBar';
 import Routine from '@/app/components/routine/Routine';
 import CalendarBottomSheet from '@/app/components/routine/CalendarBottomSheet';
+import AlertModal from '@/app/components/common/alert/AlertModal';
+
 import { DayRoutine } from '../../../../types/routine';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
-import AlertModal from '@/app/components/common/alert/AlertModal';
-import { format, startOfWeek } from 'date-fns';
-import {
-  useDeleteRoutine,
-  useHandleRoutine,
-} from '@/api/routine/handleRoutine';
+import { useDeleteRoutine, useHandleRoutine } from '@/api/routine/handleRoutine';
 import { useRoutineStore } from '@/store/RoutineStore';
 
 export default function Page() {
   const router = useRouter();
+
   const [isOpen, setIsOpen] = useState(false);
   const [checkDelete, setCheckDelete] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
-  const dateStr: string = format(selectedDate, 'yyyy-MM-dd');
-  const date = dateStr ? new Date(dateStr) : new Date();
+
+  const dateStr = format(selectedDate, 'yyyy-MM-dd');
+  const date = new Date(dateStr);
   const monday = startOfWeek(date, { weekStartsOn: 1 });
   const mondayStr = format(monday, 'yyyy-MM-dd');
+
   const { data: weekData, isPending } = useWeekRoutine(dateStr);
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[dateStr] ?? [];
+
   const total = filteredRoutines.length;
   const done = filteredRoutines.filter((r) => r.isDone).length;
   const percent = total ? Math.round((done / total) * 100) : 0;
@@ -39,129 +44,101 @@ export default function Page() {
     router.push('/routine/add-routine');
   };
 
-  const goToToday = () => {
-    const today = new Date();
-    setSelectedDate(today);
-  };
+  // const goToToday = () => {
+  //   setSelectedDate(new Date());
+  // };
 
-  const isToday = selectedDate.toDateString() === new Date().toDateString();
+  // const isToday = selectedDate.toDateString() === new Date().toDateString();
 
   return (
     <>
-      <div className="flex min-h-screen flex-col items-center overflow-scroll px-5 pt-4 pb-60">
-        {isPending && (
-          <div className="flex w-full max-w-md flex-col gap-6">
-            <div className="flex w-full max-w-md flex-col gap-5 rounded-[10px] bg-white px-5 py-4 dark:bg-[var(--dark-bg-primary)]">
-              <div className="h-[28px] w-[110px] animate-pulse rounded-[10px] bg-gray-200"></div>
-              <div className="flex justify-between">
-                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
-                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
-                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
-                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
-                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
-                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
-                <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
-              </div>
-            </div>
+      <div className="flex min-h-screen w-full flex-col items-center bg-white">
+        <CalendarBar
+          setIsOpen={setIsOpen}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+        />
 
-            <div className="flex w-full max-w-md flex-col gap-4 rounded-[10px] bg-white px-5 py-4 pb-11 dark:bg-[var(--dark-bg-primary)]">
-              <div className="h-[27px] w-[146px] animate-pulse rounded-[10px] bg-gray-200"></div>
-              <div className="h-[24px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+        <div className="w-full max-w-[614px] flex-1 px-6 pb-[120px]">
+          {isPending ? (
+            <div className="flex flex-col gap-5 mt-8 animate-pulse">
+              {Array.from({ length: 6 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="h-[96px] w-full rounded-[12px] bg-gray-200"
+                />
+              ))}
             </div>
-          </div>
-        )}
-        {!isPending && (
-          <div className="flex min-h-screen w-full max-w-md flex-col items-center rounded-[10px] bg-white p-4 dark:bg-[var(--dark-bg-primary)]">
-            <CalendarBar
-              setIsOpen={setIsOpen}
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-            />
-            <div className="mb-6 flex w-full flex-col justify-start space-y-4.5 select-none">
-              <div className="flex items-center justify-between">
-                <span className="text-xl font-semibold dark:text-[var(--dark-gray-700)]">
-                  {selectedDate instanceof Date
-                    ? `${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`
-                    : ''}
+          ) : (
+            <>
+              <div className="mt-8 mb-6 flex items-center justify-between">
+                <span className="text-2xl font-medium dark:text-[var(--dark-gray-700)]">
+                  {format(selectedDate, 'yyyy년 M월 d일')}
                 </span>
-                {!isToday && (
+                {/* {!isToday && (
                   <button
-                    className="cursor-pointer rounded-[5px] border border-[#ffb84c] bg-[#ffb84c] px-2 py-1 text-[12px] text-white dark:text-[var(--dark-bg-primary)]"
                     onClick={goToToday}
+                    className="rounded-md border border-[#FFB84C] bg-[#FFB84C] px-3 py-1.5 text-base text-white"
                   >
                     Today
                   </button>
-                )}
+                )} */}
               </div>
+
               <ProgressBar
                 currentStep={done}
                 totalSteps={total}
                 per={`${percent}%`}
-                wrapperClassName="h-6 bg-[#ffb84c]/25 mb-0 text-white"
-                barClassName="h-6 bg-[#ffb84c] rounded-full text-white text-xs flex items-center justify-center"
+                wrapperClassName="h-10 bg-[#FFB84C]/20 mb-8"
+                barClassName="h-10 bg-[#FFB84C] rounded-full text-white text-xl font-bold flex items-center justify-center text-center leading-[2.75rem]"
               />
-            </div>
 
-            {filteredRoutines && filteredRoutines.length > 0 ? (
-              <div className="flex w-full flex-col space-y-3">
-                {filteredRoutines.map((routine: DayRoutine) => (
-                  <Routine
-                    key={`${routine.routineId}-${routine.scheduleId}`}
-                    title={routine.name}
-                    category={routine.majorCategory}
-                    time={routine.triggerTime}
-                    isImportant={routine.isImportant}
-                    isCompleted={routine.isDone}
-                    onClick={() =>
-                      mutate({
-                        scheduleId: routine.scheduleId,
-                        isDone: !routine.isDone,
-                      })
-                    }
-                    onEditClick={() => {
-                      useRoutineStore.getState().setRoutine({
-                        routineId: routine.routineId,
-                        scheduleId: routine.scheduleId,
-                        categoryId: routine.categoryId,
-                        majorCategory: routine.majorCategory,
-                        subCategory: routine.subCategory,
-                        name: routine.name,
-                        triggerTime: routine.triggerTime,
-                        isDone: routine.isDone,
-                        isImportant: routine.isImportant,
-                        date: routine.date,
-                        initDate: routine.initDate,
-                        repeatType: routine.repeatType,
-                        repeatValue: routine.repeatValue,
-                        repeatTerm: routine.repeatTerm,
-                      });
-                    }}
-                    onDeleteClick={() => {
-                      setCheckDelete(true);
-                      setDeleteTargetId(routine.routineId);
-                    }}
-                    scheduleId={routine.scheduleId}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="mt-10 text-center text-gray-400 select-none">
-                해당 날짜에 루틴이 없습니다.
-              </div>
-            )}
+              {filteredRoutines.length > 0 ? (
+                <div className="flex flex-col space-y-5">
+                  {filteredRoutines.map((routine) => (
+                    <Routine
+                      key={`${routine.routineId}-${routine.scheduleId}`}
+                      title={routine.name}
+                      category={routine.majorCategory}
+                      time={routine.triggerTime}
+                      isImportant={routine.isImportant}
+                      isCompleted={routine.isDone}
+                      onClick={() =>
+                        mutate({
+                          scheduleId: routine.scheduleId,
+                          isDone: !routine.isDone,
+                        })
+                      }
+                      onEditClick={() => {
+                        useRoutineStore.getState().setRoutine({ ...routine });
+                      }}
+                      onDeleteClick={() => {
+                        setCheckDelete(true);
+                        setDeleteTargetId(routine.routineId);
+                      }}
+                      scheduleId={routine.scheduleId}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center mt-32 text-center text-gray-400 select-none">
+                  <span className="text-xl font-medium">루틴이 없습니다 😢</span>
+                  <span className="text-base mt-2">
+                    오른쪽 아래 버튼으로 루틴을 추가해보세요!
+                  </span>
+                </div>
+              )}
+            </>
+          )}
+        </div>
 
-            <button
-              className="fixed right-0 bottom-25 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333] dark:bg-[var(--dark-gray-200)] hover:dark:bg-[var(--dark-bg-tertiary)]"
-              onClick={handleAddRoutine}
-            >
-              <Plus className="h-[30px] w-[30px] text-white dark:text-[var(--dark-bg-primary)]" />
-            </button>
-          </div>
+        {!isPending && (
+          <button
+            onClick={handleAddRoutine}
+            className="fixed bottom-24 right-6 z-50 flex h-[64px] w-[64px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333] dark:bg-[var(--dark-gray-200)] hover:dark:bg-[var(--dark-bg-tertiary)]"
+          >
+            <Plus className="h-7 w-7 text-white dark:text-[var(--dark-bg-primary)]" />
+          </button>
         )}
       </div>
 
@@ -173,6 +150,7 @@ export default function Page() {
           setSelectedDate={setSelectedDate}
         />
       )}
+
       {checkDelete && (
         <AlertModal
           type="delete"

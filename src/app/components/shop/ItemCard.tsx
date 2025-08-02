@@ -20,61 +20,57 @@ export default function ItemCard({
   isOwned = false,
 }: ItemCardProps) {
   return (
-    <>
-      <div
-        className={clsx(
-          'relative flex aspect-[92/128] h-[140px] min-w-[92px] flex-col rounded-[5px] border-1 border-[#d9d9d9] shadow-[1px_2px_4px_rgba(0,0,0,0.1)] dark:bg-[var(--dark-white)]/37',
-          isOwned ? 'cursor-default' : 'cursor-pointer',
+    <div
+      className={clsx(
+        'relative flex h-[220px] w-[170px] flex-col rounded-xl border border-[#d9d9d9] bg-white shadow-[1px_2px_4px_rgba(0,0,0,0.1)] dark:bg-[var(--dark-white)]/37',
+        isOwned ? 'cursor-default' : 'cursor-pointer'
+      )}
+      onClick={onClick}
+    >
+      {isDeleteMode && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onDeleteClick) onDeleteClick(item);
+          }}
+          className="absolute top-[-8px] right-[-8px] z-10 flex h-6 w-6 items-center justify-center rounded-full bg-[#E0E0E0]"
+        >
+          <X className="h-auto w-4 text-[#616161]" strokeWidth={2} />
+        </button>
+      )}
+
+      <div className="flex h-[100px] items-center justify-center py-5 px-5">
+        {item.itemKey && (
+          <Image
+            src={`/images/items/thumbs/${item.itemKey}.png`}
+            alt={item.itemName}
+            width={80}
+            height={80}
+            className="h-[70px] w-[70px]"
+            priority
+          />
         )}
-        onClick={onClick}
-      >
-        {isDeleteMode && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onDeleteClick) onDeleteClick(item as ShopItem);
-            }}
-            className="absolute top-[-6px] right-[-6px] z-10 flex h-5 w-5 items-center justify-center rounded-full bg-[#e0e0e0]"
-          >
-            <X className="h-auto w-[10px] text-[#616161]" strokeWidth={2} />
-          </button>
-        )}
-        <div className="flex h-[65px] place-items-center py-3 pr-5 pl-6">
-          {item.itemKey && (
-            <Image
-              src={`/images/items/thumbs/${item.itemKey}.png`}
-              alt={item.itemName}
-              width={50}
-              height={44}
-              className="h-[44px] w-[50px]"
-              priority
-            />
-          )}
-        </div>
-        <div className="border-t-[0.5px] border-[#e0e0e0] px-[9px] py-[6px] text-left">
-          <div className="text-[8px] font-medium dark:text-[var(--dark-white)]">
-            {item.itemName}
-          </div>
-          <div className="h-[21px] text-[7px] font-medium text-[#616161] dark:text-[var(--dark-gray-300)]">
-            {item.itemDescription || '아이템 설명이 없어요'}
-          </div>
-          {/* 포인트 박스 / 보유 중 */}
-          {isOwned ? (
-            <div className="mt-[5px] flex h-5 w-full cursor-default items-center justify-center rounded-[6px] border-1 border-[#ffb84c] bg-[#ffb84c] py-[2px] text-[8px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
-              보유 중
-            </div>
-          ) : (
-            <div className="mt-[5px] flex h-5 w-full items-center justify-between rounded-[6px] border-1 border-[#cfcfcf] py-[2px] pr-[14px] pl-[6px] dark:bg-[var(--dark-white)]">
-              <Image src={coin} alt="coin" className="h-[15px] w-[15px]" />
-              <span className="text-[12px] text-[#ffb84c]">
-                {item.itemPoint != null
-                  ? `${item.itemPoint}`
-                  : `${item.itemPrice}`}
-              </span>
-            </div>
-          )}
-        </div>
       </div>
-    </>
+
+      <div className="border-t border-[#E0E0E0] px-3 py-2 text-left">
+        <div className="mt-1 text-[14px] font-semibold leading-tight line-clamp-1 dark:text-[var(--dark-white)]">{item.itemName}</div>
+        <div className="mt-1 h-[30px] text-[12px] font-medium leading-snug text-[#616161] overflow-hidden text-ellipsis line-clamp-2 dark:text-[var(--dark-gray-300)]">
+          {item.itemDescription || '아이템 설명이 없어요'}
+        </div>
+
+        {isOwned ? (
+          <div className="mt-4 flex h-7 w-full items-center justify-center rounded-md border border-[#FFB84C] bg-[#FFB84C] text-[12px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
+            보유 중
+          </div>
+        ) : (
+          <div className="mt-4 flex h-7 w-full items-center justify-between rounded-md border border-[#cfcfcf] pr-3 pl-2 dark:bg-[var(--dark-white)]">
+            <Image src={coin} alt="coin" className="h-5 w-4" />
+            <span className="text-[12px] font-semibold text-[#FFB84C]">
+              {item.itemPoint != null ? `${item.itemPoint}` : `${item.itemPrice}`}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

@@ -66,11 +66,11 @@ export default function CategoryBottomSheetContainer({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222] dark:bg-[var(--dark-bg-primary)]/30"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50"
       onClick={handleOutsideClick}
     >
       <div
-        className="min-h-[490px] w-full rounded-t-[24px] bg-white px-4 pt-8 pb-16 dark:bg-[var(--dark-bg-secondary)]"
+        className="min-h-[490px] w-full max-w-[614px] rounded-t-[24px] bg-white px-4 pt-8 pb-16 dark:bg-[var(--dark-bg-secondary)]"
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
         <BottomSheetHeader
@@ -100,7 +100,7 @@ export default function CategoryBottomSheetContainer({
               onClick={handleOutsideClick}
             >
               <div
-                className="fixed bottom-0 w-full rounded-t-[24px] bg-white px-4 pt-8 dark:bg-[var(--dark-bg-primary)]"
+                className="fixed bottom-0 w-full max-w-[614px] rounded-t-[24px] bg-white px-4 pt-8 dark:bg-[var(--dark-bg-primary)]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="mb-[18px] flex items-center justify-between">
@@ -114,7 +114,7 @@ export default function CategoryBottomSheetContainer({
                   </div>
                   <button
                     onClick={handleEditClick}
-                    className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9e9e9e]"
+                    className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9E9E9E]"
                   >
                     <PencilLine className="size-3" />
                     편집
