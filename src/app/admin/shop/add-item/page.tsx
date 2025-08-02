@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { ImagePlus } from 'lucide-react';
 import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -26,6 +27,7 @@ export default function AddItem() {
   const [itemPrice, setItemPrice] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isListed, setIsListed] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
 
   const [modalState, setModalState] = useState<{
@@ -101,9 +103,10 @@ export default function AddItem() {
   const handleSubmit = () => {
     addItemMutation.mutate({
       itemKey,
-      itemName,
-      price: Number(itemPrice),
       itemType,
+      itemName,
+      itemPrice: Number(itemPrice),
+      isListed,
       itemDescription,
     });
   };
@@ -114,7 +117,8 @@ export default function AddItem() {
     !itemKey ||
     !itemDescription ||
     !itemPrice ||
-    !imageFile;
+    !imageFile ||
+    !isListed;
 
   return (
     <div className="h-1vh flex flex-col gap-6 px-5 py-7">
@@ -224,10 +228,30 @@ export default function AddItem() {
         <h1>아이템 가격</h1>
         <Input
           type="number"
+          min={0}
           placeholder="ex) 500"
           value={itemPrice}
           onChange={(e) => setItemPrice(e.target.value)}
         />
+      </div>
+
+      {/* 리스트 여부 */}
+      <div className="relative mb-4">
+        <div className="flex flex-col gap-[10px]">
+          <h1>리스트 여부</h1>
+          <select
+            value={isListed.toString()}
+            className="h-12 w-full appearance-none rounded-lg border border-[#E0E0E0] px-4 py-2 pr-10 text-sm focus:outline-none"
+            onChange={(e) => setIsListed(e.target.value === 'true')}
+          >
+            <option value="true">true</option>
+            <option value="false">false</option>
+          </select>
+          <ChevronDown
+            className="h-[18px] w-[18px] text-[#616161] cursor-pointer absolute right-4 bottom-1 -translate-y-1/2"
+            strokeWidth={2}
+          />
+        </div>
       </div>
 
       {/* 등록 버튼 */}

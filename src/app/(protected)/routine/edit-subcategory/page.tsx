@@ -59,7 +59,7 @@ export default function Page() {
       setSelectedEmoji(target.emoji || icon || null);
       setSubCategories(target.children || []);
     }
-  }, [categories, categoryIdFromParams, icon]);
+  }, [categories, categoryIdFromParams, icon, labelFromParams]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -107,7 +107,7 @@ export default function Page() {
   });
 
   const originalParent = categories.find(
-    (cat) => String(cat.categoryId) === categoryIdFromParams
+    (cat) => String(cat.categoryId) === categoryIdFromParams,
   );
 
   console.log('원본 부모:', originalParent);

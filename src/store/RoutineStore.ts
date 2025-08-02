@@ -17,6 +17,7 @@ export interface RoutineItem {
   initDate: string;
   repeatType: string;
   repeatValue: string;
+  repeatTerm: number;
 }
 
 interface RoutineStore extends RoutineItem {
@@ -40,6 +41,7 @@ export const useRoutineStore = create<RoutineStore>()(
       initDate: '',
       repeatType: '',
       repeatValue: '',
+      repeatTerm: 1,
       setRoutine: (routine: RoutineItem) => set(() => ({ ...routine })),
       resetRoutine: () =>
         set(() => ({
@@ -56,6 +58,7 @@ export const useRoutineStore = create<RoutineStore>()(
           initDate: '',
           repeatType: '',
           repeatValue: '',
+          repeatTerm: 1,
         })),
     }),
     { name: 'routine-storage' },

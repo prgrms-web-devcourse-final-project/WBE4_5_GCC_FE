@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ShopItem } from '../../../../types/general';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { AdminItems, DeleteAdminItemByKey } from '@/api/admin/adminItems';
+import { AdminItems, DeleteAdminItemById } from '@/api/admin/adminItems';
 
 import Tabs from '@/app/components/shop/Tabs';
 import ItemCard from '@/app/components/shop/ItemCard';
-import { Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import AlertModal from '@/app/components/common/alert/AlertModal';
 import LoadingSpinner from '@/app/components/common/ui/LoadingSpinner';
 
@@ -50,9 +50,9 @@ export default function AdminShop() {
 
   // 아이템 삭제
   const deleteItemMutation = useMutation({
-    mutationFn: DeleteAdminItemByKey,
+    mutationFn: DeleteAdminItemById,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['delete-admin-items'] }); // 삭제 후 목록 갱신
+      queryClient.invalidateQueries({ queryKey: ['admin-items'] }); // 삭제 후 목록 갱신
     },
     onError: (error) => {
       console.error('삭제 실패', error);
@@ -92,7 +92,7 @@ export default function AdminShop() {
           )}
         </div>
 
-        <div className="w-full min-w-[350px] rounded-tl-none rounded-tr-lg rounded-b-lg border-1 border-[#d9d9d9] px-4 py-6">
+        <div className="w-full min-w-[350px] bg-white rounded-tl-none rounded-tr-lg rounded-b-lg border-1 border-[#d9d9d9] px-4 py-6">
           <div className="grid w-full grid-cols-3 place-items-center gap-3">
             {/* 아이템 등록 버튼 */}
             <button
@@ -142,7 +142,7 @@ export default function AdminShop() {
             cancelText="취소"
             // 아이템 삭제 후 전체 목록 새로 불러오기
             onConfirm={() => {
-              deleteItemMutation.mutate(deleteModal.item!.itemKey);
+              deleteItemMutation.mutate(deleteModal.item!.itemId);
               setDeleteModal({ isOpen: false, item: null });
             }}
             onCancel={() => setDeleteModal({ isOpen: true, item: null })}

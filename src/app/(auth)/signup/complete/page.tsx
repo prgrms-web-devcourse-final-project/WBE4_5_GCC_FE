@@ -1,6 +1,5 @@
 'use client';
 
-import { signIn } from '@/api/auth';
 import { useSignUpStore } from '@/store/SignupStore';
 import { useRouter } from 'next/navigation';
 import LottieAnimation from '@/app/components/common/LottieAnimation';
@@ -8,10 +7,8 @@ import LottieAnimation from '@/app/components/common/LottieAnimation';
 export default function SignUpComplete() {
   const router = useRouter();
   const userEmail = useSignUpStore((state) => state.email);
-  const userPassword = useSignUpStore((state) => state.password);
 
   const logInHandler = async () => {
-    await signIn(userEmail, userPassword);
     if (userEmail === 'admin@test.com') {
       router.push('/admin');
     } else {
