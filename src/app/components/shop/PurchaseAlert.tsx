@@ -21,7 +21,7 @@ export default function PurchaseAlert({
   if (!isOpen) return null;
 
   const message =
-    type === 'success' ? '구매가 완료되었습니다!' : '포인트가 부족합니다. 😢';
+    type === 'success' ? '구매가 완료되었습니다!' : '포인트가 부족합니다 😢';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222]/50">

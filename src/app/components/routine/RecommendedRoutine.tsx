@@ -36,13 +36,13 @@ export default function RecommendedRoutine({
 }: RecommendedRoutineProps) {
   return (
     <div className="flex w-full flex-col gap-2 rounded-lg border border-[#E0E0E0] bg-white px-4 py-4">
-      <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
-        <span>🐣</span>
+      <div className="flex items-center gap-3 text-base font-semibold text-[#222222]">
+        <span className="text-base">🐣</span>
         <span>입문자를 위한 추천 루틴</span>
       </div>
 
       {isLoading && (
-        <div className="flex items-start px-5 text-left text-xs text-[#9e9e9e]">
+        <div className="flex items-start px-5 text-left text-base text-[#9e9e9e]">
           추천 루틴을 불러오는 중입니다
         </div>
       )}
@@ -77,7 +77,7 @@ export default function RecommendedRoutine({
         </div>
       )}
       {!routines && !isLoading && (
-        <div className="flex flex-col items-start px-5 text-left text-xs">
+        <div className="flex flex-col items-start px-8 text-left text-sm">
           <span className="text-[#9E9E9E]">
             카테고리를 선택하면 추천 루틴을 볼 수 있어요!
           </span>

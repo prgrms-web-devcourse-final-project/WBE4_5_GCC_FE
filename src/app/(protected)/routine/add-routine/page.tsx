@@ -138,7 +138,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-1vh flex flex-col px-5 py-7">
+      <div className="flex flex-col px-5 py-10">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col">
             <CategorySelector
@@ -150,7 +150,7 @@ export default function Page() {
             />
             <InputRoutineName
               icon="🌱"
-              label="루틴이름"
+              label="루틴 이름"
               placeholder="ex) 변기 청소하기"
               value={routineName}
               onChange={(e) => setRoutineName(e.target.value)}
@@ -200,7 +200,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="fixed right-5 bottom-[120px] left-5">
+        <div className="fixed bottom-[70px] left-1/2 -translate-x-1/2 w-full max-w-[614px] px-5">
           <Button
             type="submit"
             disabled={!isSubmitEnabled}
@@ -218,10 +218,12 @@ export default function Page() {
                 },
               });
             }}
+            className="w-full py-8 text-xl font-semibold rounded-lg"
           >
             확인
           </Button>
         </div>
+
 
         {showCatModal && (
           <CategoryBottomSheetContainer

@@ -12,17 +12,19 @@ export default function BottomSheetHeader({
   onEdit,
 }: BottomSheetHeaderProps) {
   return (
-    <div className="mb-[18px] flex items-center justify-between">
-      <div className="flex items-center gap-2">
-        <span className="text-[18px]">{emoji || '🏷️'}</span>
-        <h2 className="text-base font-semibold text-black">{title}</h2>
+    <div
+      className="mb-6 flex items-center justify-between max-w-[614px] w-full"
+    >
+      <div className="flex items-center gap-3 min-w-0">
+        <span className="text-2xl flex-shrink-0">{emoji || '🏷️'}</span>
+        <h2 className="text-lg font-semibold text-black truncate">{title}</h2>
       </div>
 
       <button
         onClick={onEdit}
-        className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9E9E9E]"
+        className="flex flex-shrink-0 cursor-pointer items-center gap-2 text-base text-[#9E9E9E]"
       >
-        <PencilLine className="size-3" />
+        <PencilLine size={18} />
         편집
       </button>
     </div>

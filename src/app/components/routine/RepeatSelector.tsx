@@ -29,11 +29,11 @@ export default function RepeatSelector({
       <BottomSheet
         setIsOpen={onClose}
         isOpen={isOpen}
-        className="max-h-[588px] px-5 py-8"
+        className="max-h-[660px] max-w-[614px] w-full px-5 py-8"
       >
-        <div className="mb-4.5 flex items-center justify-start gap-2">
-          <h2 className="text-xl font-semibold">♾️</h2>
-          <h2 className="text-base font-semibold text-black">반복주기</h2>
+        <div className="mb-6 flex items-center justify-start gap-3 text-xl font-semibold">
+          <h2>♾️</h2>
+          <h2>반복주기</h2>
         </div>
         <div className="mx-auto flex flex-col">
           <ThreeToggle

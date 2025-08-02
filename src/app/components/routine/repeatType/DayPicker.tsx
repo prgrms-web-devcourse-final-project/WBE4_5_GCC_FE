@@ -1,11 +1,12 @@
+'use client';
+
 import { useState } from 'react';
 import Picker from 'react-mobile-picker';
 
-// 반복주기 (주선택)
 export default function DayPicker({
   onChange,
 }: {
-  onChange?: (selectedWeek: string) => void;
+  onChange?: (selectedDay: string) => void;
 }) {
   const [value, setValue] = useState({
     days: '1',
@@ -19,24 +20,26 @@ export default function DayPicker({
   };
 
   return (
-    <>
-      <div>
-        <Picker value={value} onChange={handleChange} wheelMode="normal">
-          <Picker.Column name="days">
-            {days.map((day) => (
-              <Picker.Item key={day} value={day}>
-                <span
-                  className={`transition-all duration-200 ${
-                    day === value.days ? '' : 'text-[#9E9E9E]'
-                  }`}
-                >
-                  {day}
-                </span>
-              </Picker.Item>
-            ))}
-          </Picker.Column>
-        </Picker>
-      </div>
-    </>
+    <div className="h-[230px] w-[190px] text-center">
+      <Picker
+        value={value}
+        onChange={handleChange}
+        wheelMode="normal"
+        height={150}
+        itemHeight={48}
+      >
+        <Picker.Column name="days">
+          {days.map((day) => (
+            <Picker.Item key={day} value={day}>
+              <span
+                className={`text-lg font-semibold transition-all duration-200 ${day === value.days ? 'text-black' : 'text-[#BDBDBD]'}`}
+              >
+                {day}
+              </span>
+            </Picker.Item>
+          ))}
+        </Picker.Column>
+      </Picker>
+    </div>
   );
 }

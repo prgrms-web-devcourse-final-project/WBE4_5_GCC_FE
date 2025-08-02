@@ -64,9 +64,7 @@ export default function Profile() {
       }
     });
 
-    // api 호출 시 아이템 비교용
     setEquippedItem(initSelected);
-    // 로딩 시 장작된 아이템 저장하기
   }, [itemData]);
 
   const nickname = profileData?.member?.nickname ?? '익명';
@@ -83,24 +81,24 @@ export default function Profile() {
   }
 
   return (
-    <div className="relative z-0 flex h-[167px] w-full overflow-hidden rounded-[10px]">
-      <div className="absolute inset-0 z-10 rounded-[10px] bg-[#1E1E1E]/40" />
+    <div className="relative z-0 flex h-[200px] w-full max-w-[614px] overflow-hidden rounded-[14px]">
+      <div className="absolute inset-0 z-10 rounded-[14px] bg-[#1E1E1E]/40" />
 
       <Image
         src={profileBg2}
         alt="bg"
         fill
         priority
-        className="object-fill brightness-90"
+        className="object-fill brightness-90 rounded-[14px]"
       />
 
-      <div className="relative z-20 flex items-center px-3">
-        <div className="relative h-[130px] w-[130px] flex-shrink-0">
+      <div className="relative z-20 flex items-center px-6">
+        <div className="relative h-[160px] w-[160px] flex-shrink-0">
           <Image
             src="/images/mainCharacter.png"
             alt="기본 캐릭터"
-            width={130}
-            height={130}
+            width={160}
+            height={160}
             priority
             className="object-contain"
           />
@@ -108,35 +106,35 @@ export default function Profile() {
             <Image
               src={`/images/items/${equippedItem.TOP.itemKey}.png`}
               alt="상의"
-              width={130}
-              height={130}
+              width={160}
+              height={160}
               className="absolute top-0 object-contain"
             />
           )}
         </div>
 
-        <div className="flex flex-col">
-          <div className="mb-[2px] flex items-center gap-[8px]">
+        <div className="ml-6 flex flex-col">
+          <div className="mb-2 flex items-center gap-2">
             <Image
               src={`/images/badges/${badgeKey}.svg`}
               alt="badge"
-              width={12}
-              height={15}
+              width={16}
+              height={20}
             />
-            <span className="text-[14px] font-semibold text-[#FFF8E7]">
+            <span className="text-[16px] font-semibold text-[#FFF8E7]">
               {badgeName}
             </span>
           </div>
 
-          <div className="mb-[10px]">
-            <span className="text-[20px] font-bold text-[#FFF8E7] drop-shadow-[1px_1px_2px_rgba(0,0,0,0.6)]">
+          <div className="mb-4">
+            <span className="text-[28px] font-bold text-[#FFF8E7] drop-shadow-[1px_1px_2px_rgba(0,0,0,0.6)]">
               {nickname}
             </span>
           </div>
 
-          <div className="relative mt-3 flex h-[32px] w-[90px] items-center gap-1 rounded-[6px] bg-[#000000]/70 px-2">
-            <Image src={coin} alt="coin" className="h-[18px] w-[18px]" />
-            <span className="ml-auto text-[15px] text-[#FFB84C]">{point}</span>
+          <div className="relative flex h-[40px] w-[110px] items-center gap-2 rounded-[8px] bg-[#000000]/70 px-3">
+            <Image src={coin} alt="coin" className="h-[22px] w-[22px]" />
+            <span className="ml-auto text-[18px] text-[#FFB84C]">{point}</span>
           </div>
         </div>
       </div>

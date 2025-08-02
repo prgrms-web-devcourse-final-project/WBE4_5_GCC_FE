@@ -21,21 +21,20 @@ export default function Monthly({ onSubmit, onClose }: MonthlyProps) {
   return (
     <>
       <div className="mx-[5px] my-[27px] flex min-h-[588px] flex-col">
-        <span className="text-sm font-semibold">매월 n일 마다</span>
-        <div className="flex justify-center">
-          <div className="relative w-[150px]">
-            <span className="pointer-events-none absolute top-[108px] left-[-50px] translate-x-[60px] -translate-y-1/2 text-sm">
+        <span className="text-lg font-semibold mt-1 mb-8">매월 n일 마다</span>
+        <div className="mx-auto flex justify-center max-w-[614px]">
+          <div className="relative w-[180px]">
+            <span className="pointer-events-none absolute top-[33%] left-[-60px] -translate-y-1/2 text-lg font-medium">
               매월
             </span>
             <MonthPicker onChange={setSelectedDay} />
-            <span className="pointer-events-none absolute top-[108px] left-[50px] translate-x-[60px] -translate-y-1/2 text-sm">
+            <span className="pointer-events-none absolute top-[33%] right-[-60px] -translate-y-1/2 text-lg font-medium">
               일
             </span>
           </div>
         </div>
-        {/* 확인 버튼 */}
         <button
-          className="mt-[140px] rounded bg-[#FFB84C] px-4 py-2 text-white transition-colors"
+          className="mt-[101px] rounded-lg bg-[#FFB84C] py-4 text-lg font-semibold text-white transition-colors hover:bg-[#ffb74d] cursor-pointer"
           onClick={handleSubmit}
         >
           확인

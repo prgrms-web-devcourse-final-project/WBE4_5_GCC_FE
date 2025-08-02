@@ -19,23 +19,23 @@ export default function CategorySelector({
   const iconForValue = value?.categoryName && value.emoji;
 
   const categoryDisplay = value ? (
-    <span className="flex items-center gap-1">
+    <span className="flex items-center gap-1 text-base">
       <span>{value.categoryName}</span>
       {value.subCategoryName && (
         <>
-          <ChevronRight className="h-auto w-[11px] text-[#222222]" />
+          <ChevronRight className="h-auto w-[14px] text-[#222222]" />
           <span>{value.subCategoryName}</span>
         </>
       )}
     </span>
   ) : (
-    <span>{placeholder}</span>
+    <span className="text-base text-[#BDBDBD]">{placeholder}</span>
   );
 
   return (
-    <div className="flex h-12 w-full items-center justify-between rounded-t-lg border border-[#E0E0E0] px-4 py-4">
+    <div className="flex h-16 w-full max-w-[614px] items-center justify-between rounded-t-lg border border-[#E0E0E0] px-5 py-4">
       {/* 좌측 영역 */}
-      <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
+      <div className="flex items-center gap-3 text-base font-semibold text-[#222222]">
         <span>{icon}</span>
         <span>{label}</span>
       </div>
@@ -44,17 +44,16 @@ export default function CategorySelector({
       <button
         type="button"
         onClick={onClick}
-        className="flex items-center gap-2 text-xs text-[#9E9E9E]"
+        className="flex items-center gap-2 text-sm text-[#9E9E9E] cursor-pointer"
       >
         <span
-          className={`flex items-center gap-2 ${
-            value ? 'text-[#222222]' : 'text-[#9E9E9E]'
-          }`}
+          className={`flex items-center gap-2 ${value ? 'text-[#222222]' : 'text-[#c4c4c4]'
+            }`}
         >
-          <span>{iconForValue || ''}</span>
-          <span>{categoryDisplay}</span>
+          <span className="text-base">{iconForValue || ''}</span>
+          {categoryDisplay}
         </span>
-        <ChevronDown className="h-4 w-4" />
+        <ChevronDown className="h-4 w-auto text-[#9E9E9E]" />
       </button>
     </div>
   );

@@ -23,39 +23,42 @@ export default function WhenSelector({
     setValue(option);
     setTimeout(() => {
       setSelectedIdx('');
-      onSubmit(option); // 선택한 값 넘겨주기
-      onClose(); // 바텀시트 닫기
+      onSubmit(option);
+      onClose();
     }, 200);
   };
   return (
     <>
       <BottomSheet
-        className="max-h-[333px] px-5 py-8"
+        className="max-h-[360px] max-w-[614px] w-full px-6 py-10"
         isOpen={isOpen}
         setIsOpen={onClose}
       >
-        <div className="flex items-center justify-start gap-2">
-          <h2 className="text-lg font-semibold">✅</h2>
-          <h2 className="text-base font-semibold text-black">언제 할래요?</h2>
+        <div className="flex items-center justify-start gap-3 mb-6">
+          <h2 className="text-xl font-semibold">✅</h2>
+          <h2 className="text-lg font-semibold text-black">언제 할래요?</h2>
         </div>
         <Input
-          className="my-[18px] px-3"
+          className="my-5 px-4 py-3 text-base"
           placeholder="ex) 양치하자마자, 식사 직후, 씻고 난 후"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <div className="mb-11 flex flex-wrap gap-2.5">
+        <div className="mb-14 flex flex-wrap gap-4">
           {options.map((option, idx) => (
             <button
               key={idx}
               onClick={() => handleClick(option)}
-              className={`flex h-[30px] cursor-pointer items-center justify-center rounded-[50px] border border-[#E0E0E0] px-3.5 py-2 text-xs transition-colors duration-200 ${selectedIdx === option ? 'text-[#C4C4C4]' : ''}`}
+              className={`flex h-[36px] cursor-pointer items-center justify-center rounded-[50px] border border-[#E0E0E0] px-5 py-2 text-sm font-medium transition-colors duration-200 ${selectedIdx === option ? 'text-[#C4C4C4]' : ''
+                }`}
             >
               {option}
             </button>
           ))}
         </div>
-        <Button onClick={() => handleClick(value)}>확인</Button>
+        <Button className="text-lg py-3" onClick={() => handleClick(value)}>
+          확인
+        </Button>
       </BottomSheet>
     </>
   );

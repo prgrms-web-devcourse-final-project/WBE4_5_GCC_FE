@@ -104,7 +104,7 @@ export default function Page() {
   })();
 
   return (
-    <div className="-mt-10 bg-[#f5f5f5]">
+    <div className="bg-[#f5f5f5]">
       <div className="flex items-center justify-center gap-4 py-6 bg-[#fff]">
         <button onClick={() => moveWeek(-1)} aria-label="이전 주">
           <ChevronLeft size={24} />

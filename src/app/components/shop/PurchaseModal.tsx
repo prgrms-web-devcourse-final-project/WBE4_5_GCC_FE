@@ -30,7 +30,7 @@ export default function PurchaseModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222]/50">
-      <div className="h-fit w-[335px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[19px] text-center">
+      <div className="h-fit w-[390px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[22px] text-center">
         {/* 모달창 아이템 정보 */}
         <div className="flex flex-col items-center justify-center gap-4 px-5 py-3">
           <Image
@@ -42,8 +42,8 @@ export default function PurchaseModal({
             priority
           />
           <PointBox
-            width={64}
-            height={21}
+            width={90}
+            height={26}
             className="mb-4"
             coinWidth={13}
             coinHeight={13}
@@ -59,7 +59,7 @@ export default function PurchaseModal({
           {cancelText && (
             <button
               onClick={onCancel}
-              className="w-[57px] cursor-pointer text-sm text-[#909090]"
+              className="h-[33px] w-25 cursor-pointer rounded-[8px] border text-sm text-[#909090]"
             >
               {cancelText}
             </button>

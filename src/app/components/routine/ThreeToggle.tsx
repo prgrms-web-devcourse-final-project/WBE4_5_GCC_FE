@@ -23,17 +23,16 @@ export default function ThreeToggle({
           <button
             key={id}
             className={clsx(
-              'flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition-all',
+              'flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3 text-base font-semibold transition-all',
               isSelected
-                ? 'border border-[#FFB84C] bg-[#FFB84C] text-[#ffffff]'
-                : 'text-[#222222]',
-              !isSelected && 'border border-transparent',
-              locked && 'cursor-not-allowed',
+                ? 'border border-[#FFB84C] bg-[#FFB84C] text-white shadow-[0_0_6px_rgba(255,184,76,0.6)]'
+                : 'text-[#222222] border border-transparent hover:bg-[#FFF1D6]',
+              locked && 'cursor-not-allowed opacity-50',
             )}
             disabled={locked}
             onClick={() => !locked && setSelectedIdx(idx)}
           >
-            {locked && <Lock size={14} />}
+            {locked && <Lock size={16} />}
             {label}
           </button>
         );
