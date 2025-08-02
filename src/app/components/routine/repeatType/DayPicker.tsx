@@ -27,7 +27,9 @@ export default function DayPicker({
               <Picker.Item key={day} value={day}>
                 <span
                   className={`transition-all duration-200 ${
-                    day === value.days ? '' : 'text-[#9E9E9E]'
+                    day === value.days
+                      ? 'dark:text-[var(--dark-gray-700)]'
+                      : 'text-[#9e9e9e] dark:text-[var(--dark-bg-tertiary)]'
                   }`}
                 >
                   {day}

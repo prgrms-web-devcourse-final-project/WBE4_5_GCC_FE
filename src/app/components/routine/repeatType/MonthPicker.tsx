@@ -30,7 +30,9 @@ export default function MonthPicker({
               <Picker.Item key={week} value={week}>
                 <span
                   className={`transition-all duration-200 ${
-                    week === value.weeks ? '' : 'text-[#9E9E9E]'
+                    week === value.weeks
+                      ? 'dark:text-[var(--dark-gray-700)]'
+                      : 'text-[#9e9e9e] dark:text-[var(--dark-bg-tertiary)]'
                   }`}
                 >
                   {week}

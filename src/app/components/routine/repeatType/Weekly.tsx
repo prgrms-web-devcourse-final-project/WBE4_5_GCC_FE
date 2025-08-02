@@ -61,7 +61,9 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
       <div className="mx-[5px] flex min-h-[588px] flex-col">
         {/* 요일 선택 */}
         <div className="my-[27px] flex flex-col">
-          <span className="text-sm font-semibold">요일 선택</span>
+          <span className="text-sm font-semibold dark:text-[var(--dark-gray-700)]">
+            요일 선택
+          </span>
           <div className="mx-auto mt-[18px] mr-2 mb-[22px] ml-[18px] flex justify-between">
             {options.map((option, idx) => (
               <button
@@ -69,21 +71,23 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
                 onClick={() => toggleIndex(idx)}
                 className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-none text-xs transition-colors ${
                   selectedIndex.includes(idx)
-                    ? 'bg-[#FFB84C] text-white'
-                    : 'bg-[#F5F5F5] text-[#9E9E9E]'
+                    ? 'bg-[#ffb84c] text-white dark:text-[var(--dark-bg-primary)]'
+                    : 'bg-[#F5F5F5] text-[#9e9e9e] dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]'
                 } `}
               >
                 {option}
               </button>
             ))}
           </div>
-          <hr className="text-[#E0E0E0]" />
+          <hr className="text-[#e0e0e0]" />
         </div>
         <div className="flex flex-col">
           <div className="flex w-full">
-            <span className="text-sm font-semibold">반복주기</span>
+            <span className="text-sm font-semibold dark:text-[var(--dark-gray-700)]">
+              반복주기
+            </span>
             <div className="ml-auto flex items-center gap-1">
-              <span className="text-xs text-[#616161]">
+              <span className="text-xs text-[#616161] dark:text-[var(--dark-gray-700)]">
                 {selectedIndex.length === options.length
                   ? '매일'
                   : selectedIndex.length > 0
@@ -100,17 +104,17 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
           <div className="inline-flex w-fit items-center gap-2 self-center">
             <div className="relative w-[150px]">
               <WeekPicker onChange={setSelectedWeek} />
-              <span className="pointer-events-none absolute right-[60px] bottom-[87px] translate-x-[60px] -translate-y-1/2 text-sm">
+              <span className="pointer-events-none absolute right-[60px] bottom-[87px] translate-x-[60px] -translate-y-1/2 text-sm dark:text-[var(--dark-gray-700)]">
                 주마다
               </span>
             </div>
           </div>
           {/* 확인 버튼 */}
           <button
-            className={`mt-5 rounded px-4 py-2 text-white transition-colors ${
+            className={`mt-5 rounded px-4 py-2 text-white transition-colors dark:text-[var(--dark-bg-primary)] ${
               selectedIndex.length === 0
-                ? 'cursor-not-allowed bg-[#E0E0E0]'
-                : 'cursor-pointer bg-[#FFB84C]'
+                ? 'cursor-not-allowed bg-[#e0e0e0]'
+                : 'cursor-pointer bg-[#ffb84c]'
             }`}
             onClick={handleSubmit}
             disabled={selectedIndex.length === 0}

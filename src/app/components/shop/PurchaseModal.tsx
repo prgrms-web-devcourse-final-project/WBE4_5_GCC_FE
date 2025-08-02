@@ -29,8 +29,8 @@ export default function PurchaseModal({
   if (!isOpen || !item) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222]/50">
-      <div className="h-fit w-[335px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[19px] text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222] dark:bg-[var(--dark-gray-200)]/50">
+      <div className="h-fit w-[335px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[19px] text-center dark:bg-[var(--dark-bg-primary)]">
         {/* 모달창 아이템 정보 */}
         <div className="flex flex-col items-center justify-center gap-4 px-5 py-3">
           <Image
@@ -52,7 +52,7 @@ export default function PurchaseModal({
         </div>
 
         {/* 메시지 */}
-        <h2 className="mb-6 text-[18px] font-semibold text-[#222222]">
+        <h2 className="mb-6 text-[18px] font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
           {title}
         </h2>
         <div className="flex justify-center gap-[27px]">
@@ -66,7 +66,7 @@ export default function PurchaseModal({
           )}
           <button
             onClick={onConfirm}
-            className="h-[33px] w-25 cursor-pointer rounded-[8px] bg-[#FFB84C] text-sm font-semibold text-white"
+            className="h-[33px] w-25 cursor-pointer rounded-[8px] bg-[#ffb84c] text-sm font-semibold text-white dark:text-[var(--dark-bg-primary)]"
           >
             {confirmText}
           </button>

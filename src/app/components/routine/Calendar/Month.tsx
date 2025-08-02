@@ -79,7 +79,7 @@ export default function Month({
               isBefore(month, startOfMonth(today))
                 ? 'opacity-15'
                 : isSameMonth(viewDate, month)
-                  ? 'cursor-pointer bg-[#017BFC] text-white'
+                  ? 'cursor-pointer bg-[#017BFC] text-white dark:text-[var(--dark-bg-primary)]'
                   : 'cursor-pointer'
             }`}
             onClick={() => onChangeMonth(month)}

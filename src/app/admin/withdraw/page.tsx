@@ -45,7 +45,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col bg-white px-5">
+      <div className="flex min-h-screen flex-col bg-white px-5 dark:bg-[var(--dark-bg-primary)]">
         <div className="mt-6">
           <MultiLineChart setShowAlert={setShowAlert} setErrors={setErrors} />
         </div>
@@ -68,15 +68,15 @@ export default function Page() {
 
         {/* 페이지네이션 */}
         <div className="mt-[41px] flex items-center justify-center space-x-[11px]">
-          <button className="text-[#222222]">
+          <button className="text-[#222222] dark:text-[var(--dark-gray-700)]">
             <ChevronLeft className="h-3 w-auto" />
           </button>
           <button className="text-[10px] font-medium text-gray-700">1</button>
           <button className="text-[10px] font-medium text-gray-700">2</button>
-          <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[#222222] text-center text-[10px] font-semibold text-white">
+          <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[#222222] text-center text-[10px] font-semibold text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]">
             3
           </button>
-          <button className="text-[#D9D9D9]">
+          <button className="text-[#d9d9d9]">
             <ChevronRight className="h-3 w-auto" />
           </button>
         </div>

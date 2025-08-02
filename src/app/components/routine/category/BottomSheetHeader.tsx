@@ -15,12 +15,14 @@ export default function BottomSheetHeader({
     <div className="mb-[18px] flex items-center justify-between">
       <div className="flex items-center gap-2">
         <span className="text-[18px]">{emoji || '🏷️'}</span>
-        <h2 className="text-base font-semibold text-black">{title}</h2>
+        <h2 className="text-base font-semibold text-black dark:text-[var(--dark-gray-700)]">
+          {title}
+        </h2>
       </div>
 
       <button
         onClick={onEdit}
-        className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9E9E9E]"
+        className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9e9e9e]"
       >
         <PencilLine className="size-3" />
         편집

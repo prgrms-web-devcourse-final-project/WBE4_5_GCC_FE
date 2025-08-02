@@ -47,11 +47,11 @@ export default function CalendarBottomSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222] dark:bg-[var(--dark-gray-200)]/50"
       onClick={() => setIsOpen(false)}
     >
       <div
-        className="relative h-[500px] w-full max-w-md rounded-t-2xl bg-white px-4 py-6"
+        className="relative h-[500px] w-full max-w-md rounded-t-2xl bg-white px-4 py-6 dark:bg-[var(--dark-bg-primary)]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mt-6 mb-9 flex w-full items-center justify-between px-6">
@@ -84,7 +84,7 @@ export default function CalendarBottomSheet({
           }}
           value={selectedDate}
           activeStartDate={activeStartDate}
-          className="w-full bg-white px-2 text-sm"
+          className="w-full bg-white px-2 text-sm dark:bg-[var(--dark-bg-primary)]"
           calendarType="iso8601"
           locale="ko-KR"
           view="month"

@@ -73,7 +73,7 @@ export default function Shop() {
 
   return (
     <>
-      <div className="h-1vh mx-auto flex w-full max-w-screen-sm flex-col overflow-y-auto px-5">
+      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col overflow-y-auto px-5 py-7">
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}
@@ -106,15 +106,15 @@ export default function Shop() {
 
           {/* 페이지네이션 */}
           {/*<div className="mt-[41px] flex items-center justify-center space-x-[11px]">
-            <button className="text-[#222222]">
+            <button className="text-[#222222] dark:text-[var(--dark-gray-700)]">
               <ChevronLeft className="h-3 w-auto" />
             </button>
             <button className="text-[10px] font-medium text-gray-700">1</button>
             <button className="text-[10px] font-medium text-gray-700">2</button>
-            <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[#222222] text-center text-[10px] font-semibold text-white">
+            <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[#222222] dark:bg-[var(--dark-gray-200)] text-center text-[10px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
               3
             </button>
-            <button className="text-[#D9D9D9]">
+            <button className="text-[#d9d9d9]">
               <ChevronRight className="h-3 w-auto" />
             </button>
           </div>*/}
