@@ -19,16 +19,16 @@ export default function Page() {
 
   return (
     <div className="flex min-h-screen flex-col items-center">
-      <div className="h-full w-full max-w-md flex-1 rounded-lg bg-[var(--white)] p-6 shadow-md dark:bg-[var(--dark-bg-primary)]">
+      <div className="h-full w-full max-w-md flex-1 rounded-lg bg-white p-6 shadow-md dark:bg-[var(--dark-bg-primary)]">
         <Profile />
         <Button
-          className="mt-5 h-[48px] bg-[var(--black)] text-sm font-medium text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
+          className="mt-5 h-[48px] bg-[#222222] text-sm font-medium text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
           onClick={() => router.push('/mypage/edit-character')}
         >
           캐릭터 꾸미기
         </Button>
 
-        <div className="mt-8 bg-[var(--white)] dark:bg-[var(--dark-bg-primary)]">
+        <div className="mt-8 bg-white dark:bg-[var(--dark-bg-primary)]">
           <SettingsItem
             label="회원정보 변경"
             type="link"

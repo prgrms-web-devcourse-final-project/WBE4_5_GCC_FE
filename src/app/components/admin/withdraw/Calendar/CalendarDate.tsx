@@ -65,7 +65,7 @@ export default function CalendarDate({
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-7 place-items-center text-[11px] font-bold text-[var(--gray-400)]">
+      <div className="grid grid-cols-7 place-items-center text-[11px] font-bold text-[#c4c4c4]">
         {weekDays.map((days, index) => (
           <div key={index}>{days}</div>
         ))}

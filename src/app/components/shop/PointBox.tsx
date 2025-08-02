@@ -34,9 +34,7 @@ export default function PointBox({
             height: `${coinHeight}px`,
           }}
         />
-        <span className="text-[12px] text-[var(--primary-yellow)]">
-          {point}
-        </span>
+        <span className="text-[12px] text-[#ffb84c]">{point}</span>
       </div>
     </>
   );

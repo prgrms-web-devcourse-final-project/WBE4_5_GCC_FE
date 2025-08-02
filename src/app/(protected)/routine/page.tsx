@@ -76,7 +76,7 @@ export default function Page() {
           </div>
         )}
         {!isPending && (
-          <div className="flex min-h-screen w-full max-w-md flex-col items-center rounded-[10px] bg-[var(--white)] p-4 dark:bg-[var(--dark-bg-primary)]">
+          <div className="flex min-h-screen w-full max-w-md flex-col items-center rounded-[10px] bg-white p-4 dark:bg-[var(--dark-bg-primary)]">
             <CalendarBar
               setIsOpen={setIsOpen}
               selectedDate={selectedDate}
@@ -91,7 +91,7 @@ export default function Page() {
                 </span>
                 {!isToday && (
                   <button
-                    className="cursor-pointer rounded-[5px] border border-[var(--primary-yellow)] bg-[var(--primary-yellow)] px-2 py-1 text-[12px] text-white dark:text-[var(--dark-bg-primary)]"
+                    className="cursor-pointer rounded-[5px] border border-[#ffb84c] bg-[#ffb84c] px-2 py-1 text-[12px] text-white dark:text-[var(--dark-bg-primary)]"
                     onClick={goToToday}
                   >
                     Today
@@ -102,8 +102,8 @@ export default function Page() {
                 currentStep={done}
                 totalSteps={total}
                 per={`${percent}%`}
-                wrapperClassName="h-6 bg-[var(--primary-yellow)]/25 mb-0 text-white"
-                barClassName="h-6 bg-[var(--primary-yellow)] rounded-full text-white text-xs flex items-center justify-center"
+                wrapperClassName="h-6 bg-[#ffb84c]/25 mb-0 text-white"
+                barClassName="h-6 bg-[#ffb84c] rounded-full text-white text-xs flex items-center justify-center"
               />
             </div>
 
@@ -156,7 +156,7 @@ export default function Page() {
             )}
 
             <button
-              className="fixed right-0 bottom-25 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[var(--black)] shadow-lg transition-colors duration-300 hover:bg-[#333333] dark:bg-[var(--dark-gray-200)] hover:dark:bg-[var(--dark-bg-tertiary)]"
+              className="fixed right-0 bottom-25 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333] dark:bg-[var(--dark-gray-200)] hover:dark:bg-[var(--dark-bg-tertiary)]"
               onClick={handleAddRoutine}
             >
               <Plus className="h-[30px] w-[30px] text-white dark:text-[var(--dark-bg-primary)]" />

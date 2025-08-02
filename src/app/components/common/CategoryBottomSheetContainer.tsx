@@ -57,7 +57,7 @@ export default function CategoryBottomSheetContainer({
       if (categoryIcon) {
         onSelectCategory(
           // ReactNode 반환
-          <span className="inline-flex items-center gap-[6px] text-xs font-medium text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+          <span className="inline-flex items-center gap-[6px] text-xs font-medium text-[#222222] dark:text-[var(--dark-gray-700)]">
             <span className="text-xs">{categoryIcon}</span>
             <span>{selectedMainCategory}</span>
             <ChevronRight className="h-auto w-[11px]" />
@@ -75,11 +75,11 @@ export default function CategoryBottomSheetContainer({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/50"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222] dark:bg-[var(--dark-gray-200)]/50"
       onClick={handleOutsideClick}
     >
       <div
-        className="min-h-[443px] w-full rounded-t-[24px] bg-[var(--white)] px-4 py-8 dark:bg-[var(--dark-bg-primary)]"
+        className="min-h-[443px] w-full rounded-t-[24px] bg-white px-4 py-8 dark:bg-[var(--dark-bg-primary)]"
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
         {/* 헤더 */}
@@ -100,7 +100,7 @@ export default function CategoryBottomSheetContainer({
 
           <button
             onClick={handleEditClick}
-            className="flex cursor-pointer items-center gap-[7px] text-sm text-[var(--gray-500)]"
+            className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9e9e9e]"
           >
             <PencilLine className="size-3" />
             편집
@@ -124,7 +124,7 @@ export default function CategoryBottomSheetContainer({
             onClick={handleOutsideClick}
           >
             <div
-              className="min-h-[443px] w-full rounded-t-[24px] bg-[var(--white)] px-4 py-8 dark:bg-[var(--dark-bg-primary)]"
+              className="min-h-[443px] w-full rounded-t-[24px] bg-white px-4 py-8 dark:bg-[var(--dark-bg-primary)]"
               onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
             >
               <div className="mb-[18px] flex items-center justify-between">
@@ -142,7 +142,7 @@ export default function CategoryBottomSheetContainer({
                 </div>
                 <button
                   onClick={handleEditClick}
-                  className="flex cursor-pointer items-center gap-[7px] text-sm text-[var(--gray-500)]"
+                  className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9e9e9e]"
                 >
                   <PencilLine className="size-3" />
                   편집

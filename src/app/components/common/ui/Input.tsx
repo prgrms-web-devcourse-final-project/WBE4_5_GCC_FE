@@ -18,7 +18,7 @@ export default function Input({
       <div className="relative">
         <input
           className={twMerge(
-            'block h-12 w-full rounded-lg border border-[var(--gray-300)] p-4 text-sm focus:outline-none dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]',
+            'block h-12 w-full rounded-lg border border-[#e0e0e0] p-4 text-sm focus:outline-none dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]',
             className,
           )}
           {...props}

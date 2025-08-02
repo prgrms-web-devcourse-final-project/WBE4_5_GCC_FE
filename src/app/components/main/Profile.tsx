@@ -74,7 +74,7 @@ export default function Profile() {
 
   if (profileLoading || pointLoading || characterLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--white)] dark:bg-[var(--dark-bg-primary)]">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-[var(--dark-bg-primary)]">
         <LoadingSpinner />
       </div>
     );
@@ -161,9 +161,7 @@ export default function Profile() {
 
           <div className="relative mt-3 flex h-[32px] w-[90px] items-center gap-1 rounded-[6px] bg-[#000000]/70 px-2">
             <Image src={coin} alt="coin" className="h-[18px] w-[18px]" />
-            <span className="ml-auto text-[15px] text-[var(--primary-yellow)]">
-              {point}
-            </span>
+            <span className="ml-auto text-[15px] text-[#ffb84c]">{point}</span>
           </div>
         </div>
       </div>

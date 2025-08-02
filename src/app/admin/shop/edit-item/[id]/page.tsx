@@ -157,7 +157,7 @@ export default function EditItem({
       </div>
       <div className="flex flex-col gap-[10px]">
         <h1>아이템 이미지</h1>
-        <div className="flex h-[121px] w-full flex-col items-center justify-center rounded-[8px] border-1 border-[var(--gray-300)]">
+        <div className="flex h-[121px] w-full flex-col items-center justify-center rounded-[8px] border-1 border-[#e0e0e0]">
           {previewUrl ? (
             <div className="relative h-full w-full">
               <Image
@@ -182,7 +182,7 @@ export default function EditItem({
                 htmlFor="item-image"
                 className="flex h-[121px] w-full cursor-pointer flex-col items-center justify-center rounded-[8px]"
               >
-                <ImagePlus className="h-10 w-10 text-[var(--gray-500)]" />
+                <ImagePlus className="h-10 w-10 text-[#9e9e9e]" />
                 <input
                   id="item-image"
                   type="file"
@@ -234,14 +234,14 @@ export default function EditItem({
           <h1>리스트 여부</h1>
           <select
             value={isListed.toString()}
-            className="h-12 w-full appearance-none rounded-lg border border-[var(--gray-300)] px-4 py-2 pr-10 text-sm focus:outline-none"
+            className="h-12 w-full appearance-none rounded-lg border border-[#e0e0e0] px-4 py-2 pr-10 text-sm focus:outline-none"
             onChange={(e) => setIsListed(e.target.value === 'true')}
           >
             <option value="true">true</option>
             <option value="false">false</option>
           </select>
           <ChevronDown
-            className="absolute right-4 bottom-1 h-[18px] w-[18px] -translate-y-1/2 cursor-pointer text-[var(--gray-700)]"
+            className="absolute right-4 bottom-1 h-[18px] w-[18px] -translate-y-1/2 cursor-pointer text-[#616161]"
             strokeWidth={2}
           />
         </div>

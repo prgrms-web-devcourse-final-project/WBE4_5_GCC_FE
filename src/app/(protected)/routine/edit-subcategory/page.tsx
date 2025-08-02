@@ -151,12 +151,12 @@ export default function Page() {
               onClick={() =>
                 categoryType !== 'DEFAULT' && setIsPickerOpen(true)
               }
-              className={`flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[var(--gray-300)] ${categoryType === 'DEFAULT' ? 'cursor-default' : 'cursor-pointer'}`}
+              className={`flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#e0e0e0] ${categoryType === 'DEFAULT' ? 'cursor-default' : 'cursor-pointer'}`}
             >
               <span className="text-2xl">{selectedEmoji || icon}</span>
             </div>
 
-            <div className="w-70 flex-auto border border-transparent border-b-[var(--gray-300)] py-2 text-xl text-black dark:text-[var(--dark-gray-700)]">
+            <div className="w-70 flex-auto border border-transparent border-b-[#e0e0e0] py-2 text-xl text-black dark:text-[var(--dark-gray-700)]">
               <input
                 type="text"
                 value={label}
@@ -199,7 +199,7 @@ export default function Page() {
                 >
                   <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white dark:text-[var(--dark-bg-primary)]" />
                 </button>
-                <p className="w-[307px] flex-auto border border-transparent border-b-[var(--gray-300)] text-sm text-black">
+                <p className="w-[307px] flex-auto border border-transparent border-b-[#e0e0e0] text-sm text-black">
                   {sub.categoryName}
                 </p>
               </div>

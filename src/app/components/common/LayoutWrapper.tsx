@@ -41,7 +41,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
 
   return (
     <>
-      <div className="mx-auto max-w-[640px] border-[var(--gray-300)]">
+      <div className="mx-auto max-w-[640px] border-[#e0e0e0]">
         <Header />
         <main className="bg-[#F8F5F1] dark:bg-[var(--dark-bg-secondary)]">
           {children}

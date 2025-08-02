@@ -17,20 +17,20 @@ export default function AddCategoryLayout({
   return (
     <div>
       <div className="flex min-h-screen flex-col">
-        <header className="relative flex w-full items-center justify-between border-[0.5px] border-transparent border-b-[var(--gray-200)] px-3 py-4">
+        <header className="relative flex w-full items-center justify-between border-[0.5px] border-transparent border-b-[#cccccc] px-3 py-4">
           <div>
             <ChevronLeft
-              className="h-auto w-6 text-[var(--black)] dark:text-[var(--dark-gray-700)]"
+              className="h-auto w-6 text-[#222222] dark:text-[var(--dark-gray-700)]"
               strokeWidth={2}
               onClick={() => router.push('/routine/edit-category')}
             />
           </div>
 
-          <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+          <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
             카테고리 추가
           </div>
 
-          <div className="text-medium flex gap-[7px] text-sm text-[var(--gray-700)]">
+          <div className="text-medium flex gap-[7px] text-sm text-[#616161]">
             <button
               onClick={onComplete}
               disabled={isLoading}

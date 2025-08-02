@@ -22,7 +22,7 @@ export default function BottomSheetHeader({
 
       <button
         onClick={onEdit}
-        className="flex cursor-pointer items-center gap-[7px] text-sm text-[var(--gray-500)]"
+        className="flex cursor-pointer items-center gap-[7px] text-sm text-[#9e9e9e]"
       >
         <PencilLine className="size-3" />
         편집

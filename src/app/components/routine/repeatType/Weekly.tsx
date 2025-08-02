@@ -71,15 +71,15 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
                 onClick={() => toggleIndex(idx)}
                 className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-none text-xs transition-colors ${
                   selectedIndex.includes(idx)
-                    ? 'bg-[var(--primary-yellow)] text-white dark:text-[var(--dark-bg-primary)]'
-                    : 'bg-[#F5F5F5] text-[var(--gray-500)] dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]'
+                    ? 'bg-[#ffb84c] text-white dark:text-[var(--dark-bg-primary)]'
+                    : 'bg-[#F5F5F5] text-[#9e9e9e] dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]'
                 } `}
               >
                 {option}
               </button>
             ))}
           </div>
-          <hr className="text-[var(--gray-300)]" />
+          <hr className="text-[#e0e0e0]" />
         </div>
         <div className="flex flex-col">
           <div className="flex w-full">
@@ -87,7 +87,7 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
               반복주기
             </span>
             <div className="ml-auto flex items-center gap-1">
-              <span className="text-xs text-[var(--gray-700)] dark:text-[var(--dark-gray-700)]">
+              <span className="text-xs text-[#616161] dark:text-[var(--dark-gray-700)]">
                 {selectedIndex.length === options.length
                   ? '매일'
                   : selectedIndex.length > 0
@@ -113,8 +113,8 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
           <button
             className={`mt-5 rounded px-4 py-2 text-white transition-colors dark:text-[var(--dark-bg-primary)] ${
               selectedIndex.length === 0
-                ? 'cursor-not-allowed bg-[var(--gray-300)]'
-                : 'cursor-pointer bg-[var(--primary-yellow)]'
+                ? 'cursor-not-allowed bg-[#e0e0e0]'
+                : 'cursor-pointer bg-[#ffb84c]'
             }`}
             onClick={handleSubmit}
             disabled={selectedIndex.length === 0}

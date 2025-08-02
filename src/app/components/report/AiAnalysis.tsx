@@ -10,7 +10,7 @@ export default function AiAnalysis({ aiComment }: Props) {
   const hasComment = aiComment?.trim().length > 0;
 
   return (
-    <div className="mb-3 flex flex-col items-center gap-3 bg-[var(--white)] px-5 py-8 text-center dark:bg-[var(--dark-bg-primary)]">
+    <div className="mb-3 flex flex-col items-center gap-3 bg-white px-5 py-8 text-center dark:bg-[var(--dark-bg-primary)]">
       {!hasComment ? (
         <>
           <Image
@@ -19,7 +19,7 @@ export default function AiAnalysis({ aiComment }: Props) {
             width={100}
             height={100}
           />
-          <p className="mt-3 font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+          <p className="mt-3 font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
             이번 주 리포트는 아직 안 나왔어요
             <br />
             그동안 루틴 열심히 쌓아봐요! 👏
@@ -33,7 +33,7 @@ export default function AiAnalysis({ aiComment }: Props) {
             width={100}
             height={100}
           />
-          <p className="mt-3 font-semibold whitespace-pre-line text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+          <p className="mt-3 font-semibold whitespace-pre-line text-[#222222] dark:text-[var(--dark-gray-700)]">
             {aiComment}
           </p>
         </>

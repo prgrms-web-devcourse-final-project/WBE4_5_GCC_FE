@@ -20,17 +20,17 @@ export default function Dropdown({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-12 w-full cursor-pointer items-center justify-between rounded-lg border border-[var(--gray-300)] px-4 py-2 text-left text-sm text-[var(--black)] dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]"
+        className="flex h-12 w-full cursor-pointer items-center justify-between rounded-lg border border-[#e0e0e0] px-4 py-2 text-left text-sm text-[#222222] dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]"
       >
         {selected || '선택하세요'}
         {isOpen ? (
           <ChevronUp
-            className="h-[18px] w-[18px] text-[var(--gray-700)] dark:text-[var(--dark-white)]"
+            className="h-[18px] w-[18px] text-[#616161] dark:text-[var(--dark-white)]"
             strokeWidth={2}
           />
         ) : (
           <ChevronDown
-            className="h-[18px] w-[18px] text-[var(--gray-700)] dark:text-[var(--dark-white)]"
+            className="h-[18px] w-[18px] text-[#616161] dark:text-[var(--dark-white)]"
             strokeWidth={2}
           />
         )}
@@ -38,7 +38,7 @@ export default function Dropdown({
 
       {/* 옵션 목록 */}
       {isOpen && (
-        <ul className="absolute z-10 mt-2 w-full overflow-hidden rounded-lg border border-[var(--gray-300)] bg-[var(--white)] text-sm shadow-[0px_4px_12px_0px_rgba(0,0,0,0.1)] dark:bg-[var(--dark-bg-primary)]">
+        <ul className="absolute z-10 mt-2 w-full overflow-hidden rounded-lg border border-[#e0e0e0] bg-white text-sm shadow-[0px_4px_12px_0px_rgba(0,0,0,0.1)] dark:bg-[var(--dark-bg-primary)]">
           {options.map((option, idx) => (
             <li
               key={option}
@@ -46,7 +46,7 @@ export default function Dropdown({
                 onSelect(option);
                 setIsOpen(false);
               }}
-              className={`flex h-12 cursor-pointer flex-col justify-center px-4 py-2 text-[var(--black)] transition-colors duration-150 active:bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/20 dark:text-[var(--dark-gray-700)] hover:dark:bg-[var(--dark-bg-tertiary)] ${idx !== options.length - 1 ? 'border-b border-[var(--gray-300)]' : ''} `}
+              className={`flex h-12 cursor-pointer flex-col justify-center px-4 py-2 text-[#222222] transition-colors duration-150 active:bg-[#222222] dark:bg-[var(--dark-gray-200)]/20 dark:text-[var(--dark-gray-700)] hover:dark:bg-[var(--dark-bg-tertiary)] ${idx !== options.length - 1 ? 'border-b border-[#e0e0e0]' : ''} `}
             >
               {option}
             </li>

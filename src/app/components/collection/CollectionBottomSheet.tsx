@@ -73,22 +73,22 @@ export default function CollectionBottomSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[var(--black)] select-none dark:bg-[var(--dark-gray-200)]/50"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222] select-none dark:bg-[var(--dark-gray-200)]/50"
       onClick={() => setIsOpenAction(false)}
     >
       <div
-        className="relative min-h-[390px] w-full min-w-[390px] rounded-t-3xl bg-[var(--white)] px-5 py-[34px] dark:bg-[var(--dark-bg-primary)]"
+        className="relative min-h-[390px] w-full min-w-[390px] rounded-t-3xl bg-white px-5 py-[34px] dark:bg-[var(--dark-bg-primary)]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-5 flex items-center justify-start">
-          <h2 className="text-[20px] font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+          <h2 className="text-[20px] font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
             필터
           </h2>
         </div>
 
         {/* 티어 */}
         <div className="flex flex-col">
-          <p className="text-md mb-4 font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+          <p className="text-md mb-4 font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
             티어
           </p>
           <div className="mb-11 flex flex-wrap gap-2.5">
@@ -99,8 +99,8 @@ export default function CollectionBottomSheet({
                 onClick={() => toggleTier(tierKey)}
                 className={
                   selectedTiers.includes(tierKey)
-                    ? 'bg-[var(--primary-yellow)] text-white dark:text-[var(--dark-bg-primary)]'
-                    : 'border-[var(--gray-300)]'
+                    ? 'bg-[#ffb84c] text-white dark:text-[var(--dark-bg-primary)]'
+                    : 'border-[#e0e0e0]'
                 }
               />
             ))}
@@ -109,7 +109,7 @@ export default function CollectionBottomSheet({
 
         {/* 카테고리 */}
         <div className="flex flex-col">
-          <p className="text-md mb-4 font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+          <p className="text-md mb-4 font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
             카테고리
           </p>
           <div className="flex flex-wrap gap-2.5">
@@ -120,8 +120,8 @@ export default function CollectionBottomSheet({
                 onClick={() => toggleCategory(category.categoryName)}
                 className={
                   selectedCategories.includes(category.categoryName)
-                    ? 'bg-[var(--primary-yellow)] text-white dark:text-[var(--dark-bg-primary)]'
-                    : 'border-[var(--gray-300)]'
+                    ? 'bg-[#ffb84c] text-white dark:text-[var(--dark-bg-primary)]'
+                    : 'border-[#e0e0e0]'
                 }
               />
             ))}
@@ -129,7 +129,7 @@ export default function CollectionBottomSheet({
 
           <div className="flex gap-[14px]">
             <Button
-              className="mt-[73px] mb-3 border border-[var(--gray-300)] bg-[var(--white)] text-sm font-medium text-[var(--gray-700)] dark:bg-[var(--dark-bg-primary)]"
+              className="mt-[73px] mb-3 border border-[#e0e0e0] bg-white text-sm font-medium text-[#616161] dark:bg-[var(--dark-bg-primary)]"
               onClick={handleReset}
             >
               초기화

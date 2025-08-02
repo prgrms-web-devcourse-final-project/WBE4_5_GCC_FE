@@ -57,8 +57,8 @@ export default function Category() {
               onClick={() => toggleIndex(idx)}
               className={
                 selectedIndex.includes(idx)
-                  ? 'bg-[var(--primary-yellow)] text-[var(--white)]'
-                  : 'border-[var(--gray-300)]'
+                  ? 'bg-[#ffb84c] text-white'
+                  : 'border-[#e0e0e0]'
               }
             />
           ))}

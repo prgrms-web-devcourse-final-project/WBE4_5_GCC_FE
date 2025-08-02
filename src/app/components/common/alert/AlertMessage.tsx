@@ -8,11 +8,9 @@ interface AlertMessageProps
 }
 
 const typeStyles = {
-  success:
-    'bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/80 text-[var(--white)]',
-  error:
-    'bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/80 text-[var(--white)]',
-  info: 'bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/80 text-[var(--white)]',
+  success: 'bg-[#222222] dark:bg-[var(--dark-gray-200)]/80 text-white',
+  error: 'bg-[#222222] dark:bg-[var(--dark-gray-200)]/80 text-white',
+  info: 'bg-[#222222] dark:bg-[var(--dark-gray-200)]/80 text-white',
 };
 
 const iconMap = {

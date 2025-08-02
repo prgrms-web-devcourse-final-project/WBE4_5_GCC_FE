@@ -33,7 +33,7 @@ export default function Daily({ onSubmit, onClose }: DailyProps) {
         </div>
         {/* 확인 버튼 */}
         <button
-          className="mt-[140px] rounded bg-[var(--primary-yellow)] px-4 py-2 text-white transition-colors dark:text-[var(--dark-bg-primary)]"
+          className="mt-[140px] rounded bg-[#ffb84c] px-4 py-2 text-white transition-colors dark:text-[var(--dark-bg-primary)]"
           onClick={handleSubmit}
         >
           확인

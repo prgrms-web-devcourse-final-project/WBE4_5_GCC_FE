@@ -22,7 +22,7 @@ export default function ThemeToggle() {
   };
 
   return (
-    <div className="mb-[26px] flex h-6 items-center justify-between bg-[var(--white)] dark:bg-[var(--dark-bg-primary)]">
+    <div className="mb-[26px] flex h-6 items-center justify-between bg-white dark:bg-[var(--dark-bg-primary)]">
       <span className="text-sm font-semibold text-black dark:text-[var(--dark-gray-700)]">
         다크모드 설정
       </span>
@@ -34,7 +34,7 @@ export default function ThemeToggle() {
           checked={isDarkMode}
           onChange={(e) => toggleTheme(e.target.checked)}
         />
-        <div className="relative h-6 w-[38px] rounded-full bg-[var(--gray-300)] peer-checked:bg-[var(--primary-yellow)] peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-[var(--white)] after:shadow-[0px_3px_8px_rgba(0,0,0,0.15)] after:transition-all peer-checked:after:translate-x-[14px] dark:bg-[var(--dark-bg-primary)]"></div>
+        <div className="relative h-6 w-[38px] rounded-full bg-[#e0e0e0] peer-checked:bg-[#ffb84c] peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow-[0px_3px_8px_rgba(0,0,0,0.15)] after:transition-all peer-checked:after:translate-x-[14px] dark:bg-[var(--dark-bg-primary)]"></div>
       </label>
     </div>
   );

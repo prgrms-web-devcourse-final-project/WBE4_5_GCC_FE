@@ -117,7 +117,7 @@ export default function Main() {
         )}
         {!weekLoading && (
           <div className="mt-5 flex w-full flex-1 px-5">
-            <div className="flex min-h-[480px] flex-1 flex-col items-center rounded-[10px] bg-[var(--white)] p-4 dark:bg-[var(--dark-bg-primary)]">
+            <div className="flex min-h-[480px] flex-1 flex-col items-center rounded-[10px] bg-white p-4 dark:bg-[var(--dark-bg-primary)]">
               <div className="mb-6 flex w-full flex-col justify-start">
                 <span className="text-xs font-semibold dark:text-[var(--dark-gray-700)]">
                   {todayStr}
@@ -125,7 +125,7 @@ export default function Main() {
                 <div className="flex items-center gap-1 pb-3 text-[22px] font-bold">
                   <span className="dark:text-[var(--dark-gray-700)]">
                     오늘의 루틴{' '}
-                    <span className="text-[var(--primary-yellow)]">
+                    <span className="text-[#ffb84c]">
                       {filteredRoutines.length}
                     </span>
                   </span>
@@ -182,14 +182,14 @@ export default function Main() {
                 {filteredRoutines.length === 0 && (
                   <div className="mt-20 flex items-center justify-center">
                     <div className="flex w-[260px] flex-col items-center gap-1 rounded-[8px]">
-                      <span className="text-[16px] font-medium text-[var(--gray-500)]">
+                      <span className="text-[16px] font-medium text-[#9e9e9e]">
                         오늘은 도전할 루틴이 없어요 😇
                       </span>
-                      <span className="mb-5 text-[16px] font-medium text-[var(--gray-500)]">
+                      <span className="mb-5 text-[16px] font-medium text-[#9e9e9e]">
                         새로운 루틴을 추가해볼까요?
                       </span>
                       <button
-                        className="h-[40px] w-[180px] cursor-pointer rounded-xl bg-[var(--primary-yellow)] px-5 text-[15px] text-white hover:bg-[#E6A642] active:bg-[#CC9439] dark:text-[var(--dark-bg-primary)]"
+                        className="h-[40px] w-[180px] cursor-pointer rounded-xl bg-[#ffb84c] px-5 text-[15px] text-white hover:bg-[#E6A642] active:bg-[#CC9439] dark:text-[var(--dark-bg-primary)]"
                         onClick={handleAddRoutine}
                       >
                         루틴 추가하러 가기

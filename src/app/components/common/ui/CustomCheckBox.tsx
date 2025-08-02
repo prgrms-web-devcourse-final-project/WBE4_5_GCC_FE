@@ -21,7 +21,7 @@ export default function CustomCheckBox({
       />
 
       <div
-        className={`flex h-[18px] w-[18px] items-center justify-center rounded-[3px] border transition-colors ${checked ? 'border-[var(--black)] bg-[var(--black)] dark:bg-[var(--dark-gray-200)]' : 'border-[var(--gray-400)] bg-[var(--gray-400)]'}`}
+        className={`flex h-[18px] w-[18px] items-center justify-center rounded-[3px] border transition-colors ${checked ? 'border-[#222222] bg-[#222222] dark:bg-[var(--dark-gray-200)]' : 'border-[#c4c4c4] bg-[#c4c4c4]'}`}
       >
         <Check
           className={`h-[14px] w-[14px] ${
@@ -34,7 +34,7 @@ export default function CustomCheckBox({
       </div>
 
       {label && (
-        <span className="text-xs font-medium text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+        <span className="text-xs font-medium text-[#222222] dark:text-[var(--dark-gray-700)]">
           {label}
         </span>
       )}

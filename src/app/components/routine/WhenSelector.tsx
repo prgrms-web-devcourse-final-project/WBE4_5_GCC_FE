@@ -51,7 +51,7 @@ export default function WhenSelector({
             <button
               key={idx}
               onClick={() => handleClick(option)}
-              className={`flex h-[30px] cursor-pointer items-center justify-center rounded-[50px] border border-[var(--gray-300)] px-3.5 py-2 text-xs transition-colors duration-200 dark:text-[var(--dark-gray-700)] ${selectedIdx === option ? 'text-[var(--gray-400)]' : ''}`}
+              className={`flex h-[30px] cursor-pointer items-center justify-center rounded-[50px] border border-[#e0e0e0] px-3.5 py-2 text-xs transition-colors duration-200 dark:text-[var(--dark-gray-700)] ${selectedIdx === option ? 'text-[#c4c4c4]' : ''}`}
             >
               {option}
             </button>

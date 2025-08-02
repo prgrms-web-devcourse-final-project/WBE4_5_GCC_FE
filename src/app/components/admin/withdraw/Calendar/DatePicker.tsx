@@ -82,7 +82,7 @@ export default function DatePicker({
       <input
         type="text"
         value={displayDate}
-        className={`focus-primary body1 w-full cursor-pointer rounded-[10px] text-center focus:border-transparent focus:ring-0 focus:outline-none ${hasUserSelected ? 'text-[var(--black)] dark:text-[var(--dark-gray-700)]' : 'text-[var(--gray-500)]'}`}
+        className={`focus-primary body1 w-full cursor-pointer rounded-[10px] text-center focus:border-transparent focus:ring-0 focus:outline-none ${hasUserSelected ? 'text-[#222222] dark:text-[var(--dark-gray-700)]' : 'text-[#9e9e9e]'}`}
         readOnly
         onClick={toggleDatePicker}
       />

@@ -50,8 +50,8 @@ export default function Experience() {
               onClick={() => setSelectedIndex(idx)}
               className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
                 selectedIndex === idx
-                  ? 'bg-[var(--primary-yellow)] text-[var(--white)]'
-                  : 'border-[var(--gray-300)]'
+                  ? 'bg-[#ffb84c] text-white'
+                  : 'border-[#e0e0e0]'
               } `}
             >
               {option}
@@ -66,8 +66,8 @@ export default function Experience() {
               onClick={() => setSelectedIndex(idx + 3)}
               className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
                 selectedIndex === idx + 3
-                  ? 'bg-[var(--primary-yellow)] text-[var(--white)]'
-                  : 'border-[var(--gray-300)]'
+                  ? 'bg-[#ffb84c] text-white'
+                  : 'border-[#e0e0e0]'
               } `}
             >
               {option}

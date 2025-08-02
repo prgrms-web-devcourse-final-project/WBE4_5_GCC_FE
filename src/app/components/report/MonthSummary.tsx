@@ -32,17 +32,17 @@ export default function MonthSummary({ reportData }: Props) {
   ];
 
   return (
-    <div className="mb-3 bg-[var(--white)] px-5 py-7 dark:bg-[var(--dark-bg-primary)]">
-      <h3 className="mb-4 text-lg font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+    <div className="mb-3 bg-white px-5 py-7 dark:bg-[var(--dark-bg-primary)]">
+      <h3 className="mb-4 text-lg font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
         이번 주 나의 루틴 결과는?
       </h3>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {summaryData.map((item, idx) => (
           <div
             key={idx}
-            className="relative flex min-h-[80px] w-full items-start justify-between rounded-lg bg-[var(--primary-yellow-50)] px-4 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+            className="relative flex min-h-[80px] w-full items-start justify-between rounded-lg bg-[#fff4d1] px-4 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
           >
-            <p className="text-sm text-[var(--gray-700)]">{item.label}</p>
+            <p className="text-sm text-[#616161]">{item.label}</p>
             <p
               className="self-end text-[20px] font-semibold"
               style={{ color: item.color }}

@@ -107,7 +107,7 @@ export default function QuestList({ quest, type }: QuestListProps) {
             {quest.questName}
           </h1>
           {/* 진행율 */}
-          <div className="relative flex h-[22px] w-full items-center justify-center rounded-[20px] border-1 border-[#A47148] bg-[var(--primary-yellow-50)]">
+          <div className="relative flex h-[22px] w-full items-center justify-center rounded-[20px] border-1 border-[#A47148] bg-[#fff4d1]">
             {quest.progress >= 1 && (
               <div
                 className="absolute left-0 h-[22px] rounded-[20px] border-1 border-[#A47148] bg-[#A47148]"
@@ -126,7 +126,7 @@ export default function QuestList({ quest, type }: QuestListProps) {
         >
           {/* 퀘스트 진행률이 100일때만 수령가능 */}
           {questProgress !== 100 && (
-            <div className="absolute inset-0 z-50 w-full cursor-auto rounded-[6px] bg-[var(--black)]/50 dark:bg-[var(--dark-gray-200)]/70"></div>
+            <div className="absolute inset-0 z-50 w-full cursor-auto rounded-[6px] bg-[#222222]/50 dark:bg-[var(--dark-gray-200)]/70"></div>
           )}
           <Image src={coin} alt="coin" className="h-5 w-5" />
           <h1 className="text-[10px] dark:text-[var(--dark-gray-700)]">

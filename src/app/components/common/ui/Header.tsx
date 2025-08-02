@@ -134,7 +134,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="z-50 mx-auto flex h-[56px] max-w-md items-center justify-between bg-[var(--white)] px-5 py-[20px] dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)]">
+      <div className="z-50 mx-auto flex h-[56px] max-w-md items-center justify-between bg-white px-5 py-[20px] dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)]">
         {isHome || isAdmin ? (
           <Image
             src={logo}
@@ -150,14 +150,14 @@ export default function Header() {
         {isShop ? (
           <div className="flex items-center">
             <Image src={coin} alt="coin" width={16} height={16} />
-            <span className="text-[14px] font-semibold text-[var(--primary-yellow)]">
+            <span className="text-[14px] font-semibold text-[#ffb84c]">
               {currentPoint}
             </span>
           </div>
         ) : (
           <div className="relative">
             <Bell
-              className="cursor-pointer text-[var(--black)] dark:text-[var(--dark-gray-700)]"
+              className="cursor-pointer text-[#222222] dark:text-[var(--dark-gray-700)]"
               size={24}
               onClick={handleOpenNoti}
             />

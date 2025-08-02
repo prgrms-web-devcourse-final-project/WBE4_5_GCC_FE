@@ -61,7 +61,7 @@ export default function UserInfo({
   };
 
   const checkConditionText = (condition: boolean) => {
-    return condition ? 'text-[#388E3C] ' : 'text-[var(--gray-500)] ';
+    return condition ? 'text-[#388E3C] ' : 'text-[#9e9e9e] ';
   };
 
   // 다음 버튼 활성화 조건

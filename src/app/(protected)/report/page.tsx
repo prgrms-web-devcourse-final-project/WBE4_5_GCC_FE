@@ -105,7 +105,7 @@ export default function Page() {
 
   return (
     <div className="-mt-10 bg-[#f5f5f5]">
-      <div className="flex items-center justify-center gap-4 bg-[var(--white)] py-6 dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]">
+      <div className="flex items-center justify-center gap-4 bg-white py-6 dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]">
         <button onClick={() => moveWeek(-1)} aria-label="이전 주">
           <ChevronLeft size={24} />
         </button>
@@ -128,17 +128,17 @@ export default function Page() {
 
       {loading ? (
         <div
-          className="flex flex-col items-center justify-center bg-[var(--white)] dark:bg-[var(--dark-bg-primary)]"
+          className="flex flex-col items-center justify-center bg-white dark:bg-[var(--dark-bg-primary)]"
           style={{ minHeight: 'calc(100vh - 200px)' }}
         >
           <LoadingSpinner />
-          <p className="mt-6 text-[16px] text-[var(--gray-700)]">
+          <p className="mt-6 text-[16px] text-[#616161]">
             리포트를 불러오는 중입니다...
           </p>
         </div>
       ) : error ? (
         <div
-          className="flex flex-col items-center justify-center bg-[var(--white)] py-12 text-[var(--gray-500)] dark:bg-[var(--dark-bg-primary)]"
+          className="flex flex-col items-center justify-center bg-white py-12 text-[#9e9e9e] dark:bg-[var(--dark-bg-primary)]"
           style={{ minHeight: 'calc(100vh - 200px)' }}
         >
           <p className="text-base font-medium">루틴 데이터가 없어요 😢</p>
@@ -146,7 +146,7 @@ export default function Page() {
         </div>
       ) : !hasValidData(reportData) ? (
         <div
-          className="flex flex-col items-center justify-center bg-[var(--white)] py-12 text-[var(--gray-500)] dark:bg-[var(--dark-bg-primary)]"
+          className="flex flex-col items-center justify-center bg-white py-12 text-[#9e9e9e] dark:bg-[var(--dark-bg-primary)]"
           style={{ minHeight: 'calc(100vh - 200px)' }}
         >
           <p className="text-base font-medium">표시할 데이터가 없습니다 😢</p>

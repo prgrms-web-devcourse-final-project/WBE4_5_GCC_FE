@@ -28,12 +28,12 @@ export default function BottomSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[var(--black)]/50 select-none"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50 select-none"
       onClick={() => setIsOpen(false)}
     >
       <div
         className={twMerge(
-          'relative mx-auto w-full min-w-[390px] rounded-t-3xl bg-[var(--white)] px-[20px] py-[34px] dark:bg-[var(--dark-bg-secondary)]',
+          'relative mx-auto w-full min-w-[390px] rounded-t-3xl bg-white px-[20px] py-[34px] dark:bg-[var(--dark-bg-secondary)]',
           className,
         )}
         onClick={(e) => e.stopPropagation()}

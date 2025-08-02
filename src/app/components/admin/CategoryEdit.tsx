@@ -125,13 +125,13 @@ export default function CategoryEdit({
           {/* 좌측 아이콘 영역 */}
           <div
             onClick={() => setIsPickerOpen(true)}
-            className="flex h-12 min-w-12 items-center justify-center rounded-lg border border-[var(--gray-300)]"
+            className="flex h-12 min-w-12 items-center justify-center rounded-lg border border-[#e0e0e0]"
           >
             {selectedEmoji ? (
               <span className="text-2xl">{selectedEmoji}</span>
             ) : (
               <BadgeQuestionMark
-                className="h-auto w-6 text-[var(--gray-500)]"
+                className="h-auto w-6 text-[#9e9e9e]"
                 strokeWidth={2}
               />
             )}

@@ -186,7 +186,7 @@ export default function Page() {
                     type="checkbox"
                     checked={isChecked}
                     onChange={(e) => setIsChecked(e.target.checked)}
-                    className="h-[14px] w-[14px] cursor-pointer rounded-none border border-[var(--gray-350)] accent-black"
+                    className="h-[14px] w-[14px] cursor-pointer rounded-none border border-[#d9d9d9] accent-black"
                   />
                   <p className="text-sm font-medium text-black dark:text-[var(--dark-gray-700)]">
                     내가 보유한 뱃지만 보기
@@ -197,12 +197,12 @@ export default function Page() {
               {/* 필터 */}
               <div className="flex items-center space-x-1.5">
                 <span
-                  className="cursor-pointer text-xs font-medium text-[var(--gray-700)] dark:text-[var(--dark-gray-700)]"
+                  className="cursor-pointer text-xs font-medium text-[#616161] dark:text-[var(--dark-gray-700)]"
                   onClick={() => setIsOpen(true)}
                 >
                   필터
                 </span>
-                <ListFilter className="h-4 w-4 text-[var(--gray-700)] dark:text-[var(--dark-gray-700)]" />
+                <ListFilter className="h-4 w-4 text-[#616161] dark:text-[var(--dark-gray-700)]" />
               </div>
             </div>
 
@@ -273,7 +273,7 @@ export default function Page() {
                                   e.stopPropagation();
                                   rewardMutation.mutate(badge.badgeKey);
                                 }}
-                                className="mt-4 h-7.5 min-w-34 cursor-pointer rounded-[3px] border border-[var(--primary-yellow)] bg-[#FFE29A] text-sm font-semibold text-[#A47148]"
+                                className="mt-4 h-7.5 min-w-34 cursor-pointer rounded-[3px] border border-[#ffb84c] bg-[#FFE29A] text-sm font-semibold text-[#A47148]"
                               >
                                 보상받기
                               </button>
@@ -293,7 +293,7 @@ export default function Page() {
             <button
               onClick={() => handlePageChange(page - 1)}
               disabled={page === 1}
-              className={`mr-1 h-6 w-6 cursor-pointer text-sm ${page === 1 ? 'text-[var(--gray-350)]' : 'text-[var(--black)] dark:text-[var(--dark-gray-700)]'}`}
+              className={`mr-1 h-6 w-6 cursor-pointer text-sm ${page === 1 ? 'text-[#d9d9d9]' : 'text-[#222222] dark:text-[var(--dark-gray-700)]'}`}
             >
               <ChevronLeft />
             </button>
@@ -302,7 +302,7 @@ export default function Page() {
                 <button
                   key={pageNum}
                   onClick={() => handlePageChange(pageNum)}
-                  className={`h-7 w-7 cursor-pointer rounded-[3px] text-sm ${pageNum === page ? 'bg-[var(--black)] font-semibold text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]' : 'text-[var(--black)] dark:text-[var(--dark-gray-700)]'}`}
+                  className={`h-7 w-7 cursor-pointer rounded-[3px] text-sm ${pageNum === page ? 'bg-[#222222] font-semibold text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]' : 'text-[#222222] dark:text-[var(--dark-gray-700)]'}`}
                 >
                   {pageNum}
                 </button>
@@ -311,7 +311,7 @@ export default function Page() {
             <button
               onClick={() => handlePageChange(page + 1)}
               disabled={page === totalPages}
-              className={`ml-1 h-6 w-6 cursor-pointer text-sm ${page === totalPages ? 'text-[var(--gray-350)]' : 'text-[var(--black)] dark:text-[var(--dark-gray-700)]'}`}
+              className={`ml-1 h-6 w-6 cursor-pointer text-sm ${page === totalPages ? 'text-[#d9d9d9]' : 'text-[#222222] dark:text-[var(--dark-gray-700)]'}`}
             >
               <ChevronRight />
             </button>

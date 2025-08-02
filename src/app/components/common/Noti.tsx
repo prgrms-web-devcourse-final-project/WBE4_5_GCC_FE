@@ -11,7 +11,7 @@ export default function NotiContent({
     <>
       <div className="flex flex-col space-y-2">
         {noti.length === 0 ? (
-          <div className="flex min-h-[30vh] items-center justify-center py-[14px] text-center text-[var(--gray-500)]">
+          <div className="flex min-h-[30vh] items-center justify-center py-[14px] text-center text-[#9e9e9e]">
             아직 알림이 없습니다.
           </div>
         ) : (
@@ -34,12 +34,10 @@ export default function NotiContent({
                   className={`mt-1.5 h-[8px] w-[8px] rounded-full bg-[#d32f2f] ${item.new ? 'visible' : 'invisible'}`}
                 />
                 <div className="flex-1">
-                  <h1 className="mb-[2px] text-[14px] font-medium text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+                  <h1 className="mb-[2px] text-[14px] font-medium text-[#222222] dark:text-[var(--dark-gray-700)]">
                     {item.title}
                   </h1>
-                  <h2 className="text-[12px] text-[var(--gray-500)]">
-                    {item.date}
-                  </h2>
+                  <h2 className="text-[12px] text-[#9e9e9e]">{item.date}</h2>
                 </div>
               </div>
             </div>

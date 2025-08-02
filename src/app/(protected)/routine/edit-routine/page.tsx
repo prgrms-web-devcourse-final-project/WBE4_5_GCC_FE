@@ -229,7 +229,7 @@ export default function Page() {
         <div className="fixed right-5 bottom-[120px] left-5 flex justify-center">
           <Button
             type="submit"
-            className="bg-[var(--primary-yellow)]"
+            className="bg-[#ffb84c]"
             disabled={!isSubmitEnabled}
             onClick={() => {
               mutate({

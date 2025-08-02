@@ -39,7 +39,7 @@ export default function RadioGroup({
 
             {/* 라디오 버튼 */}
             <div
-              className={`flex h-5 w-5 items-center justify-center rounded-full border ${isChecked ? 'border-[var(--black)] bg-[var(--black)] dark:bg-[var(--dark-gray-200)]' : 'border-[var(--gray-400)]'}`}
+              className={`flex h-5 w-5 items-center justify-center rounded-full border ${isChecked ? 'border-[#222222] bg-[#222222] dark:bg-[var(--dark-gray-200)]' : 'border-[#c4c4c4]'}`}
             >
               {isChecked && (
                 <Check
@@ -48,7 +48,7 @@ export default function RadioGroup({
                 />
               )}
             </div>
-            <span className="text-sm text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+            <span className="text-sm text-[#222222] dark:text-[var(--dark-gray-700)]">
               {option.label}
             </span>
           </label>

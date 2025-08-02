@@ -47,14 +47,14 @@ export default function CategoryGrid({
           <div key={idx} className="relative flex w-full justify-center">
             <button
               onClick={() => onSelectCategory?.(cat.label)}
-              className={`relative flex w-full flex-col items-center gap-1 py-2.5 text-sm text-[var(--black)] dark:text-[var(--dark-gray-700)] ${
+              className={`relative flex w-full flex-col items-center gap-1 py-2.5 text-sm text-[#222222] dark:text-[var(--dark-gray-700)] ${
                 isSelected ? 'bg-gray-200' : 'bg-transparent'
               } rounded-[5px] transition`}
             >
               {isSelected && (
-                <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/20" />
+                <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[#222222] dark:bg-[var(--dark-gray-200)]/20" />
               )}
-              <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[var(--gray-100)]">
+              <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[#f9f8fe]">
                 {cat.icon}
               </div>
               <span>{cat.label}</span>
@@ -66,7 +66,7 @@ export default function CategoryGrid({
                 className="absolute top-1.5 right-4 z-20 p-1"
                 onClick={() => setIsModalOpen(true)}
               >
-                <CircleX className="h-auto w-[15px] fill-[var(--gray-300)] text-[var(--gray-700)]" />
+                <CircleX className="h-auto w-[15px] fill-[#e0e0e0] text-[#616161]" />
               </button>
             )}
 
@@ -76,7 +76,7 @@ export default function CategoryGrid({
                 className="absolute top-1.5 right-4 z-20 p-1"
                 onClick={() => setIsModalOpen(true)}
               >
-                <CircleX className="h-auto w-[15px] fill-[var(--gray-300)] text-[var(--gray-700)]" />
+                <CircleX className="h-auto w-[15px] fill-[#e0e0e0] text-[#616161]" />
               </button>
             )}
           </div>

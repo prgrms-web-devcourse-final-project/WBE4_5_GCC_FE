@@ -50,7 +50,7 @@ export default function PresetList({
       {presets.map((preset) => (
         <div
           key={preset.presetId}
-          className="relative flex h-11 w-full cursor-pointer items-center justify-center rounded-[8px] border border-[var(--gray-300)] text-[14px] font-medium"
+          className="relative flex h-11 w-full cursor-pointer items-center justify-center rounded-[8px] border border-[#e0e0e0] text-[14px] font-medium"
           onClick={() => onClick(preset)}
         >
           {preset.name}

@@ -21,7 +21,7 @@ export default function ResetPage() {
     return <Check size={16} color={condition ? '#388E3C' : '#9E9E9E'} />;
   };
   const checkConditionText = (condition: boolean) =>
-    condition ? 'text-[#388E3C]' : 'text-[var(--gray-500)]';
+    condition ? 'text-[#388E3C]' : 'text-[#9e9e9e]';
 
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPassword, setShowCheckPassword] = useState(false);

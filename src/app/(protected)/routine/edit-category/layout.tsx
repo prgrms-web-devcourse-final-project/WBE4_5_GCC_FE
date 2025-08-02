@@ -18,17 +18,17 @@ function Header() {
   };
 
   return (
-    <header className="relative flex w-full items-center justify-between border-b border-[var(--gray-200)] px-3 py-4">
+    <header className="relative flex w-full items-center justify-between border-b border-[#cccccc] px-3 py-4">
       <Link href="/routine/add-routine">
         <ChevronLeft
-          className="h-auto w-6 text-[var(--black)] dark:text-[var(--dark-gray-700)]"
+          className="h-auto w-6 text-[#222222] dark:text-[var(--dark-gray-700)]"
           strokeWidth={2}
         />
       </Link>
-      <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+      <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
         카테고리 편집
       </div>
-      <div className="flex gap-[16px] text-sm text-[var(--gray-700)]">
+      <div className="flex gap-[16px] text-sm text-[#616161]">
         <button
           onClick={handleAddCat}
           className="cursor-pointer dark:text-[var(--dark-gray-700)]"

@@ -32,7 +32,7 @@ export default function MonthPicker({
                   className={`transition-all duration-200 ${
                     week === value.weeks
                       ? 'dark:text-[var(--dark-gray-700)]'
-                      : 'text-[var(--gray-500)] dark:text-[var(--dark-bg-tertiary)]'
+                      : 'text-[#9e9e9e] dark:text-[var(--dark-bg-tertiary)]'
                   }`}
                 >
                   {week}

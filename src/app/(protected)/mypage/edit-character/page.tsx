@@ -222,7 +222,7 @@ export default function Page() {
           {/* 아이템박스 */}
           <div className="absolute left-[33px] z-0 space-y-[9px]">
             <div
-              className="relative h-[52px] w-[52px] rounded-[4px] border border-[var(--primary-yellow)] bg-[var(--white)]"
+              className="relative h-[52px] w-[52px] rounded-[4px] border border-[#ffb84c] bg-white"
               onClick={() => {
                 if (selectedItem.ACCESSORY) {
                   const equippedKey = userItem.find(
@@ -246,7 +246,7 @@ export default function Page() {
               )}
             </div>
             <div
-              className="relative h-[52px] w-[52px] rounded-[4px] border border-[var(--primary-yellow)] bg-[var(--white)]"
+              className="relative h-[52px] w-[52px] rounded-[4px] border border-[#ffb84c] bg-white"
               onClick={() => {
                 if (selectedItem.TOP) {
                   const equippedKey = userItem.find(
@@ -270,7 +270,7 @@ export default function Page() {
               )}
             </div>
             <div
-              className="relative h-[52px] w-[52px] rounded-[4px] border border-[var(--primary-yellow)] bg-[var(--white)]"
+              className="relative h-[52px] w-[52px] rounded-[4px] border border-[#ffb84c] bg-white"
               onClick={() => {
                 if (selectedItem.BOTTOM) {
                   const equippedKey = userItem.find(
@@ -351,8 +351,8 @@ export default function Page() {
                 className={clsx(
                   'h-[30px] min-w-[70px] cursor-pointer rounded-t-md px-4 py-2 text-xs font-semibold',
                   selectedTab === tab
-                    ? 'border-1 border-[var(--primary-yellow)] bg-[var(--primary-yellow)] text-white dark:text-[var(--dark-bg-primary)]'
-                    : 'border border-b-0 border-[var(--gray-350)] bg-[var(--white)] text-[#AAAAAA] dark:bg-[var(--dark-bg-primary)]',
+                    ? 'border-1 border-[#ffb84c] bg-[#ffb84c] text-white dark:text-[var(--dark-bg-primary)]'
+                    : 'border border-b-0 border-[#d9d9d9] bg-white text-[#AAAAAA] dark:bg-[var(--dark-bg-primary)]',
                 )}
               >
                 {tab}
@@ -362,7 +362,7 @@ export default function Page() {
 
           {/* 아이템 카드 리스트 */}
           <div
-            className="relative grid min-h-[320px] w-full grid-cols-3 place-items-center gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[var(--gray-350)] bg-[var(--white)] px-[15px] pt-[23px] pb-[54px] dark:bg-[var(--dark-bg-primary)]"
+            className="relative grid min-h-[320px] w-full grid-cols-3 place-items-center gap-y-[15px] rounded-tr-lg rounded-b-lg border border-[#d9d9d9] bg-white px-[15px] pt-[23px] pb-[54px] dark:bg-[var(--dark-bg-primary)]"
             style={{ columnGap: 'clamp(8px, 4vw, 21px)' }}
           >
             {filteredItem.map((item) => {
@@ -375,8 +375,8 @@ export default function Page() {
                   className={clsx(
                     'px-auto aspect-[92/128] h-[106px] min-w-[92px] cursor-pointer rounded-[5px] border py-[7px] text-center dark:bg-[var(--dark-white)]/37',
                     isSelected
-                      ? 'border-2 border-[var(--primary-yellow)]'
-                      : 'border-[var(--gray-350)]',
+                      ? 'border-2 border-[#ffb84c]'
+                      : 'border-[#d9d9d9]',
                   )}
                   style={{
                     boxShadow: '1px 2px 3px 0 rgba(0, 0, 0, 0.15)',
@@ -392,11 +392,11 @@ export default function Page() {
                     priority
                     className="mx-auto h-auto"
                   />
-                  <div className="border-t-[0.5px] border-[var(--gray-300)] px-[9px] pt-[6px] text-left">
+                  <div className="border-t-[0.5px] border-[#e0e0e0] px-[9px] pt-[6px] text-left">
                     <div className="text-[8px] font-medium dark:text-[var(--dark-white)]">
                       {item.itemName}
                     </div>
-                    <div className="h-[21px] text-[7px] font-medium text-[var(--gray-700)] dark:text-[var(--dark-gray-300)]">
+                    <div className="h-[21px] text-[7px] font-medium text-[#616161] dark:text-[var(--dark-gray-300)]">
                       {item.itemDescription}
                     </div>
                   </div>
@@ -407,7 +407,7 @@ export default function Page() {
             {/*페이지네이션
             <div className="absolute bottom-[13px] left-1/2 -translate-x-1/2">
               <div className="flex items-center justify-center space-x-[11px]">
-                <button className="text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+                <button className="text-[#222222] dark:text-[var(--dark-gray-700)]">
                   <ChevronLeft className="h-3 w-auto" />
                 </button>
                 <button className="text-[10px] font-medium text-gray-700">
@@ -416,10 +416,10 @@ export default function Page() {
                 <button className="text-[10px] font-medium text-gray-700">
                   2
                 </button>
-                <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[var(--black)] dark:bg-[var(--dark-gray-200)] text-center text-[10px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
+                <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[#222222] dark:bg-[var(--dark-gray-200)] text-center text-[10px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
                   3
                 </button>
-                <button className="text-[var(--gray-350)]">
+                <button className="text-[#d9d9d9]">
                   <ChevronRight className="h-3 w-auto" />
                 </button>
               </div>
@@ -430,7 +430,7 @@ export default function Page() {
 
       <div className="mt-6 px-5">
         <Button
-          className="h-[48px] bg-[var(--black)] text-sm font-medium text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
+          className="h-[48px] bg-[#222222] text-sm font-medium text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
           onClick={handleSubmit}
         >
           저장하기

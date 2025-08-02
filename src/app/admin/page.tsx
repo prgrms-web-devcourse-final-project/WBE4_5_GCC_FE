@@ -10,7 +10,7 @@ export default function Page() {
   const router = useRouter();
   return (
     <>
-      <div className="flex min-h-screen flex-col items-center bg-[var(--white)] px-8 dark:bg-[var(--dark-bg-primary)]">
+      <div className="flex min-h-screen flex-col items-center bg-white px-8 dark:bg-[var(--dark-bg-primary)]">
         <ThreeToggle
           selectedIdx={selectedIdx}
           setSelectedIdx={setSelectedIdx}

@@ -54,7 +54,7 @@ export default function UserAdress() {
           disabled
         />
         <Button
-          className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[var(--black)] dark:bg-[var(--dark-gray-200)]"
+          className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222] dark:bg-[var(--dark-gray-200)]"
           onClick={handleSearch}
         >
           <Search className="h-auto w-4" strokeWidth={2} />

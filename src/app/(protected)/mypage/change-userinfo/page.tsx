@@ -54,13 +54,13 @@ export default function UserInfo() {
       {/* 버튼 제외 콘텐츠 */}
       <form onSubmit={handleSubmit}>
         <div className="px-5">
-          <div className="mt-[27px] mb-[27px] flex flex-col text-base font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+          <div className="mt-[27px] mb-[27px] flex flex-col text-base font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
             <h1>정보를 안전하게 보호하기 위해</h1>
             <h1>비밀번호를 다시 한 번 입력해 주세요</h1>
           </div>
 
           <div className="flex flex-col gap-2.5">
-            <h2 className="text-sm font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+            <h2 className="text-sm font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
               비밀번호 확인
             </h2>
             <div className="relative">
@@ -81,9 +81,9 @@ export default function UserInfo() {
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? (
-                  <Eye className="h-auto w-[18px] text-[var(--gray-500)] dark:text-[var(--dark-white)]" />
+                  <Eye className="h-auto w-[18px] text-[#9e9e9e] dark:text-[var(--dark-white)]" />
                 ) : (
-                  <EyeClosed className="h-auto w-[18px] text-[var(--gray-500)] dark:text-[var(--dark-white)]" />
+                  <EyeClosed className="h-auto w-[18px] text-[#9e9e9e] dark:text-[var(--dark-white)]" />
                 )}
               </button>
             </div>

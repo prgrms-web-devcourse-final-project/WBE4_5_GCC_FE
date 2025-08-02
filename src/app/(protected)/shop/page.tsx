@@ -80,7 +80,7 @@ export default function Shop() {
           setSelectedTab={setSelectedTab}
         />
 
-        <div className="min-h-[250px] w-full min-w-[350px] rounded-lg rounded-tl-none border-1 border-[var(--gray-350)] px-4 py-6">
+        <div className="min-h-[250px] w-full min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
           <div className="grid min-h-[140px] w-full grid-cols-3 place-items-center gap-5">
             {filteredItems?.map((item: ShopItem) => (
               <ItemCard
@@ -106,15 +106,15 @@ export default function Shop() {
 
           {/* 페이지네이션 */}
           {/*<div className="mt-[41px] flex items-center justify-center space-x-[11px]">
-            <button className="text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+            <button className="text-[#222222] dark:text-[var(--dark-gray-700)]">
               <ChevronLeft className="h-3 w-auto" />
             </button>
             <button className="text-[10px] font-medium text-gray-700">1</button>
             <button className="text-[10px] font-medium text-gray-700">2</button>
-            <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[var(--black)] dark:bg-[var(--dark-gray-200)] text-center text-[10px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
+            <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[#222222] dark:bg-[var(--dark-gray-200)] text-center text-[10px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
               3
             </button>
-            <button className="text-[var(--gray-350)]">
+            <button className="text-[#d9d9d9]">
               <ChevronRight className="h-3 w-auto" />
             </button>
           </div>*/}
