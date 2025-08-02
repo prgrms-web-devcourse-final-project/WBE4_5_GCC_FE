@@ -23,17 +23,17 @@ export default function EditItem({
   const { id } = use(params);
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [selected, setSelected] = useState('');
 
+  const [itemType, setItemType] = useState('');
   const [itemTitle, setItemTitle] = useState('');
   const [itemKey, setItemKey] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
   const [isListed, setIsListed] = useState(true);
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>('');
-  const options = ['상의', '하의', '악세사리'];
+  //const [imageFile, setImageFile] = useState<File | null>(null);
+  //const [previewUrl, setPreviewUrl] = useState<string | null>('');
+  const options = ['TOP', 'BOTTOM', 'ACCESSORY'];
 
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
@@ -62,9 +62,9 @@ export default function EditItem({
     setItemTitle(foundItem.itemName);
     setItemDescription(foundItem.itemDescription ?? '');
     setItemPrice(String(foundItem.itemPrice));
-    setSelected(foundItem.itemType);
+    setItemType(foundItem.itemType);
     setItemKey(foundItem.itemKey);
-    setPreviewUrl(`/images/items/thumbs/${foundItem.itemKey}.png`);
+    //setPreviewUrl(`/images/items/thumbs/${foundItem.itemKey}.png`);
   }, [id, items]);
 
   // 아이템 수정 API 호출
@@ -122,26 +122,32 @@ export default function EditItem({
     editItemMutate({
       itemName: itemTitle,
       itemPrice: Number(itemPrice),
-      itemType: selected,
+      itemType: itemType,
       itemDescription,
       isListed,
       itemKey,
     });
   };
 
-  const isDisabled =
-    !itemTitle || !itemDescription || !itemPrice || !selected || !previewUrl;
+  const isDisabled = !itemTitle || !itemDescription || !itemPrice;
 
   return (
-    <div className="h-1vh flex flex-col gap-6 px-5 py-7">
+    <div className="h-1vh flex flex-col gap-6 bg-white px-5 py-7">
       <div className="flex flex-col gap-[10px]">
-        <h1>아이템 분류</h1>
+        {/*<h1>아이템 분류</h1>
         <Dropdown
           options={options}
           selected={selected}
           onSelect={(value) => {
             setSelected(value);
           }}
+        />*/}
+        <h1>아이템 분류</h1>
+        <Input
+          type="text"
+          value={itemType}
+          className="text-[#9E9E9E]"
+          readOnly
         />
       </div>
       <div className="flex flex-col gap-[10px]">
@@ -156,50 +162,25 @@ export default function EditItem({
         />
       </div>
       <div className="flex flex-col gap-[10px]">
+        <h1>아이템 키값</h1>
+        <Input
+          type="text"
+          value={itemKey}
+          className="text-[#9E9E9E]"
+          readOnly
+        />
+      </div>
+      <div className="flex flex-col gap-[10px]">
         <h1>아이템 이미지</h1>
         <div className="flex h-[121px] w-full flex-col items-center justify-center rounded-[8px] border-1 border-[#e0e0e0]">
-          {previewUrl ? (
-            <div className="relative h-full w-full">
-              <Image
-                src={previewUrl}
-                alt="preview"
-                fill
-                className="rounded-[8px] object-contain"
-              />
-              <button
-                className="bg-opacity-50 absolute top-2 right-2 rounded-xl bg-[#ff0000] px-2 py-1 text-xs text-white"
-                onClick={() => {
-                  setPreviewUrl(null);
-                  setImageFile(null);
-                }}
-              >
-                삭제
-              </button>
-            </div>
-          ) : (
-            <>
-              <label
-                htmlFor="item-image"
-                className="flex h-[121px] w-full cursor-pointer flex-col items-center justify-center rounded-[8px]"
-              >
-                <ImagePlus className="h-10 w-10 text-[#9e9e9e]" />
-                <input
-                  id="item-image"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      setImageFile(file);
-                      const url = URL.createObjectURL(file);
-                      setPreviewUrl(url);
-                    }
-                  }}
-                  className="hidden"
-                />
-              </label>
-            </>
-          )}
+          <div className="relative h-full w-full">
+            <Image
+              src={`/images/items/thumbs/${itemKey}.png`}
+              alt="item image"
+              fill
+              className="rounded-[8px] object-contain"
+            />
+          </div>
         </div>
       </div>
       <div>
@@ -231,7 +212,7 @@ export default function EditItem({
       </div>
       <div className="relative mb-4">
         <div className="flex flex-col gap-[10px]">
-          <h1>리스트 여부</h1>
+          <h1>상점 등록</h1>
           <select
             value={isListed.toString()}
             className="h-12 w-full appearance-none rounded-lg border border-[#E0E0E0] px-4 py-2 pr-10 text-sm focus:outline-none"

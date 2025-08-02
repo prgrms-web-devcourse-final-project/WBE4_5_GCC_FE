@@ -20,13 +20,12 @@ const options = ['TOP', 'BOTTOM', 'ACCESSORY'];
 export default function AddItem() {
   const router = useRouter();
   const queryClient = useQueryClient();
+
   const [itemType, setItemType] = useState('');
   const [itemName, setItemName] = useState('');
   const [itemKey, setItemKey] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isListed, setIsListed] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -112,16 +111,10 @@ export default function AddItem() {
   };
 
   const isDisabled =
-    !itemType ||
-    !itemName ||
-    !itemKey ||
-    !itemDescription ||
-    !itemPrice ||
-    !imageFile ||
-    !isListed;
+    !itemType || !itemName || !itemKey || !itemDescription || !itemPrice;
 
   return (
-    <div className="h-1vh flex flex-col gap-6 px-5 py-7">
+    <div className="h-1vh flex flex-col gap-6 bg-white px-5 py-7">
       {/* 분류 */}
       <div className="flex flex-col gap-[10px]">
         <h1>아이템 분류</h1>
@@ -167,7 +160,7 @@ export default function AddItem() {
       </div>
 
       {/* 이미지 */}
-      <div className="flex flex-col gap-[10px]">
+      {/*<div className="flex flex-col gap-[10px]">
         <h1>아이템 이미지</h1>
         <div className="flex h-[121px] w-full items-center justify-center rounded-[8px] border border-[#e0e0e0]">
           {previewUrl ? (
@@ -210,7 +203,7 @@ export default function AddItem() {
             </label>
           )}
         </div>
-      </div>
+      </div>*/}
 
       {/* 설명 */}
       <div className="flex flex-col gap-[10px]">
@@ -238,7 +231,7 @@ export default function AddItem() {
       {/* 리스트 여부 */}
       <div className="relative mb-4">
         <div className="flex flex-col gap-[10px]">
-          <h1>리스트 여부</h1>
+          <h1>상점 등록</h1>
           <select
             value={isListed.toString()}
             className="h-12 w-full appearance-none rounded-lg border border-[#E0E0E0] px-4 py-2 pr-10 text-sm focus:outline-none"
@@ -248,7 +241,7 @@ export default function AddItem() {
             <option value="false">false</option>
           </select>
           <ChevronDown
-            className="h-[18px] w-[18px] text-[#616161] cursor-pointer absolute right-4 bottom-1 -translate-y-1/2"
+            className="absolute right-4 bottom-1 h-[18px] w-[18px] -translate-y-1/2 cursor-pointer text-[#616161]"
             strokeWidth={2}
           />
         </div>
