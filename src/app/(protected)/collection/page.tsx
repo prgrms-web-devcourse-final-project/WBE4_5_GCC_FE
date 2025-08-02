@@ -47,7 +47,6 @@ export default function Page() {
     queryKey: ['user-badges'],
     queryFn: () => getBadges(page, 999),
     staleTime: 5 * 60 * 1000,
-    //placeholderData: (prev) => prev, // 이전 데이터를 잠시 유지
   });
 
   const badges = badgesData?.badges || [];
@@ -172,7 +171,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-1vh flex w-full justify-center pt-11 bg-white">
+      <div className="h-1vh flex w-full justify-center bg-white pt-11">
         <div className="flex w-full min-w-[390px] flex-col items-center bg-white">
           <BackHeader title="도감" />
 
