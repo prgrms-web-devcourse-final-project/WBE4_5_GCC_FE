@@ -8,6 +8,7 @@ import {
 import { AddRoutine, EditRoutine } from '../../../types/routine';
 import { WeekRoutineResponse } from './getWeekRoutine';
 import { format } from 'date-fns';
+import { fetchUserQuest } from '../member';
 
 // 루틴 추가
 export function useAddRoutine() {
@@ -99,12 +100,16 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
     },
 
     // ✅ 성공/실패와 관계없이 서버 상태 동기화
-    onSettled: () => {
-      queryClient.invalidateQueries({
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['routine-week', mondayStr],
       });
-      queryClient.invalidateQueries({ queryKey: ['user-point'] });
-      queryClient.invalidateQueries({ queryKey: ['user-quest'] });
+      await queryClient.invalidateQueries({ queryKey: ['user-point'] });
+      await queryClient.invalidateQueries({ queryKey: ['user-quests'] });
+      // await queryClient.prefetchQuery({
+      //   queryKey: ['user-quests'],
+      //   queryFn: fetchUserQuest,
+      // });
     },
   });
 }

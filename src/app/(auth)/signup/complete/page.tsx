@@ -1,6 +1,5 @@
 'use client';
 
-import { signIn } from '@/api/auth';
 import { useSignUpStore } from '@/store/SignupStore';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -8,11 +7,9 @@ import { useRouter } from 'next/navigation';
 export default function SignUpComplete() {
   const router = useRouter();
   const userEmail = useSignUpStore((state) => state.email);
-  const userPassword = useSignUpStore((state) => state.password);
 
   // 로그인 핸들러
   const logInHandler = async () => {
-    await signIn(userEmail, userPassword);
     if (userEmail === 'admin@test.com') {
       router.push('/admin');
     } else {
