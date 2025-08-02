@@ -36,10 +36,12 @@ export default function WhenSelector({
       >
         <div className="flex items-center justify-start gap-2">
           <h2 className="text-lg font-semibold">✅</h2>
-          <h2 className="text-base font-semibold text-black">언제 할래요?</h2>
+          <h2 className="text-base font-semibold text-black dark:text-[var(--dark-gray-700)]">
+            언제 할래요?
+          </h2>
         </div>
         <Input
-          className="my-[18px] px-3"
+          className="my-[18px] px-3 dark:text-[var(--dark-gray-700)]"
           placeholder="ex) 양치하자마자, 식사 직후, 씻고 난 후"
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -49,7 +51,7 @@ export default function WhenSelector({
             <button
               key={idx}
               onClick={() => handleClick(option)}
-              className={`flex h-[30px] cursor-pointer items-center justify-center rounded-[50px] border border-[#E0E0E0] px-3.5 py-2 text-xs transition-colors duration-200 ${selectedIdx === option ? 'text-[#C4C4C4]' : ''}`}
+              className={`flex h-[30px] cursor-pointer items-center justify-center rounded-[50px] border border-[var(--gray-300)] px-3.5 py-2 text-xs transition-colors duration-200 dark:text-[var(--dark-gray-700)] ${selectedIdx === option ? 'text-[var(--gray-400)]' : ''}`}
             >
               {option}
             </button>

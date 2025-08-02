@@ -145,18 +145,18 @@ export default function Page() {
   return (
     <>
       <EditSubcategoryLayout onComplete={handleComplete} label={label}>
-        <div className="flex flex-col gap-7 px-5 py-7">
+        <div className="flex min-h-screen flex-col gap-7 px-5 py-7">
           <div className="flex items-center gap-3">
             <div
               onClick={() =>
                 categoryType !== 'DEFAULT' && setIsPickerOpen(true)
               }
-              className={`flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0] ${categoryType === 'DEFAULT' ? 'cursor-default' : 'cursor-pointer'}`}
+              className={`flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[var(--gray-300)] ${categoryType === 'DEFAULT' ? 'cursor-default' : 'cursor-pointer'}`}
             >
               <span className="text-2xl">{selectedEmoji || icon}</span>
             </div>
 
-            <div className="w-70 flex-auto border border-transparent border-b-[#E0E0E0] py-2 text-xl text-black">
+            <div className="w-70 flex-auto border border-transparent border-b-[var(--gray-300)] py-2 text-xl text-black dark:text-[var(--dark-gray-700)]">
               <input
                 type="text"
                 value={label}
@@ -182,7 +182,7 @@ export default function Page() {
             onClick={() => setIsBottomSheetOpen(true)}
             className="flex gap-2"
           >
-            <CirclePlus className="h-auto w-5 fill-[#388E3C] text-white" />
+            <CirclePlus className="h-auto w-5 fill-[#388E3C] text-white dark:text-[var(--dark-bg-primary)]" />
             <p className="text-medium text-base text-[#388E3C]">
               세부 카테고리
             </p>
@@ -197,9 +197,9 @@ export default function Page() {
                     setIsModalOpen(true);
                   }}
                 >
-                  <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white" />
+                  <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white dark:text-[var(--dark-bg-primary)]" />
                 </button>
-                <p className="w-[307px] flex-auto border border-transparent border-b-[#E0E0E0] text-sm text-black">
+                <p className="w-[307px] flex-auto border border-transparent border-b-[var(--gray-300)] text-sm text-black">
                   {sub.categoryName}
                 </p>
               </div>

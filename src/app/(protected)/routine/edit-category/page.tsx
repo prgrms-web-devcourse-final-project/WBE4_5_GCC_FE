@@ -44,7 +44,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex flex-col gap-3 px-4 py-10">
+    <div className="flex min-h-screen flex-col gap-3 px-4 py-10">
       <CategoryGrid
         categories={majorCategories}
         selected={selectedCategory?.categoryId || null}

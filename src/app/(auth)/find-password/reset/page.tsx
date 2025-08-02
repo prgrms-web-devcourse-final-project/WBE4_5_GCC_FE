@@ -21,7 +21,7 @@ export default function ResetPage() {
     return <Check size={16} color={condition ? '#388E3C' : '#9E9E9E'} />;
   };
   const checkConditionText = (condition: boolean) =>
-    condition ? 'text-[#388E3C]' : 'text-[#9E9E9E]';
+    condition ? 'text-[#388E3C]' : 'text-[var(--gray-500)]';
 
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPassword, setShowCheckPassword] = useState(false);
@@ -112,9 +112,11 @@ export default function ResetPage() {
             />
             <button
               type="button"
-              className="absolute right-5 top-3.5 cursor-pointer"
+              className="absolute top-3.5 right-5 cursor-pointer"
               onClick={() => setShowCheckPassword((prev) => !prev)}
-              aria-label={showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+              aria-label={
+                showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'
+              }
             >
               {showCheckPassword ? (
                 <Eye size={20} color="#9e9e9e" />

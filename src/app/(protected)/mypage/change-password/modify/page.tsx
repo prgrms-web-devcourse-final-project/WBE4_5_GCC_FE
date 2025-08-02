@@ -118,7 +118,7 @@ export default function Page() {
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-y-6 px-5">
           <div className="flex flex-col gap-y-2.5">
-            <h1 className="text-[16px] font-semibold text-[#222222]">
+            <h1 className="text-[16px] font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
               새 비밀번호
             </h1>
             <div className="relative">
@@ -135,9 +135,9 @@ export default function Page() {
                 onClick={() => setShowNew(!showNew)}
               >
                 {showNew ? (
-                  <Eye className="h-auto w-[18px] text-[#9E9E9E]" />
+                  <Eye className="h-auto w-[18px] text-[var(--gray-500)]" />
                 ) : (
-                  <EyeClosed className="h-auto w-[18px] text-[#9E9E9E]" />
+                  <EyeClosed className="h-auto w-[18px] text-[var(--gray-500)]" />
                 )}
               </button>
             </div>
@@ -147,10 +147,10 @@ export default function Page() {
               {conditionList.map(({ key, label }) => (
                 <div key={key} className="flex items-center gap-[6px]">
                   <Check
-                    className={`h-auto w-4 ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C]' : 'text-[#C4C4C4]'}`}
+                    className={`h-auto w-4 ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C] dark:text-[var(--dark-green)]' : 'text-[var(--gray-400)]'}`}
                   />
                   <p
-                    className={`text-[12px] ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C]' : 'text-[#9E9E9E]'}`}
+                    className={`text-[12px] ${passwordChecks[key as keyof typeof passwordChecks] ? 'text-[#388E3C] dark:text-[var(--dark-green)]' : 'text-[var(--gray-500)]'}`}
                   >
                     {label}
                   </p>
@@ -160,7 +160,7 @@ export default function Page() {
           </div>
 
           <div className="flex flex-col gap-y-2.5">
-            <h1 className="text-[16px] font-semibold text-[#222222]">
+            <h1 className="text-[16px] font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
               새 비밀번호 확인
             </h1>
             <div className="relative h-[50px] w-full items-center">
@@ -178,9 +178,9 @@ export default function Page() {
                 onClick={() => setShowConfirm(!showConfirm)}
               >
                 {showConfirm ? (
-                  <Eye className="h-auto w-[18px] text-[#9E9E9E]" />
+                  <Eye className="h-auto w-[18px] text-[var(--gray-500)]" />
                 ) : (
-                  <EyeClosed className="h-auto w-[18px] text-[#9E9E9E]" />
+                  <EyeClosed className="h-auto w-[18px] text-[var(--gray-500)]" />
                 )}
               </button>
             </div>

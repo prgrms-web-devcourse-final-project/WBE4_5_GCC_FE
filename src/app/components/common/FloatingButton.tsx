@@ -25,7 +25,7 @@ export default function FloatingButton({
         className={`flex flex-col items-center justify-center ${className ?? ''}`}
       >
         <div
-          className="mb-1 flex h-11 w-11 items-center justify-center rounded-full border-[0.5px] border-[#b3b3b3] bg-white hover:bg-[#ffb84c]"
+          className="mb-1 flex h-11 w-11 items-center justify-center rounded-full border-[0.5px] border-[#b3b3b3] bg-[var(--white)] hover:bg-[var(--primary-yellow)]"
           onClick={onClick}
         >
           <Image

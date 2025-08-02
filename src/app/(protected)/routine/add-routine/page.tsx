@@ -135,7 +135,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col bg-[#F8F5F1] px-5 py-7 pt-4">
+      <div className="flex min-h-screen flex-col bg-[#F8F5F1] px-5 py-7 pt-4 dark:bg-[var(--dark-bg-primary)]">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col">
             <CategorySelector
@@ -248,8 +248,8 @@ export default function Page() {
         />
       )}
       {isPending && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222]/50">
-          <div className="flex h-[200px] w-[335px] flex-col items-center justify-center rounded-[20px] bg-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/50">
+          <div className="flex h-[200px] w-[335px] flex-col items-center justify-center rounded-[20px] bg-[var(--white)] dark:bg-[var(--dark-bg-primary)]">
             <LoadingSpinner />
             <p className="mt-4 text-[15px] text-black">루틴 추가 중...</p>
           </div>

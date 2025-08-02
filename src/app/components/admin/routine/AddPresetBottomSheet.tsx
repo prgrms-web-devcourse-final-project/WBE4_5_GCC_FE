@@ -22,11 +22,11 @@ export default function AddPresetBottomSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/50"
       onClick={onCloseAction}
     >
       <div
-        className="w-full rounded-t-[24px] bg-white px-4 pt-8 pb-16"
+        className="w-full rounded-t-[24px] bg-[var(--white)] px-4 pt-8 pb-16 dark:bg-[var(--dark-bg-primary)]"
         onClick={(e) => e.stopPropagation()} // 내부 클릭 시 닫힘 방지
       >
         <h2 className="mb-4 text-lg font-semibold text-black">
@@ -41,7 +41,7 @@ export default function AddPresetBottomSheet({
         />
         <button
           onClick={handleSave}
-          className="w-full rounded-lg bg-[#FFB84C] py-3 font-medium text-white"
+          className="w-full rounded-lg bg-[var(--primary-yellow)] py-3 font-medium text-white dark:text-[var(--dark-bg-primary)]"
         >
           저장
         </button>

@@ -64,7 +64,7 @@ export default function AdminRoutine() {
       {selectedCategoryId !== null && (
         <div
           onClick={() => setShowAddSheet(true)}
-          className="mt-3 flex h-11 w-full cursor-pointer items-center justify-center rounded-[8px] border-2 border-dashed border-[#e0e0e0] text-[14px] font-medium text-[#222222]"
+          className="mt-3 flex h-11 w-full cursor-pointer items-center justify-center rounded-[8px] border-2 border-dashed border-[var(--gray-300)] text-[14px] font-medium text-[var(--black)] dark:text-[var(--dark-gray-700)]"
         >
           + 추가하기
         </div>

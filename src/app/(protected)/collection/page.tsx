@@ -171,8 +171,8 @@ export default function Page() {
 
   return (
     <>
-      <div className="h-1vh flex w-full justify-center bg-white pt-11">
-        <div className="flex w-full min-w-[390px] flex-col items-center bg-white">
+      <div className="flex min-h-screen w-full justify-center bg-white pt-11 dark:bg-[var(--dark-bg-primary)]">
+        <div className="flex w-full min-w-[390px] flex-col items-center bg-white dark:bg-[var(--dark-bg-primary)]">
           <BackHeader title="도감" />
 
           {/* 콘텐츠 영역 */}
@@ -186,9 +186,9 @@ export default function Page() {
                     type="checkbox"
                     checked={isChecked}
                     onChange={(e) => setIsChecked(e.target.checked)}
-                    className="h-[14px] w-[14px] cursor-pointer rounded-none border border-[#D9D9D9] accent-black"
+                    className="h-[14px] w-[14px] cursor-pointer rounded-none border border-[var(--gray-350)] accent-black"
                   />
-                  <p className="text-sm font-medium text-black">
+                  <p className="text-sm font-medium text-black dark:text-[var(--dark-gray-700)]">
                     내가 보유한 뱃지만 보기
                   </p>
                 </label>
@@ -197,12 +197,12 @@ export default function Page() {
               {/* 필터 */}
               <div className="flex items-center space-x-1.5">
                 <span
-                  className="cursor-pointer text-xs font-medium text-[#616161]"
+                  className="cursor-pointer text-xs font-medium text-[var(--gray-700)] dark:text-[var(--dark-gray-700)]"
                   onClick={() => setIsOpen(true)}
                 >
                   필터
                 </span>
-                <ListFilter className="h-4 w-4 text-[#616161]" />
+                <ListFilter className="h-4 w-4 text-[var(--gray-700)] dark:text-[var(--dark-gray-700)]" />
               </div>
             </div>
 
@@ -257,7 +257,7 @@ export default function Page() {
                         }
                         action={
                           badge.currentProgress >= badge.requirement && (
-                            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-[5px] bg-[#222222]/85">
+                            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-[5px] bg-[var(--dark-gray-200)]/85">
                               <Image
                                 src="/images/lock.svg"
                                 alt="잠금아이콘"
@@ -265,7 +265,7 @@ export default function Page() {
                                 height={79}
                                 priority
                               />
-                              <p className="mt-[6px] text-center text-xs leading-tight font-semibold text-white">
+                              <p className="mt-[6px] text-center text-xs leading-tight font-semibold text-white dark:bg-[var(--dark-white)]/37 dark:text-[var(--dark-bg-primary)]">
                                 {item.info}
                               </p>
                               <button
@@ -273,7 +273,7 @@ export default function Page() {
                                   e.stopPropagation();
                                   rewardMutation.mutate(badge.badgeKey);
                                 }}
-                                className="mt-4 h-7.5 min-w-34 cursor-pointer rounded-[3px] border border-[#FFB84C] bg-[#FFE29A] text-sm font-semibold text-[#A47148]"
+                                className="mt-4 h-7.5 min-w-34 cursor-pointer rounded-[3px] border border-[var(--primary-yellow)] bg-[#FFE29A] text-sm font-semibold text-[#A47148]"
                               >
                                 보상받기
                               </button>
@@ -293,7 +293,7 @@ export default function Page() {
             <button
               onClick={() => handlePageChange(page - 1)}
               disabled={page === 1}
-              className={`mr-1 h-6 w-6 cursor-pointer text-sm ${page === 1 ? 'text-[#D9D9D9]' : 'text-[#222222]'}`}
+              className={`mr-1 h-6 w-6 cursor-pointer text-sm ${page === 1 ? 'text-[var(--gray-350)]' : 'text-[var(--black)] dark:text-[var(--dark-gray-700)]'}`}
             >
               <ChevronLeft />
             </button>
@@ -302,7 +302,7 @@ export default function Page() {
                 <button
                   key={pageNum}
                   onClick={() => handlePageChange(pageNum)}
-                  className={`h-7 w-7 cursor-pointer rounded-[3px] text-sm ${pageNum === page ? 'bg-[#222222] font-semibold text-white' : 'text-[#222222]'}`}
+                  className={`h-7 w-7 cursor-pointer rounded-[3px] text-sm ${pageNum === page ? 'bg-[var(--black)] font-semibold text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]' : 'text-[var(--black)] dark:text-[var(--dark-gray-700)]'}`}
                 >
                   {pageNum}
                 </button>
@@ -311,7 +311,7 @@ export default function Page() {
             <button
               onClick={() => handlePageChange(page + 1)}
               disabled={page === totalPages}
-              className={`ml-1 h-6 w-6 cursor-pointer text-sm ${page === totalPages ? 'text-[#D9D9D9]' : 'text-[#222222]'}`}
+              className={`ml-1 h-6 w-6 cursor-pointer text-sm ${page === totalPages ? 'text-[var(--gray-350)]' : 'text-[var(--black)] dark:text-[var(--dark-gray-700)]'}`}
             >
               <ChevronRight />
             </button>

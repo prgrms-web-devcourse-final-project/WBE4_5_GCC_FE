@@ -50,7 +50,7 @@ export default function PresetList({
       {presets.map((preset) => (
         <div
           key={preset.presetId}
-          className="relative flex h-11 w-full cursor-pointer items-center justify-center rounded-[8px] border border-[#e0e0e0] text-[14px] font-medium"
+          className="relative flex h-11 w-full cursor-pointer items-center justify-center rounded-[8px] border border-[var(--gray-300)] text-[14px] font-medium"
           onClick={() => onClick(preset)}
         >
           {preset.name}
@@ -61,7 +61,7 @@ export default function PresetList({
             }}
             className="absolute top-2 right-2 flex h-[24px] w-[24px] items-center justify-center rounded-full bg-gray-400 transition hover:bg-gray-500"
           >
-            <X className="h-[14px] w-[14px] text-white" />
+            <X className="h-[14px] w-[14px] text-white dark:text-[var(--dark-bg-primary)]" />
           </button>
         </div>
       ))}

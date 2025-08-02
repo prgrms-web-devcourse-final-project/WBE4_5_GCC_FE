@@ -41,7 +41,7 @@ export default function QuestPage({
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/50">
         <LoadingSpinner />
       </div>
     );
@@ -49,7 +49,7 @@ export default function QuestPage({
 
   if (isError) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/50">
         <div className="text-red-500">퀘스트 불러오기 실패</div>
       </div>
     );
@@ -59,7 +59,7 @@ export default function QuestPage({
     <>
       {/* 퀘스트 뒷 배경. 터치시 모달 창 닫힘 */}
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--black)]/70"
         onClick={() => setOpenQuest(false)}
       >
         {/* 퀘스트 모달 박스 */}
@@ -72,11 +72,11 @@ export default function QuestPage({
             tabs={tabs}
             selectedTab={selectedTab}
             setSelectedTab={setSelectedTab}
-            activeTab="border-1 border-[#A47148] bg-[#A47148] text-white"
+            activeTab="border-1 border-[#A47148] bg-[#A47148] text-white "
             className="h-[37px] min-w-[140px] text-[14px]"
           />
           <div
-            className={`mx-auto flex h-[569px] w-full min-w-[360px] flex-col items-center gap-4 overflow-y-scroll rounded-[8px] rounded-tl-none border-3 border-[#A47148] bg-white px-4 py-[18px] ${className}`}
+            className={`mx-auto flex h-[569px] w-full min-w-[360px] flex-col items-center gap-4 overflow-y-scroll rounded-[8px] rounded-tl-none border-3 border-[#A47148] bg-[var(--white)] px-4 py-[18px] dark:bg-[var(--dark-bg-primary)] ${className}`}
           >
             {filteredQuest.length > 0 &&
               filteredQuest.map((quest) => (

@@ -36,7 +36,7 @@ export default function Notification({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 px-4"
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-[var(--black)] px-4 dark:bg-[var(--dark-gray-200)]/60"
       onClick={() => {
         setOpenNoti(false);
         enableScroll();
@@ -47,22 +47,25 @@ export default function Notification({
         onClick={(e) => e.stopPropagation()}
       >
         <div
-          className={`flex flex-col h-[50vh] rounded-[8px] border-[3px] border-[#A47148] bg-white shadow-xl ${className}`}
+          className={`flex h-[50vh] flex-col rounded-[8px] border-[3px] border-[#A47148] bg-[var(--white)] shadow-xl dark:bg-[var(--dark-bg-primary)] ${className}`}
         >
-          <div className="flex items-center justify-between border-b-2 border-[#d3bba7] px-5 pt-5 pb-4 text-[15px] font-bold text-[#222]">
+          <div className="flex items-center justify-between border-b-2 border-[#d3bba7] px-5 pt-5 pb-4 text-[15px] font-bold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
             <span>
               <span className="mr-1">🔔</span> 알림
             </span>
             <button
-              className="mr-2 text-[12px] font-medium text-[#616161] cursor-pointer"
+              className="mr-2 cursor-pointer text-[12px] font-medium text-[var(--gray-700)]"
               onClick={handleAllReadClick}
               aria-label="모든 알림 읽음 처리"
             >
               모두 읽기
             </button>
           </div>
-          <div className="flex-1 overflow-y-auto px-5 py-3 space-y-2">
-            <NotiContent noti={noti} onClickNotification={onClickNotification} />
+          <div className="flex-1 space-y-2 overflow-y-auto px-5 py-3">
+            <NotiContent
+              noti={noti}
+              onClickNotification={onClickNotification}
+            />
           </div>
         </div>
       </div>

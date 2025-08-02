@@ -1,6 +1,13 @@
 'use client';
 
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 import { DayRoutineCount } from '../../../../types/report';
 
 type Props = {
@@ -17,8 +24,8 @@ export default function CompletionRateChart({ dayRoutineCount }: Props) {
   });
 
   return (
-    <div className="bg-white px-5 py-7 mb-3">
-      <h3 className="mb-4 text-lg font-semibold text-[#222222]">
+    <div className="mb-3 bg-[var(--white)] px-5 py-7 dark:bg-[var(--dark-bg-primary)]">
+      <h3 className="mb-4 text-lg font-semibold text-[var(--black)] dark:text-[var(--dark-gray-700)]">
         주간 루틴 완료율
       </h3>
       <ResponsiveContainer width="100%" height={230}>

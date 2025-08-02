@@ -35,14 +35,14 @@ export default function RecommendedRoutine({
   isLoading,
 }: RecommendedRoutineProps) {
   return (
-    <div className="flex w-full flex-col gap-2 rounded-lg border border-[#E0E0E0] bg-white px-4 py-4">
-      <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
+    <div className="flex w-full flex-col gap-2 rounded-lg border border-[var(--gray-300)] bg-[var(--white)] px-4 py-4 dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)]">
+      <div className="flex items-center gap-2 text-xs font-medium text-[var(--black)] dark:text-[var(--dark-gray-700)]">
         <span>🐣</span>
         <span>입문자를 위한 추천 루틴</span>
       </div>
 
       {isLoading && (
-        <div className="flex items-start px-5 text-left text-xs text-[#9e9e9e]">
+        <div className="flex items-start px-5 text-left text-xs text-[var(--gray-500)] dark:text-[var(--dark-gray-700)]">
           추천 루틴을 불러오는 중입니다
         </div>
       )}
@@ -69,7 +69,7 @@ export default function RecommendedRoutine({
                   onCycleSelect({ month: routine.repeatValue });
                 }
               }}
-              className="font-regular shrink-0 cursor-pointer rounded-lg border border-[#e0e0e0] px-4 py-2 text-xs whitespace-nowrap text-[#616161] hover:bg-[#FFB84C] hover:text-white"
+              className="font-regular shrink-0 cursor-pointer rounded-lg border border-[var(--gray-300)] px-4 py-2 text-xs whitespace-nowrap text-[var(--gray-700)] hover:bg-[var(--primary-yellow)] hover:text-white dark:text-[var(--dark-gray-700)]"
             >
               {routine.name}
             </button>
@@ -78,7 +78,7 @@ export default function RecommendedRoutine({
       )}
       {!routines && !isLoading && (
         <div className="flex flex-col items-start px-5 text-left text-xs">
-          <span className="text-[#9E9E9E]">
+          <span className="text-[var(--gray-500)]">
             카테고리를 선택하면 추천 루틴을 볼 수 있어요!
           </span>
         </div>

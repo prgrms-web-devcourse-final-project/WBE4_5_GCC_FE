@@ -92,11 +92,11 @@ export default function AdminShop() {
           )}
         </div>
 
-        <div className="w-full min-w-[350px] bg-white rounded-tl-none rounded-tr-lg rounded-b-lg border-1 border-[#d9d9d9] px-4 py-6">
+        <div className="w-full min-w-[350px] rounded-tl-none rounded-tr-lg rounded-b-lg border-1 border-[var(--gray-350)] bg-[var(--white)] px-4 py-6 dark:bg-[var(--dark-bg-primary)]">
           <div className="grid w-full grid-cols-3 place-items-center gap-3">
             {/* 아이템 등록 버튼 */}
             <button
-              className="flex aspect-[92/128] h-[140px] min-w-[92px] items-center justify-center rounded-[5px] border-1 border-[#d9d9d9] text-[12px] text-[#9A9898] shadow-[1px_2px_4px_rgba(0,0,0,0.1)]"
+              className="flex aspect-[92/128] h-[140px] min-w-[92px] items-center justify-center rounded-[5px] border-1 border-[var(--gray-350)] text-[12px] text-[#9A9898] shadow-[1px_2px_4px_rgba(0,0,0,0.1)]"
               onClick={() => {
                 router.push('/admin/shop/add-item');
               }}
@@ -118,15 +118,15 @@ export default function AdminShop() {
 
           {/* 페이지네이션 */}
           {/*<div className="mt-[41px] flex items-center justify-center space-x-[11px]">
-            <button className="text-[#222222]">
+            <button className="text-[var(--black)] dark:text-[var(--dark-gray-700)]">
               <ChevronLeft className="h-3 w-auto" />
             </button>
             <button className="text-[10px] font-medium text-gray-700">1</button>
             <button className="text-[10px] font-medium text-gray-700">2</button>
-            <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[#222222] text-center text-[10px] font-semibold text-white">
+            <button className="flex h-[17px] w-[18px] items-center justify-center rounded-[3px] bg-[var(--black)] dark:bg-[var(--dark-gray-200)] text-center text-[10px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
               3
             </button>
-            <button className="text-[#D9D9D9]">
+            <button className="text-[var(--gray-350)]">
               <ChevronRight className="h-3 w-auto" />
             </button>
           </div>*/}

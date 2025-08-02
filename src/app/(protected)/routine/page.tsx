@@ -51,7 +51,7 @@ export default function Page() {
       <div className="flex min-h-screen flex-col items-center overflow-scroll px-5 pt-4 pb-60">
         {isPending && (
           <div className="flex w-full max-w-md flex-col gap-6">
-            <div className="flex w-full max-w-md flex-col gap-5 rounded-[10px] bg-white px-5 py-4">
+            <div className="flex w-full max-w-md flex-col gap-5 rounded-[10px] bg-white px-5 py-4 dark:bg-[var(--dark-bg-primary)]">
               <div className="h-[28px] w-[110px] animate-pulse rounded-[10px] bg-gray-200"></div>
               <div className="flex justify-between">
                 <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-gray-200"></div>
@@ -64,7 +64,7 @@ export default function Page() {
               </div>
             </div>
 
-            <div className="flex w-full max-w-md flex-col gap-4 rounded-[10px] bg-white px-5 py-4 pb-11">
+            <div className="flex w-full max-w-md flex-col gap-4 rounded-[10px] bg-white px-5 py-4 pb-11 dark:bg-[var(--dark-bg-primary)]">
               <div className="h-[27px] w-[146px] animate-pulse rounded-[10px] bg-gray-200"></div>
               <div className="h-[24px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
               <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
@@ -76,7 +76,7 @@ export default function Page() {
           </div>
         )}
         {!isPending && (
-          <div className="flex min-h-screen w-full max-w-md flex-col items-center rounded-[10px] bg-white p-4">
+          <div className="flex min-h-screen w-full max-w-md flex-col items-center rounded-[10px] bg-[var(--white)] p-4 dark:bg-[var(--dark-bg-primary)]">
             <CalendarBar
               setIsOpen={setIsOpen}
               selectedDate={selectedDate}
@@ -84,14 +84,14 @@ export default function Page() {
             />
             <div className="mb-6 flex w-full flex-col justify-start space-y-4.5 select-none">
               <div className="flex items-center justify-between">
-                <span className="text-xl font-semibold">
+                <span className="text-xl font-semibold dark:text-[var(--dark-gray-700)]">
                   {selectedDate instanceof Date
                     ? `${selectedDate.getFullYear()}년 ${selectedDate.getMonth() + 1}월 ${selectedDate.getDate()}일`
                     : ''}
                 </span>
                 {!isToday && (
                   <button
-                    className="cursor-pointer rounded-[5px] border border-[#FFB84C] bg-[#FFB84C] px-2 py-1 text-[12px] text-white"
+                    className="cursor-pointer rounded-[5px] border border-[var(--primary-yellow)] bg-[var(--primary-yellow)] px-2 py-1 text-[12px] text-white dark:text-[var(--dark-bg-primary)]"
                     onClick={goToToday}
                   >
                     Today
@@ -102,8 +102,8 @@ export default function Page() {
                 currentStep={done}
                 totalSteps={total}
                 per={`${percent}%`}
-                wrapperClassName="h-6 bg-[#FFB84C]/25 mb-0 text-white"
-                barClassName="h-6 bg-[#FFB84C] rounded-full text-white text-xs flex items-center justify-center"
+                wrapperClassName="h-6 bg-[var(--primary-yellow)]/25 mb-0 text-white"
+                barClassName="h-6 bg-[var(--primary-yellow)] rounded-full text-white text-xs flex items-center justify-center"
               />
             </div>
 
@@ -156,10 +156,10 @@ export default function Page() {
             )}
 
             <button
-              className="fixed right-0 bottom-25 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333]"
+              className="fixed right-0 bottom-25 mr-5 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-[var(--black)] shadow-lg transition-colors duration-300 hover:bg-[#333333] dark:bg-[var(--dark-gray-200)] hover:dark:bg-[var(--dark-bg-tertiary)]"
               onClick={handleAddRoutine}
             >
-              <Plus className="h-[30px] w-[30px] text-white" />
+              <Plus className="h-[30px] w-[30px] text-white dark:text-[var(--dark-bg-primary)]" />
             </button>
           </div>
         )}

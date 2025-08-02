@@ -65,7 +65,7 @@ export default function CalendarDate({
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-7 place-items-center text-[11px] font-bold text-[#C4C4C4]">
+      <div className="grid grid-cols-7 place-items-center text-[11px] font-bold text-[var(--gray-400)]">
         {weekDays.map((days, index) => (
           <div key={index}>{days}</div>
         ))}
@@ -85,7 +85,7 @@ export default function CalendarDate({
                 isAfter(date, today)
                   ? 'cursor-auto opacity-15'
                   : isSameDay(selectedDate, date)
-                    ? 'cursor-pointer bg-[#017BFC] text-white'
+                    ? 'cursor-pointer bg-[#017BFC] text-white dark:text-[var(--dark-bg-primary)]'
                     : 'cursor-pointer'
               }`}
               type="button"

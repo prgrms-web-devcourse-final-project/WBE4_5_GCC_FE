@@ -19,15 +19,20 @@ export default function SettingsItem({
   return (
     <div
       className={clsx(
-        'mb-[26px] flex h-6 items-center justify-between bg-white',
+        'mb-[26px] flex h-6 items-center justify-between bg-[var(--white)] dark:bg-[var(--dark-bg-primary)]',
         type !== 'toggle' && 'cursor-pointer',
       )}
       onClick={type !== 'toggle' ? onClick : undefined}
     >
-      <span className="text-sm font-semibold text-black">{label}</span>
+      <span className="text-sm font-semibold text-black dark:text-[var(--dark-gray-700)]">
+        {label}
+      </span>
 
       {type === 'link' && (
-        <ChevronRight className="w-auto text-[#222222]" strokeWidth={2}/>
+        <ChevronRight
+          className="w-auto text-[var(--black)] dark:text-[var(--dark-gray-700)]"
+          strokeWidth={2}
+        />
       )}
 
       {type === 'toggle' && (
@@ -38,7 +43,7 @@ export default function SettingsItem({
             checked={checked}
             onChange={(e) => onToggle?.(e.target.checked)}
           />
-          <div className="relative h-6 w-[38px] rounded-full bg-[#E0E0E0] peer-checked:bg-[#FFB84C] peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow-[0px_3px_8px_rgba(0,0,0,0.15)] after:transition-all peer-checked:after:translate-x-[14px]"></div>
+          <div className="relative h-6 w-[38px] rounded-full bg-[var(--gray-300)] peer-checked:bg-[var(--primary-yellow)] peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-[var(--white)] after:shadow-[0px_3px_8px_rgba(0,0,0,0.15)] after:transition-all peer-checked:after:translate-x-[14px]"></div>
         </label>
       )}
     </div>

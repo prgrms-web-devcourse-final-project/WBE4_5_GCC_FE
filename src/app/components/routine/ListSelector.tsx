@@ -57,10 +57,10 @@ export default function ListSelector({
 
   return (
     <div
-      className={`relative w-full border border-[#E0E0E0] bg-white ${className ?? ''}`}
+      className={`relative w-full border border-[var(--gray-300)] bg-[var(--white)] dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)] ${className ?? ''}`}
     >
       <div className="flex h-12 w-full items-center justify-between px-4 py-4">
-        <div className="flex items-center gap-2 text-xs font-medium text-[#222222]">
+        <div className="flex items-center gap-2 text-xs font-medium text-[var(--black)] dark:text-[var(--dark-gray-700)]">
           <span>{icon}</span>
           <span>{label}</span>
         </div>
@@ -76,9 +76,15 @@ export default function ListSelector({
           <button
             type="button"
             onClick={onClick}
-            className="flex cursor-pointer items-center gap-1 rounded-xl px-2 py-1 text-xs text-[#9E9E9E] hover:shadow-sm"
+            className="flex cursor-pointer items-center gap-1 rounded-xl px-2 py-1 text-xs text-[var(--gray-500)] hover:shadow-sm"
           >
-            <span className={value ? 'text-[#222222]' : 'text-[#9E9E9E]'}>
+            <span
+              className={
+                value
+                  ? 'text-[var(--black)] dark:text-[var(--dark-gray-700)]'
+                  : 'text-[var(--gray-500)]'
+              }
+            >
               {value || placeholder}
             </span>
             <ChevronRight className="h-3 w-auto" />

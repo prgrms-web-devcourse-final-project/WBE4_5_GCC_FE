@@ -86,7 +86,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           label={step === 7 ? '가입하기' : '다음'}
           onClick={goNext}
           disabled={!isNextEnabled}
-          className={`${isNextEnabled ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}
+          className={`${isNextEnabled ? 'bg-[var(--black)] dark:bg-[var(--dark-gray-200)]' : 'bg-[var(--gray-400)]'}`}
         />
       )}
     </div>

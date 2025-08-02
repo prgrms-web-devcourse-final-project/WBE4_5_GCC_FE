@@ -48,10 +48,11 @@ export default function Experience() {
             <button
               key={idx}
               onClick={() => setSelectedIndex(idx)}
-              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${selectedIndex === idx
-                ? 'bg-[#FFB84C] text-[#ffffff]'
-                : 'border-[#E0E0E0]'
-                } `}
+              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
+                selectedIndex === idx
+                  ? 'bg-[var(--primary-yellow)] text-[var(--white)]'
+                  : 'border-[var(--gray-300)]'
+              } `}
             >
               {option}
             </button>
@@ -63,10 +64,11 @@ export default function Experience() {
             <button
               key={idx + 3}
               onClick={() => setSelectedIndex(idx + 3)}
-              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${selectedIndex === idx + 3
-                ? 'bg-[#FFB84C] text-[#ffffff]'
-                : 'border-[#E0E0E0]'
-                } `}
+              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
+                selectedIndex === idx + 3
+                  ? 'bg-[var(--primary-yellow)] text-[var(--white)]'
+                  : 'border-[var(--gray-300)]'
+              } `}
             >
               {option}
             </button>

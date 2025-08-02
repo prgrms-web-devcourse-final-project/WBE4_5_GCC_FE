@@ -99,13 +99,15 @@ export default function QuestList({ quest, type }: QuestListProps) {
   return (
     <>
       <div
-        className="flex h-[70px] w-full min-w-[315px] justify-between gap-4 border-b border-dotted pb-[17px]"
+        className="flex h-[70px] w-full min-w-[315px] justify-between gap-4 border-b border-dotted border-b-[#A47148] pb-[17px]"
         key={quest.questKey}
       >
         <div className="flex min-w-[256px] flex-col gap-[10px]">
-          <h1 className="text-[14px] font-semibold">{quest.questName}</h1>
+          <h1 className="text-[14px] font-semibold dark:text-[var(--dark-gray-700)]">
+            {quest.questName}
+          </h1>
           {/* 진행율 */}
-          <div className="relative flex h-[22px] w-full items-center justify-center rounded-[20px] border-1 border-[#A47148] bg-[#FFF4D1]">
+          <div className="relative flex h-[22px] w-full items-center justify-center rounded-[20px] border-1 border-[#A47148] bg-[var(--primary-yellow-50)]">
             {quest.progress >= 1 && (
               <div
                 className="absolute left-0 h-[22px] rounded-[20px] border-1 border-[#A47148] bg-[#A47148]"
@@ -124,10 +126,12 @@ export default function QuestList({ quest, type }: QuestListProps) {
         >
           {/* 퀘스트 진행률이 100일때만 수령가능 */}
           {questProgress !== 100 && (
-            <div className="absolute inset-0 z-50 w-full cursor-auto rounded-[6px] bg-black/50"></div>
+            <div className="absolute inset-0 z-50 w-full cursor-auto rounded-[6px] bg-[var(--black)]/50 dark:bg-[var(--dark-gray-200)]/70"></div>
           )}
           <Image src={coin} alt="coin" className="h-5 w-5" />
-          <h1 className="text-[10px]">+ {quest.points}p</h1>
+          <h1 className="text-[10px] dark:text-[var(--dark-gray-700)]">
+            + {quest.points}p
+          </h1>
         </button>
       </div>
       {isOpen && (

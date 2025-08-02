@@ -234,12 +234,14 @@ export default function Page() {
   };
 
   return (
-    <div className="h-1vh flex flex-col gap-7">
+    <div className="flex min-h-screen flex-col gap-7">
       <BackHeader title="회원정보 변경" />
       <div className="flex flex-col gap-6 px-5">
         {/* 닉네임 */}
         <div className="flex flex-col gap-2.5">
-          <p className="text-sm font-semibold">닉네임</p>
+          <p className="text-sm font-semibold dark:text-[var(--dark-gray-700)]">
+            닉네임
+          </p>
           <div className="flex gap-2.5">
             <Input
               value={nickname}
@@ -264,14 +266,18 @@ export default function Page() {
               disabled={confirmNickname}
               onClick={checkHandler}
             >
-              <h1 className="text-sm font-medium text-[#FDFDFD]">중복 확인</h1>
+              <h1 className="text-sm font-medium text-[#FDFDFD] dark:text-[var(--dark-black)]">
+                중복 확인
+              </h1>
             </Button>
           </div>
         </div>
 
         {/* 주소 */}
         <div className="flex flex-col gap-2.5">
-          <p className="text-sm font-semibold">주소</p>
+          <p className="text-sm font-semibold dark:text-[var(--dark-gray-700)]">
+            주소
+          </p>
           <div className="flex gap-2.5">
             <Input
               value={address}
@@ -280,18 +286,22 @@ export default function Page() {
               disabled
             />
             <Button
-              className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222]"
+              className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[var(--black)] dark:bg-[var(--dark-gray-200)]"
               onClick={handleSearch}
             >
               <Search className="h-auto w-4" strokeWidth={2} />
-              <h1 className="text-sm font-medium text-white">주소 검색</h1>
+              <h1 className="text-sm font-medium text-white dark:text-[var(--dark-bg-primary)]">
+                주소 검색
+              </h1>
             </Button>
           </div>
         </div>
 
         {/* 자취경력 */}
         <div className="flex w-full flex-col gap-2.5">
-          <p className="text-sm font-semibold">자취경력</p>
+          <p className="text-sm font-semibold dark:text-[var(--dark-gray-700)]">
+            자취경력
+          </p>
           <Dropdown
             options={yearOptions}
             selected={selected}

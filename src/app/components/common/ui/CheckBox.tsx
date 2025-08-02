@@ -12,7 +12,7 @@ export default function CheckBox({
       <label className="flex items-center gap-2">
         <input
           type="checkbox"
-          className="h-[16px] w-[16px] accent-[#222222] cursor-pointer"
+          className="h-[16px] w-[16px] cursor-pointer accent-[var(--black)]"
           onChange={onChange}
           checked={checked}
         />

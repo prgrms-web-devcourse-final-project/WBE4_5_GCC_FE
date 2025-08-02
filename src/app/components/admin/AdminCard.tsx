@@ -18,12 +18,14 @@ export default function AdminCard({
 }: AdminCardProps) {
   return (
     <div
-      className="flex max-h-[140px] cursor-pointer flex-col rounded-[10px] border border-[#E0E0E0] px-1.5 pt-4"
+      className="flex max-h-[140px] cursor-pointer flex-col rounded-[10px] border border-[var(--gray-300)] px-1.5 pt-4"
       onClick={onClick}
     >
       <div className="ml-2.5 flex flex-col justify-center gap-1.5">
-        <span className="text-xs text-[#222]">{title}</span>
-        <span className="text-[8px] text-[#9e9e9e]">{description}</span>
+        <span className="text-xs text-[var(--black)] dark:text-[var(--dark-gray-700)]">
+          {title}
+        </span>
+        <span className="text-[8px] text-[var(--gray-500)]">{description}</span>
       </div>
 
       <Image

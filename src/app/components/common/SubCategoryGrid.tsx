@@ -10,10 +10,10 @@ export default function SubCategoryGrid({
   onSelect,
 }: SubCategoryGridProps) {
   return (
-    <div className="w-full min-h-[476px] border-t border-[#E0E0E0]">
+    <div className="min-h-[476px] w-full border-t border-[var(--gray-300)] dark:border-t-[var(--dark-bg-tertiary)]">
       <button
         onClick={() => onSelect('')}
-        className="h-[54px] w-full border-b border-[#E0E0E0] text-sm font-semibold text-[#616161]"
+        className="h-[54px] w-full border-b border-[var(--gray-300)] text-sm font-semibold text-[var(--gray-700)] dark:border-b-[var(--dark-bg-tertiary)] dark:text-[var(--dark-gray-700)]"
       >
         선택 안 함
       </button>
@@ -23,7 +23,7 @@ export default function SubCategoryGrid({
           key={idx}
           onClick={() => onSelect(label)}
           className={clsx(
-            'h-[54px] w-full border-b border-[#E0E0E0] text-sm font-semibold text-[#616161]',
+            'h-[54px] w-full border-b border-[var(--gray-300)] text-sm font-semibold text-[var(--gray-700)] dark:border-b-[var(--dark-bg-tertiary)] dark:text-[var(--dark-gray-700)]',
             idx === subCategories.length && 'border-b-0',
           )}
         >

@@ -1,15 +1,18 @@
 import { twMerge } from 'tailwind-merge';
 import { CircleCheck, CircleAlert } from 'lucide-react';
 
-interface AlertMessageProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface AlertMessageProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   type: 'success' | 'error' | 'info';
   message: string;
 }
 
 const typeStyles = {
-  success: 'bg-[#222222]/80 text-[#FFFFFF]',
-  error: 'bg-[#222222]/80 text-[#FFFFFF]',
-  info: 'bg-[#222222]/80 text-[#FFFFFF]',
+  success:
+    'bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/80 text-[var(--white)]',
+  error:
+    'bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/80 text-[var(--white)]',
+  info: 'bg-[var(--black)] dark:bg-[var(--dark-gray-200)]/80 text-[var(--white)]',
 };
 
 const iconMap = {
@@ -18,13 +21,17 @@ const iconMap = {
   error: <CircleAlert className="size-5 text-[#D32F2F]" />,
 };
 
-export default function AlertMessage({ type, message, className = ''}: AlertMessageProps) {
+export default function AlertMessage({
+  type,
+  message,
+  className = '',
+}: AlertMessageProps) {
   return (
     <div
       className={twMerge(
-            `flex h-[50px] w-fit items-center justify-center gap-[10px] rounded-[8px] px-[18px] py-[15px] text-[14px] font-medium ${typeStyles[type]}`,
-            className,
-          )}
+        `flex h-[50px] w-fit items-center justify-center gap-[10px] rounded-[8px] px-[18px] py-[15px] text-[14px] font-medium ${typeStyles[type]}`,
+        className,
+      )}
     >
       <span>{iconMap[type]}</span>
       <span>{message}</span>
