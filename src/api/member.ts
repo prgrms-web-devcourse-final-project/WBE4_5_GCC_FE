@@ -51,6 +51,7 @@ export const fetchUserQuest = async (): Promise<QuestResponse> => {
 
   try {
     const response = await axiosInstance.get('/api/v1/members/quests');
+    console.log('퀘스트 불러오기 성공');
     return response.data.data as QuestResponse;
   } catch (error) {
     console.error('보유퀘스트 불러오기 실패', error);

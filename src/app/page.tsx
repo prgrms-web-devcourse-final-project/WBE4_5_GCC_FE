@@ -19,6 +19,8 @@ import {
 } from '@/api/routine/handleRoutine';
 import { useQueryClient } from '@tanstack/react-query';
 import { getBadges } from '@/api/badges';
+import { fetchItems } from '@/api/items';
+import { fetchUserQuest } from '@/api/member';
 
 export default function Main() {
   const [openQuest, setOpenQuest] = useState(false);
@@ -28,12 +30,23 @@ export default function Main() {
   const queryClient = useQueryClient();
   const { data: weekData, isPending: weekLoading } = useWeekRoutine();
 
-  // useEffect(()=>{
-  //   queryClient.prefetchQuery({
-  //     queryKey: ['user-badges',1],
-  //     queryFn: () => getBadges(1,6)
-  //   })
-  // },[queryClient])
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: ['user-badges'],
+      queryFn: () => getBadges(1, 999),
+      staleTime: 5 * 60 * 1000,
+    });
+    queryClient.prefetchQuery({
+      queryKey: ['shop-items', 1],
+      queryFn: fetchItems,
+      staleTime: 5 * 60 * 1000,
+    });
+    queryClient.prefetchQuery({
+      queryKey: ['user-quests'],
+      queryFn: fetchUserQuest,
+      staleTime: 5 * 60 * 1000,
+    });
+  }, [queryClient]);
 
   const today = format(new Date(), 'yyyy-MM-dd');
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[today] ?? [];
@@ -87,7 +100,7 @@ export default function Main() {
           <Profile />
         </div>
         {weekLoading && (
-          <div className="flex min-h-screen w-full flex-col gap-3 px-5 py-4">
+          <div className="mt-10 flex min-h-screen w-full flex-col gap-5 rounded-[10px] bg-white px-5 py-4">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-3">
                 <div className="h-[27px] w-[100px] animate-pulse rounded-[10px] bg-gray-200"></div>
@@ -95,9 +108,11 @@ export default function Main() {
               </div>
               <div className="h-[54px] w-[54px] animate-pulse rounded-full bg-gray-200"></div>
             </div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="flex min-h-screen flex-col gap-5 rounded-[10px] bg-white p-4">
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            </div>
           </div>
         )}
         {!weekLoading && (
