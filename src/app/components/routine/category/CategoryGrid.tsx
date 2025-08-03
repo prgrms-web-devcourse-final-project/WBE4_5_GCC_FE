@@ -105,9 +105,8 @@ export default function CategoryGrid({
           <div key={idx} className="flex w-full justify-center">
             <button
               onClick={() => onSelectCategory?.(cat.categoryId)}
-              className={`relative flex w-full max-w-[92px] flex-col items-center gap-1 py-2.5 text-sm text-[#222222] dark:text-[var(--dark-gray-700)] ${
-                isSelected ? 'bg-gray-200' : 'bg-transparent'
-              } rounded-[5px] transition`}
+              className={`relative flex w-full max-w-[92px] flex-col items-center gap-1 py-2.5 text-base cursor-pointer text-[#222222] dark:text-[var(--dark-gray-700)] ${isSelected ? 'bg-gray-200' : 'bg-transparent'
+                } rounded-[5px] transition`}
             >
               {/* 카테고리 삭제 */}
               {/*{isEditMode && cat.categoryType === 'MAJOR' && (

@@ -13,7 +13,7 @@ interface BackHeaderProps {
 export default function BackHeader({
   title,
   useStep = false,
-  defaultBackPath = '/',
+  defaultBackPath = '/home',
   step,
 }: BackHeaderProps) {
   const router = useRouter();
@@ -25,6 +25,11 @@ export default function BackHeader({
   const goBack = () => {
     if (isSocial) {
       router.push('/login');
+      return;
+    }
+
+    if (title === '상점 관리') {
+      router.push('/admin');
       return;
     }
 
@@ -43,7 +48,7 @@ export default function BackHeader({
   const activeStep = step ?? currentStep;
 
   return (
-    <div className="relative flex h-[56px] w-full items-center justify-center">
+    <div className="relative flex h-[56px] w-full items-center justify-center bg-white">
       {activeStep !== 3 && activeStep !== 4 && (
         <ChevronLeft
           className="absolute left-3 h-6 w-6 cursor-pointer dark:text-[var(--dark-gray-700)]"

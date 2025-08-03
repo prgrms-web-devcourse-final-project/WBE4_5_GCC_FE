@@ -8,17 +8,17 @@ interface LogoutModalProps {
 
 export default function LogoutModal({ onClose, onConfirm }: LogoutModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222] dark:bg-[var(--dark-gray-200)]/50">
-      <div className="h-[168px] min-w-[335px] rounded-3xl bg-white px-8 py-[19px] dark:bg-[var(--dark-bg-primary)]">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-[#222222]/50 dark:bg-[var(--dark-gray-200)]/50">
+      <div className="h-[178px] min-w-[335px] rounded-3xl bg-white px-8 py-[19px] dark:bg-[var(--dark-bg-primary)]">
         <div className="flex flex-col items-center justify-center gap-y-6">
           <CircleAlert className="h-auto w-7 text-[#e24413]" />
           <h1 className="text-[18px] font-medium text-[#222222] dark:text-[var(--dark-gray-700)]">
             로그아웃 하시겠습니까?
           </h1>
-          <div className="flex w-full gap-[27px]">
+          <div className="flex w-full gap-[20px]">
             <Button
               onClick={onClose}
-              className="h-[33px] bg-white text-sm font-semibold text-[#909090] dark:bg-[var(--dark-bg-primary)]"
+              className="h-[33px] bg-white border border-[#9e9e9e] text-sm font-semibold text-[#909090] dark:bg-[var(--dark-bg-primary)]"
             >
               취소
             </Button>

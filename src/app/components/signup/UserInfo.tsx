@@ -80,7 +80,7 @@ export default function UserInfo({
   return (
     <>
       {/* 전체 박스 */}
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5">
+      <div className="mx-auto w-full max-w-screen-sm px-5 pt-[50px]">
         {/* 이름 */}
         <div className="mb-[34px]">
           <p className="mb-[10px] text-[16px] font-semibold dark:text-[var(--dark-gray-700)]">

@@ -43,9 +43,11 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
     !isAdminSubRoute;
 
   return (
-    <div className="w-full max-w-[614px] mx-auto bg-white min-h-screen flex flex-col">
+    <div className="mx-auto flex h-screen w-full max-w-[614px] flex-col bg-white">
       <Header />
-      <main className="flex-grow overflow-auto dark:bg-[var(--dark-bg-secondary)]">{children}</main>
+      <main className="flex-grow pt-[54px] dark:bg-[var(--dark-bg-secondary)]">
+        {children}
+      </main>
       {showBottomNav && <BottomNav />}
     </div>
   );

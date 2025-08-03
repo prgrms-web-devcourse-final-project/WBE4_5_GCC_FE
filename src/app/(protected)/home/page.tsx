@@ -1,15 +1,11 @@
 'use client';
-import Profile from './components/main/Profile';
-import Routine from './components/routine/Routine';
+
 import { useEffect, useState } from 'react';
 import quest from '/public/quest.svg';
 import acheivement from '/public/acheivement.svg';
-import FloatingButton from './components/common/FloatingButton';
-import Donut from './components/common/ui/Donut';
+
 import { useRouter, useSearchParams } from 'next/navigation';
-import Quest from './components/main/Quest';
-import { DayRoutine } from '../../types/routine';
-import AlertModal from './components/common/alert/AlertModal';
+
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
 import { format, startOfWeek } from 'date-fns';
 import { useRoutineStore } from '@/store/RoutineStore';
@@ -19,9 +15,16 @@ import {
 } from '@/api/routine/handleRoutine';
 import { useQueryClient } from '@tanstack/react-query';
 import { getBadges } from '@/api/badges';
+import Quest from '../../components/main/Quest';
 import { fetchItems } from '@/api/items';
 import { fetchUserQuest } from '@/api/member';
 import { useUserStore } from '@/store/UserStore';
+import AlertModal from '@/app/components/common/alert/AlertModal';
+import Routine from '@/app/components/routine/Routine';
+import { DayRoutine } from '../../../../types/routine';
+import Donut from '@/app/components/common/ui/Donut';
+import Profile from '@/app/components/main/Profile';
+import FloatingButton from '@/app/components/common/FloatingButton';
 
 export default function Main() {
   const searchParams = useSearchParams();

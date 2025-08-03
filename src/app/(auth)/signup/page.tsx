@@ -39,5 +39,9 @@ export default function SignUp() {
       StepComponent = <UserInfo />;
   }
 
-  return <>{StepComponent}</>;
+  return (
+    <>
+      <div className="min-h-screen bg-white">{StepComponent}</div>
+    </>
+  );
 }

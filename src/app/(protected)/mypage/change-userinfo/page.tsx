@@ -100,7 +100,7 @@ export default function UserInfo() {
               />
             )}
           </div>
-          <Button type="submit" disabled={!isSubmitEnabled}>
+          <Button className="flex justify-center" type="submit" disabled={!isSubmitEnabled}>
             확인
           </Button>
         </div>

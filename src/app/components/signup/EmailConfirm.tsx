@@ -106,7 +106,7 @@ export default function EmailConfirm() {
   return (
     <>
       {/* 전체 박스 */}
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5">
+      <div className="mx-auto w-full max-w-screen-sm px-5 pt-[50px]">
         {showEmailSentAlert && (
           <div className="fixed bottom-[120px] left-0 z-50 flex w-full justify-center">
             <AlertMessage

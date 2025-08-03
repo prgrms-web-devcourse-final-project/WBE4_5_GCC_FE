@@ -35,7 +35,7 @@ export default function Page() {
       if (emailInput === 'admin@test.com') {
         router.push('/admin');
       } else {
-        router.push('/');
+        router.push('/home');
       }
     } catch (err) {
       setErrors({
@@ -89,14 +89,14 @@ export default function Page() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-white px-5 pt-20 select-none dark:bg-[var(--dark-bg-primary)]">
+    <div className="flex min-h-screen flex-col items-center bg-white px-5 pt-50 select-none dark:bg-[var(--dark-bg-primary)]">
       <div className="w-full max-w-md">
         <div className="flex justify-center">
           <Image
             src={logo}
             alt="Loutie Logo"
-            width={240}
-            height={120}
+            width={340}
+            height={220}
             priority
           />
         </div>
@@ -133,7 +133,7 @@ export default function Page() {
           <div className="my-6 space-y-6">
             <Button
               type="submit"
-              className="h-[56px] bg-[#ffb84c] text-[16px] font-bold"
+              className="h-[56px] bg-[#ffb84c] text-[18px] font-bold"
             >
               로그인
             </Button>
@@ -147,7 +147,7 @@ export default function Page() {
             <div className="flex flex-col gap-3">
               <Button
                 type="button"
-                className="gap-2 border border-[#e0e0e0] bg-white text-black dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]"
+                className="gap-2 border border-[#e0e0e0] bg-white text-base text-black dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]"
                 onClick={handleGoogleLogin}
               >
                 <Image
