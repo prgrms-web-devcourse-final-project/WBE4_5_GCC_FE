@@ -147,7 +147,7 @@ export default function Page() {
             <div className="flex flex-col gap-3">
               <Button
                 type="button"
-                className="gap-2 border border-[#e0e0e0] bg-white text-black text-base dark:bg-[var(--dark-bg-primary)]"
+                className="gap-2 border border-[#e0e0e0] bg-white text-base text-black dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]"
                 onClick={handleGoogleLogin}
               >
                 <Image

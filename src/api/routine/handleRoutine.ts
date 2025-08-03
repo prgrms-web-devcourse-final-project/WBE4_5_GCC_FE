@@ -111,6 +111,9 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
         queryClient.invalidateQueries({
           queryKey: ['routine-week', mondayStr],
         }),
+        queryClient.invalidateQueries({ queryKey: ['user-point'] }),
+        queryClient.invalidateQueries({ queryKey: ['user-quests'] }),
+        queryClient.invalidateQueries({ queryKey: ['user-badges'] }),
       ]);
     },
     // await queryClient.prefetchQuery({

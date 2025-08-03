@@ -23,7 +23,9 @@ import type { Noti } from '../../../../../types/notifications';
 const formatTimeAgo = (date: string) => {
   const notificationDate = new Date(date);
   const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - notificationDate.getTime()) / 1000);
+  const diffInSeconds = Math.floor(
+    (now.getTime() - notificationDate.getTime()) / 1000,
+  );
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInSeconds / 3600);
 
@@ -81,7 +83,9 @@ export default function Header() {
     try {
       await markNotificationAsRead(noti.id);
       setNotiList((prev) =>
-        prev.map((item) => (item.id === noti.id ? { ...item, new: false } : item)),
+        prev.map((item) =>
+          item.id === noti.id ? { ...item, new: false } : item,
+        ),
       );
     } catch (err) {
       console.error(`알림 읽음 처리 실패 (id: ${noti.id})`, err);
@@ -136,7 +140,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-1/2 z-50 w-full max-w-[614px] -translate-x-1/2 bg-white/95 backdrop-blur-md px-5 border-b border-gray-200">
+      <header className="fixed top-0 left-1/2 z-50 w-full max-w-[614px] -translate-x-1/2 border-b border-gray-200 bg-white/95 px-5 backdrop-blur-md dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)]">
         <div className="flex h-[64px] items-center justify-between">
           {/* 로고 */}
           <Image
@@ -159,7 +163,7 @@ export default function Header() {
           ) : (
             <div className="relative">
               <Bell
-                className="cursor-pointer text-[#222222] fill-black"
+                className="cursor-pointer fill-black text-[#222222] dark:fill-[var(--dark-gray-700)] dark:text-[var(--dark-gray-700)]"
                 size={26}
                 onClick={handleOpenNoti}
               />
@@ -186,7 +190,10 @@ export default function Header() {
       {openQuest && <QuestPage setOpenQuest={setOpenQuest} />}
 
       {/* 헤더 공간 확보용 */}
-      <div className="mb-[96px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
+      <div
+        className="mb-[96px]"
+        style={{ marginTop: 'env(safe-area-inset-top)' }}
+      />
     </>
   );
 }
