@@ -56,20 +56,20 @@ export default function EditSubcategoryPage() {
                 {/* 좌측 아이콘 영역 */}
                 <div
                   onClick={() => setIsPickerOpen(true)}
-                  className="flex h-[45px] min-w-[45px] items-center justify-center rounded-lg border border-[#E0E0E0]"
+                  className="flex h-[45px] min-w-[45px] items-center justify-center rounded-lg border border-[#e0e0e0]"
                 >
                   {selectedEmoji ? (
                     <span className="text-2xl">{selectedEmoji}</span>
                   ) : (
                     <BadgeQuestionMark
-                      className="h-auto w-6 text-[#9E9E9E]"
+                      className="h-auto w-6 text-[#9e9e9e]"
                       strokeWidth={2}
                     />
                   )}
                 </div>
 
                 {/* 우측 인풋 영역 */}
-                <div className="flex w-full min-w-70 border border-transparent border-b-[#E0E0E0] py-2 text-xl text-black">
+                <div className="flex w-full min-w-70 border border-transparent border-b-[#e0e0e0] py-2 text-xl text-black">
                   <input
                     type="text"
                     value={categoryName}

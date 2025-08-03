@@ -38,7 +38,7 @@ export default function Experience() {
   return (
     <>
       {/* 전체 박스 */}
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 select-none">
+      <div className="mx-auto w-full max-w-screen-sm px-5 pt-[50px] select-none">
         <ProgressBar currentStep={3} totalSteps={4} />
         <h1 className="mb-7 text-[20px] font-semibold">
           자취 경력이 어떻게 되시나요?
@@ -48,10 +48,11 @@ export default function Experience() {
             <button
               key={idx}
               onClick={() => setSelectedIndex(idx)}
-              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${selectedIndex === idx
-                ? 'bg-[#FFB84C] text-[#ffffff]'
-                : 'border-[#E0E0E0]'
-                } `}
+              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
+                selectedIndex === idx
+                  ? 'bg-[#ffb84c] text-white'
+                  : 'border-[#e0e0e0]'
+              } `}
             >
               {option}
             </button>
@@ -63,10 +64,11 @@ export default function Experience() {
             <button
               key={idx + 3}
               onClick={() => setSelectedIndex(idx + 3)}
-              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${selectedIndex === idx + 3
-                ? 'bg-[#FFB84C] text-[#ffffff]'
-                : 'border-[#E0E0E0]'
-                } `}
+              className={`flex h-[43px] items-center justify-center rounded-[50px] border px-[15px] py-[13px] text-sm transition-colors ${
+                selectedIndex === idx + 3
+                  ? 'bg-[#ffb84c] text-white'
+                  : 'border-[#e0e0e0]'
+              } `}
             >
               {option}
             </button>

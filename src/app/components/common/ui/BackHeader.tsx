@@ -43,14 +43,16 @@ export default function BackHeader({
   const activeStep = step ?? currentStep;
 
   return (
-    <div className="relative flex h-[56px] w-full items-center justify-center">
+    <div className="relative flex h-[56px] w-full items-center justify-center bg-white">
       {activeStep !== 3 && activeStep !== 4 && (
         <ChevronLeft
-          className="absolute left-3 h-6 w-6 cursor-pointer"
+          className="absolute left-3 h-6 w-6 cursor-pointer dark:text-[var(--dark-gray-700)]"
           onClick={goBack}
         />
       )}
-      <p className="text-lg font-semibold">{title}</p>
+      <p className="text-lg font-semibold dark:text-[var(--dark-gray-700)]">
+        {title}
+      </p>
     </div>
   );
 }

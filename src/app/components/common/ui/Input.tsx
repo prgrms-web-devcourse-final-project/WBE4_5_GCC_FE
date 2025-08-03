@@ -18,17 +18,21 @@ export default function Input({
       <div className="relative">
         <input
           className={twMerge(
-            'block h-12 w-full rounded-lg border border-[#E0E0E0] p-4 text-sm focus:outline-none',
+            'block h-12 w-full rounded-lg border border-[#e0e0e0] p-4 text-sm focus:outline-none dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]',
             className,
           )}
           {...props}
         />
       </div>
       {error && (
-        <p className="mt-2.5 ml-1.5 text-[12px] text-[#D32F2F]">{error}</p>
+        <p className="dark:text-[var( --dark-red: #ff5c5c; )] mt-2.5 ml-1.5 text-[12px] text-[#D32F2F]">
+          {error}
+        </p>
       )}
       {success && (
-        <p className="mt-2.5 ml-1.5 text-[12px] text-[#388E3C]">{success}</p>
+        <p className="mt-2.5 ml-1.5 text-[12px] text-[#388E3C] dark:text-[var(--dark-green)]">
+          {success}
+        </p>
       )}
     </div>
   );

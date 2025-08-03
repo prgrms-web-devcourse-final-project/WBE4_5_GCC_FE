@@ -11,9 +11,11 @@ import {
   getNotificationList,
   markNotificationAsRead,
   markAllNotificationsAsRead,
+  checkHasUnread,
 } from '@/api/notifications';
 import type { Noti } from '../../../../../types/notifications';
 import useNotificationWebSocket from '@/hooks/useNotifications';
+import { useNotificationStore } from '@/store/NotificationStore';
 
 const formatTimeAgo = (date: string) => {
   const notificationDate = new Date(date);
@@ -44,6 +46,8 @@ export default function Header() {
   const [notiList, setNotiList] = useState<Noti[]>([]);
   const [openQuest, setOpenQuest] = useState(false);
   const currentPoint = useUserStore((state) => state.points);
+  const hasUnread = useNotificationStore((state) => state.hasUnread);
+  const setHasUnread = useNotificationStore((state) => state.setHasUnread);
 
   const handleNewNotification = () => {
     const newNoti: Noti = {
@@ -53,7 +57,7 @@ export default function Header() {
       new: true,
       type: 'ROUTINE',
     };
-
+    setHasUnread(true); // 알림 빨간 점만 표시
     setNotiList((prev) => [newNoti, ...prev]);
   };
 
@@ -70,7 +74,11 @@ export default function Header() {
         new: true,
       }));
 
-      setNotiList((prev) => [...newNotis, ...prev]);
+      setNotiList((prev) => {
+        const prevIds = new Set(prev.map((p) => p.id));
+        const uniqueNewNotis = newNotis.filter((n) => !prevIds.has(n.id));
+        return [...uniqueNewNotis, ...prev];
+      });
       setOpenNoti(true);
     } catch (error) {
       console.error('알림 목록 조회 실패', error);
@@ -85,6 +93,8 @@ export default function Header() {
           item.id === noti.id ? { ...item, new: false } : item,
         ),
       );
+      const unread = await checkHasUnread();
+      setHasUnread(!unread);
     } catch (err) {
       console.error(`알림 읽음 처리 실패 (id: ${noti.id})`, err);
     }
@@ -110,6 +120,8 @@ export default function Header() {
     try {
       await markAllNotificationsAsRead();
       setNotiList((prev) => prev.map((item) => ({ ...item, new: false })));
+      const unread = await checkHasUnread();
+      setHasUnread(!unread);
     } catch (err) {
       console.error('모두 읽음 처리 실패', err);
     }
@@ -134,21 +146,25 @@ export default function Header() {
 
   return (
     <>
-      <div className="z-50 mx-auto flex h-[56px] max-w-md items-center justify-between bg-white px-5 py-[20px]">
+      <div className="fixed top-0 left-1/2 z-50 flex h-[64px] w-full max-w-[614px] -translate-x-1/2 items-center justify-between border-b border-gray-200 bg-white px-6 dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)]">
         {isHome || isAdmin ? (
           <Image
             src={logo}
             alt="logo"
+            width={90}
+            height={60}
             onClick={() => router.push('/')}
-            className="h-[40px] w-[60px] cursor-pointer"
+            className="h-auto cursor-pointer"
           />
         ) : (
-          <div className="text-xl font-semibold">{title}</div>
+          <div className="text-2xl font-bold dark:text-[var(--dark-gray-700)]">
+            {title}
+          </div>
         )}
         {isShop ? (
-          <div className="flex items-center">
-            <Image src={coin} alt="coin" width={16} height={16} />
-            <span className="text-[14px] font-semibold text-[#FFB84C]">
+          <div className="mr-2 flex items-center gap-3 rounded-lg border border-[#c4c4c4] px-2 py-1">
+            <Image src={coin} alt="coin" width={18} height={18} />
+            <span className="text-[16px] font-semibold text-[#FFB84C]">
               {currentPoint}
             </span>
           </div>
@@ -159,7 +175,8 @@ export default function Header() {
               size={24}
               onClick={handleOpenNoti}
             />
-            {notiList.some((n) => n.new) && (
+            {/* {notiList.some((n) => n.new) &&  */}
+            {hasUnread && (
               <span className="absolute top-[-3px] right-[-3px] h-1.5 w-1.5 rounded-full bg-[#D32F2F]" />
             )}
           </div>
@@ -179,6 +196,8 @@ export default function Header() {
       )}
 
       {openQuest && <QuestPage setOpenQuest={setOpenQuest} />}
+
+      <div style={{ marginTop: 'env(safe-area-inset-top)' }} />
     </>
   );
 }
