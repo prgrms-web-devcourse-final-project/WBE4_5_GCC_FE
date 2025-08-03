@@ -116,6 +116,24 @@ export default function Profile() {
               className="absolute top-0 object-contain"
             />
           )}
+          {equippedItem.BOTTOM && (
+            <Image
+              src={`/images/items/${equippedItem.BOTTOM.itemKey}.png`}
+              alt="하의"
+              width={160}
+              height={160}
+              className="absolute top-0 object-contain"
+            />
+          )}
+          {equippedItem.ACCESSORY && (
+            <Image
+              src={`/images/items/${equippedItem.ACCESSORY.itemKey}.png`}
+              alt="악세서리"
+              width={160}
+              height={160}
+              className="absolute top-0 object-contain"
+            />
+          )}
         </div>
 
         <div className="ml-6 flex flex-col">
