@@ -28,9 +28,9 @@ export default function Second() {
 
   return (
     <>
-      <div className="flex flex-col items-center px-10">
+      <div className="flex h-[calc(100vh-54px)] flex-col items-center justify-between">
         {/* 상단 텍스트 */}
-        <div className="mb-[40px] flex flex-col items-center pt-[90px] text-[20px] select-none">
+        <div className="mb-[40px] flex flex-col items-center text-[20px] select-none">
           <h2
             className={`transition-all duration-700 ease-out ${show ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'}`}
           >
@@ -84,30 +84,30 @@ export default function Second() {
             />
           </div>
         </div>
-      </div>
-      <div className="flex w-full justify-between bg-white p-[26px] px-15 font-semibold">
-        <button
-          className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-[#ffb84c] sm:text-[16px]"
-          onClick={skip}
-        >
-          skip
-        </button>
-        <div className="flex gap-2">
-          {[...Array(totalSteps)].map((_, i) => (
-            <Dot
-              key={i}
-              className={`h-8 w-8 ${
-                step === i + 1 ? 'text-[#FFB84C]' : 'text-gray-400'
-              }`}
-            />
-          ))}
+        <div className="flex w-full justify-between bg-[#ffffff] p-[20px] text-black">
+          <button
+            onClick={skip}
+            className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-[#FFB84C] sm:text-[16px]"
+          >
+            skip
+          </button>
+          <div className="flex gap-2">
+            {[...Array(totalSteps)].map((_, i) => (
+              <Dot
+                key={i}
+                className={`h-8 w-8 ${
+                  step === i + 1 ? 'text-[#FFB84C]' : 'text-gray-300'
+                }`}
+              />
+            ))}
+          </div>
+          <button
+            onClick={goNext}
+            className="cursor-pointer text-[16px] transition-all duration-100 ease-in hover:text-[#FFB84C]"
+          >
+            다음
+          </button>
         </div>
-        <button
-          className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-[#ffb84c] sm:text-[16px]"
-          onClick={goNext}
-        >
-          다음
-        </button>
       </div>
     </>
   );

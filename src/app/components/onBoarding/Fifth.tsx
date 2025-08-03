@@ -21,9 +21,9 @@ export default function Second() {
 
   return (
     <>
-      <div className="flex flex-col items-center px-10">
+      <div className="flex h-[calc(100vh-54px)] flex-col items-center justify-between">
         {/* 상단 텍스트 */}
-        <div className="mb-[10px] flex flex-col items-center pt-[60px] text-[20px] select-none">
+        <div className="mb-[10px] flex flex-col items-center text-[20px] select-none">
           <Image src={logo} alt="로고" className="mb-5 w-[168px]" />
           <h2
             className={`transition-all duration-700 ease-out ${show ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'}`}
@@ -48,7 +48,7 @@ export default function Second() {
               className="absolute top-[135px] left-1/2 w-[120px] -translate-x-1/2 -translate-y-1/2"
             />
           </div>
-          <div className="relative mb-22">
+          <div className="relative">
             <Image src={bg2} alt="배경" className="w-full rounded-[10px]" />
             <Image
               src={character}
@@ -58,7 +58,7 @@ export default function Second() {
           </div>
         </div>
         <button
-          className="flex h-[50px] w-[320px] cursor-pointer items-center justify-center rounded-[10px] bg-[#FFB84C] text-[16px] text-white transition-all duration-100 ease-in hover:bg-[#b89868] sm:min-w-[390px]"
+          className="mb-20 flex h-[50px] w-[320px] cursor-pointer items-center justify-center rounded-[10px] bg-[#FFB84C] text-[16px] text-white transition-all duration-100 ease-in hover:bg-[#b89868] sm:min-w-[390px]"
           onClick={goNext}
         >
           시작하기
