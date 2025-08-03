@@ -17,6 +17,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
   );
 
   const hiddenBottomNavRoutes = [
+    '/',
     '/login',
     '/find-password',
     '/signup',
@@ -33,6 +34,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
   ];
 
   const hiddenHeaderRoutes = [
+    '/',
     '/login',
     '/find-password',
     '/signup',
@@ -68,7 +70,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
     !isAdminSubRoute;
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-[614px] flex-col bg-white">
+    <div className="minh-screen mx-auto flex w-full max-w-[614px] flex-col bg-white">
       {showHeader && <Header />}
       <main className="flex-grow pt-[54px] dark:bg-[var(--dark-bg-secondary)]">
         {children}

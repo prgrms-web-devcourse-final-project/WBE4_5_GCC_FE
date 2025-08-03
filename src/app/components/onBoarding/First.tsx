@@ -49,7 +49,7 @@ export default function First() {
 
       {/* 중앙 이미지 */}
       <div
-        className={`flex flex-1 items-center justify-center transition-all delay-1000 duration-800 ease-out ${
+        className={`flex flex-1 flex-col items-center justify-center transition-all delay-1000 duration-800 ease-out ${
           show ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
         }`}
       >
@@ -57,10 +57,10 @@ export default function First() {
       </div>
 
       {/* 하단 네비 */}
-      <div className="flex w-full justify-between bg-[#FFB84C] p-[20px] text-white">
+      <div className="flex justify-between bg-[#ffffff] p-[20px] text-black">
         <button
           onClick={skip}
-          className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-black sm:text-[16px]"
+          className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-[#FFB84C] sm:text-[16px]"
         >
           skip
         </button>
@@ -69,14 +69,14 @@ export default function First() {
             <Dot
               key={i}
               className={`h-8 w-8 ${
-                step === i + 1 ? 'text-white' : 'text-gray-300'
+                step === i + 1 ? 'text-[#FFB84C]' : 'text-gray-300'
               }`}
             />
           ))}
         </div>
         <button
           onClick={goNext}
-          className="cursor-pointer text-[16px] transition-all duration-100 ease-in hover:text-black"
+          className="cursor-pointer text-[16px] transition-all duration-100 ease-in hover:text-[#FFB84C]"
         >
           다음
         </button>

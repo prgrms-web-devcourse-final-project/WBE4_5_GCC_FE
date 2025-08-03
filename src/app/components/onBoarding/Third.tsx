@@ -21,7 +21,7 @@ export default function Third() {
     <>
       <div className="flex flex-col items-center px-10 pb-[50px]">
         {/* 상단 텍스트 */}
-        <div className="mb-[40px] flex flex-col items-center pt-[90px] text-[20px] select-none">
+        <div className="mb-[40px] flex flex-col items-center text-[20px] select-none">
           <h2
             className={`transition-all duration-700 ease-out ${show ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'}`}
           >
