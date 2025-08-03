@@ -27,7 +27,7 @@ export default function AuthLayout({
 
   useEffect(() => {
     if (hydrated && isLoggedIn) {
-      router.replace('/');
+      router.replace('/home');
     }
   }, [hydrated, isLoggedIn, router]);
 
