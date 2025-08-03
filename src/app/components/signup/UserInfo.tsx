@@ -83,7 +83,9 @@ export default function UserInfo({
       <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5">
         {/* 이름 */}
         <div className="mb-[34px]">
-          <p className="mb-[10px] text-[16px] font-semibold">이름</p>
+          <p className="mb-[10px] text-[16px] font-semibold dark:text-[var(--dark-gray-700)]">
+            이름
+          </p>
           <Input
             placeholder="이름을 입력해 주세요"
             value={name}
@@ -92,7 +94,9 @@ export default function UserInfo({
         </div>
         {/* 이메일 */}
         <div className="mb-[34px]">
-          <p className="mb-[10px] text-[16px] font-semibold">이메일(아이디)</p>
+          <p className="mb-[10px] text-[16px] font-semibold dark:text-[var(--dark-gray-700)]">
+            이메일(아이디)
+          </p>
           <div className="flex gap-[10px]">
             <Input
               value={email}
@@ -106,12 +110,12 @@ export default function UserInfo({
           </div>
           <div className="mt-2">
             {emailStatus === 'invalid' && (
-              <p className="text-[14px] text-[#D32F2F]">
+              <p className="text-[14px] text-[#D32F2F] dark:text-[var(--dark-red)]">
                 이미 사용 중인 이메일입니다. 다른 이메일을 입력해 주세요.
               </p>
             )}
             {emailStatus === 'valid' && (
-              <p className="text-[14px] text-[#388E3C]">
+              <p className="text-[14px] text-[#388E3C] dark:text-[var(--dark-green)]">
                 사용 가능한 이메일 입니다.
               </p>
             )}
@@ -119,7 +123,9 @@ export default function UserInfo({
         </div>
         {/* 비밀번호 */}
         <div className="mb-[34px]">
-          <p className="mb-[10px] text-[16px] font-semibold">비밀번호</p>
+          <p className="mb-[10px] text-[16px] font-semibold dark:text-[var(--dark-gray-700)]">
+            비밀번호
+          </p>
 
           <div className="relative flex h-[50px] w-full items-center">
             <Input
@@ -176,7 +182,9 @@ export default function UserInfo({
         </div>
         {/* 비밀번호 확인 */}
         <div className="mb-[34px]">
-          <p className="mb-[10px] text-[16px] font-semibold">비밀번호 확인</p>
+          <p className="mb-[10px] text-[16px] font-semibold dark:text-[var(--dark-gray-700)]">
+            비밀번호 확인
+          </p>
           <div className="relative h-[50px] w-full items-center">
             <Input
               type={showCheckPassword ? 'text' : 'password'}
