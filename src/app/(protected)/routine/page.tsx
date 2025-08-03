@@ -177,8 +177,6 @@
 //   );
 // }
 
-
-
 'use client';
 export const dynamic = 'force-dynamic';
 
@@ -195,7 +193,10 @@ import AlertModal from '@/app/components/common/alert/AlertModal';
 
 import { DayRoutine } from '../../../../types/routine';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
-import { useDeleteRoutine, useHandleRoutine } from '@/api/routine/handleRoutine';
+import {
+  useDeleteRoutine,
+  useHandleRoutine,
+} from '@/api/routine/handleRoutine';
 import { useRoutineStore } from '@/store/RoutineStore';
 
 import Lottie from 'lottie-react';
@@ -230,7 +231,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen w-full flex-col items-center bg-white">
+      <div className="flex min-h-screen w-full flex-col items-center bg-white dark:bg-[var(--dark-bg-primary)]">
         <CalendarBar
           setIsOpen={setIsOpen}
           selectedDate={selectedDate}
@@ -239,7 +240,7 @@ export default function Page() {
 
         <div className="w-full max-w-[614px] flex-1 px-6 pb-[120px]">
           {isPending ? (
-            <div className="flex flex-col gap-5 mt-8 animate-pulse">
+            <div className="mt-8 flex animate-pulse flex-col gap-5">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <div
                   key={idx}
@@ -249,15 +250,15 @@ export default function Page() {
             </div>
           ) : (
             <>
-              <div className="mt-8 mb-6 flex items-center justify-between w-full">
+              <div className="mt-8 mb-6 flex w-full items-center justify-between">
                 <span className="text-2xl font-medium dark:text-[var(--dark-gray-700)]">
                   {format(selectedDate, 'yyyy년 M월 d일')}
                 </span>
                 <button
                   onClick={handleAddRoutine}
-                  className="flex items-center justify-center "
+                  className="flex items-center justify-center"
                 >
-                  <Plus className="h-6 w-6 text-black dark:text-[var(--dark-bg-primary)] cursor-pointer" />
+                  <Plus className="h-6 w-6 cursor-pointer text-black dark:text-[var(--dark-gray-700)]" />
                 </button>
               </div>
 
@@ -297,8 +298,8 @@ export default function Page() {
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center mt-60 text-center text-gray-400 select-none gap-3">
-                  <div className="w-48 h-48 mx-auto">
+                <div className="mt-60 flex flex-col items-center justify-center gap-3 text-center text-gray-400 select-none">
+                  <div className="mx-auto h-48 w-48">
                     <Lottie animationData={CatAnimation} loop autoplay />
                   </div>
                   <span className="-mt-20 text-xl font-medium text-[#616161]">
