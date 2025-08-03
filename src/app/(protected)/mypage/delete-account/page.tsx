@@ -105,6 +105,7 @@ export default function Page() {
           type="submit"
           disabled={!isSubmitEnabled}
           onClick={handleSubmit}
+          className="flex justify-center"
         >
           탈퇴하기
         </Button>

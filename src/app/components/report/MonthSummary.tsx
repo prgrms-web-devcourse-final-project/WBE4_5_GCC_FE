@@ -40,11 +40,11 @@ export default function MonthSummary({ reportData }: Props) {
         {summaryData.map((item, idx) => (
           <div
             key={idx}
-            className="relative flex min-h-[80px] w-full items-start justify-between rounded-lg bg-[#fff4d1] px-4 py-3 shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+            className="relative flex min-h-[80px] w-full items-start justify-between rounded-lg bg-[#fff4d1] px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
           >
-            <p className="text-sm text-[#616161]">{item.label}</p>
+            <p className="text-sm font-medium text-[#616161] whitespace-nowrap">{item.label}</p>
             <p
-              className="self-end text-[20px] font-semibold"
+              className="self-end text-[22px] font-semibold whitespace-nowrap"
               style={{ color: item.color }}
             >
               {item.value}

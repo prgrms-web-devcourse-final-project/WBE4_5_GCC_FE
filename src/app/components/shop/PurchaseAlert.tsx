@@ -24,7 +24,7 @@ export default function PurchaseAlert({
     type === 'success' ? '구매가 완료되었습니다!' : '포인트가 부족합니다 😢';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222] dark:bg-[var(--dark-gray-200)]/50">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-[#222222]/50 dark:bg-[var(--dark-gray-200)]/50">
       <div className="h-fit w-[335px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[19px] text-center dark:bg-[var(--dark-bg-primary)]">
         <div className="flex flex-col items-center bg-white dark:bg-[var(--dark-bg-primary)]">
           {typeIcon[type]}

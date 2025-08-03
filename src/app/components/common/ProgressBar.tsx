@@ -21,7 +21,7 @@ export default function ProgressBar({
         wrapperClassName,
       )}
     >
-      <span className="absolute left-[46%] text-white">{per}</span>
+      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold text-[#616161] text-lg">{per}</span>
       <div
         className={twMerge(
           'h-full bg-[#222222] transition-all duration-300 dark:bg-[var(--dark-gray-200)]',

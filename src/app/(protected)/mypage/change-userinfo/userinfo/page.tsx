@@ -317,7 +317,7 @@ export default function Page() {
               <AlertMessage type="error" message={errors} className="mb-10" />
             )}
           </div>
-          <Button type="submit" onClick={handleSubmit} disabled={!canSave}>
+          <Button className="flex justify-center" type="submit" onClick={handleSubmit} disabled={!canSave}>
             저장하기
           </Button>
         </div>

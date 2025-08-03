@@ -48,21 +48,21 @@ export default function AlertModal({
             {description}
           </p>
         )}
-        <div className="flex justify-center gap-[27px]">
-          <button
-            onClick={onConfirm}
-            className="h-[33px] w-25 cursor-pointer rounded-[8px] bg-[#ffb84c] text-sm font-semibold text-white dark:text-[var(--dark-bg-primary)]"
-          >
-            {confirmText}
-          </button>
+        <div className="flex justify-center gap-[22px]">
           {cancelText && (
             <button
               onClick={onCancel}
-              className="w-[57px] cursor-pointer text-sm text-[#909090] dark:text-[var(--dark-gray-700)]"
+              className="h-[33px] w-25 cursor-pointer rounded-[8px] text-base border border-[#e0e0e0] text-[#909090] dark:text-[var(--dark-gray-700)]"
             >
               {cancelText}
             </button>
           )}
+          <button
+            onClick={onConfirm}
+            className="h-[33px] w-25 cursor-pointer rounded-[8px] bg-[#ffb84c] text-base font-semibold text-white dark:text-[var(--dark-bg-primary)]"
+          >
+            {confirmText}
+          </button>
         </div>
       </div>
     </div>

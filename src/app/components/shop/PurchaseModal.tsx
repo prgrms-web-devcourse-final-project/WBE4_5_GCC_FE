@@ -29,7 +29,7 @@ export default function PurchaseModal({
   if (!isOpen || !item) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222] dark:bg-[var(--dark-gray-200)]/50">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-[#222222]/50 dark:bg-[var(--dark-gray-200)]/50">
       <div className="h-fit w-[390px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[22px] text-center dark:bg-[var(--dark-bg-primary)]">
         {/* 모달창 아이템 정보 */}
         <div className="flex flex-col items-center justify-center gap-4 px-5 py-3">
