@@ -136,7 +136,7 @@ export default function CategoryGrid({
               )}
 
               {isSelected && (
-                <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[#222222] dark:bg-[var(--dark-gray-200)]/20" />
+                <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[#222222]/20 dark:bg-[var(--dark-gray-200)]/20" />
               )}
               <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[#f9f8fe] dark:bg-[var(--dark-gray-700)]">
                 {cat.emoji}

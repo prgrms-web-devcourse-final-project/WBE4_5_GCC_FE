@@ -71,19 +71,19 @@ export default function Routine({
       {isCompleted ? (
         <YellowCheckIcon />
       ) : (
-        <CircleCheck className="mr-4 h-[30px] w-[30px] text-[#c4c4c4]" />
+        <CircleCheck className="mr-5 h-[36px] w-[36px] text-[#c4c4c4]" />
       )}
 
-      <div className="relative flex w-full flex-col space-y-1">
+      <div className="relative flex w-full flex-col space-y-1 py-1.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <p className="text-sm dark:text-[var(--dark-gray-700)]">{title}</p>
+            <p className="text-lg font-semibold text-[#222] dark:text-[var(--dark-gray-700)]">{title}</p>
             {isImportant && (
-              <Star className="ml-1.5 h-4 w-4 fill-[#ffb84c] text-[#ffb84c]" />
+              <Star className="ml-2 h-4 w-4 fill-[#ffb84c] text-[#ffb84c]" />
             )}
           </div>
           <Ellipsis
-            className="h-[32px] w-[32px] cursor-pointer dark:text-[var(--dark-gray-700)]"
+            className="h-[24px] w-[24px] cursor-pointer dark:text-[var(--dark-gray-700)] mb-2"
             onClick={(e) => {
               e.stopPropagation();
               setIsOpen(true);
@@ -91,7 +91,7 @@ export default function Routine({
           />
         </div>
 
-        <div className="flex items-center justify-between gap-1.5 text-xs text-[#9e9e9e]">
+        <div className="flex items-center justify-between gap-2 text-[16px] text-[#9e9e9e] font-regular">
           <div>
             <span>{iconHandler}</span>
             {subCategory && (
@@ -101,7 +101,7 @@ export default function Routine({
               </>
             )}
           </div>
-          <div className="ml-auto flex gap-1 text-[10px]">
+          <div className="ml-auto flex gap-1 text-sm">
             {time && (
               <>
                 <span>⏰</span>
@@ -113,10 +113,10 @@ export default function Routine({
           {isOpen && (
             <div
               ref={popupRef}
-              className="absolute top-5 right-0 flex min-w-[85px] flex-col rounded-lg border border-[#e0e0e0] bg-white dark:bg-[var(--dark-bg-tertiary)]"
+              className="absolute top-8 right-0 flex min-w-[85px] flex-col rounded-lg border border-[#e0e0e0] bg-white dark:bg-[var(--dark-bg-tertiary)]"
             >
               <button
-                className="min-h-[33px] cursor-pointer rounded-t-lg border-b border-[#e0e0e0] px-5 py-2 text-[14px] font-medium text-black hover:bg-[#e0e0e0]"
+                className="min-h-[33px] cursor-pointer rounded-t-lg border-b border-[#e0e0e0] px-5 py-2 text-[16px] font-medium text-black hover:bg-[#e0e0e0]"
                 onClick={(e) => {
                   e.stopPropagation();
                   onEditClick();
@@ -126,7 +126,7 @@ export default function Routine({
                 수정
               </button>
               <button
-                className="min-h-[33px] cursor-pointer rounded-b-lg px-5 py-2 text-[14px] font-medium text-[#D32F2F] hover:bg-[#e0e0e0] dark:text-[var(--dark-red)]"
+                className="min-h-[33px] cursor-pointer rounded-b-lg px-5 py-2 text-[16px] font-medium text-[#D32F2F] hover:bg-[#e0e0e0] dark:text-[var(--dark-red)]"
                 onClick={(e) => {
                   e.stopPropagation();
                   onDeleteClick(scheduleId);

@@ -25,8 +25,27 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
     '/collection',
     // '/admin',
     '/routine/add-routine',
+    '/routine/edit-routine',
+
     '/routine/edit-category',
     '/routine/add-category',
+    '/routine/edit-subcategory'
+  ];
+
+
+  const hiddenHeaderRoutes = [
+    '/login',
+    '/find-password',
+    '/signup',
+    '/signup/complete',
+    '/find-password/reset',
+    '/collection',
+    '/routine/add-routine',
+    '/routine/edit-routine',
+
+    '/routine/edit-category',
+    '/routine/add-category',
+    '/routine/edit-subcategory'
   ];
 
   const isMypageSubRoute =
@@ -42,10 +61,17 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
     !isMypageSubRoute &&
     !isAdminSubRoute;
 
+  const showHeader =
+    !hiddenHeaderRoutes.includes(pathname) &&
+    !isBottomSheetOpen &&
+    !isCalendarBottomSheetOpen &&
+    !isMypageSubRoute &&
+    !isAdminSubRoute;
+
   return (
-    <div className="mx-auto flex h-screen w-full max-w-[614px] flex-col bg-white">
-      <Header />
-      <main className="flex-grow pt-[54px] dark:bg-[var(--dark-bg-primary)]">
+    <div className="mx-auto flex min-h-screen w-full max-w-[614px] flex-col bg-white">
+      {showHeader && <Header />}
+      <main className="flex-grow pt-[54px] dark:bg-[var(--dark-bg-secondary)]">
         {children}
       </main>
       {showBottomNav && <BottomNav />}

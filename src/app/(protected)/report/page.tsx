@@ -126,7 +126,7 @@ export default function Page() {
           <ChevronLeft size={24} />
         </button>
 
-        <h2 className="text-xl font-semibold">{getWeekLabel(currentDate)}</h2>
+        <h2 className="text-[22px] font-semibold">{getWeekLabel(currentDate)}</h2>
 
         <button
           onClick={() => moveWeek(1)}

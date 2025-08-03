@@ -174,7 +174,7 @@ export default function Page() {
   ]);
   return (
     <>
-      <div className="flex min-h-screen flex-col bg-[#F8F5F1] px-5 py-7 pt-4 dark:bg-[var(--dark-bg-primary)]">
+      <div className="flex min-h-screen flex-col bg-[#fff] px-5 py-7 pt-4">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col">
             <CategorySelector
