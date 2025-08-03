@@ -18,18 +18,18 @@ export default function Page() {
   const [templateUse, setTemplateUse] = useState(false);
 
   return (
-    <div className="flex flex-col items-center px-4 py-6 min-h-screen">
-      <div className="w-full max-w-[614px] rounded-lg px-6 py-6 shadow-md dark:bg-[var(--dark-bg-primary)]">
+    <div className="flex flex-col items-center px-5 min-h-screen text-[16px] leading-relaxed">
+      <div className="w-full max-w-[614px] rounded-lg py-6 dark:bg-[var(--dark-bg-primary)]">
         <Profile />
 
         <Button
-          className="mt-5 h-[48px] w-full text-base font-semibold  text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
+          className="mt-6 h-[50px] w-full text-[17px] font-semibold text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
           onClick={() => router.push('/mypage/edit-character')}
         >
           캐릭터 꾸미기
         </Button>
 
-        <div className="mt-8 bg-white flex flex-col space-y-4 dark:bg-[var(--dark-bg-primary)]">
+        <div className="mt-10 bg-white flex flex-col space-y-5 text-lg dark:bg-[var(--dark-bg-primary)]">
           <SettingsItem
             label="회원정보 변경"
             type="link"

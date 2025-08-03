@@ -147,7 +147,7 @@ export default function Page() {
 
         {/* Emoji picker modal */}
         {isPickerOpen && (
-          <div ref={pickerRef} className="absolute top-47 left-5 z-50">
+          <div ref={pickerRef} className="absolute top-47 left-5 z-50 cursor-pointer">
             <EmojiPicker onEmojiClick={handleEmojiSelect} />
           </div>
         )}

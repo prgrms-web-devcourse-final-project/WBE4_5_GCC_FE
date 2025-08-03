@@ -8,8 +8,8 @@ import { Suspense } from 'react';
 import LoadingSpinner from './components/common/ui/LoadingSpinner';
 
 export const metadata: Metadata = {
-  title: '혼라이프',
-  description: '혼라이프와 함께 루틴 실천해요',
+  title: 'Routie',
+  description: '루틴, 혼자 말고 루티와 함께해요',
   manifest: '/manifest.json',
 };
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </head>
-      <body className="pb-[110px]">
+      <body className="pb-[60px]">
         <Providers>
           <Suspense
             fallback={
@@ -38,6 +38,6 @@ export default function RootLayout({
           </Suspense>
         </Providers>
       </body>
-    </html>
+    </html >
   );
 }
