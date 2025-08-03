@@ -43,7 +43,7 @@ export default function Agreement() {
   return (
     <>
       {/* 전체 박스 */}
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm cursor-pointer px-5 select-none">
+      <div className="mx-auto w-full max-w-screen-sm cursor-pointer px-5 pt-[50px] select-none">
         {/* 모두 동의 */}
         {/* 전체 박스 */}
         <div className="flex flex-col gap-4">
