@@ -1,21 +1,27 @@
-import { List, BarChart2, User, Home, ShoppingCart } from 'lucide-react';
+import { List, BarChart2, User, House, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 
 export default function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#e0e0e0] shadow-md z-50">
+    <nav className="fixed right-0 bottom-0 left-0 z-50 border-t border-[#e0e0e0] bg-white shadow-md">
       <ul className="mx-auto flex max-w-md justify-between px-6 py-3">
         <li>
-          <Link href="/routine" className="flex flex-col items-center text-[#222222] hover:text-[#FFB84C] active:text-[#FFB84C]">
+          <Link
+            href="/routine"
+            className="flex flex-col items-center text-[#222222] hover:text-[#FFB84C] active:text-[#FFB84C]"
+          >
             <List size={24} />
-            <span className="text-xs mt-1">루틴</span>
+            <span className="mt-1 text-xs">루틴</span>
           </Link>
         </li>
 
         <li>
-          <Link href="/report" className="flex flex-col items-center text-[#222222] hover:text-[#FFB84C] active:text-[#FFB84C]">
+          <Link
+            href="/report"
+            className="flex flex-col items-center text-[#222222] hover:text-[#FFB84C] active:text-[#FFB84C]"
+          >
             <BarChart2 size={24} />
-            <span className="text-xs mt-1">리포트</span>
+            <span className="mt-1 text-xs">리포트</span>
           </Link>
         </li>
 
@@ -30,16 +36,22 @@ export default function BottomNav() {
         </li>
 
         <li>
-          <Link href="/shop" className="flex flex-col items-center text-[#222222] hover:text-[#FFB84C] active:text-[#FFB84C]">
+          <Link
+            href="/shop"
+            className="flex flex-col items-center text-[#222222] hover:text-[#FFB84C] active:text-[#FFB84C]"
+          >
             <ShoppingCart size={24} />
-            <span className="text-xs mt-1">상점</span>
+            <span className="mt-1 text-xs">상점</span>
           </Link>
         </li>
 
         <li>
-          <Link href="/mypage" className="flex flex-col items-center text-[#222222] hover:text-[#FFB84C] active:text-[#FFB84C]">
+          <Link
+            href="/mypage"
+            className="flex flex-col items-center text-[#222222] hover:text-[#FFB84C] active:text-[#FFB84C]"
+          >
             <User size={24} />
-            <span className="text-xs mt-1">프로필</span>
+            <span className="mt-1 text-xs">프로필</span>
           </Link>
         </li>
       </ul>

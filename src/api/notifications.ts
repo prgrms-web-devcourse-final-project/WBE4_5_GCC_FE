@@ -37,3 +37,8 @@ export const markNotificationAsRead = async (id: number): Promise<void> => {
 export const markAllNotificationsAsRead = async (): Promise<void> => {
   await axiosInstance.patch('/api/v1/notify/all');
 };
+
+export async function checkHasUnread(): Promise<boolean> {
+  const res = await axiosInstance.get('/api/v1/notify/read');
+  return res.data; // true or false
+}

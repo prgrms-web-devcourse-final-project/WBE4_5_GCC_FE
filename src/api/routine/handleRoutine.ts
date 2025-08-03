@@ -101,16 +101,18 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
 
     // ✅ 성공/실패와 관계없이 서버 상태 동기화
     onSettled: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ['routine-week', mondayStr],
-      });
-      await queryClient.invalidateQueries({ queryKey: ['user-point'] });
-      await queryClient.invalidateQueries({ queryKey: ['user-quests'] });
-      // await queryClient.prefetchQuery({
-      //   queryKey: ['user-quests'],
-      //   queryFn: fetchUserQuest,
-      // });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ['routine-week', mondayStr],
+        }),
+        queryClient.invalidateQueries({ queryKey: ['user-point'] }),
+        queryClient.invalidateQueries({ queryKey: ['user-quests'] }),
+      ]);
     },
+    // await queryClient.prefetchQuery({
+    //   queryKey: ['user-quests'],
+    //   queryFn: fetchUserQuest,
+    // });
   });
 }
 
