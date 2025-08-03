@@ -21,7 +21,7 @@ export default function First() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-between overflow-hidden bg-white">
+    <div className="flex h-[calc(100vh-54px)] flex-col justify-between overflow-hidden bg-white pt-[-54px]">
       {/* 상단 영역 */}
       <div className="flex flex-col items-center select-none">
         <Image
@@ -49,7 +49,7 @@ export default function First() {
 
       {/* 중앙 이미지 */}
       <div
-        className={`flex flex-1 flex-col items-center justify-center transition-all delay-1000 duration-800 ease-out ${
+        className={`flex flex-col items-center justify-center transition-all delay-1000 duration-800 ease-out ${
           show ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'
         }`}
       >
@@ -57,7 +57,7 @@ export default function First() {
       </div>
 
       {/* 하단 네비 */}
-      <div className="flex justify-between bg-[#ffffff] p-[20px] text-black">
+      <div className="flex w-full justify-between bg-[#ffffff] p-[20px] text-black">
         <button
           onClick={skip}
           className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-[#FFB84C] sm:text-[16px]"
