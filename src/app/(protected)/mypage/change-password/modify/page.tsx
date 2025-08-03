@@ -193,7 +193,7 @@ export default function Page() {
               <AlertMessage type="error" message={errors} className="mb-10" />
             )}
           </div>
-          <Button type="submit" disabled={!goNext}>
+          <Button className="flex justify-center" type="submit" disabled={!goNext}>
             변경하기
           </Button>
         </div>
