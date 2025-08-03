@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
 };
 
 const pwaConfig = withPWA({
-  dest: 'public',
+  dest: '.next',
   disable: process.env.NODE_ENV === 'development',
 });
 
