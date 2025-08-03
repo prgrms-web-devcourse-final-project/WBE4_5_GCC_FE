@@ -31,6 +31,7 @@
     "react-mobile-picker": "^1.1.2",
     "react-spinners": "^0.17.0",
     "recharts": "^3.1.0",
+    "sharp": "^0.34.3",
     "sockjs-client": "^1.6.1",
     "tailwind-merge": "^3.3.1",
     "zustand": "^5.0.6"
