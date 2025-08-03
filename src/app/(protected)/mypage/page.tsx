@@ -14,6 +14,7 @@ import ThemeToggle from '@/app/components/common/ThemeToggle';
 export default function Page() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { isSocial } = useUserStore();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [templateUse, setTemplateUse] = useState(false);
@@ -36,11 +37,13 @@ export default function Page() {
             type="link"
             onClick={() => router.push('/mypage/change-userinfo')}
           />
-          <SettingsItem
-            label="비밀번호 변경"
-            type="link"
-            onClick={() => router.push('/mypage/change-password')}
-          />
+          {!isSocial && (
+            <SettingsItem
+              label="비밀번호 변경"
+              type="link"
+              onClick={() => router.push('/mypage/change-password')}
+            />
+          )}
           <SettingsItem
             label="알림 설정"
             type="link"
