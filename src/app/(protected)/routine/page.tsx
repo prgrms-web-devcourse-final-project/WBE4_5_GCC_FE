@@ -14,7 +14,10 @@ import AlertModal from '@/app/components/common/alert/AlertModal';
 
 import { DayRoutine } from '../../../../types/routine';
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
-import { useDeleteRoutine, useHandleRoutine } from '@/api/routine/handleRoutine';
+import {
+  useDeleteRoutine,
+  useHandleRoutine,
+} from '@/api/routine/handleRoutine';
 import { useRoutineStore } from '@/store/RoutineStore';
 
 export default function Page() {
@@ -52,7 +55,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen w-full flex-col items-center bg-white">
+      <div className="mt-7 flex min-h-screen w-full flex-col items-center bg-white">
         <CalendarBar
           setIsOpen={setIsOpen}
           selectedDate={selectedDate}
@@ -61,7 +64,7 @@ export default function Page() {
 
         <div className="w-full max-w-[614px] flex-1 px-6 pb-[120px]">
           {isPending ? (
-            <div className="flex flex-col gap-5 mt-8 animate-pulse">
+            <div className="mt-8 flex animate-pulse flex-col gap-5">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <div
                   key={idx}
@@ -71,7 +74,7 @@ export default function Page() {
             </div>
           ) : (
             <>
-              <div className="mt-8 mb-6 flex items-center justify-between">
+              <div className="mt-3 mb-6 flex items-center justify-between">
                 <span className="text-2xl font-medium dark:text-[var(--dark-gray-700)]">
                   {format(selectedDate, 'yyyy년 M월 d일')}
                 </span>
@@ -121,9 +124,11 @@ export default function Page() {
                   ))}
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center mt-32 text-center text-gray-400 select-none">
-                  <span className="text-xl font-medium">루틴이 없습니다 😢</span>
-                  <span className="text-base mt-2">
+                <div className="mt-32 flex flex-col items-center justify-center text-center text-gray-400 select-none">
+                  <span className="text-xl font-medium">
+                    루틴이 없습니다 😢
+                  </span>
+                  <span className="mt-2 text-base">
                     오른쪽 아래 버튼으로 루틴을 추가해보세요!
                   </span>
                 </div>
@@ -135,7 +140,7 @@ export default function Page() {
         {!isPending && (
           <button
             onClick={handleAddRoutine}
-            className="fixed bottom-24 right-6 z-50 flex h-[64px] w-[64px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333] dark:bg-[var(--dark-gray-200)] hover:dark:bg-[var(--dark-bg-tertiary)]"
+            className="fixed right-6 bottom-24 z-50 flex h-[64px] w-[64px] cursor-pointer items-center justify-center rounded-full bg-[#222222] shadow-lg transition-colors duration-300 hover:bg-[#333333] dark:bg-[var(--dark-gray-200)] hover:dark:bg-[var(--dark-bg-tertiary)]"
           >
             <Plus className="h-7 w-7 text-white dark:text-[var(--dark-bg-primary)]" />
           </button>

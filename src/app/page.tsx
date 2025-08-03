@@ -6,7 +6,7 @@ import quest from '/public/quest.svg';
 import acheivement from '/public/acheivement.svg';
 import FloatingButton from './components/common/FloatingButton';
 import Donut from './components/common/ui/Donut';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Quest from './components/main/Quest';
 import { DayRoutine } from '../../types/routine';
 import AlertModal from './components/common/alert/AlertModal';
@@ -21,14 +21,25 @@ import { useQueryClient } from '@tanstack/react-query';
 import { getBadges } from '@/api/badges';
 import { fetchItems } from '@/api/items';
 import { fetchUserQuest } from '@/api/member';
+import { useUserStore } from '@/store/UserStore';
 
 export default function Main() {
+  const searchParams = useSearchParams();
+  const { setIsLoggedIn } = useUserStore();
   const [openQuest, setOpenQuest] = useState(false);
   const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
   const queryClient = useQueryClient();
   const { data: weekData, isPending: weekLoading } = useWeekRoutine();
+  console.log('🔍 social 값:', searchParams.get('social'));
+  useEffect(() => {
+    const social = searchParams.get('social');
+    if (social === 'true') {
+      setIsLoggedIn(true);
+      console.log('✅ setIsLoggedIn(true) 실행됨');
+    }
+  }, [searchParams, setIsLoggedIn]);
 
   useEffect(() => {
     queryClient.prefetchQuery({
@@ -71,7 +82,7 @@ export default function Main() {
 
   return (
     <>
-      <div className="relative mx-auto flex min-h-screen max-w-md flex-col items-center pt-4 select-none">
+      <div className="relative mx-auto flex max-h-[3] max-w-md flex-col items-center pt-4 select-none">
         <div className="absolute top-0 right-10 z-30 my-8">
           <FloatingButton
             src={quest}

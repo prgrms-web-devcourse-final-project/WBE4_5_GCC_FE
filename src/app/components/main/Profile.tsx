@@ -8,8 +8,10 @@ import { Item, ProfileData } from '../../../../types/User';
 import { useQuery } from '@tanstack/react-query';
 import LoadingSpinner from '../common/ui/LoadingSpinner';
 import { useEffect, useState } from 'react';
+import { useUserStore } from '@/store/UserStore';
 
 export default function Profile() {
+  const isLoggedIn = useUserStore((state) => state.isLoggedIn);
   const [equippedItem, setEquippedItem] = useState<
     Record<'TOP' | 'BOTTOM' | 'ACCESSORY', Item | null>
   >({
@@ -25,6 +27,7 @@ export default function Profile() {
     queryFn: fetchProfile,
     staleTime: 5 * 60 * 1000,
     retry: 0,
+    enabled: isLoggedIn,
   });
 
   const { data: userPointData, isLoading: pointLoading } = useQuery<
@@ -35,6 +38,7 @@ export default function Profile() {
     queryFn: fetchUserPoint,
     staleTime: 5 * 60 * 1000,
     retry: 0,
+    enabled: isLoggedIn,
   });
 
   // 보유아이템 목록 불러오기
@@ -46,6 +50,7 @@ export default function Profile() {
     queryFn: fetchUserItem,
     staleTime: 5 * 60 * 1000,
     retry: 0,
+    enabled: isLoggedIn,
   });
 
   useEffect(() => {
