@@ -3,7 +3,7 @@
 import { useSignUpStore } from '@/store/SignupStore';
 import { useRouter } from 'next/navigation';
 import Lottie from 'lottie-react';
-import SuccessAnimation from '../../../../../public/lottie/Success.json'
+import SuccessAnimation from '../../../../../public/lottie/Success.json';
 
 export default function SignUpComplete() {
   const router = useRouter();
@@ -13,17 +13,17 @@ export default function SignUpComplete() {
     if (userEmail === 'admin@test.com') {
       router.push('/admin');
     } else {
-      router.push('/');
+      router.push('/home');
     }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-4 dark:bg-[var(--dark-bg-primary)]">
-      <div className="flex flex-col items-center text-center w-[350px]">
+      <div className="flex w-[350px] flex-col items-center text-center">
         <div className="mb-2 w-full">
           <Lottie animationData={SuccessAnimation} loop autoplay />
         </div>
-        <h1 className="mb-4 text-3xl font-bold leading-tight text-[#222222 dark:text-[var(--dark-gray-700)]">
+        <h1 className="text-[#222222 mb-4 text-3xl leading-tight font-bold dark:text-[var(--dark-gray-700)]">
           회원가입이 완료되었습니다
         </h1>
         <p className="mb-10 text-xl leading-relaxed text-[#9e9e9e]">
@@ -31,7 +31,7 @@ export default function SignUpComplete() {
         </p>
         <button
           onClick={logInHandler}
-          className="w-full rounded-xl bg-[#222222] py-4 mt-30 text-lg font-semibold text-white shadow-md transition-colors hover:bg-[#444444] cursor-pointer dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
+          className="mt-30 w-full cursor-pointer rounded-xl bg-[#222222] py-4 text-lg font-semibold text-white shadow-md transition-colors hover:bg-[#444444] dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
         >
           홈으로
         </button>

@@ -19,10 +19,12 @@ interface BadgeInfo {
 
 interface UserStore {
   isLoggedIn: boolean;
+  isSocial: boolean;
   points: number;
   equippedBadge: BadgeInfo;
   member: MemberInfo;
   setIsLoggedIn: (value: boolean) => void;
+  setIsSocial: (value: boolean) => void;
   setPoints: (value: number) => void;
   setEquippedBadge: (badge: Partial<BadgeInfo>) => void;
   setMember: (member: Partial<MemberInfo>) => void;
@@ -34,6 +36,7 @@ export const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       isLoggedIn: false,
+      isSocial: false,
       points: 0,
       equippedBadge: {
         badgeKey: '',
@@ -50,6 +53,7 @@ export const useUserStore = create<UserStore>()(
         regionDept3: '',
       },
       setIsLoggedIn: (value) => set({ isLoggedIn: value }),
+      setIsSocial: (value) => set({ isSocial: value }),
       setMember: (member) =>
         set((state) => ({
           member: {
@@ -75,6 +79,7 @@ export const useUserStore = create<UserStore>()(
       resetUser: () =>
         set({
           isLoggedIn: false,
+          isSocial: false,
           points: 0,
           member: {
             email: '',

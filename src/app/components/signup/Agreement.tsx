@@ -38,7 +38,8 @@ export default function Agreement() {
     setWantEmail(marketing);
   }, [setWantEmail, marketing]);
 
-  const getCheckColor = (checked: boolean) => (checked ? '#222222' : '#9E9E9E');
+  const getCheckColor = (checked: boolean) =>
+    checked ? '#222222 dark:text-[var(--dark-gray-700)]' : '#9E9E9E';
 
   return (
     <>
@@ -47,7 +48,7 @@ export default function Agreement() {
         {/* 모두 동의 */}
         {/* 전체 박스 */}
         <div className="flex flex-col gap-4">
-          <div className="border-b-1 border-[#e0e0e0] py-[14px]">
+          <div className="border-b-1 border-[#e0e0e0] py-[14px] dark:text-[var(--dark-gray-700)]">
             <CheckBox
               label="모두 동의 (선택 정보 포함)"
               checked={toggleAll}
@@ -59,28 +60,36 @@ export default function Agreement() {
           <div className="flex flex-col gap-4">
             <div className="flex gap-1" onClick={() => setAge(() => !age)}>
               <Check size={20} color={getCheckColor(age)} />
-              <span>[필수] 만 14세 이상</span>
+              <span className="dark:text-[var(--dark-gray-700)]">
+                [필수] 만 14세 이상
+              </span>
             </div>
             <div
               className="flex items-center gap-2"
               onClick={() => setTerms((prev) => !prev)}
             >
               <Check size={20} color={getCheckColor(terms)} />
-              <span>[필수] 이용약관 동의</span>
+              <span className="dark:text-[var(--dark-gray-700)]">
+                [필수] 이용약관 동의
+              </span>
             </div>
             <div
               className="flex items-center gap-2"
               onClick={() => setPrivacy((prev) => !prev)}
             >
               <Check size={20} color={getCheckColor(privacy)} />
-              <span>[필수] 개인정보 처리방침 동의</span>
+              <span className="dark:text-[var(--dark-gray-700)]">
+                [필수] 개인정보 처리방침 동의
+              </span>
             </div>
             <div
               className="flex items-center gap-2"
               onClick={() => setMarketing((prev) => !prev)}
             >
               <Check size={20} color={getCheckColor(marketing)} />
-              <span>[선택] 광고성 정보 수신 및 마케팅 활용 동의</span>
+              <span className="dark:text-[var(--dark-gray-700)]">
+                [선택] 광고성 정보 수신 및 마케팅 활용 동의
+              </span>
             </div>
           </div>
         </div>

@@ -34,6 +34,7 @@ export default function AlertModal({
 
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-[#222222]/70">
+
       <div className="h-fit w-[335px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[19px] text-center dark:bg-[var(--dark-bg-tertiary)]">
         {type !== 'none' && (
           <div className="flex flex-col items-center bg-white dark:bg-[var(--dark-bg-tertiary)]">
@@ -52,7 +53,7 @@ export default function AlertModal({
           {cancelText && (
             <button
               onClick={onCancel}
-              className="h-[33px] w-25 cursor-pointer rounded-[8px] text-base border border-[#e0e0e0] text-[#909090] dark:text-[var(--dark-gray-700)]"
+              className="h-[33px] w-25 cursor-pointer rounded-[8px] border border-[#e0e0e0] text-base text-[#909090] dark:text-[var(--dark-gray-700)]"
             >
               {cancelText}
             </button>
