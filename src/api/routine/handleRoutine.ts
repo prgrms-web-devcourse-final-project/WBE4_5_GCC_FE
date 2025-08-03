@@ -8,7 +8,6 @@ import {
 import { AddRoutine, EditRoutine } from '../../../types/routine';
 import { WeekRoutineResponse } from './getWeekRoutine';
 import { format } from 'date-fns';
-import { fetchUserQuest } from '../member';
 
 // 루틴 추가
 export function useAddRoutine() {
@@ -36,6 +35,7 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
       scheduleId: number;
       isDone: boolean;
     }) => routineHandler(scheduleId, isDone),
+
     // ✅ 요청 직전에 UI 먼저 업데이트
     onMutate: async ({ scheduleId, isDone }) => {
       await queryClient.cancelQueries({ queryKey: ['user-point'] });
@@ -47,7 +47,7 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
         if (!old) return old;
         return {
           ...old,
-          points: old.points + 50, // 완료 시 50점 추가
+          points: old.points + (isDone ? 50 : -50), // 완료 시 50점 추가
         };
       });
 
@@ -101,12 +101,19 @@ export function useHandleRoutine(mondayStr: string, dateStr: string) {
 
     // ✅ 성공/실패와 관계없이 서버 상태 동기화
     onSettled: async () => {
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['user-point'] });
+      }, 500);
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['user-quests'] });
+      }, 500);
       await Promise.all([
         queryClient.invalidateQueries({
           queryKey: ['routine-week', mondayStr],
         }),
         queryClient.invalidateQueries({ queryKey: ['user-point'] }),
         queryClient.invalidateQueries({ queryKey: ['user-quests'] }),
+        queryClient.invalidateQueries({ queryKey: ['user-badges'] }),
       ]);
     },
     // await queryClient.prefetchQuery({

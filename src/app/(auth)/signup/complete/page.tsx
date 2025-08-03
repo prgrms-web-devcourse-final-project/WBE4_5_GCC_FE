@@ -2,7 +2,8 @@
 
 import { useSignUpStore } from '@/store/SignupStore';
 import { useRouter } from 'next/navigation';
-import LottieAnimation from '@/app/components/common/LottieAnimation';
+import Lottie from 'lottie-react';
+import SuccessAnimation from '../../../../../public/lottie/Success.json';
 
 export default function SignUpComplete() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function SignUpComplete() {
     <div className="flex min-h-screen items-center justify-center bg-white px-4 dark:bg-[var(--dark-bg-primary)]">
       <div className="flex w-[350px] flex-col items-center text-center">
         <div className="mb-2 w-full">
-          <LottieAnimation className="h-auto w-full" />
+          <Lottie animationData={SuccessAnimation} loop autoplay />
         </div>
         <h1 className="text-[#222222 mb-4 text-3xl leading-tight font-bold dark:text-[var(--dark-gray-700)]">
           회원가입이 완료되었습니다

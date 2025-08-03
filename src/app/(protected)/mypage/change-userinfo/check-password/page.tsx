@@ -33,7 +33,7 @@ export default function UserInfo() {
   const passwordConfirmMutation = useMutation({
     mutationFn: (password: string) => handleConfirmPassword(password),
     onSuccess: () => {
-      router.push('/mypage/change-password/modify');
+      router.push('/mypage/change-userinfo/userinfo');
     },
     onError: (error) => {
       console.error('비밀번호 확인 실패', error);
@@ -50,7 +50,7 @@ export default function UserInfo() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <BackHeader title="비밀번호 변경" />
+      <BackHeader title="회원정보 변경" />
       {/* 버튼 제외 콘텐츠 */}
       <form onSubmit={handleSubmit}>
         <div className="px-5">
@@ -73,6 +73,7 @@ export default function UserInfo() {
                   setPassword(e.target.value);
                   setErrors({});
                 }}
+                className="dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]"
               />
               <button
                 type="button"

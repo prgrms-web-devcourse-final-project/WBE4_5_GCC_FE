@@ -44,7 +44,8 @@
 }
 
 body {
-    margin: 0;
+    margin: 0 auto;
+    max-width: 614px;
     background: #f5f5f5;
-    min-height: 100vh;
+    min-height: auto;
 }

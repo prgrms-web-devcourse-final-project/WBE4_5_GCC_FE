@@ -48,7 +48,7 @@ export default function BackHeader({
   const activeStep = step ?? currentStep;
 
   return (
-    <div className="relative flex h-[56px] w-full items-center justify-center bg-white">
+    <div className="relative flex h-[56px] w-full items-center justify-center bg-white dark:bg-[var(--dark-bg-primary)]">
       {activeStep !== 3 && activeStep !== 4 && (
         <ChevronLeft
           className="absolute left-3 h-6 w-6 cursor-pointer dark:text-[var(--dark-gray-700)]"

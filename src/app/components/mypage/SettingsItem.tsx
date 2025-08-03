@@ -19,12 +19,12 @@ export default function SettingsItem({
   return (
     <div
       className={clsx(
-        'mb-[26px] flex h-6 items-center justify-between bg-white dark:bg-[var(--dark-bg-primary)]',
+        'mb-[26px] flex h-8 items-center justify-between bg-white dark:bg-[var(--dark-bg-primary)]',
         type !== 'toggle' && 'cursor-pointer',
       )}
       onClick={type !== 'toggle' ? onClick : undefined}
     >
-      <span className="text-sm font-semibold text-black dark:text-[var(--dark-gray-700)]">
+      <span className="text-base font-semibold text-black dark:text-[var(--dark-gray-700)]">
         {label}
       </span>
 

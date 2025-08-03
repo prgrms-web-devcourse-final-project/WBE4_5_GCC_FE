@@ -23,7 +23,7 @@ export default function CategoryDistributionChart({ categoryCount }: Props) {
   }));
 
   return (
-    <div className="mb-5 bg-white px-5 pt-7 dark:bg-[var(--dark-bg-primary)]">
+    <div className="mb-20 bg-white px-5 pt-7 dark:bg-[var(--dark-bg-primary)]">
       <h3 className="mb-4 text-lg font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
         카테고리 점유율
       </h3>
