@@ -123,23 +123,23 @@ export default function Profile() {
             <Image
               src={`/images/badges/${badgeKey}.svg`}
               alt="badge"
-              width={16}
-              height={20}
+              width={18}
+              height={18}
             />
-            <span className="text-[16px] font-semibold text-[#FFF8E7]">
+            <span className="text-sm font-semibold text-[#FFF8E7]">
               {badgeName}
             </span>
           </div>
 
-          <div className="mb-4">
-            <span className="text-[28px] font-bold text-[#FFF8E7] drop-shadow-[1px_1px_2px_rgba(0,0,0,0.6)]">
+          <div className="mb-5">
+            <span className="text-2xl font-bold text-[#FFF8E7] drop-shadow-[1px_1px_2px_rgba(0,0,0,0.6)]">
               {nickname}
             </span>
           </div>
 
-          <div className="relative flex h-[40px] w-[110px] items-center gap-2 rounded-[8px] bg-[#000000]/70 px-3">
-            <Image src={coin} alt="coin" className="h-[22px] w-[22px]" />
-            <span className="ml-auto text-[18px] text-[#FFB84C]">{point}</span>
+          <div className="relative flex h-[30px] w-[100px] items-center gap-2 rounded-[8px] bg-[#222]/60 px-3">
+            <Image src={coin} alt="coin" className="h-[18px] w-[18px]" />
+            <span className="ml-auto text-base text-[#FFB84C]">{point}</span>
           </div>
         </div>
       </div>

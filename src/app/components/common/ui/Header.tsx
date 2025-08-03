@@ -113,7 +113,7 @@ export default function Header() {
     }
   };
 
-  const isHome = pathname === '/';
+  const isHome = pathname === '/home' || '/';
   const isAdmin = pathname === '/admin';
   const isRoutine = pathname === '/routine';
   const isReport = pathname === '/report';
@@ -159,7 +159,7 @@ export default function Header() {
           ) : (
             <div className="relative">
               <Bell
-                className="cursor-pointer text-[#222222] fill-black"
+                className="cursor-pointer text-[#222222]"
                 size={26}
                 onClick={handleOpenNoti}
               />
@@ -186,7 +186,7 @@ export default function Header() {
       {openQuest && <QuestPage setOpenQuest={setOpenQuest} />}
 
       {/* 헤더 공간 확보용 */}
-      <div className="mb-[96px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
+      <div className="mb-[30px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
     </>
   );
 }

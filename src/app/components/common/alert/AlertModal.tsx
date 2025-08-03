@@ -33,7 +33,7 @@ export default function AlertModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222]/70">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-[#222222]/70">
       <div className="h-fit w-[335px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[19px] text-center dark:bg-[var(--dark-bg-tertiary)]">
         {type !== 'none' && (
           <div className="flex flex-col items-center bg-white dark:bg-[var(--dark-bg-tertiary)]">
