@@ -1,7 +1,8 @@
+'use client';
+
 import { useState } from 'react';
 import Picker from 'react-mobile-picker';
 
-// 반복주기 (주선택)
 export default function WeekPicker({
   onChange,
 }: {
@@ -19,18 +20,21 @@ export default function WeekPicker({
   };
 
   return (
-    <>
-      <div>
-        <Picker value={value} onChange={handleChange} wheelMode="normal">
+    <div className="flex justify-center items-center h-[230px] w-full pb-20">
+      <div className="w-[190px] text-center">
+        <Picker
+          value={value}
+          onChange={handleChange}
+          wheelMode="normal"
+          height={150}
+          itemHeight={48}
+        >
           <Picker.Column name="weeks">
             {weeks.map((week) => (
               <Picker.Item key={week} value={week}>
                 <span
-                  className={`transition-all duration-200 ${
-                    week === value.weeks
-                      ? 'dark:text-[var(--dark-gray-700)]'
-                      : 'text-[#9e9e9e] dark:text-[var(--dark-bg-tertiary)]'
-                  }`}
+                  className={`inline-block w-full text-lg font-semibold transition-all duration-200 ${week === value.weeks ? 'dark:text-[var(--dark-gray-700)]' : 'text-[#BDBDBD] dark:text-[var(--dark-bg-tertiary)]'
+                    }`}
                 >
                   {week}
                 </span>
@@ -39,6 +43,6 @@ export default function WeekPicker({
           </Picker.Column>
         </Picker>
       </div>
-    </>
+    </div>
   );
 }

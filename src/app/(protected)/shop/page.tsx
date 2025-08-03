@@ -80,8 +80,8 @@ export default function Shop() {
           setSelectedTab={setSelectedTab}
         />
 
-        <div className="min-h-[250px] w-full min-w-[350px] rounded-lg rounded-tl-none border-1 border-[#d9d9d9] px-4 py-6">
-          <div className="grid min-h-[140px] w-full grid-cols-3 place-items-center gap-5">
+        <div className="min-h-[250px] w-full min-w-[350px] px-4 py-4">
+          <div className="min-h-[150px] w-full grid grid-cols-3 gap-x-8 gap-y-6 place-items-center" style={{ minWidth: '350px' }}>
             {filteredItems?.map((item: ShopItem) => (
               <ItemCard
                 key={item.itemId}

@@ -43,6 +43,9 @@ export default function Page() {
   const [repeatValue, setRepeatValue] = useState('');
   const [repeatTerm, setRepeatTerm] = useState('');
 
+  // const monday = startOfWeek(initDate, { weekStartsOn: 1 });
+  // const mondayStr = format(monday, 'yyyy-MM-dd');
+
   const isSubmitEnabled =
     selectedCategory !== null &&
     routineName !== '' &&
@@ -135,7 +138,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col bg-[#F8F5F1] px-5 py-7 pt-4 dark:bg-[var(--dark-bg-primary)]">
+      <div className="flex flex-col px-5 py-10 dark:bg-[var(--dark-bg-primary)]">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col">
             <CategorySelector
@@ -147,7 +150,7 @@ export default function Page() {
             />
             <InputRoutineName
               icon="🌱"
-              label="루틴이름"
+              label="루틴 이름"
               placeholder="ex) 변기 청소하기"
               value={routineName}
               onChange={(e) => setRoutineName(e.target.value)}
@@ -158,6 +161,8 @@ export default function Page() {
             onNameSelect={setRoutineName}
             onTriggerTimeSelect={setDoWhen}
             onCycleSelect={setCycle}
+            // onRepeatTypeSelect={setRepeatType}
+            // onRepeatValueSelect={setRepeatValue}
             isLoading={isLoading}
           />
           <div>
@@ -195,7 +200,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="fixed right-5 bottom-[120px] left-5 flex justify-center">
+        <div className="fixed bottom-[70px] left-1/2 -translate-x-1/2 w-full max-w-[614px] px-5">
           <Button
             type="submit"
             disabled={!isSubmitEnabled}
@@ -213,10 +218,12 @@ export default function Page() {
                 },
               });
             }}
+            className="w-full py-8 text-xl font-semibold rounded-lg"
           >
             확인
           </Button>
         </div>
+
 
         {showCatModal && (
           <CategoryBottomSheetContainer

@@ -9,26 +9,27 @@ import Button from '@/app/components/common/ui/Button';
 import LogoutModal from '@/app/components/common/LogoutModal';
 import { useUserStore } from '@/store/UserStore';
 import { useQueryClient } from '@tanstack/react-query';
-import ThemeToggle from '@/app/components/common/ThemeToggle';
 
 export default function Page() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const [templateUse, setTemplateUse] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col items-center">
-      <div className="h-full w-full max-w-md flex-1 rounded-lg bg-white p-6 shadow-md dark:bg-[var(--dark-bg-primary)]">
+    <div className="flex flex-col items-center px-4 py-6 min-h-screen">
+      <div className="w-full max-w-[614px] rounded-lg px-6 py-6 shadow-md dark:bg-[var(--dark-bg-primary)]">
         <Profile />
+
         <Button
-          className="mt-5 h-[48px] bg-[#222222] text-sm font-medium text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
+          className="mt-5 h-[48px] w-full text-base font-semibold  text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
           onClick={() => router.push('/mypage/edit-character')}
         >
           캐릭터 꾸미기
         </Button>
 
-        <div className="mt-8 bg-white dark:bg-[var(--dark-bg-primary)]">
+        <div className="mt-8 bg-white flex flex-col space-y-4 dark:bg-[var(--dark-bg-primary)]">
           <SettingsItem
             label="회원정보 변경"
             type="link"
@@ -44,7 +45,12 @@ export default function Page() {
             type="link"
             onClick={() => router.push('/mypage/notification')}
           />
-          <ThemeToggle />
+          <SettingsItem
+            label="다크모드 설정"
+            type="toggle"
+            checked={darkMode}
+            onToggle={setDarkMode}
+          />
           <SettingsItem
             label="기본 루틴 템플릿 사용 설정"
             type="toggle"
