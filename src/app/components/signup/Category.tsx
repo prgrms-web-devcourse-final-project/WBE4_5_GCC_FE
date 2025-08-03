@@ -44,7 +44,7 @@ export default function Category() {
 
   return (
     <>
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 select-none">
+      <div className="mx-auto w-full max-w-screen-sm px-5 pt-[50px] select-none">
         <ProgressBar currentStep={4} totalSteps={4} />
         <h1 className="mb-7 text-[20px] font-semibold">
           관심있는 카테고리를 골라주세요

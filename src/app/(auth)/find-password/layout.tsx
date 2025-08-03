@@ -8,11 +8,7 @@ import { handleChangePassword } from '@/api/member';
 import AlertMessage from '@/app/components/common/alert/AlertMessage';
 import { useEffect, useState } from 'react';
 
-export default function Layout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -28,7 +24,6 @@ export default function Layout({
     if (pathname === '/find-password') {
       router.push('/find-password/reset');
     } else if (pathname === '/find-password/reset') {
-
       try {
         await handleChangePassword(newPassword);
         setShowSuccessAlert(true);
@@ -72,7 +67,7 @@ export default function Layout({
         label={label}
         onClick={goNext}
         disabled={!isNextEnabled}
-        className={`${isNextEnabled ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}
+        className={` ${isNextEnabled ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}
       />
     </div>
   );

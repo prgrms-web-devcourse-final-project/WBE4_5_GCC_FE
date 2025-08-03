@@ -42,7 +42,7 @@ export default function UserAdress() {
   };
 
   return (
-    <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 select-none">
+    <div className="mx-auto w-full max-w-screen-sm px-5 pt-[50px] select-none">
       <ProgressBar currentStep={2} totalSteps={4} />
 
       <h1 className="mb-7 text-[20px] font-semibold">주소를 입력해 주세요</h1>
@@ -50,7 +50,7 @@ export default function UserAdress() {
       <div className="flex gap-2.5">
         <Input
           value={`${regionDept2} ${regionDept3}`}
-          onChange={() => { }}
+          onChange={() => {}}
           disabled
         />
         <Button

@@ -6,7 +6,11 @@ import { useSignUpStore } from '@/store/SignupStore';
 import Input from '../common/ui/Input';
 import { checkEmail } from '@/api/auth';
 
-export default function UserInfo({ onValidChange }: { onValidChange?: (valid: boolean) => void }) {
+export default function UserInfo({
+  onValidChange,
+}: {
+  onValidChange?: (valid: boolean) => void;
+}) {
   const name = useSignUpStore((state) => state.name);
   const email = useSignUpStore((state) => state.email);
   const password = useSignUpStore((state) => state.password);
@@ -17,7 +21,9 @@ export default function UserInfo({ onValidChange }: { onValidChange?: (valid: bo
   const setPassword = useSignUpStore((state) => state.setPassword);
   const setCheckPassword = useSignUpStore((state) => state.setCheckPassword);
 
-  const [emailStatus, setEmailStatus] = useState<'idle' | 'valid' | 'invalid'>('idle');
+  const [emailStatus, setEmailStatus] = useState<'idle' | 'valid' | 'invalid'>(
+    'idle',
+  );
 
   const [showPassword, setShowPassword] = useState(false);
   const [showCheckPassword, setShowCheckPassword] = useState(false);
@@ -42,14 +48,16 @@ export default function UserInfo({ onValidChange }: { onValidChange?: (valid: bo
   // 비밀번호 조건 검사
   const hasLowerUpper = /[a-z]/.test(password) && /[A-Z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
-  const hasSpecial = /[/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-='|]/.test(password,);
+  const hasSpecial = /[/(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-='|]/.test(
+    password,
+  );
   const hasMinLength = password.length >= 8;
 
   const isPasswordOkay =
     hasLowerUpper && hasNumber && hasSpecial && hasMinLength;
 
   const checkConditionIcon = (condition: boolean) => {
-    return <Check size={16} color={condition ? '#388E3C' : '#9E9E9E'} />
+    return <Check size={16} color={condition ? '#388E3C' : '#9E9E9E'} />;
   };
 
   const checkConditionText = (condition: boolean) => {
@@ -72,7 +80,7 @@ export default function UserInfo({ onValidChange }: { onValidChange?: (valid: bo
   return (
     <>
       {/* 전체 박스 */}
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5">
+      <div className="mx-auto w-full max-w-screen-sm px-5 pt-[50px]">
         {/* 이름 */}
         <div className="mb-[34px]">
           <p className="mb-[10px] text-[16px] font-semibold">이름</p>
@@ -98,7 +106,9 @@ export default function UserInfo({ onValidChange }: { onValidChange?: (valid: bo
           </div>
           <div className="mt-2">
             {emailStatus === 'invalid' && (
-              <p className="text-[14px] text-[#D32F2F]">이미 사용 중인 이메일입니다. 다른 이메일을 입력해 주세요.</p>
+              <p className="text-[14px] text-[#D32F2F]">
+                이미 사용 중인 이메일입니다. 다른 이메일을 입력해 주세요.
+              </p>
             )}
             {emailStatus === 'valid' && (
               <p className="text-[14px] text-[#388E3C]">
@@ -123,7 +133,9 @@ export default function UserInfo({ onValidChange }: { onValidChange?: (valid: bo
               type="button"
               className="absolute right-5 cursor-pointer"
               onClick={() => setShowPassword((prev) => !prev)}
-              aria-label={showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+              aria-label={
+                showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'
+              }
             >
               {showPassword ? (
                 <Eye size={20} color="#9E9E9E" />
@@ -180,9 +192,11 @@ export default function UserInfo({ onValidChange }: { onValidChange?: (valid: bo
 
             <button
               type="button"
-              className="absolute right-5 top-3.5 cursor-pointer"
+              className="absolute top-3.5 right-5 cursor-pointer"
               onClick={() => setShowCheckPassword((prev) => !prev)}
-              aria-label={showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+              aria-label={
+                showCheckPassword ? '비밀번호 숨기기' : '비밀번호 보기'
+              }
             >
               {showCheckPassword ? (
                 <Eye size={20} color="#9e9e9e" />

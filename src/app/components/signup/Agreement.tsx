@@ -43,7 +43,7 @@ export default function Agreement() {
   return (
     <>
       {/* 전체 박스 */}
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 cursor-pointer select-none">
+      <div className="mx-auto w-full max-w-screen-sm cursor-pointer px-5 pt-[50px] select-none">
         {/* 모두 동의 */}
         {/* 전체 박스 */}
         <div className="flex flex-col gap-4">
@@ -57,22 +57,19 @@ export default function Agreement() {
 
           {/* 하위 선택지 4개 */}
           <div className="flex flex-col gap-4">
-            <div
-              className="flex gap-1"
-              onClick={() => setAge(() => !age)}
-            >
+            <div className="flex gap-1" onClick={() => setAge(() => !age)}>
               <Check size={20} color={getCheckColor(age)} />
               <span>[필수] 만 14세 이상</span>
             </div>
             <div
-              className="flex items-center gap-2 "
+              className="flex items-center gap-2"
               onClick={() => setTerms((prev) => !prev)}
             >
               <Check size={20} color={getCheckColor(terms)} />
               <span>[필수] 이용약관 동의</span>
             </div>
             <div
-              className="flex items-center gap-2 "
+              className="flex items-center gap-2"
               onClick={() => setPrivacy((prev) => !prev)}
             >
               <Check size={20} color={getCheckColor(privacy)} />
