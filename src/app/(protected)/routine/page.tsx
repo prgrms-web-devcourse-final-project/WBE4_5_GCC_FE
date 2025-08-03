@@ -258,7 +258,7 @@ export default function Page() {
                   onClick={handleAddRoutine}
                   className="flex items-center justify-center"
                 >
-                  <Plus className="h-6 w-6 cursor-pointer text-black dark:text-[var(--dark-bg-primary)]" />
+                  <Plus className="h-6 w-6 cursor-pointer text-black dark:text-[var(--dark-gray-700)]" />
                 </button>
               </div>
 

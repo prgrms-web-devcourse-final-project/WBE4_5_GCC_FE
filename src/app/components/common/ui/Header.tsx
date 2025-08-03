@@ -163,7 +163,7 @@ export default function Header() {
           ) : (
             <div className="relative">
               <Bell
-                className="cursor-pointer fill-black text-[#222222] dark:text-[var(--dark-gray-700)]"
+                className="cursor-pointer fill-black text-[#222222] dark:fill-[var(--dark-gray-700)] dark:text-[var(--dark-gray-700)]"
                 size={26}
                 onClick={handleOpenNoti}
               />
