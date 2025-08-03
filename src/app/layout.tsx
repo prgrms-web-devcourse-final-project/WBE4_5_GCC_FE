@@ -25,7 +25,7 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
         />
       </head>
-      <body className="pb-[60px]">
+      <body>
         <Providers>
           <Suspense
             fallback={
@@ -38,6 +38,6 @@ export default function RootLayout({
           </Suspense>
         </Providers>
       </body>
-    </html >
+    </html>
   );
 }

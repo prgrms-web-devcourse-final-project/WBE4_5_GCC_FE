@@ -31,7 +31,7 @@ export default function OnBoarding() {
   }
   return (
     <>
-      <div className="min-h-screen bg-white">{StepComponent}</div>
+      <div>{StepComponent}</div>
     </>
   );
 }
