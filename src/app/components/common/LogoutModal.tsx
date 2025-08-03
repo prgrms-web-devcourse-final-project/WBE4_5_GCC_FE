@@ -18,7 +18,7 @@ export default function LogoutModal({ onClose, onConfirm }: LogoutModalProps) {
           <div className="flex w-full gap-[20px]">
             <Button
               onClick={onClose}
-              className="h-[33px] bg-white border border-[#9e9e9e] text-sm font-semibold text-[#909090] dark:bg-[var(--dark-bg-primary)]"
+              className="h-[33px] border border-[#9e9e9e] bg-white text-sm font-semibold text-[#909090] dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]"
             >
               취소
             </Button>
