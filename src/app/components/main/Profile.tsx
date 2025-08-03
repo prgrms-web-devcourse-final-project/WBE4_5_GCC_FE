@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import backGround from '/public/profileBackGround.svg';
-import profileBg from '/public/profileBg.png';
 import profileBg2 from '/public/profileBg2.png';
 import coin from '/public/coin.svg';
 import { fetchProfile, fetchUserItem, fetchUserPoint } from '@/api/member';
@@ -72,7 +70,7 @@ export default function Profile() {
     setEquippedItem(initSelected);
   }, [itemData]);
 
-  const nickname = profileData?.member?.nickname ?? '익명';
+  const nickname = profileData?.member?.nickname;
   const badgeKey = profileData?.equippedBadge?.badgeKey ?? 'CLEAN_BRONZE';
   const badgeName = profileData?.equippedBadge?.badgeName ?? '배지 없음';
   const point = userPointData?.points ?? 0;

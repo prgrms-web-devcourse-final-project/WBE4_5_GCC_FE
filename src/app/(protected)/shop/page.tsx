@@ -73,7 +73,7 @@ export default function Shop() {
 
   return (
     <>
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col overflow-y-auto px-5 py-7">
+      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col overflow-y-auto px-5 py-7 pt-25">
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}
@@ -81,7 +81,10 @@ export default function Shop() {
         />
 
         <div className="min-h-[250px] w-full min-w-[350px] px-4 py-4">
-          <div className="min-h-[150px] w-full grid grid-cols-3 gap-x-8 gap-y-6 place-items-center" style={{ minWidth: '350px' }}>
+          <div
+            className="grid min-h-[150px] w-full grid-cols-3 place-items-center gap-x-8 gap-y-6"
+            style={{ minWidth: '350px' }}
+          >
             {filteredItems?.map((item: ShopItem) => (
               <ItemCard
                 key={item.itemId}

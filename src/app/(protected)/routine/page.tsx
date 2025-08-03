@@ -47,15 +47,9 @@ export default function Page() {
     router.push('/routine/add-routine');
   };
 
-  // const goToToday = () => {
-  //   setSelectedDate(new Date());
-  // };
-
-  // const isToday = selectedDate.toDateString() === new Date().toDateString();
-
   return (
     <>
-      <div className="mt-7 flex min-h-screen w-full flex-col items-center bg-white">
+      <div className="mt-7 flex min-h-screen w-full flex-col items-center bg-white pt-17">
         <CalendarBar
           setIsOpen={setIsOpen}
           selectedDate={selectedDate}
