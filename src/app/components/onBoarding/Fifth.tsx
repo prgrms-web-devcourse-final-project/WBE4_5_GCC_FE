@@ -23,7 +23,7 @@ export default function Second() {
     <>
       <div className="flex flex-col items-center px-10">
         {/* 상단 텍스트 */}
-        <div className="mb-[10px] flex flex-col items-center pt-[60px] text-[20px] select-none">
+        <div className="mb-[10px] flex flex-col items-center text-[20px] select-none">
           <Image src={logo} alt="로고" className="mb-5 w-[168px]" />
           <h2
             className={`transition-all duration-700 ease-out ${show ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0'}`}

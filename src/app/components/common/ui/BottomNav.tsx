@@ -51,7 +51,7 @@ export default function BottomNav() {
 
         <li>
           <Link
-            href="/"
+            href="/home"
             aria-label="홈"
             className="relative -mt-10 flex h-22 w-22 items-center justify-center rounded-full bg-[#FFB84C] text-white shadow-lg dark:text-[var(--dark-bg-primary)]"
           >
