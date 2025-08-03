@@ -22,7 +22,7 @@ export default function ItemCard({
   return (
     <div
       className={clsx(
-        'relative flex h-[220px] w-[170px] flex-col rounded-xl border border-[#d9d9d9] bg-white shadow-[1px_2px_4px_rgba(0,0,0,0.1)] dark:bg-[var(--dark-white)]/37',
+        ' flex h-[220px] w-[170px] flex-col rounded-xl border border-[#d9d9d9] bg-white shadow-[1px_2px_4px_rgba(0,0,0,0.1)] dark:bg-[var(--dark-white)]/37',
         isOwned ? 'cursor-default' : 'cursor-pointer'
       )}
       onClick={onClick}
@@ -59,13 +59,13 @@ export default function ItemCard({
         </div>
 
         {isOwned ? (
-          <div className="mt-4 flex h-7 w-full items-center justify-center rounded-md border border-[#FFB84C] bg-[#FFB84C] text-[12px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
+          <div className="mt-4 flex h-7 w-full items-center justify-center rounded-md border border-[#FFB84C] bg-[#FFB84C] text-[14px] font-semibold text-white dark:text-[var(--dark-bg-primary)]">
             보유 중
           </div>
         ) : (
           <div className="mt-4 flex h-7 w-full items-center justify-between rounded-md border border-[#cfcfcf] pr-3 pl-2 dark:bg-[var(--dark-white)]">
             <Image src={coin} alt="coin" className="h-5 w-4" />
-            <span className="text-[12px] font-semibold text-[#FFB84C]">
+            <span className="text-[14px] font-semibold text-[#FFB84C]">
               {item.itemPoint != null ? `${item.itemPoint}` : `${item.itemPrice}`}
             </span>
           </div>

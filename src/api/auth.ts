@@ -52,6 +52,7 @@ export const checkEmail = async (email: string): Promise<boolean> => {
     throw error;
   }
 };
+
 // check - 중복 검사 (닉네임)
 export const checkNickname = async (nickname: string): Promise<boolean> => {
   const response = await axiosInstance.post('/api/v1/check', { nickname });

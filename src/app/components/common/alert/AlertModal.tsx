@@ -33,7 +33,8 @@ export default function AlertModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#222222]/70">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-[#222222]/70">
+
       <div className="h-fit w-[335px] rounded-[20px] border border-[#909090]/47 bg-white px-8 py-[19px] text-center dark:bg-[var(--dark-bg-tertiary)]">
         {type !== 'none' && (
           <div className="flex flex-col items-center bg-white dark:bg-[var(--dark-bg-tertiary)]">
@@ -48,21 +49,21 @@ export default function AlertModal({
             {description}
           </p>
         )}
-        <div className="flex justify-center gap-[27px]">
-          <button
-            onClick={onConfirm}
-            className="h-[33px] w-25 cursor-pointer rounded-[8px] bg-[#ffb84c] text-sm font-semibold text-white dark:text-[var(--dark-bg-primary)]"
-          >
-            {confirmText}
-          </button>
+        <div className="flex justify-center gap-[22px]">
           {cancelText && (
             <button
               onClick={onCancel}
-              className="w-[57px] cursor-pointer text-sm text-[#909090] dark:text-[var(--dark-gray-700)]"
+              className="h-[33px] w-25 cursor-pointer rounded-[8px] border border-[#e0e0e0] text-base text-[#909090] dark:text-[var(--dark-gray-700)]"
             >
               {cancelText}
             </button>
           )}
+          <button
+            onClick={onConfirm}
+            className="h-[33px] w-25 cursor-pointer rounded-[8px] bg-[#ffb84c] text-base font-semibold text-white dark:text-[var(--dark-bg-primary)]"
+          >
+            {confirmText}
+          </button>
         </div>
       </div>
     </div>

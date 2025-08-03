@@ -25,10 +25,12 @@ import { DayRoutine } from '../../../../types/routine';
 import Donut from '@/app/components/common/ui/Donut';
 import Profile from '@/app/components/main/Profile';
 import FloatingButton from '@/app/components/common/FloatingButton';
+import Lottie from 'lottie-react';
+import CatAnimation from '../../../../public/lottie/Cat.json';
 
-export default function Main() {
+export default function Home() {
   const searchParams = useSearchParams();
-  const { setIsLoggedIn } = useUserStore();
+  const { setIsLoggedIn, setIsSocial } = useUserStore();
   const [openQuest, setOpenQuest] = useState(false);
   const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
@@ -40,9 +42,10 @@ export default function Main() {
     const social = searchParams.get('social');
     if (social === 'true') {
       setIsLoggedIn(true);
+      setIsSocial(true);
       console.log('✅ setIsLoggedIn(true) 실행됨');
     }
-  }, [searchParams, setIsLoggedIn]);
+  }, [searchParams, setIsLoggedIn, setIsSocial]);
 
   useEffect(() => {
     queryClient.prefetchQuery({
@@ -67,6 +70,7 @@ export default function Main() {
   const total = filteredRoutines.length;
   const done = filteredRoutines.filter((r) => r.isDone).length;
   const successRate = total ? Math.round((done / total) * 100) : 0;
+
   const now = new Date();
   const todayStr = `${now.getFullYear()}년 ${now.getMonth() + 1}월 ${now.getDate()}일`;
   const monday = startOfWeek(today, { weekStartsOn: 1 });
@@ -85,34 +89,35 @@ export default function Main() {
 
   return (
     <>
-      <div className="relative mx-auto flex max-h-[3] max-w-md flex-col items-center pt-4 select-none">
-        <div className="absolute top-0 right-10 z-30 my-8">
+      <div className="relative mx-auto flex max-w-[614px] flex-col items-center pt-4 select-none">
+        <div className="absolute top-2 right-10 z-30 my-8">
           <FloatingButton
             src={quest}
             alt="quest"
             text="퀘스트"
-            textSize="12px"
+            textSize="14px"
             className="mb-6"
             onClick={() => setOpenQuest(true)}
-            imgWidth={90}
-            imgHeight={60}
+            imgWidth={100}
+            imgHeight={80}
           />
           <FloatingButton
             src={acheivement}
             alt="acheivement"
             text="도감"
-            textSize="12px"
-            imgWidth={90}
-            imgHeight={60}
+            textSize="14px"
+            imgWidth={100}
+            imgHeight={80}
             onClick={goToCollection}
           />
         </div>
 
-        {openQuest && <Quest className="" setOpenQuest={setOpenQuest} />}
+        {openQuest && <Quest setOpenQuest={setOpenQuest} />}
 
         <div className="flex w-full px-5 dark:border-b-[var(--dark-bg-secondary)]">
           <Profile />
         </div>
+
         {weekLoading && (
           <div className="mt-10 flex min-h-screen w-full flex-col gap-5 rounded-[10px] bg-white px-5 py-4 dark:bg-[var(--dark-bg-primary)]">
             <div className="flex items-center justify-between px-5">
@@ -122,39 +127,38 @@ export default function Main() {
               </div>
               <div className="h-[54px] w-[54px] animate-pulse rounded-full bg-gray-200"></div>
             </div>
-            <div className="flex min-h-screen flex-col gap-5 rounded-[10px] bg-white p-4 dark:bg-[var(--dark-bg-primary)]">
-              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="flex min-h-screen flex-col gap-5 bg-white p-4 dark:bg-[var(--dark-bg-primary)]">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              ))}
             </div>
           </div>
         )}
+
         {!weekLoading && (
           <div className="mt-5 flex h-full w-full flex-1 px-5">
             <div className="flex min-h-[480px] flex-1 flex-col items-center rounded-[10px] bg-white p-4 dark:bg-[var(--dark-bg-primary)]">
-              <div className="mb-6 flex w-full flex-col justify-start">
-                <span className="text-xs font-semibold dark:text-[var(--dark-gray-700)]">
-                  {todayStr}
-                </span>
-                <div className="flex items-center gap-1 pb-3 text-[22px] font-bold">
-                  <span className="dark:text-[var(--dark-gray-700)]">
-                    오늘의 루틴{' '}
-                    <span className="text-[#ffb84c]">
-                      {filteredRoutines.length}
-                    </span>
+              <div className="mb-6 flex w-full items-center justify-between">
+                <div className="flex flex-col justify-center">
+                  <span className="text-base text-[#616161] font-semibold dark:text-[var(--dark-gray-700)]">
+                    {todayStr}
                   </span>
-                  <Donut
-                    width={46}
-                    height={46}
-                    percent={Number(successRate.toFixed())}
-                    className="ml-auto flex"
-                  />
+                  <div className="pt-1 text-[26px] font-bold dark:text-[var(--dark-gray-700)]">
+                    오늘의 루틴{' '}
+                    <span className="text-[#ffb84c] pl-1">{filteredRoutines.length}</span>
+                  </div>
                 </div>
+                <Donut
+                  width={60}
+                  height={60}
+                  percent={Number(successRate.toFixed())}
+                  className="flex-shrink-0"
+                />
               </div>
 
               <div className="flex h-full w-full flex-1 flex-col space-y-3">
-                {filteredRoutines.length > 0 &&
-                  filteredRoutines.map((routine: DayRoutine) => (
+                {filteredRoutines.length > 0 ? (
+                  filteredRoutines.map((routine) => (
                     <Routine
                       key={`${routine.routineId}-${routine.scheduleId}`}
                       scheduleId={routine.scheduleId}
@@ -163,28 +167,13 @@ export default function Main() {
                       time={routine.triggerTime}
                       isImportant={routine.isImportant}
                       isCompleted={routine.isDone}
-                      onClick={() =>
-                        mutate({
-                          scheduleId: routine.scheduleId,
-                          isDone: !routine.isDone,
-                        })
-                      }
+                      onClick={() => mutate({
+                        scheduleId: routine.scheduleId,
+                        isDone: !routine.isDone,
+                      })}
                       onEditClick={() => {
                         useRoutineStore.getState().setRoutine({
-                          routineId: routine.routineId,
-                          scheduleId: routine.scheduleId,
-                          categoryId: routine.categoryId,
-                          majorCategory: routine.majorCategory,
-                          subCategory: routine.subCategory,
-                          name: routine.name,
-                          triggerTime: routine.triggerTime,
-                          isDone: routine.isDone,
-                          isImportant: routine.isImportant,
-                          date: routine.date,
-                          initDate: routine.initDate,
-                          repeatType: routine.repeatType,
-                          repeatValue: routine.repeatValue,
-                          repeatTerm: routine.repeatTerm,
+                          ...routine,
                         });
                       }}
                       onDeleteClick={() => {
@@ -192,23 +181,24 @@ export default function Main() {
                         setDeleteTargetId(routine.routineId);
                       }}
                     />
-                  ))}
-                {filteredRoutines.length === 0 && (
-                  <div className="mt-20 flex items-center justify-center">
-                    <div className="flex w-[260px] flex-col items-center gap-1 rounded-[8px]">
-                      <span className="text-[16px] font-medium text-[#9e9e9e]">
-                        오늘은 도전할 루틴이 없어요 😇
-                      </span>
-                      <span className="mb-5 text-[16px] font-medium text-[#9e9e9e]">
-                        새로운 루틴을 추가해볼까요?
-                      </span>
-                      <button
-                        className="h-[40px] w-[180px] cursor-pointer rounded-xl bg-[#ffb84c] px-5 text-[15px] text-white hover:bg-[#E6A642] active:bg-[#CC9439] dark:text-[var(--dark-bg-primary)]"
-                        onClick={handleAddRoutine}
-                      >
-                        루틴 추가하러 가기
-                      </button>
+                  ))
+                ) : (
+                  <div className="mt-40 flex flex-col items-center justify-center gap-2">
+                    <div className="w-48 h-48">
+                      <Lottie animationData={CatAnimation} loop autoplay />
                     </div>
+                    <span className="-mt-20 text-xl font-medium text-[#616161]">
+                      아직 등록된 루틴이 없어요.
+                    </span>
+                    <span className="text-base text-[#888888]">
+                      루틴을 등록하고 꾸준히 관리해보세요!
+                    </span>
+                    <button
+                      className="mt-6 h-[50px] w-[140px] rounded-lg bg-[#FFF4D1] px-5 text-base font-semibold text-[#ffb84c] active:bg-[#ffb84c] dark:text-[var(--dark-bg-primary)] cursor-pointer"
+                      onClick={handleAddRoutine}
+                    >
+                      루틴 등록하기
+                    </button>
                   </div>
                 )}
               </div>
@@ -216,6 +206,7 @@ export default function Main() {
           </div>
         )}
       </div>
+
       {checkDelete && (
         <AlertModal
           type="delete"
@@ -235,3 +226,4 @@ export default function Main() {
     </>
   );
 }
+

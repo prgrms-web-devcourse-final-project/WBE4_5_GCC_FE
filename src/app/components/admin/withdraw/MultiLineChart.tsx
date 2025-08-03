@@ -9,30 +9,29 @@ import {
   YAxis,
 } from 'recharts';
 import Button from '../../common/ui/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from './Calendar/DatePicker';
 import { CalendarDays } from 'lucide-react';
-
-const reasonsData = [
-  {
-    name: '2월',
-    lazy: 200,
-    difficult: 100,
-    similarApp: 50,
-    noMotivation: 80,
-    noExpect: 30,
-    wrongRoutine: 10,
-  },
-  {
-    name: '3월',
-    lazy: 250,
-    difficult: 110,
-    similarApp: 60,
-    noMotivation: 90,
-    noExpect: 50,
-    wrongRoutine: 20,
-  },
-];
+// const reasonsData = [
+//   {
+//     name: '2월',
+//     lazy: 200,
+//     difficult: 100,
+//     similarApp: 50,
+//     noMotivation: 80,
+//     noExpect: 30,
+//     wrongRoutine: 10,
+//   },
+//   {
+//     name: '3월',
+//     lazy: 250,
+//     difficult: 110,
+//     similarApp: 60,
+//     noMotivation: 90,
+//     noExpect: 50,
+//     wrongRoutine: 20,
+//   },
+// ];
 
 const lineConfig = [
   { key: 'lazy', color: '#3366FF', label: '기록하는 게 귀찮아요' },
@@ -51,12 +50,66 @@ const lineConfig = [
   },
 ];
 
+const withdrawTypeToKeyMap: Record<string, string> = {
+  TOO_MUCH_EFFORT: 'lazy',
+  UX_ISSUE: 'difficult',
+  USING_OTHER_APP: 'similarApp',
+  ROUTINE_MISMATCH: 'wrongRoutine',
+  MISSING_FEATURE: 'noExpect',
+  NO_MOTIVATION: 'noMotivation',
+};
+
+interface WithdrawType {
+  withdrawType: string;
+  withdrawCount: number;
+}
+
+type ChartDataEntry = {
+  name: string;
+  [key: string]: string | number;
+};
+
+function transformApiDataToChartData(
+  data: WithdrawType[],
+  startDate: Date,
+  endDate: Date,
+) {
+  const baseEntry: ChartDataEntry = {
+    name: startDate.toISOString().slice(0, 10),
+  };
+  const endEntry: ChartDataEntry = {
+    name: endDate.toISOString().slice(0, 10),
+  };
+
+  Object.values(withdrawTypeToKeyMap).forEach((key) => {
+    baseEntry[key] = 0;
+    endEntry[key] = 0;
+  });
+
+  data.forEach(({ withdrawType, withdrawCount }) => {
+    const key = withdrawTypeToKeyMap[withdrawType];
+    if (key) {
+      endEntry[key] = withdrawCount;
+    }
+  });
+
+  return [baseEntry, endEntry];
+}
+
 export default function MultiLineChart({
   setErrors,
   setShowAlert,
+  onPreDateChange,
+  onNextDateChange,
+  onClick,
+  data,
 }: {
   setErrors: (errors: string) => void;
   setShowAlert: (show: boolean) => void;
+  onPreDateChange: (date: Date) => void;
+  onNextDateChange: (date: Date) => void;
+  onClick?: () => void;
+  data: WithdrawType[];
 }) {
   const [selectedPreDate, setSelectedPreDate] = useState(new Date());
   const [selectedNextDate, setSelectedNextDate] = useState(new Date());
@@ -67,7 +120,23 @@ export default function MultiLineChart({
       setShowAlert(true);
       return;
     }
+    onClick?.();
   };
+
+  useEffect(() => {
+    onNextDateChange(selectedNextDate);
+  }, [selectedNextDate, onNextDateChange]);
+
+  useEffect(() => {
+    onPreDateChange(selectedPreDate);
+  }, [selectedPreDate, onPreDateChange]);
+
+  const chartData = transformApiDataToChartData(
+    data || [],
+    selectedPreDate,
+    selectedNextDate,
+  );
+
   return (
     <>
       <div>
@@ -97,15 +166,16 @@ export default function MultiLineChart({
           <Button
             className="h-[30px] w-[59px] rounded-[3px] text-xs"
             onClick={handleClick}
+            type="button"
           >
             조회
           </Button>
         </div>
       </div>
       <ResponsiveContainer width="100%" height={270}>
-        <LineChart data={reasonsData}>
+        <LineChart data={chartData}>
           <CartesianGrid stroke="#ccc" strokeDasharray="3 3" />
-          <XAxis style={{ fontSize: '8px' }} />
+          <XAxis style={{ fontSize: '8px' }} dataKey="name" />
           <YAxis style={{ fontSize: '8px' }} width={20} />
           <Tooltip />
           <Legend

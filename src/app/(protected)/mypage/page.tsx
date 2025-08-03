@@ -9,48 +9,47 @@ import Button from '@/app/components/common/ui/Button';
 import LogoutModal from '@/app/components/common/LogoutModal';
 import { useUserStore } from '@/store/UserStore';
 import { useQueryClient } from '@tanstack/react-query';
+import ThemeToggle from '@/app/components/common/ThemeToggle';
 
 export default function Page() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { isSocial } = useUserStore();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [templateUse, setTemplateUse] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col items-center px-4">
-      <div className="w-full max-w-[614px] rounded-lg px-6 py-6 shadow-md dark:bg-[var(--dark-bg-primary)]">
+    <div className="flex min-h-screen flex-col items-center px-5 text-[16px] leading-relaxed">
+      <div className="w-full max-w-[614px] rounded-lg py-6 dark:bg-[var(--dark-bg-primary)]">
         <Profile />
 
         <Button
-          className="mt-5 h-[48px] w-full text-base font-semibold text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
+          className="mt-6 h-[50px] w-full text-[17px] font-semibold text-white dark:bg-[var(--dark-gray-200)] dark:text-[var(--dark-bg-primary)]"
           onClick={() => router.push('/mypage/edit-character')}
         >
           캐릭터 꾸미기
         </Button>
 
-        <div className="mt-8 flex flex-col space-y-4 bg-white dark:bg-[var(--dark-bg-primary)]">
+        <div className="mt-10 flex flex-col space-y-5 bg-white text-lg dark:bg-[var(--dark-bg-primary)]">
           <SettingsItem
             label="회원정보 변경"
             type="link"
             onClick={() => router.push('/mypage/change-userinfo')}
           />
-          <SettingsItem
-            label="비밀번호 변경"
-            type="link"
-            onClick={() => router.push('/mypage/change-password')}
-          />
+          {!isSocial && (
+            <SettingsItem
+              label="비밀번호 변경"
+              type="link"
+              onClick={() => router.push('/mypage/change-password')}
+            />
+          )}
           <SettingsItem
             label="알림 설정"
             type="link"
             onClick={() => router.push('/mypage/notification')}
           />
-          <SettingsItem
-            label="다크모드 설정"
-            type="toggle"
-            checked={darkMode}
-            onToggle={setDarkMode}
-          />
+          <ThemeToggle />
           <SettingsItem
             label="기본 루틴 템플릿 사용 설정"
             type="toggle"

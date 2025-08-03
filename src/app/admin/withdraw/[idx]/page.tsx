@@ -15,7 +15,7 @@ export default function Page() {
 
   const { data: reasons = [], isLoading } = useQuery<Reason[]>({
     queryKey: ['adminWithdrawReasons'],
-    queryFn: AdminWithdraw,
+    queryFn: () => AdminWithdraw('2025-07-20', '2025-08-20'),
     staleTime: 5 * 60 * 1000,
   });
 

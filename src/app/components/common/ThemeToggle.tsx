@@ -23,7 +23,7 @@ export default function ThemeToggle() {
 
   return (
     <div className="mb-[26px] flex h-6 items-center justify-between bg-white dark:bg-[var(--dark-bg-primary)]">
-      <span className="text-sm font-semibold text-black dark:text-[var(--dark-gray-700)]">
+      <span className="text-base font-semibold text-black dark:text-[var(--dark-gray-700)]">
         다크모드 설정
       </span>
 

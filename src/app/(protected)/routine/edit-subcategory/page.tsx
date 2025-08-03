@@ -182,8 +182,8 @@ export default function Page() {
             onClick={() => setIsBottomSheetOpen(true)}
             className="flex gap-2"
           >
-            <CirclePlus className="h-auto w-5 fill-[#388E3C] text-white dark:text-[var(--dark-bg-primary)]" />
-            <p className="text-medium text-base text-[#388E3C]">
+            <CirclePlus className="h-auto w-5 fill-[#388E3C] text-white dark:text-[var(--dark-bg-primary)] cursor-pointer" />
+            <p className="text-medium text-lg text-[#388E3C]">
               세부 카테고리
             </p>
           </button>
@@ -197,9 +197,9 @@ export default function Page() {
                     setIsModalOpen(true);
                   }}
                 >
-                  <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white dark:text-[var(--dark-bg-primary)]" />
+                  <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white dark:text-[var(--dark-bg-primary)] cursor-pointer" />
                 </button>
-                <p className="w-[307px] flex-auto border border-transparent border-b-[#e0e0e0] text-sm text-black">
+                <p className="w-[307px] flex-auto border border-transparent border-b-[#e0e0e0] pb-1 text-base text-black">
                   {sub.categoryName}
                 </p>
               </div>
