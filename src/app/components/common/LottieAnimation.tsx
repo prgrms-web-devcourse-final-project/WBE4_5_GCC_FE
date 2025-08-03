@@ -1,7 +1,7 @@
 'use client';
 
 import Lottie from 'lottie-react';
-import successAnimation from '../../../../public/lottie/success.json'
+import successAnimation from '/lottie/Success.json';
 
 interface LottieAnimationProps {
   className?: string;
@@ -16,7 +16,11 @@ export default function LottieAnimation({
 }: LottieAnimationProps) {
   return (
     <div className={className}>
-      <Lottie animationData={successAnimation} loop={loop} autoplay={autoplay} />
+      <Lottie
+        animationData={successAnimation}
+        loop={loop}
+        autoplay={autoplay}
+      />
     </div>
   );
 }
