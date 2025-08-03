@@ -1,7 +1,7 @@
 'use client';
 
 import Lottie from 'lottie-react';
-import successAnimation from '@/assets/lottie/Success.json';
+import successAnimation from '../../../../public/lottie/Success.json';
 
 interface LottieAnimationProps {
   className?: string;
