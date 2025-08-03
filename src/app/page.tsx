@@ -71,7 +71,7 @@ export default function Main() {
 
   return (
     <>
-      <div className="relative mx-auto flex h-auto max-w-md flex-col items-center pt-4 select-none">
+      <div className="relative mx-auto flex min-h-screen max-w-md flex-col items-center pt-4 select-none">
         <div className="absolute top-0 right-10 z-30 my-8">
           <FloatingButton
             src={quest}
@@ -96,19 +96,19 @@ export default function Main() {
 
         {openQuest && <Quest className="" setOpenQuest={setOpenQuest} />}
 
-        <div className="flex w-full px-5">
+        <div className="flex w-full px-5 dark:border-b-[var(--dark-bg-secondary)]">
           <Profile />
         </div>
         {weekLoading && (
-          <div className="mt-10 flex min-h-screen w-full flex-col gap-5 rounded-[10px] bg-white px-5 py-4">
-            <div className="flex items-center justify-between">
+          <div className="mt-10 flex min-h-screen w-full flex-col gap-5 rounded-[10px] bg-white px-5 py-4 dark:bg-[var(--dark-bg-primary)]">
+            <div className="flex items-center justify-between px-5">
               <div className="flex flex-col gap-3">
                 <div className="h-[27px] w-[100px] animate-pulse rounded-[10px] bg-gray-200"></div>
                 <div className="h-[27px] w-[146px] animate-pulse rounded-[10px] bg-gray-200"></div>
               </div>
               <div className="h-[54px] w-[54px] animate-pulse rounded-full bg-gray-200"></div>
             </div>
-            <div className="flex min-h-screen flex-col gap-5 rounded-[10px] bg-white p-4">
+            <div className="flex min-h-screen flex-col gap-5 rounded-[10px] bg-white p-4 dark:bg-[var(--dark-bg-primary)]">
               <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
               <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
               <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
@@ -116,14 +116,16 @@ export default function Main() {
           </div>
         )}
         {!weekLoading && (
-          <div className="mt-5 w-full px-5">
-            <div className="flex min-h-screen flex-col items-center rounded-[10px] border-t-[#FBFBFB] bg-white p-4">
+          <div className="mt-5 flex h-full w-full flex-1 px-5">
+            <div className="flex min-h-[480px] flex-1 flex-col items-center rounded-[10px] bg-white p-4 dark:bg-[var(--dark-bg-primary)]">
               <div className="mb-6 flex w-full flex-col justify-start">
-                <span className="text-xs font-semibold">{todayStr}</span>
+                <span className="text-xs font-semibold dark:text-[var(--dark-gray-700)]">
+                  {todayStr}
+                </span>
                 <div className="flex items-center gap-1 pb-3 text-[22px] font-bold">
-                  <span>
+                  <span className="dark:text-[var(--dark-gray-700)]">
                     오늘의 루틴{' '}
-                    <span className="text-[#FFB84C]">
+                    <span className="text-[#ffb84c]">
                       {filteredRoutines.length}
                     </span>
                   </span>
@@ -136,7 +138,7 @@ export default function Main() {
                 </div>
               </div>
 
-              <div className="flex w-full flex-col space-y-3">
+              <div className="flex h-full w-full flex-1 flex-col space-y-3">
                 {filteredRoutines.length > 0 &&
                   filteredRoutines.map((routine: DayRoutine) => (
                     <Routine
@@ -187,7 +189,7 @@ export default function Main() {
                         새로운 루틴을 추가해볼까요?
                       </span>
                       <button
-                        className="h-[40px] w-[180px] cursor-pointer rounded-xl bg-[#FFB84C] px-5 text-[15px] text-white hover:bg-[#E6A642] active:bg-[#CC9439]"
+                        className="h-[40px] w-[180px] cursor-pointer rounded-xl bg-[#ffb84c] px-5 text-[15px] text-white hover:bg-[#E6A642] active:bg-[#CC9439] dark:text-[var(--dark-bg-primary)]"
                         onClick={handleAddRoutine}
                       >
                         루틴 추가하러 가기

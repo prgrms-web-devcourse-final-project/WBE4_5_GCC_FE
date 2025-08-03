@@ -179,7 +179,7 @@ export default function AddItem() {
                 className="rounded-[8px] object-contain"
               />
               <button
-                className="bg-opacity-50 absolute top-2 right-2 rounded-xl bg-[#ff0000] px-2 py-1 text-xs text-white"
+                className="bg-opacity-50 absolute top-2 right-2 rounded-xl bg-[#ff0000] px-2 py-1 text-xs text-white dark:text-[var(--dark-bg-primary)]"
                 onClick={() => {
                   setPreviewUrl(null);
                   setImageFile(null);
@@ -241,14 +241,14 @@ export default function AddItem() {
           <h1>리스트 여부</h1>
           <select
             value={isListed.toString()}
-            className="h-12 w-full appearance-none rounded-lg border border-[#E0E0E0] px-4 py-2 pr-10 text-sm focus:outline-none"
+            className="h-12 w-full appearance-none rounded-lg border border-[#e0e0e0] px-4 py-2 pr-10 text-sm focus:outline-none"
             onChange={(e) => setIsListed(e.target.value === 'true')}
           >
             <option value="true">true</option>
             <option value="false">false</option>
           </select>
           <ChevronDown
-            className="h-[18px] w-[18px] text-[#616161] cursor-pointer absolute right-4 bottom-1 -translate-y-1/2"
+            className="absolute right-4 bottom-1 h-[18px] w-[18px] -translate-y-1/2 cursor-pointer text-[#616161]"
             strokeWidth={2}
           />
         </div>

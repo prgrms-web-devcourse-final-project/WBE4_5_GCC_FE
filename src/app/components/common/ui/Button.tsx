@@ -13,8 +13,8 @@ export default function Button({
   return (
     <button
       className={twMerge(
-        'inline-flex h-[48px] w-full max-w-xl cursor-pointer items-center justify-center rounded-lg bg-[#FFB84C] text-sm font-medium text-white focus:outline-none',
-        'disabled:cursor-default disabled:bg-[#C4C4C4]',
+        'inline-flex h-[48px] w-full max-w-xl cursor-pointer items-center justify-center rounded-lg bg-[#ffb84c] text-sm font-medium text-white focus:outline-none dark:text-[var(--dark-bg-primary)]',
+        'disabled:cursor-default disabled:bg-[#c4c4c4]',
         className,
       )}
       {...props}

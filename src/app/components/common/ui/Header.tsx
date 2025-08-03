@@ -134,21 +134,23 @@ export default function Header() {
 
   return (
     <>
-      <div className="z-50 mx-auto flex h-[56px] max-w-md items-center justify-between bg-white px-5 py-[20px]">
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 z-50 flex h-[64px] w-full max-w-[614px] items-center justify-between border-b border-gray-200 bg-white px-6 dark:border-[var(--dark-bg-tertiary)] dark:bg-[var(--dark-bg-primary)]">
         {isHome || isAdmin ? (
           <Image
             src={logo}
             alt="logo"
+            width={90}
+            height={60}
             onClick={() => router.push('/')}
-            className="h-[40px] w-[60px] cursor-pointer"
+            className="h-auto cursor-pointer"
           />
         ) : (
-          <div className="text-xl font-semibold">{title}</div>
+          <div className="text-2xl font-bold dark:text-[var(--dark-gray-700)]">{title}</div>
         )}
         {isShop ? (
-          <div className="flex items-center">
-            <Image src={coin} alt="coin" width={16} height={16} />
-            <span className="text-[14px] font-semibold text-[#FFB84C]">
+          <div className="flex items-center gap-3 mr-2 rounded-lg border border-[#c4c4c4] px-2 py-1">
+            <Image src={coin} alt="coin" width={18} height={18} />
+            <span className="text-[16px] font-semibold text-[#FFB84C]">
               {currentPoint}
             </span>
           </div>
@@ -179,6 +181,11 @@ export default function Header() {
       )}
 
       {openQuest && <QuestPage setOpenQuest={setOpenQuest} />}
+
+      <div
+        className="mb-[96px]"
+        style={{ marginTop: 'env(safe-area-inset-top)' }}
+      />
     </>
   );
 }

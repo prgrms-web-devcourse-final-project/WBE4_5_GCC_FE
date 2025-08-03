@@ -49,13 +49,13 @@ export default function Page() {
       {/* 버튼 제외 컨텐츠 */}
       <BackHeader title="회원탈퇴" />
       <div className="flex flex-col px-5">
-        <div className="mb-[30px] flex flex-col text-base font-semibold text-[#222222]">
+        <div className="mb-[30px] flex flex-col text-base font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
           <h1>정말 떠나시겠어요?</h1>
           <h1>계정을 삭제하면 지금까지의 기록이 모두 사라지고</h1>
           <h1>7일 동안은 다시 돌아올 수 없어요 🥲</h1>
         </div>
 
-        <div className="mb-10 rounded-[3px] text-xs font-medium text-[#222222]">
+        <div className="mb-10 rounded-[3px] text-xs font-medium text-[#222222] dark:text-[var(--dark-gray-700)]">
           <CustomCheckBox
             label="탈퇴 시 모든 정보가 삭제되는 것에 동의합니다."
             checked={isAgreed}
@@ -64,7 +64,7 @@ export default function Page() {
         </div>
 
         <div className="mb-6 flex flex-col">
-          <h1 className="text-lg font-semibold text-[#222222]">
+          <h1 className="text-lg font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
             회원 탈퇴 이유를 알려주세요.
           </h1>
           <h2 className="text-sm font-normal text-[#616161]">
@@ -85,15 +85,15 @@ export default function Page() {
               value={customReason}
               onChange={(e) => setCustomReason(e.target.value)}
               ref={textareaRef}
-              className="mt-4 min-h-20 w-full resize-none overflow-hidden rounded-[5px] border border-[#E0E0E0] p-2 pb-6 text-xs text-[#222222]"
+              className="mt-4 min-h-20 w-full resize-none overflow-hidden rounded-[5px] border border-[#e0e0e0] p-2 pb-6 text-xs text-[#222222] dark:text-[var(--dark-gray-700)]"
               maxLength={200}
               rows={4}
               placeholder="더 나은 서비스를 제공해드릴 수 있도록 소중한 의견을 들려주세요."
             />
             {/* 실선 */}
-            <div className="absolute right-[14px] bottom-[30px] left-2 h-px bg-[#E0E0E0]" />
+            <div className="absolute right-[14px] bottom-[30px] left-2 h-px bg-[#e0e0e0]" />
             {/* 글자수 */}
-            <div className="absolute right-[14px] bottom-[10px] text-[10px] text-[#9E9E9E]">
+            <div className="absolute right-[14px] bottom-[10px] text-[10px] text-[#9e9e9e]">
               {customReason.length}/200
             </div>
           </div>

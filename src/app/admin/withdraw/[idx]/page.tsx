@@ -31,7 +31,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen bg-white px-5">
+      <div className="flex min-h-screen bg-white px-5 dark:bg-[var(--dark-bg-primary)]">
         <div className="mt-5 mb-3 flex h-[300px] w-full flex-col rounded-[8px] border border-[#e0e0e0] px-2.5 py-2">
           <p className="my-2 text-xs">
             {reason ? reason.reason : '탈퇴 사유를 불러오는 중입니다...'}

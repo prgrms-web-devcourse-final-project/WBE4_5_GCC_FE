@@ -60,7 +60,7 @@ export default function Nickname() {
             <Button
               disabled={!isNicknameLengthValid}
               onClick={validateNickname}
-              className={`w-[114px] ${isNicknameLengthValid ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}
+              className={`w-[114px] ${isNicknameLengthValid ? 'bg-[#222222] dark:bg-[var(--dark-gray-200)]' : 'bg-[#c4c4c4]'}`}
             >
               중복 확인
             </Button>

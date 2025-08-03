@@ -67,7 +67,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         label={label}
         onClick={goNext}
         disabled={!isNextEnabled}
-        className={` ${isNextEnabled ? 'bg-[#222222]' : 'bg-[#c4c4c4]'}`}
+        className={`${isNextEnabled ? 'bg-[#222222] dark:bg-[var(--dark-gray-200)]' : 'bg-[#c4c4c4]'}`}
       />
     </div>
   );

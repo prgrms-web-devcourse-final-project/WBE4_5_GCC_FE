@@ -54,11 +54,13 @@ export default function UserAdress() {
           disabled
         />
         <Button
-          className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222]"
+          className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222] dark:bg-[var(--dark-gray-200)]"
           onClick={handleSearch}
         >
           <Search className="h-auto w-4" strokeWidth={2} />
-          <span className="text-sm font-medium text-white">주소 검색</span>
+          <span className="text-sm font-medium text-white dark:text-[var(--dark-bg-primary)]">
+            주소 검색
+          </span>
         </Button>
       </div>
 

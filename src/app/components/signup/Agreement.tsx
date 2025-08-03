@@ -47,7 +47,7 @@ export default function Agreement() {
         {/* 모두 동의 */}
         {/* 전체 박스 */}
         <div className="flex flex-col gap-4">
-          <div className="border-b-1 border-[#E0E0E0] py-[14px]">
+          <div className="border-b-1 border-[#e0e0e0] py-[14px]">
             <CheckBox
               label="모두 동의 (선택 정보 포함)"
               checked={toggleAll}

@@ -21,18 +21,22 @@ export default function CustomCheckBox({
       />
 
       <div
-        className={`flex h-[18px] w-[18px] items-center justify-center rounded-[3px] border transition-colors ${checked ? 'border-[#222222] bg-[#222222]' : 'border-[#C4C4C4] bg-[#C4C4C4]'}`}
+        className={`flex h-[18px] w-[18px] items-center justify-center rounded-[3px] border transition-colors ${checked ? 'border-[#222222] bg-[#222222] dark:bg-[var(--dark-gray-200)]' : 'border-[#c4c4c4] bg-[#c4c4c4]'}`}
       >
         <Check
           className={`h-[14px] w-[14px] ${
-            checked ? 'text-white' : 'text-[#FDFDFD]'
+            checked
+              ? 'text-white dark:text-[var(--dark-bg-primary)]'
+              : 'text-[#FDFDFD]'
           }`}
           strokeWidth={4}
         />
       </div>
 
       {label && (
-        <span className="text-xs font-medium text-[#222222]">{label}</span>
+        <span className="text-xs font-medium text-[#222222] dark:text-[var(--dark-gray-700)]">
+          {label}
+        </span>
       )}
     </label>
   );

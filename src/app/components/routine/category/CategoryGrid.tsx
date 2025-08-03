@@ -105,7 +105,7 @@ export default function CategoryGrid({
           <div key={idx} className="flex w-full justify-center">
             <button
               onClick={() => onSelectCategory?.(cat.categoryId)}
-              className={`relative flex w-full max-w-[92px] flex-col items-center gap-1 py-2.5 text-sm text-[#222222] ${
+              className={`relative flex w-full max-w-[92px] flex-col items-center gap-1 py-2.5 text-sm text-[#222222] dark:text-[var(--dark-gray-700)] ${
                 isSelected ? 'bg-gray-200' : 'bg-transparent'
               } rounded-[5px] transition`}
             >
@@ -113,7 +113,7 @@ export default function CategoryGrid({
               {/*{isEditMode && cat.categoryType === 'MAJOR' && (
                 <div className="absolute top-1 right-4 z-20 p-1">
                   <CircleX
-                    className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]"
+                    className="h-auto w-[15px] fill-[#e0e0e0] text-[#616161]"
                     onClick={(e) => {
                       e.stopPropagation();
                       setTargetCategory(cat);
@@ -126,7 +126,7 @@ export default function CategoryGrid({
               {isEditMode && (isManage || cat.categoryType === 'MAJOR') && (
                 <div className="absolute top-1 right-4 z-20 p-1">
                   <CircleX
-                    className="h-auto w-[15px] fill-[#E0E0E0] text-[#616161]"
+                    className="h-auto w-[15px] fill-[#e0e0e0] text-[#616161]"
                     onClick={(e) => {
                       e.stopPropagation();
                       setTargetCategory(cat);
@@ -137,9 +137,9 @@ export default function CategoryGrid({
               )}
 
               {isSelected && (
-                <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[#222222]/20" />
+                <div className="pointer-events-none absolute inset-0 z-10 rounded-[5px] bg-[#222222] dark:bg-[var(--dark-gray-200)]/20" />
               )}
-              <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[#F9F8FE]">
+              <div className="flex aspect-square w-[50px] items-center justify-center rounded-full bg-[#f9f8fe] dark:bg-[var(--dark-gray-700)]">
                 {cat.emoji}
               </div>
               <span>{cat.categoryName}</span>
