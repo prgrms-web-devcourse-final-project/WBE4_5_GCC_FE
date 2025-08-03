@@ -20,11 +20,10 @@ export default function BottomNav() {
         <li>
           <Link
             href="/routine"
-            className={`flex flex-col items-center ${
-              isActive('/routine')
+            className={`flex flex-col items-center ${isActive('/routine')
                 ? 'text-[#FFB84C]'
                 : 'text-[#222222] dark:text-[var(--dark-gray-700)]'
-            }`}
+              }`}
           >
             <List size={32} />
             <span className="mt-2 text-sm dark:text-[var(--dark-gray-700)]">
@@ -36,11 +35,10 @@ export default function BottomNav() {
         <li>
           <Link
             href="/report"
-            className={`flex flex-col items-center ${
-              isActive('/report')
+            className={`flex flex-col items-center ${isActive('/report')
                 ? 'text-[#FFB84C]'
                 : 'text-[#222222] dark:text-[var(--dark-gray-700)]'
-            }`}
+              }`}
           >
             <BarChart2 size={32} />
             <span className="mt-2 text-sm dark:text-[var(--dark-gray-700)]">
@@ -51,7 +49,7 @@ export default function BottomNav() {
 
         <li>
           <Link
-            href="/"
+            href="/home"
             aria-label="홈"
             className="relative -mt-10 flex h-22 w-22 items-center justify-center rounded-full bg-[#FFB84C] text-white shadow-lg dark:text-[var(--dark-bg-primary)]"
           >
@@ -62,11 +60,10 @@ export default function BottomNav() {
         <li>
           <Link
             href="/shop"
-            className={`flex flex-col items-center ${
-              isActive('/shop')
+            className={`flex flex-col items-center ${isActive('/shop')
                 ? 'text-[#FFB84C]'
                 : 'text-[#222222] dark:text-[var(--dark-gray-700)]'
-            }`}
+              }`}
           >
             <ShoppingCart size={32} />
             <span className="mt-2 text-sm dark:text-[var(--dark-gray-700)]">
@@ -78,11 +75,10 @@ export default function BottomNav() {
         <li>
           <Link
             href="/mypage"
-            className={`flex flex-col items-center ${
-              isActive('/mypage')
+            className={`flex flex-col items-center ${isActive('/mypage')
                 ? 'text-[#FFB84C]'
                 : 'text-[#222222] dark:text-[var(--dark-gray-700)]'
-            }`}
+              }`}
           >
             <User size={32} />
             <span className="mt-2 text-sm dark:text-[var(--dark-gray-700)]">

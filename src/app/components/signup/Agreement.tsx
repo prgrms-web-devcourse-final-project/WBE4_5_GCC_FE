@@ -39,7 +39,7 @@ export default function Agreement() {
   }, [setWantEmail, marketing]);
 
   const getCheckColor = (checked: boolean) =>
-    checked ? '#222222 dark:text-[var(--dark-gray-700)]' : '#9E9E9E';
+    checked ? '#222222' : '#9E9E9E';
 
   return (
     <>
