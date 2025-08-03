@@ -30,25 +30,21 @@ export default function Page() {
   };
 
   // 이모지 피커 외부 클릭 감지
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // 바깥 클릭 감지
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        pickerRef.current &&
-        !pickerRef.current.contains(event.target as Node)
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
       ) {
         setIsPickerOpen(false);
       }
     };
-
-    if (isPickerOpen) {
+    if (isPickerOpen)
       document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isPickerOpen]);
 
   const createCategoryMutation = useMutation({
@@ -98,18 +94,27 @@ export default function Page() {
       >
         <div className="flex flex-col gap-7 px-5 py-7">
           <div className="relative flex items-center gap-3">
-            {/* 좌측 아이콘 영역 */}
-            <div
-              onClick={() => setIsPickerOpen(true)}
-              className="flex min-h-[45px] min-w-[45px] items-center justify-center rounded-lg border border-[#e0e0e0]"
-            >
-              {selectedEmoji ? (
-                <span className="text-2xl">{selectedEmoji}</span>
-              ) : (
-                <BadgeQuestionMark
-                  className="h-auto w-6 text-[#9e9e9e]"
-                  strokeWidth={2}
-                />
+            {/* 좌측 아이콘 영역 + 피커 래퍼 */}
+            <div ref={wrapperRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setIsPickerOpen((v) => !v)}
+                className="flex min-h-[45px] min-w-[45px] items-center justify-center rounded-lg border border-[#e0e0e0]"
+              >
+                {selectedEmoji ? (
+                  <span className="text-2xl">{selectedEmoji}</span>
+                ) : (
+                  <BadgeQuestionMark
+                    className="h-auto w-6 text-[#9e9e9e]"
+                    strokeWidth={2}
+                  />
+                )}
+              </button>
+
+              {isPickerOpen && (
+                <div className="absolute top-full left-0 z-50 mt-2">
+                  <EmojiPicker onEmojiClick={handleEmojiSelect} />
+                </div>
               )}
             </div>
 
@@ -143,13 +148,6 @@ export default function Page() {
               setIsBottomSheetOpen(false);
             }}
           />
-        )}
-
-        {/* Emoji picker modal */}
-        {isPickerOpen && (
-          <div ref={pickerRef} className="absolute top-47 left-5 z-50 cursor-pointer">
-            <EmojiPicker onEmojiClick={handleEmojiSelect} />
-          </div>
         )}
       </AddCategoryLayout>
     </>

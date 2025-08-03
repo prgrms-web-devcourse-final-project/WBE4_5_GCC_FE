@@ -61,11 +61,14 @@ export default function Page() {
     }
   }, [categories, categoryIdFromParams, icon, labelFromParams]);
 
+  // 이모지 피커 외부 클릭 감지
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        pickerRef.current &&
-        !pickerRef.current.contains(event.target as Node)
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
       ) {
         setIsPickerOpen(false);
       }
@@ -147,15 +150,45 @@ export default function Page() {
       <EditSubcategoryLayout onComplete={handleComplete} label={label}>
         <div className="flex min-h-screen flex-col gap-7 px-5 py-7">
           <div className="flex items-center gap-3">
-            <div
-              onClick={() =>
-                categoryType !== 'DEFAULT' && setIsPickerOpen(true)
-              }
-              className={`flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#e0e0e0] ${categoryType === 'DEFAULT' ? 'cursor-default' : 'cursor-pointer'}`}
-            >
-              <span className="text-2xl">{selectedEmoji || icon}</span>
+            {/* 좌측 아이콘 영역 + 피커 래퍼 */}
+            <div ref={wrapperRef} className="relative">
+              <button
+                type="button"
+                onClick={() =>
+                  categoryType !== 'DEFAULT' && setIsPickerOpen((v) => !v)
+                }
+                className={`flex h-[45px] w-[45px] items-center justify-center rounded-lg border border-[#e0e0e0] ${
+                  categoryType === 'DEFAULT'
+                    ? 'cursor-default'
+                    : 'cursor-pointer'
+                }`}
+                aria-haspopup="dialog"
+                aria-expanded={isPickerOpen}
+              >
+                <span className="text-2xl">{selectedEmoji || icon}</span>
+              </button>
+
+              {isPickerOpen && (
+                <div className="absolute top-full left-0 z-50 mt-2">
+                  <EmojiPicker
+                    onEmojiClick={(emojiData) => {
+                      const newEmoji = emojiData.emoji;
+                      setSelectedEmoji(newEmoji);
+                      setIsPickerOpen(false);
+
+                      if (categoryType === 'MAJOR') {
+                        editMajorCategoryMutation.mutate({
+                          categoryName: label,
+                          emoji: newEmoji,
+                        });
+                      }
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
+            {/* 우측 인풋 영역 */}
             <div className="w-70 flex-auto border border-transparent border-b-[#e0e0e0] py-2 text-xl text-black dark:text-[var(--dark-gray-700)]">
               <input
                 type="text"
@@ -164,7 +197,6 @@ export default function Page() {
                 onChange={(e) => {
                   const newName = e.target.value;
                   setLabel(newName);
-
                   if (categoryType === 'MAJOR') {
                     editMajorCategoryMutation.mutate({
                       categoryName: newName,
@@ -182,10 +214,8 @@ export default function Page() {
             onClick={() => setIsBottomSheetOpen(true)}
             className="flex gap-2"
           >
-            <CirclePlus className="h-auto w-5 fill-[#388E3C] text-white dark:text-[var(--dark-bg-primary)] cursor-pointer" />
-            <p className="text-medium text-lg text-[#388E3C]">
-              세부 카테고리
-            </p>
+            <CirclePlus className="h-auto w-5 cursor-pointer fill-[#388E3C] text-white dark:text-[var(--dark-bg-primary)]" />
+            <p className="text-medium text-lg text-[#388E3C]">세부 카테고리</p>
           </button>
 
           <div className="flex flex-col gap-5">
@@ -197,7 +227,7 @@ export default function Page() {
                     setIsModalOpen(true);
                   }}
                 >
-                  <CircleMinus className="h-auto w-5 fill-[#D32F2F] text-white dark:text-[var(--dark-bg-primary)] cursor-pointer" />
+                  <CircleMinus className="h-auto w-5 cursor-pointer fill-[#D32F2F] text-white dark:text-[var(--dark-bg-primary)]" />
                 </button>
                 <p className="w-[307px] flex-auto border border-transparent border-b-[#e0e0e0] pb-1 text-base text-black">
                   {sub.categoryName}
@@ -237,25 +267,6 @@ export default function Page() {
           />
         )}
       </EditSubcategoryLayout>
-
-      {isPickerOpen && (
-        <div ref={pickerRef} className="absolute top-47 left-5 z-50">
-          <EmojiPicker
-            onEmojiClick={(emojiData: EmojiClickData) => {
-              const newEmoji = emojiData.emoji;
-              setSelectedEmoji(newEmoji);
-              setIsPickerOpen(false);
-
-              if (categoryType === 'MAJOR') {
-                editMajorCategoryMutation.mutate({
-                  categoryName: label,
-                  emoji: newEmoji,
-                });
-              }
-            }}
-          />
-        </div>
-      )}
     </>
   );
 }
