@@ -179,14 +179,14 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="mt-5 mb-6">
+      <div className="mt-7 mb-7">
         <div className="flex gap-2">
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setSelectedTab(tab)}
               className={clsx(
-                'h-8 px-3 text-xs font-medium rounded',
+                'h-9 px-5 text-sm font-medium rounded cursor-pointer',
                 selectedTab === tab
                   ? 'bg-[#ffb84c] text-white'
                   : 'bg-white text-gray-400 border border-gray-300'
@@ -216,8 +216,8 @@ export default function Page() {
                   height={40}
                   className="mx-auto"
                 />
-                <div className="mt-1 font-semibold">{item.itemName}</div>
-                <div className="text-[10px] text-gray-500 mt-1 min-h-[1.5em]">
+                <div className="mt-1 text-sm font-semibold">{item.itemName}</div>
+                <div className="text-[11px] text-gray-500 mt-1 min-h-[1.5em]">
                   {item.itemDescription}
                 </div>
               </div>
@@ -226,7 +226,7 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-10">
         <Button onClick={handleSubmit} className="w-full h-12 text-base">
           저장하기
         </Button>
