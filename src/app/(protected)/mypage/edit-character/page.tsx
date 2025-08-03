@@ -63,7 +63,11 @@ export default function Page() {
     setSelectedItem(initSelected);
   }, [data]);
 
-  const categories: (keyof SelectedItemState)[] = ['TOP', 'BOTTOM', 'ACCESSORY'];
+  const categories: (keyof SelectedItemState)[] = [
+    'TOP',
+    'BOTTOM',
+    'ACCESSORY',
+  ];
 
   const handleModal = (item: Item) => {
     setShowModal(true);
@@ -82,14 +86,17 @@ export default function Page() {
     mutationFn: equipItem,
     onMutate: async (itemId) => {
       await queryClient.cancelQueries({ queryKey: ['user-items'] });
-      const previousUserItems = queryClient.getQueryData<{ data: Item[] }>(['user-items']);
+      const previousUserItems = queryClient.getQueryData<{ data: Item[] }>([
+        'user-items',
+      ]);
       if (previousUserItems) {
         const newData = {
           data: previousUserItems.data.map((item) => {
             const target = previousUserItems.data.find((i) => i.id === itemId);
             const type = target?.itemtype;
             if (!type) return item;
-            if (item.id === itemId) return { ...item, isEquipped: !item.isEquipped };
+            if (item.id === itemId)
+              return { ...item, isEquipped: !item.isEquipped };
             if (item.itemtype === type) return { ...item, isEquipped: false };
             return item;
           }),
@@ -103,7 +110,8 @@ export default function Page() {
         queryClient.setQueryData(['user-items'], context.previousUserItems);
       }
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ['user-items'] }),
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: ['user-items'] }),
   });
 
   const handleSubmit = () => {
@@ -112,7 +120,10 @@ export default function Page() {
       const selected = selectedItem[category];
       const equipped = equippedItem[category];
       if (selected?.id !== equipped?.id) {
-        changedItems.push(selected?.id || equipped?.id);
+        const id = selected?.id ?? equipped?.id;
+        if (id !== undefined) {
+          changedItems.push(id);
+        }
       }
     });
 
@@ -125,7 +136,15 @@ export default function Page() {
   const filteredItem =
     selectedTab === '전체'
       ? userItem
-      : userItem.filter((item) => item.itemKey.startsWith(selectedTab === '상의' ? 'top_' : selectedTab === '하의' ? 'bottom_' : 'accessory_'));
+      : userItem.filter((item) =>
+          item.itemKey.startsWith(
+            selectedTab === '상의'
+              ? 'top_'
+              : selectedTab === '하의'
+                ? 'bottom_'
+                : 'accessory_',
+          ),
+        );
 
   if (isLoading) {
     return (
@@ -139,15 +158,22 @@ export default function Page() {
     <div className="mx-auto w-full max-w-[614px] px-4 py-4">
       <BackHeader title="캐릭터 꾸미기" />
 
-      <div className="my-6 flex items-center justify-center rounded-lg relative h-[220px]">
-        <Image src="/images/itemBackGround.svg" alt="bg" fill className="object-cover rounded-lg" />
+      <div className="relative my-6 flex h-[220px] items-center justify-center rounded-lg">
+        <Image
+          src="/images/itemBackGround.svg"
+          alt="bg"
+          fill
+          className="rounded-lg object-cover"
+        />
 
         <div className="absolute left-5 z-10 space-y-3">
           {(['ACCESSORY', 'TOP', 'BOTTOM'] as const).map((type) => (
             <div
               key={type}
-              className="relative h-12 w-12 rounded border border-[#ffb84c] bg-white cursor-pointer"
-              onClick={() => selectedItem[type] && handleModal(selectedItem[type]!)}
+              className="relative h-12 w-12 cursor-pointer rounded border border-[#ffb84c] bg-white"
+              onClick={() =>
+                selectedItem[type] && handleModal(selectedItem[type]!)
+              }
             >
               {selectedItem[type] && (
                 <Image
@@ -163,19 +189,26 @@ export default function Page() {
         </div>
 
         <div className="relative z-0 h-[140px] w-[140px]">
-          <Image src="/images/mainCharacter.png" alt="기본 캐릭터" width={140} height={140} className="absolute inset-0 z-0" />
-          {(['TOP', 'BOTTOM', 'ACCESSORY'] as const).map((type, i) => (
-            selectedItem[type] && (
-              <Image
-                key={type}
-                src={`/images/items/${selectedItem[type]!.itemKey}.png`}
-                alt={type}
-                width={140}
-                height={140}
-                className={`absolute inset-0 z-${10 + i * 10}`}
-              />
-            )
-          ))}
+          <Image
+            src="/images/mainCharacter.png"
+            alt="기본 캐릭터"
+            width={140}
+            height={140}
+            className="absolute inset-0 z-0"
+          />
+          {(['TOP', 'BOTTOM', 'ACCESSORY'] as const).map(
+            (type, i) =>
+              selectedItem[type] && (
+                <Image
+                  key={type}
+                  src={`/images/items/${selectedItem[type]!.itemKey}.png`}
+                  alt={type}
+                  width={140}
+                  height={140}
+                  className={`absolute inset-0 z-${10 + i * 10}`}
+                />
+              ),
+          )}
         </div>
       </div>
 
@@ -186,10 +219,10 @@ export default function Page() {
               key={tab}
               onClick={() => setSelectedTab(tab)}
               className={clsx(
-                'h-8 px-3 text-xs font-medium rounded',
+                'h-8 rounded px-3 text-xs font-medium',
                 selectedTab === tab
                   ? 'bg-[#ffb84c] text-white'
-                  : 'bg-white text-gray-400 border border-gray-300'
+                  : 'border border-gray-300 bg-white text-gray-400',
               )}
             >
               {tab}
@@ -199,13 +232,16 @@ export default function Page() {
 
         <div className="mt-4 grid grid-cols-3 gap-4">
           {filteredItem.map((item) => {
-            const isSelected = selectedItem[item.itemtype]?.itemKey === item.itemKey;
+            const isSelected =
+              selectedItem[item.itemtype]?.itemKey === item.itemKey;
             return (
               <div
                 key={item.itemKey}
                 className={clsx(
-                  'rounded shadow-sm text-center p-2 text-xs cursor-pointer',
-                  isSelected ? 'border-2 border-[#ffb84c]' : 'border border-gray-200'
+                  'cursor-pointer rounded p-2 text-center text-xs shadow-sm',
+                  isSelected
+                    ? 'border-2 border-[#ffb84c]'
+                    : 'border border-gray-200',
                 )}
                 onClick={() => handleModal(item)}
               >
@@ -217,7 +253,7 @@ export default function Page() {
                   className="mx-auto"
                 />
                 <div className="mt-1 font-semibold">{item.itemName}</div>
-                <div className="text-[10px] text-gray-500 mt-1 min-h-[1.5em]">
+                <div className="mt-1 min-h-[1.5em] text-[10px] text-gray-500">
                   {item.itemDescription}
                 </div>
               </div>
@@ -227,7 +263,7 @@ export default function Page() {
       </div>
 
       <div className="mt-6">
-        <Button onClick={handleSubmit} className="w-full h-12 text-base">
+        <Button onClick={handleSubmit} className="h-12 w-full text-base">
           저장하기
         </Button>
       </div>
@@ -242,7 +278,9 @@ export default function Page() {
               : `${modalItem.itemName}를\n장착하시겠습니까?`
           }
           confirmText={
-            selectedItem[modalItem.itemtype]?.itemKey === modalItem.itemKey ? '장착 해제' : '장착'
+            selectedItem[modalItem.itemtype]?.itemKey === modalItem.itemKey
+              ? '장착 해제'
+              : '장착'
           }
           cancelText="취소"
           onConfirm={() => handleSelect(modalItem)}
