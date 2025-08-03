@@ -19,6 +19,7 @@ import {
 import useNotificationWebSocket from '@/hooks/useNotifications';
 
 import type { Noti } from '../../../../../types/notifications';
+import { useQueryClient } from '@tanstack/react-query';
 
 const formatTimeAgo = (date: string) => {
   const notificationDate = new Date(date);
@@ -38,6 +39,7 @@ const formatTimeAgo = (date: string) => {
 };
 
 export default function Header() {
+  const queryClient = useQueryClient();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -113,7 +115,8 @@ export default function Header() {
     }
   };
 
-  const isHome = pathname === '/home' || '/';
+  // pathname 비교 시 엄격하게 해야함 (===)
+  const isHome = pathname === '/home' || pathname === '/';
   const isAdmin = pathname === '/admin';
   const isRoutine = pathname === '/routine';
   const isReport = pathname === '/report';
@@ -134,6 +137,12 @@ export default function Header() {
 
   if (!showHeader) return null;
 
+  const handleLogout = () => {
+    useUserStore.getState().resetUser();
+    queryClient.clear();
+    router.replace('/login');
+  };
+
   return (
     <>
       <header className="fixed top-0 left-1/2 z-50 w-full max-w-[614px] -translate-x-1/2 bg-white/95 backdrop-blur-md px-5 border-b border-gray-200">
@@ -149,7 +158,15 @@ export default function Header() {
           />
 
           {/* 오른쪽 영역 */}
-          {isShop ? (
+          {isAdmin ? (
+            <button
+              onClick={handleLogout}
+              className="rounded-md bg-[#D32F2F] text-sm px-4 py-2 text-white hover:bg-[#ec6b6b] transition-colors cursor-pointer"
+              type="button"
+            >
+              로그아웃
+            </button>
+          ) : isShop ? (
             <div className="flex items-center gap-2 rounded-lg border border-[#c4c4c4] px-2 py-1">
               <Image src={coin} alt="coin" width={20} height={20} />
               <span className="text-base font-semibold text-[#FFB84C]">

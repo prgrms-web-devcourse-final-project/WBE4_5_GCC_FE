@@ -23,9 +23,8 @@ export default function NextBtn({
   return (
     <>
       <button
-        className={`fixed bottom-0 mx-auto flex h-[88px] w-full max-w-[640px] justify-center pt-[18px] text-[#FDFDFD] ${
-          disabled ? '' : 'cursor-pointer'
-        } ${className ?? ''}`}
+        className={`fixed bottom-0 mx-auto flex h-[100px] w-full max-w-[614px] justify-center pt-[18px] text-lg text-[#FDFDFD] ${disabled ? '' : 'cursor-pointer'
+          } ${className ?? ''}`}
         onClick={!disabled ? onClick : undefined}
       >
         {label}
