@@ -58,7 +58,7 @@ export default function Second() {
           </div>
         </div>
         <button
-          className="flex h-[50px] min-w-[300] cursor-pointer items-center justify-center rounded-[10px] bg-[#FFB84C] text-[16px] text-white transition-all duration-100 ease-in hover:bg-[#b89868] sm:min-w-[390px]"
+          className="flex h-[50px] w-[320px] cursor-pointer items-center justify-center rounded-[10px] bg-[#FFB84C] text-[16px] text-white transition-all duration-100 ease-in hover:bg-[#b89868] sm:min-w-[390px]"
           onClick={goNext}
         >
           시작하기

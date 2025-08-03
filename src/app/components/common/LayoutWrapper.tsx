@@ -46,7 +46,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
   return (
     <div className="mx-auto flex h-screen w-full max-w-[614px] flex-col bg-white">
       <Header />
-      <main className="flex-grow dark:bg-[var(--dark-bg-secondary)]">
+      <main className="flex-grow pt-[54px] dark:bg-[var(--dark-bg-secondary)]">
         {children}
       </main>
       {showBottomNav && <BottomNav />}

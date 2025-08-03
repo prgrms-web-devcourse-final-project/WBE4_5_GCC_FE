@@ -73,7 +73,7 @@ export default function Shop() {
 
   return (
     <>
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col overflow-y-auto px-5 py-7 pt-25">
+      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col overflow-y-auto px-5 py-7">
         <Tabs
           tabs={tabList}
           selectedTab={selectedTab}
