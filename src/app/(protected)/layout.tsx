@@ -15,16 +15,26 @@ export default function ProtectedLayout({
 
   useEffect(() => {
     setHydrated(true);
-  }, []);
-
-  useEffect(() => {
-    if (hydrated && !isLoggedIn) {
+    if (!isLoggedIn) {
       router.replace('/login');
     }
-  }, [hydrated, isLoggedIn, router]);
+  }, [isLoggedIn, router]);
 
-  if (!hydrated) return null;
-  if (!isLoggedIn) return null;
-
-  return <>{children}</>;
+  return <>{hydrated ? children : null}</>;
 }
+
+//   useEffect(() => {
+//     setHydrated(true);
+//   }, []);
+
+//   useEffect(() => {
+//     if (hydrated && !isLoggedIn) {
+//       router.replace('/login');
+//     }
+//   }, [hydrated, isLoggedIn, router]);
+
+//   if (!hydrated) return null;
+//   if (!isLoggedIn) return null;
+
+//   return <>{children}</>;
+// }
