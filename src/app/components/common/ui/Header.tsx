@@ -112,7 +112,7 @@ export default function Header() {
         router.push('/collection');
         break;
       default:
-        router.push('/');
+        router.push('/home');
     }
   };
 
@@ -127,7 +127,7 @@ export default function Header() {
     }
   };
 
-  const isHome = pathname === '/';
+  const isHome = pathname === '/home';
   const isAdmin = pathname === '/admin';
   const isRoutine = pathname === '/routine';
   const isReport = pathname === '/report';
@@ -153,7 +153,7 @@ export default function Header() {
             alt="logo"
             width={90}
             height={60}
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/home')}
             className="h-auto cursor-pointer"
           />
         ) : (

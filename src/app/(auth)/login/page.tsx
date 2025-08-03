@@ -35,7 +35,7 @@ export default function Page() {
       if (emailInput === 'admin@test.com') {
         router.push('/admin');
       } else {
-        router.push('/');
+        router.push('/home');
       }
     } catch (err) {
       setErrors({
