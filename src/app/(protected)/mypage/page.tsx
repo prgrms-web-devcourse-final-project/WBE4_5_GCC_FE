@@ -13,12 +13,13 @@ import { useQueryClient } from '@tanstack/react-query';
 export default function Page() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { isSocial } = useUserStore();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [templateUse, setTemplateUse] = useState(false);
 
   return (
-    <div className="flex flex-col items-center px-5 min-h-screen text-[16px] leading-relaxed">
+    <div className="flex min-h-screen flex-col items-center px-5 text-[16px] leading-relaxed">
       <div className="w-full max-w-[614px] rounded-lg py-6 dark:bg-[var(--dark-bg-primary)]">
         <Profile />
 
@@ -29,17 +30,19 @@ export default function Page() {
           캐릭터 꾸미기
         </Button>
 
-        <div className="mt-10 bg-white flex flex-col space-y-5 text-lg dark:bg-[var(--dark-bg-primary)]">
+        <div className="mt-10 flex flex-col space-y-5 bg-white text-lg dark:bg-[var(--dark-bg-primary)]">
           <SettingsItem
             label="회원정보 변경"
             type="link"
             onClick={() => router.push('/mypage/change-userinfo')}
           />
-          <SettingsItem
-            label="비밀번호 변경"
-            type="link"
-            onClick={() => router.push('/mypage/change-password')}
-          />
+          {!isSocial && (
+            <SettingsItem
+              label="비밀번호 변경"
+              type="link"
+              onClick={() => router.push('/mypage/change-password')}
+            />
+          )}
           <SettingsItem
             label="알림 설정"
             type="link"

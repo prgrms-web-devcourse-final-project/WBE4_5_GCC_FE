@@ -28,7 +28,7 @@ import FloatingButton from '@/app/components/common/FloatingButton';
 
 export default function Main() {
   const searchParams = useSearchParams();
-  const { setIsLoggedIn } = useUserStore();
+  const { setIsLoggedIn, setIsSocial } = useUserStore();
   const [openQuest, setOpenQuest] = useState(false);
   const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
@@ -40,9 +40,10 @@ export default function Main() {
     const social = searchParams.get('social');
     if (social === 'true') {
       setIsLoggedIn(true);
+      setIsSocial(true);
       console.log('✅ setIsLoggedIn(true) 실행됨');
     }
-  }, [searchParams, setIsLoggedIn]);
+  }, [searchParams, setIsLoggedIn, setIsSocial]);
 
   useEffect(() => {
     queryClient.prefetchQuery({
