@@ -36,14 +36,12 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
 
   const handleSubmit = () => {
     const selectedDays =
-      selectedIndex.length === options.length
-        ? '매일'
-        : selectedIndex.length > 0
-          ? selectedIndex
+      selectedIndex.length > 0
+        ? selectedIndex
             .sort((a, b) => a - b)
             .map((i) => options[i])
             .join(', ')
-          : '요일 미선택';
+        : '요일 미선택';
 
     const cycle = {
       days: convertDaysToNumbers(selectedDays),
@@ -57,18 +55,20 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
   return (
     <>
       <div className="mx-[5px] flex min-h-[588px] flex-col">
-        {/* 요일 선택 */}
         <div className="my-[27px] flex flex-col">
-          <span className="text-lg font-semibold mt- mb-6 dark:text-[var(--dark-gray-700)]">요일 선택</span>
+          <span className="mt- mb-6 text-lg font-semibold dark:text-[var(--dark-gray-700)]">
+            요일 선택
+          </span>
           <div className="mx-auto flex max-w-[614px] justify-between gap-8">
             {options.map((option, idx) => (
               <button
                 key={idx}
                 onClick={() => toggleIndex(idx)}
-                className={`inline-flex aspect-square cursor-pointer items-center justify-center rounded-full border-none text-base font-medium transition-colors ${selectedIndex.includes(idx)
-                  ? 'bg-[#FFB84C] text-white dark:text-[var(--dark-bg-primary)]'
-                  : 'bg-[#F5F5F5] text-[#9E9E9E] dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]'
-                  }`}
+                className={`inline-flex aspect-square cursor-pointer items-center justify-center rounded-full border-none text-base font-medium transition-colors ${
+                  selectedIndex.includes(idx)
+                    ? 'bg-[#FFB84C] text-white dark:text-[var(--dark-bg-primary)]'
+                    : 'bg-[#F5F5F5] text-[#9E9E9E] dark:bg-[var(--dark-bg-tertiary)] dark:text-[var(--dark-white)]'
+                }`}
                 style={{ width: '50px' }}
               >
                 {option}
@@ -81,16 +81,18 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
 
         <div className="flex flex-col">
           <div className="flex w-full">
-            <span className="text-lg font-semibold dark:text-[var(--dark-gray-700)]">반복주기</span>
+            <span className="text-lg font-semibold dark:text-[var(--dark-gray-700)]">
+              반복주기
+            </span>
             <div className="ml-auto flex items-center gap-1">
               <span className="text-base text-[#616161] dark:text-[var(--dark-gray-700)]">
                 {selectedIndex.length === options.length
                   ? '매일'
                   : selectedIndex.length > 0
                     ? selectedIndex
-                      .sort((a, b) => a - b)
-                      .map((i) => options[i])
-                      .join(', ')
+                        .sort((a, b) => a - b)
+                        .map((i) => options[i])
+                        .join(', ')
                     : '요일 미선택'}{' '}
                 / {selectedWeek === '1' ? '매주' : `${selectedWeek}주마다`}
               </span>
@@ -109,10 +111,11 @@ export default function Weekly({ onSubmit, onClose }: WeeklyProps) {
 
           {/* 확인 버튼 */}
           <button
-            className={`-mt-5 rounded-lg py-4 text-lg font-semibold text-white transition-colors dark:text-[var(--dark-bg-primary)] ${selectedIndex.length === 0
-              ? 'bg-[#E0E0E0]'
-              : 'cursor-pointer bg-[#FFB84C]'
-              }`}
+            className={`-mt-5 rounded-lg py-4 text-lg font-semibold text-white transition-colors dark:text-[var(--dark-bg-primary)] ${
+              selectedIndex.length === 0
+                ? 'bg-[#E0E0E0]'
+                : 'cursor-pointer bg-[#FFB84C]'
+            }`}
             onClick={handleSubmit}
             disabled={selectedIndex.length === 0}
           >

@@ -43,27 +43,28 @@ export default function Page() {
   };
 
   const formattedDate = useCallback((date: Date) => {
-    return new Date(Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    )).toISOString();
+    return new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+    ).toISOString();
   }, []);
 
-  const fetchReport = useCallback(async (date: Date) => {
-    setLoading(true);
-    setError(false);
-    try {
-      const data = await getWeeklyReport(formattedDate(date));
-      setReportData(data);
-    } catch (e) {
-      console.error('❌ 리포트 불러오기 실패:', e);
-      setReportData(null);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  }, [formattedDate]);
+  const fetchReport = useCallback(
+    async (date: Date) => {
+      setLoading(true);
+      setError(false);
+      try {
+        const data = await getWeeklyReport(formattedDate(date));
+        setReportData(data);
+      } catch (e) {
+        console.error('❌ 리포트 불러오기 실패:', e);
+        setReportData(null);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [formattedDate],
+  );
 
   useEffect(() => {
     fetchReport(currentDate);
@@ -78,16 +79,12 @@ export default function Page() {
   const hasValidData = (data: ReportData | null): data is ReportData => {
     if (!data) return false;
 
-    const {
-      aiComment,
-      dayRoutineCount,
-      top5,
-      categoryCount,
-      routineCount,
-    } = data;
+    const { aiComment, dayRoutineCount, top5, categoryCount, routineCount } =
+      data;
 
     if (!aiComment || aiComment.trim() === '') return false;
-    if (!Array.isArray(dayRoutineCount) || dayRoutineCount.length === 0) return false;
+    if (!Array.isArray(dayRoutineCount) || dayRoutineCount.length === 0)
+      return false;
     if (!Array.isArray(top5) || top5.length === 0) return false;
     if (!categoryCount || Object.keys(categoryCount).length === 0) return false;
     if (!routineCount) return false;
@@ -101,38 +98,49 @@ export default function Page() {
     const currentWeek = getWeekNumber(currentDate);
     return (
       currentWeek.year > nowWeek.year ||
-      (currentWeek.year === nowWeek.year && currentWeek.month > nowWeek.month) ||
-      (currentWeek.year === nowWeek.year && currentWeek.month === nowWeek.month && currentWeek.weekNumber >= nowWeek.weekNumber - 1)
+      (currentWeek.year === nowWeek.year &&
+        currentWeek.month > nowWeek.month) ||
+      (currentWeek.year === nowWeek.year &&
+        currentWeek.month === nowWeek.month &&
+        currentWeek.weekNumber >= nowWeek.weekNumber - 1)
     );
   })();
 
   const renderNoData = (message: string) => (
     <div
-      className="flex flex-col items-center justify-center py-12 bg-white text-[#9E9E9E] dark:bg-[var(--dark-bg-primary)]"
+      className="flex flex-col items-center justify-center bg-white py-12 text-[#9E9E9E] dark:bg-[var(--dark-bg-primary)]"
       style={{ minHeight: 'calc(100vh - 200px)' }}
     >
-      <div className="mb-30 w-[180px] h-[180px]">
+      <div className="mb-30 h-[180px] w-[180px]">
         <Lottie animationData={NoDataAnimation} loop autoplay />
       </div>
       <p className="-mt-10 text-lg font-medium">{message}</p>
-      <p className="text-base mt-2">다른 주차를 선택해 보세요.</p>
+      <p className="mt-2 text-base">다른 주차를 선택해 보세요.</p>
     </div>
   );
 
   return (
     <div className="bg-[#f5f5f5]">
-      <div className="flex items-center justify-center gap-4 -mt-2 py-3 bg-[#fff] dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]">
-        <button onClick={() => moveWeek(-1)} aria-label="이전 주" className="cursor-pointer">
+      <div className="-mt-2 flex items-center justify-center gap-4 bg-[#fff] py-3 dark:bg-[var(--dark-bg-primary)] dark:text-[var(--dark-gray-700)]">
+        <button
+          onClick={() => moveWeek(-1)}
+          aria-label="이전 주"
+          className="cursor-pointer"
+        >
           <ChevronLeft size={24} />
         </button>
 
-        <h2 className="text-[22px] font-semibold">{getWeekLabel(currentDate)}</h2>
+        <h2 className="text-[22px] font-semibold">
+          {getWeekLabel(currentDate)}
+        </h2>
 
         <button
           onClick={() => moveWeek(1)}
           aria-label="다음 주"
           disabled={isNextDisabled}
-          className={isNextDisabled ? 'opacity-30 text-gray-400' : 'cursor-pointer'}
+          className={
+            isNextDisabled ? 'text-gray-400 opacity-30' : 'cursor-pointer'
+          }
         >
           <ChevronRight size={24} />
         </button>

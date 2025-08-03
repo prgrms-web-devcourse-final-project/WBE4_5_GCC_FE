@@ -29,9 +29,8 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
 
     '/routine/edit-category',
     '/routine/add-category',
-    '/routine/edit-subcategory'
+    '/routine/edit-subcategory',
   ];
-
 
   const hiddenHeaderRoutes = [
     '/login',
@@ -45,7 +44,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
 
     '/routine/edit-category',
     '/routine/add-category',
-    '/routine/edit-subcategory'
+    '/routine/edit-subcategory',
   ];
 
   const isMypageSubRoute =
