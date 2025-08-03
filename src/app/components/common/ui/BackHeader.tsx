@@ -13,7 +13,7 @@ interface BackHeaderProps {
 export default function BackHeader({
   title,
   useStep = false,
-  defaultBackPath = '/',
+  defaultBackPath = '/home',
   step,
 }: BackHeaderProps) {
   const router = useRouter();
