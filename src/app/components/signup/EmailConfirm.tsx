@@ -106,10 +106,13 @@ export default function EmailConfirm() {
   return (
     <>
       {/* 전체 박스 */}
-      <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5">
+      <div className="mx-auto w-full max-w-screen-sm px-5 pt-[50px]">
         {showEmailSentAlert && (
           <div className="fixed bottom-[120px] left-0 z-50 flex w-full justify-center">
-            <AlertMessage type="success" message="인증번호가 성공적으로 발송되었습니다." />
+            <AlertMessage
+              type="success"
+              message="인증번호가 성공적으로 발송되었습니다."
+            />
           </div>
         )}
         {showCodeAlert && (
@@ -119,13 +122,16 @@ export default function EmailConfirm() {
         )}
         {showErrorAlert && (
           <div className="fixed bottom-[120px] left-0 z-50 flex w-full justify-center">
-            <AlertMessage type="error" message="인증번호가 올바르지 않습니다." />
+            <AlertMessage
+              type="error"
+              message="인증번호가 올바르지 않습니다."
+            />
           </div>
         )}
         {!emailSent && (
           <div>
             <p>이메일 (아이디)</p>
-            <div className="mt-[10px] mb-[14px] flex h-[48px] w-full items-center rounded-[8px] border border-[#e0e0e0] p-[15px] text-[#9E9E9E]">
+            <div className="mt-[10px] mb-[14px] flex h-[48px] w-full items-center rounded-[8px] border border-[#e0e0e0] p-[15px] text-[#9e9e9e]">
               {email}
             </div>
             <Button onClick={emailHandler}>인증번호 요청</Button>

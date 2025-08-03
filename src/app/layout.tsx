@@ -26,7 +26,6 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {/* className="bg-[#f1f1f1]" */}
         <Providers>
           <Suspense
             fallback={

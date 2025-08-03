@@ -1,6 +1,6 @@
 import { useUserStore } from '@/store/UserStore';
 import { axiosInstance } from './axiosInstance';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 // signup - 회원가입
 export const signUp = async (email: string, password: string, name: string) => {
@@ -39,10 +39,19 @@ export const logout = async () => {
 
 // check - 중복 검사 (이메일)
 export const checkEmail = async (email: string): Promise<boolean> => {
-  const response = await axiosInstance.post('/api/v1/check', { email });
-  return response.data?.data?.isDuplicated ?? true; // true = 이미 사용 중
-};
+  try {
+    await axiosInstance.post('/api/v1/check', { email });
+    return false;
+  } catch (error) {
+    const axiosError = error as AxiosError;
 
+    if (axiosError.response?.status === 409) {
+      return true;
+    }
+
+    throw error;
+  }
+};
 // check - 중복 검사 (닉네임)
 export const checkNickname = async (nickname: string): Promise<boolean> => {
   const response = await axiosInstance.post('/api/v1/check', { nickname });

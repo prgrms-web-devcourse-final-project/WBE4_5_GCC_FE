@@ -215,7 +215,7 @@ export default function EditItem({
           <h1>상점 등록</h1>
           <select
             value={isListed.toString()}
-            className="h-12 w-full appearance-none rounded-lg border border-[#E0E0E0] px-4 py-2 pr-10 text-sm focus:outline-none"
+            className="h-12 w-full appearance-none rounded-lg border border-[#e0e0e0] px-4 py-2 pr-10 text-sm focus:outline-none"
             onChange={(e) => setIsListed(e.target.value === 'true')}
           >
             <option value="true">true</option>

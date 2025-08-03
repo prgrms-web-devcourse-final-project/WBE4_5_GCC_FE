@@ -18,7 +18,6 @@ export default function CalendarBottomSheet({
   selectedDate,
   setSelectedDate,
 }: CalendarBottomSheetProps) {
-  //화면에 보여지는 달
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const setIsCalendarBottomSheetOpen = useUIStore(
     (state) => state.setIsCalendarBottomSheetOpen,
@@ -31,14 +30,12 @@ export default function CalendarBottomSheet({
 
   if (!isOpen) return null;
 
-  // 이전 달로 이동
   const handlePrevMonth = () => {
     const newDate = new Date(activeStartDate);
     newDate.setMonth(newDate.getMonth() - 1);
     setActiveStartDate(newDate);
   };
 
-  // 다음 달로 이동
   const handleNextMonth = () => {
     const newDate = new Date(activeStartDate);
     newDate.setMonth(newDate.getMonth() + 1);
@@ -47,23 +44,21 @@ export default function CalendarBottomSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222] dark:bg-[var(--dark-gray-200)]/50"
       onClick={() => setIsOpen(false)}
     >
       <div
-        className="relative h-[500px] w-full max-w-md rounded-t-2xl bg-white px-4 py-6"
+        className="relative h-[600px] w-full max-w-[614px] rounded-t-2xl bg-white px-6 py-6 dark:bg-[var(--dark-bg-primary)]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mt-6 mb-9 flex w-full items-center justify-between px-6">
-          <ChevronLeft className="cursor-pointer" onClick={handlePrevMonth} />
+        <div className="mt-3 mb-11 flex w-full items-center justify-between">
+          <ChevronLeft className="h-6 w-6 cursor-pointer text-[#222]" onClick={handlePrevMonth} />
           <div className="flex items-center gap-3">
-            <h2 className="text-base font-bold">
-              {activeStartDate instanceof Date
-                ? `${activeStartDate.getFullYear()}년 ${activeStartDate.getMonth() + 1}월`
-                : ''}
+            <h2 className="text-xl font-bold text-[#222]">
+              {`${activeStartDate.getFullYear()}년 ${activeStartDate.getMonth() + 1}월`}
             </h2>
-            <div
-              className="flex h-5 w-9 cursor-pointer items-center justify-center rounded-[5px] border border-[#919191] text-xs text-[#919191]"
+            <button
+              className="h-7 w-12 rounded-md border border-[#919191] text-base text-[#919191] cursor-pointer"
               onClick={() => {
                 const today = new Date();
                 setActiveStartDate(today);
@@ -71,9 +66,9 @@ export default function CalendarBottomSheet({
               }}
             >
               오늘
-            </div>
+            </button>
           </div>
-          <ChevronRight className="cursor-pointer" onClick={handleNextMonth} />
+          <ChevronRight className="h-6 w-6 cursor-pointer text-[#222]" onClick={handleNextMonth} />
         </div>
 
         <Calendar
@@ -84,13 +79,13 @@ export default function CalendarBottomSheet({
           }}
           value={selectedDate}
           activeStartDate={activeStartDate}
-          className="w-full bg-white px-2 text-sm"
           calendarType="iso8601"
           locale="ko-KR"
           view="month"
           prev2Label={null}
           next2Label={null}
-          formatDay={(locale, date) => String(date.getDate())}
+          formatDay={(_, date) => String(date.getDate())}
+          className="custom-calendar text-[16px] dark:bg-[var(--dark-bg-primary)]"
         />
       </div>
     </div>

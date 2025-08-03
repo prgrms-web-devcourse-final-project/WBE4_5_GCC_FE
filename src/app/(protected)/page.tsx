@@ -1,12 +1,10 @@
 'use client';
-
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import quest from '/public/quest.svg';
 import acheivement from '/public/acheivement.svg';
 
 import { useRouter } from 'next/navigation';
-import Quest from '../components/main/Quest';
+
 import { useWeekRoutine } from '@/api/routine/getWeekRoutine';
 import { format, startOfWeek } from 'date-fns';
 import { useRoutineStore } from '@/store/RoutineStore';
@@ -14,11 +12,16 @@ import {
   useDeleteRoutine,
   useHandleRoutine,
 } from '@/api/routine/handleRoutine';
+import { useQueryClient } from '@tanstack/react-query';
+import { getBadges } from '@/api/badges';
+import { fetchItems } from '@/api/items';
+import { fetchUserQuest } from '@/api/member';
 import { DayRoutine } from '../../../types/routine';
 import FloatingButton from '../components/common/FloatingButton';
 import Profile from '../components/main/Profile';
 import Donut from '../components/common/ui/Donut';
 import Routine from '../components/routine/Routine';
+import Quest from '../components/main/Quest';
 import AlertModal from '../components/common/alert/AlertModal';
 
 export default function Main() {
@@ -26,7 +29,27 @@ export default function Main() {
   const [checkDelete, setCheckDelete] = useState(false);
   const router = useRouter();
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+  const queryClient = useQueryClient();
   const { data: weekData, isPending: weekLoading } = useWeekRoutine();
+
+  useEffect(() => {
+    queryClient.prefetchQuery({
+      queryKey: ['user-badges'],
+      queryFn: () => getBadges(1, 999),
+      staleTime: 5 * 60 * 1000,
+    });
+    queryClient.prefetchQuery({
+      queryKey: ['shop-items', 1],
+      queryFn: fetchItems,
+      staleTime: 5 * 60 * 1000,
+    });
+    queryClient.prefetchQuery({
+      queryKey: ['user-quests'],
+      queryFn: fetchUserQuest,
+      staleTime: 5 * 60 * 1000,
+    });
+  }, [queryClient]);
+
   const today = format(new Date(), 'yyyy-MM-dd');
   const filteredRoutines: DayRoutine[] = weekData?.routines?.[today] ?? [];
   const total = filteredRoutines.length;
@@ -50,7 +73,7 @@ export default function Main() {
 
   return (
     <>
-      <div className="relative mx-auto flex h-auto max-w-5xl flex-col items-center bg-[#f1f1f1] pt-4 select-none">
+      <div className="relative mx-auto flex h-auto max-w-md flex-col items-center pt-4 select-none">
         <div className="absolute top-0 right-10 z-30 my-8">
           <FloatingButton
             src={quest}
@@ -79,7 +102,7 @@ export default function Main() {
           <Profile />
         </div>
         {weekLoading && (
-          <div className="flex min-h-screen w-full flex-col gap-3 px-5 py-4">
+          <div className="mt-10 flex min-h-screen w-full flex-col gap-5 rounded-[10px] bg-white px-5 py-4">
             <div className="flex items-center justify-between">
               <div className="flex flex-col gap-3">
                 <div className="h-[27px] w-[100px] animate-pulse rounded-[10px] bg-gray-200"></div>
@@ -87,9 +110,11 @@ export default function Main() {
               </div>
               <div className="h-[54px] w-[54px] animate-pulse rounded-full bg-gray-200"></div>
             </div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
-            <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            <div className="flex min-h-screen flex-col gap-5 rounded-[10px] bg-white p-4">
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+              <div className="h-[86px] w-full animate-pulse rounded-[10px] bg-gray-200"></div>
+            </div>
           </div>
         )}
         {!weekLoading && (

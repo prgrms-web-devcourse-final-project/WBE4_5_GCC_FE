@@ -28,15 +28,15 @@ export default function CategoryNameInputBottomSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222]/50"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#222222] dark:bg-[var(--dark-gray-200)]/50"
       onClick={handleOutsideClick}
     >
       <div
-        className="min-h-[443px] w-full rounded-t-[24px] bg-white px-3 py-6"
+        className="min-h-[443px] w-full rounded-t-[24px] bg-white px-3 py-6 dark:bg-[var(--dark-bg-primary)]"
         onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫히지 않도록
       >
         {/* 헤더 */}
-        <div className="flex justify-between text-[#222222]">
+        <div className="flex justify-between text-[#222222] dark:text-[var(--dark-gray-700)]">
           <X onClick={() => onClose()} className="h-auto w-6 cursor-pointer" />
           <p className="text-lg font-medium">카테고리 이름을 입력하세요</p>
           <button onClick={handleSubmit} className="cursor-pointer text-sm">

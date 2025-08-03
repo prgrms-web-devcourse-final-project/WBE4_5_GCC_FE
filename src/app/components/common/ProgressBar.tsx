@@ -24,7 +24,7 @@ export default function ProgressBar({
       <span className="absolute left-[46%] text-white">{per}</span>
       <div
         className={twMerge(
-          'h-full bg-[#222222] transition-all duration-300',
+          'h-full bg-[#222222] transition-all duration-300 dark:bg-[var(--dark-gray-200)]',
           barClassName,
         )}
         style={{ width: `${percentage}%` }}

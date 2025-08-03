@@ -16,17 +16,17 @@ export default function AddCategoryLayout({
 
   return (
     <div>
-      <div className="flex flex-col">
-        <header className="relative flex w-full items-center justify-between border-[0.5px] border-transparent border-b-[#CCCCCC] px-3 py-4">
+      <div className="flex min-h-screen flex-col">
+        <header className="relative flex w-full items-center justify-between border-[0.5px] border-transparent border-b-[#cccccc] px-3 py-4">
           <div>
             <ChevronLeft
-              className="h-auto w-6 text-[#222222]"
+              className="h-auto w-6 text-[#222222] dark:text-[var(--dark-gray-700)]"
               strokeWidth={2}
               onClick={() => router.push('/routine/edit-category')}
             />
           </div>
 
-          <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222]">
+          <div className="absolute left-1/2 -translate-x-1/2 text-lg font-semibold text-[#222222] dark:text-[var(--dark-gray-700)]">
             카테고리 추가
           </div>
 
@@ -34,7 +34,7 @@ export default function AddCategoryLayout({
             <button
               onClick={onComplete}
               disabled={isLoading}
-              className={`cursor-pointer ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
+              className={`cursor-pointer dark:text-[var(--dark-gray-700)] ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
             >
               완료
             </button>

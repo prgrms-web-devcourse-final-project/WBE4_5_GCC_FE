@@ -42,7 +42,7 @@ export default function UserAdress() {
   };
 
   return (
-    <div className="mx-auto mt-[50px] w-full max-w-screen-sm px-5 select-none">
+    <div className="mx-auto w-full max-w-screen-sm px-5 pt-[50px] select-none">
       <ProgressBar currentStep={2} totalSteps={4} />
 
       <h1 className="mb-7 text-[20px] font-semibold">주소를 입력해 주세요</h1>
@@ -50,15 +50,17 @@ export default function UserAdress() {
       <div className="flex gap-2.5">
         <Input
           value={`${regionDept2} ${regionDept3}`}
-          onChange={() => { }}
+          onChange={() => {}}
           disabled
         />
         <Button
-          className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222]"
+          className="flex min-h-12 max-w-[93px] gap-[6px] rounded-lg bg-[#222222] dark:bg-[var(--dark-gray-200)]"
           onClick={handleSearch}
         >
           <Search className="h-auto w-4" strokeWidth={2} />
-          <span className="text-sm font-medium text-white">주소 검색</span>
+          <span className="text-sm font-medium text-white dark:text-[var(--dark-bg-primary)]">
+            주소 검색
+          </span>
         </Button>
       </div>
 
