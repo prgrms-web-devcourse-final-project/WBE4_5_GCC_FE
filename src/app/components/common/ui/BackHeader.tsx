@@ -28,6 +28,11 @@ export default function BackHeader({
       return;
     }
 
+    if (title === '상점 관리') {
+      router.push('/admin');
+      return;
+    }
+
     if (useStep) {
       const activeStep = step ?? currentStep;
       if (activeStep === 1) {

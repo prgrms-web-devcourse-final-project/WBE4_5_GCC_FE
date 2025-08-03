@@ -36,7 +36,7 @@ export default function Page() {
 
   return (
     <div>
-      <div className="flex flex-col">
+      <div className="flex flex-col bg-white">
         <div>
           <div className="flex flex-col gap-2 px-4 py-10">
             <CategoryGrid

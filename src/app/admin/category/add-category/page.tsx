@@ -49,7 +49,7 @@ export default function EditSubcategoryPage() {
   return (
     <>
       <div>
-        <div className="flex flex-col">
+        <div className="flex flex-col bg-white">
           <div>
             <div className="flex flex-col gap-7 px-5 py-7">
               <div className="flex items-center gap-3">
