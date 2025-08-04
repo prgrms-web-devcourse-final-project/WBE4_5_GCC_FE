@@ -5,10 +5,11 @@ import bg from '/public/profileBg2.png';
 import bg2 from '/public/profileBg.png';
 import Image from 'next/image';
 import logo from '/public/logo.png';
+import { useOnBoardingStore } from '@/store/onBoarding';
 
 export default function Second() {
   const router = useRouter();
-
+  const resetStep = useOnBoardingStore((state) => state.resetStep);
   const goNext = () => {
     router.push('/login');
   };
@@ -59,7 +60,10 @@ export default function Second() {
         </div>
         <button
           className="mb-20 flex h-[50px] w-[320px] cursor-pointer items-center justify-center rounded-[10px] bg-[#FFB84C] text-[16px] text-white transition-all duration-100 ease-in hover:bg-[#b89868] sm:min-w-[390px]"
-          onClick={goNext}
+          onClick={() => {
+            resetStep();
+            goNext();
+          }}
         >
           시작하기
         </button>
