@@ -8,6 +8,8 @@ import fourth2 from '/public/onBoarding/fourth2.png';
 
 export default function Fourth() {
   const router = useRouter();
+  const resetStep = useOnBoardingStore((state) => state.resetStep);
+
   const { setStep, step } = useOnBoardingStore();
 
   const goNext = () => {
@@ -90,7 +92,10 @@ export default function Fourth() {
         <div className="flex w-full justify-between bg-white p-[26px] px-15 font-semibold">
           <button
             className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-[#ffb84c] sm:text-[16px]"
-            onClick={skip}
+            onClick={() => {
+              skip();
+              resetStep();
+            }}
           >
             skip
           </button>

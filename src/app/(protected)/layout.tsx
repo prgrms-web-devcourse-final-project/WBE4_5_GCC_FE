@@ -22,19 +22,3 @@ export default function ProtectedLayout({
 
   return <>{hydrated ? children : null}</>;
 }
-
-//   useEffect(() => {
-//     setHydrated(true);
-//   }, []);
-
-//   useEffect(() => {
-//     if (hydrated && !isLoggedIn) {
-//       router.replace('/login');
-//     }
-//   }, [hydrated, isLoggedIn, router]);
-
-//   if (!hydrated) return null;
-//   if (!isLoggedIn) return null;
-
-//   return <>{children}</>;
-// }

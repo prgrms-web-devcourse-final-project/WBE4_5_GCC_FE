@@ -13,6 +13,7 @@ export default function Second() {
   const goNext = () => {
     setStep(3);
   };
+  const resetStep = useOnBoardingStore((state) => state.resetStep);
 
   const skip = () => {
     router.push('/login');
@@ -86,7 +87,10 @@ export default function Second() {
         </div>
         <div className="flex w-full justify-between bg-[#ffffff] p-[20px] text-black">
           <button
-            onClick={skip}
+            onClick={() => {
+              skip();
+              resetStep();
+            }}
             className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-[#FFB84C] sm:text-[16px]"
           >
             skip
@@ -102,7 +106,9 @@ export default function Second() {
             ))}
           </div>
           <button
-            onClick={goNext}
+            onClick={() => {
+              goNext();
+            }}
             className="cursor-pointer text-[16px] transition-all duration-100 ease-in hover:text-[#FFB84C]"
           >
             다음
