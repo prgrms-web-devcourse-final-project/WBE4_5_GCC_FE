@@ -7,6 +7,7 @@ import ThirdDiv from './ThirdDiv';
 export default function Third() {
   const router = useRouter();
   const { setStep, step } = useOnBoardingStore();
+  const resetStep = useOnBoardingStore((state) => state.resetStep);
 
   const totalSteps = 5;
   const skip = () => router.push('/login');
@@ -38,7 +39,10 @@ export default function Third() {
         <div className="flex w-full justify-between bg-white p-[26px] px-15 font-semibold">
           <button
             className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-[#ffb84c] sm:text-[16px]"
-            onClick={skip}
+            onClick={() => {
+              skip();
+              resetStep();
+            }}
           >
             skip
           </button>

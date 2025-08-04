@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
 export default function First() {
   const router = useRouter();
+  const resetStep = useOnBoardingStore((state) => state.resetStep);
   const { setStep, step } = useOnBoardingStore();
 
   const totalSteps = 5;
@@ -59,7 +60,10 @@ export default function First() {
       {/* 하단 네비 */}
       <div className="flex w-full justify-between bg-[#ffffff] p-[20px] text-black">
         <button
-          onClick={skip}
+          onClick={() => {
+            skip();
+            resetStep();
+          }}
           className="cursor-pointer text-[12px] transition-all duration-100 ease-in hover:text-[#FFB84C] sm:text-[16px]"
         >
           skip
