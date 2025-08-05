@@ -89,8 +89,8 @@ export default function Page() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-white px-5 pt-50 select-none dark:bg-[var(--dark-bg-primary)]">
-      <div className="w-full max-w-md">
+    <div className="flex h-[calc(100vh-54px)] flex-col items-center px-5 select-none dark:bg-[var(--dark-bg-primary)]">
+      <div className="max-h-screen w-full max-w-md">
         <div className="flex justify-center">
           <Image
             src={logo}
