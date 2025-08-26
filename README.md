@@ -23,17 +23,41 @@
 2025.06.26 ~ 2025.07.31
 
 ## 기술 스택
-<img src="https://img.shields.io/badge/next.js v15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
-<img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
+
+#### Languages
 <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
-<img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
-<img src="https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">
+
+#### Frameworks/Libraries
+<div class="flex flex-wrap items-center gap-2">
+   <img src="https://img.shields.io/badge/next.js v15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
+   <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+
+#### Data Fetching & State
+<div class="flex flex-wrap items-center gap-2">
+   <img src="https://img.shields.io/badge/reactquery-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">
+   <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
+   <img src="https://img.shields.io/badge/zustand-4D2B1A?style=for-the-badge&logo=zustand&logoColor=white">
+
+#### Styling
+<div class="flex flex-wrap items-center gap-2">
+   <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
+   <img src="https://img.shields.io/badge/styledcomponents-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">
+
+#### Code Quality & DX
+<div class="flex flex-wrap items-center gap-2">
+  <img src="https://img.shields.io/badge/eslint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white">
+  <img src="https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white">
+
+#### Version Control & Collaboration
+<div class="flex flex-wrap items-center gap-2">
+   <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+
+#### Web Platform
 <img src="https://img.shields.io/badge/pwa-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white">
-<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
 
-
-
+#### Design
+<img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
 
 
 ## 역할 분담 및 기능 소개
