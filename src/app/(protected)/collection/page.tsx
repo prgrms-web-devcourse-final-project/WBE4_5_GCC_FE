@@ -171,8 +171,8 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex min-h-screen w-full justify-center bg-white pt-11 dark:bg-[var(--dark-bg-primary)]">
-        <div className="flex w-full min-w-[390px] flex-col items-center bg-white dark:bg-[var(--dark-bg-primary)]">
+      <div className="flex min-h-screen w-full justify-center dark:bg-[var(--dark-bg-primary)]">
+        <div className="flex w-full min-w-[390px] flex-col items-center bg-white pb-10 dark:bg-[var(--dark-bg-primary)]">
           <BackHeader title="도감" />
 
           {/* 콘텐츠 영역 */}

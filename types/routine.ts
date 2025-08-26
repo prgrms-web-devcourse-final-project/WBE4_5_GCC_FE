@@ -14,7 +14,7 @@ export interface DayRoutine {
   repeatType: string;
   repeatValue: string;
   repeatTerm: number;
-  // emoji: string;
+  //emoji: string;
 }
 export interface WeekRoutineMap {
   date: string | null;
