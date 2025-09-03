@@ -187,21 +187,39 @@
     <td><img src="https://github.com/user-attachments/assets/9991b984-5d91-41d6-bd04-52288b2f4336" width="250"/></td>
     <td><img src="https://github.com/user-attachments/assets/bc8b1746-d695-407e-a9d3-9b4a971b1ddb" width="250"/></td>
   </tr>
-  <tr>
-    <td colspan="3" align="center">회원가입 페이지</td>
+   <tr>
+    <th colspan="3" align="center">회원가입 페이지</th>
   </tr>
 </table>
+
+| 루틴 카테고리 등록 | 카테고리 삭제 | 카테고리 수정 |
+| :----------------: | :--------------------: | :----------------: | 
+| <img src="https://github.com/user-attachments/assets/42c1c403-e098-4f20-8435-37ced8156c48" width="250"/> | <img src="https://github.com/user-attachments/assets/42811d88-0553-438e-aab0-80587b0262c8" width="250"/> | <img src="https://github.com/user-attachments/assets/be089ad1-7d73-4715-9f65-cc5d12897c94" width="250"/> | 
+| - 대분류/소분류 카테고리 제공 <br/>- 이모지 아이콘 설정 가능 <br/>- 사용자 정의 카테고리 추가 가능 | - 기본 카테고리 삭제 불가<br/>- 사용자 카테고리 삭제 가능  | - 대분류 카테고리 수정 가능<br/> - 소분류 카테고리 추가/삭제 지원 | 
+
+| 루틴 등록 | 루틴 수정 & 삭제 |
+| :----------------: | :--------------------: | 
+| <img src="https://github.com/user-attachments/assets/943aa4c5-819f-4a28-b269-c4faf45a4041" width="250"/> | <img src="https://github.com/user-attachments/assets/08aa911e-261a-4f50-8211-1fcd4471c1f7" width="250"/> | 
+| - 루틴 카테고리, 시작일, 반복 주기, 중요도 설정 가능 <br/>- 카테고리별 추천 루틴 제공 <br/>- 일간/주간/월간 반복 주기 설정 모달 | - 일별 루틴 완료율 확인 가능 <br/>- 등록된 루틴 수정/삭제 가능 |
 
 | 리포트 페이지 | 상점 페이지 |
 | :--------------------: | :----------------: | 
 | <img src="https://github.com/user-attachments/assets/fe3aa8f1-e521-44ef-be80-fb1c6e60918c" width="250"/> | <img src="https://github.com/user-attachments/assets/573d9679-be82-4ee3-9062-2585817d82c6" width="250"/> | 
-| - 주 단위 루틴 활동을 분석·시각화 <br/>- AI 분석 코멘트, 월간 요약 카드, 주간 완료율 차트, <br/>Top5 루틴 랭킹, 카테고리 분포 차트 제공  | - 상의, 하의, 액세서리 별 탭 필터링<br/> - 유저 포인트로 아이템 구매 가능 | 
+| - 주 단위 루틴 활동을 분석·시각화 <br/>- AI 분석 코멘트, 월간 요약 카드, 주간 완료율 차트, <br/>Top5 루틴 랭킹, 카테고리 분포 차트 제공  | - 상의/하의/액세서리별 탭 필터링 지원<br/> - 사용자 포인트로 아이템 구매 가능 | 
 
-루틴 -> 등록, 수정, 삭제
--> 카테고리 등록, 수정, 삭제
-리포트, 상점, 도감, 퀘스트, 알림
-마이페이지 -> 옷입히기, 회원정보변경
-다크모드
+| 도감 | 퀘스트 | 알림 |
+| :----------------: | :--------------------: | :----------------: | 
+| <img src="https://github.com/user-attachments/assets/3f5ef727-7c34-405a-af24-ec03d9b1a038" width="250"/> | <img src="https://github.com/user-attachments/assets/c0ec4a6f-0314-4f26-a433-ba5c1e4a2e35" width="250"/> | <img src="https://github.com/user-attachments/assets/e60f0487-7967-4c7d-8e36-327f1f47bc39" width="270"/> | 
+| - 보유 뱃지 확인 가능 <br/>- 티어 및 카테고리 필터 제공 <br/>- 특정 조건 달성 시 뱃지 획득 가능<br/>- 뱃지 장착/해제 지원 | - 주간/이벤트 퀘스트 목록 제공 <br/>- 퀘스트 진행 현황 확인 가능 <br/>- 퀘스트 달성 시 보상 획득 → 포인트 적립  | - 실시간 알림 제공<br/> - 개별 알림 읽음 처리 및 전체 읽음 지원<br/> - 루틴/퀘스트/업적 보상 알림 on·off 설정 가능 | 
+
+| 캐릭터 꾸미기 | 회원정보 수정 |
+| :--------------------: | :----------------: | 
+| <img src="https://github.com/user-attachments/assets/5893893e-2751-4bca-96ba-ae24880effe1" width="250"/> | <img src="https://github.com/user-attachments/assets/0b8462bf-0717-4a43-84ad-9af0196d7ec1" width="250"/> | 
+| - 유저 캐릭터에 상의/하의/액세서리 장착&해제 가능 <br/>- 착용 아이템 미리보기 제공  | - 비밀번호 확인 후 정보 수정 가능<br/> - 닉네임, 주소, 자취경력 수정 가능<br/> - 닉네임 중복 여부 확인<br/> - 주소 검색 API를 통한 도로명 주소 자동 입력  | 
+
+| 다크모드 | 
+| :--------------------: |
+| <img src="https://github.com/user-attachments/assets/1a7b648a-d47e-46df-9ee0-daa12dc95832" width="250"/> | 
 
 
 ### 디렉토리 구조
