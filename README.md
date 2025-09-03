@@ -8,9 +8,6 @@
 ## 루티 (배포링크)
 
 
-## 시연영상
-
-
 # 프로젝트 소개
 * 1인 가구의 증가와 자취 초보의 생활 패턴 관리의 어려움을 해결하고자 루틴 실천을 게임처럼 즐겁게 하여 지속적인 실천을 도와주는 서비스입니다.
 * 사용자 기반 세부 카테고리 별 루틴을 생성하고, 루틴 완료시의 포인트 보상과 캐릭터의 성장을 통한 동기부여를 얻을 수 있습니다.
@@ -60,7 +57,7 @@
 <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
 
 
-## 역할 분담 및 기능 소개
+## 역할 분담
 ## 👽 남윤서(팀장)
 
 ---
@@ -173,10 +170,38 @@
 
 | 온보딩 페이지(비로그인) | 메인페이지(로그인) | 로그인 페이지 |
 | :--------------------: | :----------------: | :------------: |
-| <img src="https://github.com/user-attachments/assets/09529d8a-3fe8-434b-be35-516fe621c07d" width="300"/> | <img src="https://github.com/user-attachments/assets/19e68c0f-34b1-4204-8999-91321ff5e058" width="300"/> | <img src="https://github.com/user-attachments/assets/edeb663f-5baf-419d-9a0c-3265fd026957" width="300"/> |
+| <img src="https://github.com/user-attachments/assets/09529d8a-3fe8-434b-be35-516fe621c07d" width="250"/> | <img src="https://github.com/user-attachments/assets/19e68c0f-34b1-4204-8999-91321ff5e058" width="250"/> | <img src="https://github.com/user-attachments/assets/edeb663f-5baf-419d-9a0c-3265fd026957" width="250"/> |
 | - 루티 주요 서비스 정보 제공  | - 유저 정보, 오늘 루틴 제공 | 로그인 페이지 |
 
----
+<table>
+  <tr>
+    <th colspan="3" align="center">회원가입 페이지</th>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/fbba860f-feda-469a-8d1b-25023fd79ddb" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/ba531775-25ab-4456-9b15-ad1d0738d603" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/f28a3774-e825-415b-ba97-7583831d1e02" width="250"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/52b72449-d2cd-4c1d-a10b-45418c385660" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/9991b984-5d91-41d6-bd04-52288b2f4336" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/bc8b1746-d695-407e-a9d3-9b4a971b1ddb" width="250"/></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center">회원가입 페이지</td>
+  </tr>
+</table>
+
+| 리포트 페이지 | 상점 페이지 |
+| :--------------------: | :----------------: | 
+| <img src="https://github.com/user-attachments/assets/fe3aa8f1-e521-44ef-be80-fb1c6e60918c" width="250"/> | <img src="https://github.com/user-attachments/assets/573d9679-be82-4ee3-9062-2585817d82c6" width="250"/> | 
+| - 주 단위 루틴 활동을 분석·시각화 <br/>- AI 분석 코멘트, 월간 요약 카드, 주간 완료율 차트, <br/>Top5 루틴 랭킹, 카테고리 분포 차트 제공  | - 상의, 하의, 액세서리 별 탭 필터링<br/> - 유저 포인트로 아이템 구매 가능 | 
+
+루틴 -> 등록, 수정, 삭제
+-> 카테고리 등록, 수정, 삭제
+리포트, 상점, 도감, 퀘스트, 알림
+마이페이지 -> 옷입히기, 회원정보변경
+다크모드
 
 
 ### 디렉토리 구조
