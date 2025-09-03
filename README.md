@@ -169,6 +169,16 @@
 
 ---
 
+## 주요기능
+
+| 온보딩 페이지(비로그인) | 메인페이지(로그인) | 로그인 페이지 |
+| :--------------------: | :----------------: | :------------: |
+| <img src="https://github.com/user-attachments/assets/09529d8a-3fe8-434b-be35-516fe621c07d" width="300"/> | <img src="https://github.com/user-attachments/assets/19e68c0f-34b1-4204-8999-91321ff5e058" width="300"/> | <img src="https://github.com/user-attachments/assets/edeb663f-5baf-419d-9a0c-3265fd026957" width="300"/> |
+| - 루티 주요 서비스 정보 제공  | - 유저 정보, 오늘 루틴 제공 | 로그인 페이지 |
+
+---
+
+
 ### 디렉토리 구조
 
 ```bash
