@@ -5,8 +5,9 @@
 
 <img width="1920" height="1080" alt="2025_devcos_final" src="https://github.com/user-attachments/assets/26f5fcf0-a9a8-4f98-9e5d-20f3f6db6441" />
 
-## 루티 (배포링크)
+## 👋 배포 주소
 
+> https://littlestep-routie.vercel.app/
 
 # 프로젝트 소개
 * 1인 가구의 증가와 자취 초보의 생활 패턴 관리의 어려움을 해결하고자 루틴 실천을 게임처럼 즐겁게 하여 지속적인 실천을 도와주는 서비스입니다.
