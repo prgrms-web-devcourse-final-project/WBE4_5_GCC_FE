@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 export default function Routine({
   title,
   category,
+  //emoji,
   subCategory,
   time,
   isImportant,
@@ -17,6 +18,7 @@ export default function Routine({
 }: {
   title: string;
   category: string;
+  //emoji: string;
   subCategory?: string;
   time?: string;
   isImportant?: boolean;

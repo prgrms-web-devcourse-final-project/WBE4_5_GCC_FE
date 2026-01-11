@@ -24,7 +24,9 @@ import { useQueryClient } from '@tanstack/react-query';
 const formatTimeAgo = (date: string) => {
   const notificationDate = new Date(date);
   const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - notificationDate.getTime()) / 1000);
+  const diffInSeconds = Math.floor(
+    (now.getTime() - notificationDate.getTime()) / 1000,
+  );
   const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInSeconds / 3600);
 
@@ -83,7 +85,9 @@ export default function Header() {
     try {
       await markNotificationAsRead(noti.id);
       setNotiList((prev) =>
-        prev.map((item) => (item.id === noti.id ? { ...item, new: false } : item)),
+        prev.map((item) =>
+          item.id === noti.id ? { ...item, new: false } : item,
+        ),
       );
     } catch (err) {
       console.error(`알림 읽음 처리 실패 (id: ${noti.id})`, err);
@@ -145,7 +149,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-1/2 z-50 w-full max-w-[614px] -translate-x-1/2 bg-white/95 backdrop-blur-md px-5 border-b border-gray-200">
+      <header className="fixed top-0 left-1/2 z-50 w-full max-w-[614px] -translate-x-1/2 border-b border-gray-200 bg-white/95 px-5 backdrop-blur-md">
         <div className="flex h-[64px] items-center justify-between">
           {/* 로고 */}
           <Image
@@ -153,7 +157,7 @@ export default function Header() {
             alt="logo"
             width={180}
             height={100}
-            onClick={() => router.push('/')}
+            onClick={() => router.push('/home')}
             className="h-auto cursor-pointer"
           />
 
@@ -161,7 +165,7 @@ export default function Header() {
           {isAdmin ? (
             <button
               onClick={handleLogout}
-              className="rounded-md bg-[#D32F2F] text-sm px-4 py-2 text-white hover:bg-[#ec6b6b] transition-colors cursor-pointer"
+              className="cursor-pointer rounded-md bg-[#D32F2F] px-4 py-2 text-sm text-white transition-colors hover:bg-[#ec6b6b]"
               type="button"
             >
               로그아웃
@@ -203,7 +207,10 @@ export default function Header() {
       {openQuest && <QuestPage setOpenQuest={setOpenQuest} />}
 
       {/* 헤더 공간 확보용 */}
-      <div className="mb-[30px]" style={{ marginTop: 'env(safe-area-inset-top)' }} />
+      <div
+        className="mb-[30px]"
+        style={{ marginTop: 'env(safe-area-inset-top)' }}
+      />
     </>
   );
 }
